@@ -29,7 +29,7 @@
 # Install:
 # > cmake --build . --target install
 
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8)
 project(libqgit2)
 
 find_package(Qt4 4.6 REQUIRED)
@@ -121,7 +121,6 @@ else()
 endif()
 
 #Packaging options
-set(CPACK_SET_DESTDIR ON)
 set(CPACK_GENERATOR "RPM;TGZ")
 set(CPACK_PACKAGE_NAME "LIBQGIT2")
 set(CPACK_PACKAGE_FILE_NAME "LIBQGIT2-${LIBQGIT2_VERSION_STRING}")

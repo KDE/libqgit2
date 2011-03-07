@@ -72,7 +72,7 @@ namespace LibQGit2
              *
              * @param oid new attributes for the entry
              */
-            int setAttributes(int attributes);
+            int setAttributes(unsigned int attributes);
 
             /**
              * Change the filename of a tree entry.
