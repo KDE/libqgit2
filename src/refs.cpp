@@ -64,23 +64,13 @@ int Refs::resolve(Refs* resolvedRef)
     return git_reference_resolve(&reference, m_reference);
 }
 
-int Refs::write()
-{
-    return git_reference_write(m_reference);
-}
-
 Repository* Refs::owner()
 {
     Repository* repository = new Repository(git_reference_owner(m_reference));
     return repository;
 }
 
-void Refs::setName(const QString& name)
-{
-    return git_reference_set_name(m_reference, name.toAscii().constData());
-}
-
-void Refs::setTarget(const QString& target)
+int Refs::setTarget(const QString& target)
 {
     return git_reference_set_target(m_reference, target.toAscii().constData());
 }

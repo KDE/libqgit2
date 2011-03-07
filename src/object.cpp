@@ -36,7 +36,6 @@ Object::Object( const Object& other )
 
 Object::~Object()
 {
-    git_object_free(m_object);
 }
 
 int Object::write()

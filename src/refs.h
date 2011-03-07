@@ -148,7 +148,7 @@ namespace LibQGit2
              *
              * @param target The new target for the reference
              */
-            void setTarget(const QString& target);
+            int setTarget(const QString& target);
 
             /**
              * Set the OID target of a reference.

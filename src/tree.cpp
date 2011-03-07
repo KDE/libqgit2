@@ -93,7 +93,7 @@ void Tree::setEntryName(TreeEntry* treeEntry, const QString& fileName)
     return git_tree_entry_set_name(treeEntry->data(), fileName.toAscii().constData());
 }
 
-void Tree::setEntryAttributes(TreeEntry* treeEntry, int attribute)
+int Tree::setEntryAttributes(TreeEntry* treeEntry, int attribute)
 {
     return git_tree_entry_set_attributes(treeEntry->data(), attribute);
 }

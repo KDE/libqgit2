@@ -74,7 +74,7 @@ namespace LibQGit2
              *
              * @return the pointer; NULL if the blob has no contents
              */
-            const char* rawContent();
+            const void* rawContent();
 
             /**
              * Get the size in bytes of the contents of a blob

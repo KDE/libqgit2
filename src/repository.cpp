@@ -66,12 +66,6 @@ int Repository::open3(const QString& gitDir,
                                 gitIndexFile.toAscii().constData(), gitWorkTree.toAscii().constData());
 }
 
-int Repository::lookup(Object *object, const OId& id, git_otype type)
-{
-    git_object *obj = object->data();
-    return git_repository_lookup(&obj, m_repository, id.constData(), type);
-}
-
 Database* Repository::database() const
 {
     Database *database = new Database(git_repository_database(m_repository));
@@ -82,18 +76,6 @@ int Repository::index(Index *index) const
 {
     git_index *idx = index->data();
     return git_repository_index(&idx, m_repository);
-}
-
-int Repository::newObject(Object *object, git_otype type)
-{
-    git_object *obj = object->data();
-    return git_repository_newobject(&obj, m_repository, type);
-}
-
-int Repository::lookupRef(Refs *refs, Repository *repository, const QString& name)
-{
-    git_reference *reference = refs->data();
-    return git_repository_lookup_ref(&reference, repository->data(), name.toAscii().constData());
 }
 
 git_repository* Repository::data() const

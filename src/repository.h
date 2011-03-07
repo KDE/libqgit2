@@ -180,43 +180,6 @@ namespace LibQGit2
              */
             int index(Index *index) const;
 
-            /**
-             * Create a new in-memory repository object with
-             * the given type.
-             *
-             * The object's attributes can be filled in using the
-             * corresponding setter methods.
-             *
-             * The object will be written back to given git_repository
-             * when the git_object_write() function is called; objects
-             * cannot be written to disk until all their main
-             * attributes have been properly filled.
-             *
-             * Objects are instantiated with no SHA1 id; their id
-             * will be automatically generated when writing to the
-             * repository.
-             *
-             * @param object pointer to the new object
-             * @param type Type of the object to be created
-             * @return the new object
-             */
-            int newObject(Object *object, git_otype type);
-
-            /**
-             * Lookup a reference by its name in the repository.
-             *
-             * The generated reference is owned by the repository and
-             * should not be freed by the user.
-             *
-             * TODO:
-             * - Ensure the reference name is valid
-             *
-             * @param refs pointer to the looked-up reference
-             * @param name the long name for the reference (e.g. HEAD, ref/heads/master, refs/tags/v0.1.0, ...)
-             * @return a reference to the reference
-             */
-            int lookupRef(Refs *refs, Repository *repository, const QString& name);
-
             git_repository* data() const;
             const git_repository* constData() const;
 

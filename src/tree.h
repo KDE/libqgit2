@@ -167,7 +167,7 @@ namespace LibQGit2
              *
              * @param attribute new attributes for the entry
              */
-            void setEntryAttributes(TreeEntry* treeEntry, int attribute);
+            int setEntryAttributes(TreeEntry* treeEntry, int attribute);
 
             git_tree* data() const;
             const git_tree* constData() const;

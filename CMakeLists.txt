@@ -32,6 +32,8 @@
 cmake_minimum_required(VERSION 2.6)
 project(libqgit2)
 
+find_package(Qt4 4.6 REQUIRED)
+
 FILE(STRINGS "qgit2.h" QGIT2_HEADER REGEX "^#define LIBQGIT2_VERSION \"[^\"]*\"$")
 
 STRING(REGEX REPLACE "^.*LIBQGIT2_VERSION \"([0-9]+).*$" "\\1" LIBQGIT2_VERSION_MAJOR "${QGIT2_HEADER}")
@@ -63,7 +65,6 @@ set(LIBQGIT2_BUILD_ALL TRUE
     CACHE INTERNAL "Build all of LIBQGIT2"
 )
 
-SET(CMAKE_CXX_FLAGS "-Wall")
 SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-Wall -O2 -g")
 SET(CMAKE_CXX_FLAGS_RELEASE "-Wall -O2")
 SET(CMAKE_CXX_FLAGS_DEBUG  "-Wall -g3 -ggdb -O0" CACHE STRING "Debug options." FORCE)
@@ -73,7 +74,7 @@ IF (NOT CMAKE_BUILD_TYPE)
     SET(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel." FORCE)
 ENDIF ()
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${QT_INCLUDES})
 
 # Collect sourcefiles
 FILE(GLOB SRC src/*.cpp)
@@ -88,10 +89,9 @@ message(STATUS "To change any of these options, override them using -D{OPTION_NA
 message(STATUS "To build and install LIBQGIT2, run \"make\" and \"make install\"")
 message(STATUS)
 
-
 # Compile and link libqgit2
 ADD_LIBRARY(qgit2 ${SRC})
-TARGET_LINK_LIBRARIES(qgit2)
+TARGET_LINK_LIBRARIES(qgit2 ${QT_QTCORE_LIBRARY})
 SET_TARGET_PROPERTIES(qgit2 PROPERTIES VERSION ${LIBQGIT2_VERSION_STRING})
 SET_TARGET_PROPERTIES(qgit2 PROPERTIES SOVERSION ${LIBQGIT2_VERSION_MAJOR})
 
@@ -122,13 +122,11 @@ endif()
 
 #Packaging options
 set(CPACK_SET_DESTDIR ON)
-set(CPACK_GENERATOR "DEB;TGZ")
+set(CPACK_GENERATOR "RPM;TGZ")
 set(CPACK_PACKAGE_NAME "LIBQGIT2")
 set(CPACK_PACKAGE_FILE_NAME "LIBQGIT2-${LIBQGIT2_VERSION_STRING}")
 set(CPACK_PACKAGE_VERSION "${LIBQGIT2_VERSION_MAJOR}.${LIBQGIT2_VERSION_MINOR}.${LIBQGIT2_VERSION_PATCH}")
-set(CPACK_DEBIAN_PACKAGE_DEPENDS "libgit2")
 set(CPACK_PACKAGE_CONTACT "Laszlo Papp <djszapi@archlinux.us>")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "libgit2 bindings for Qt")
-set(CPACK_DEBIAN_PACKAGE_SECTION "Utils")
 include(InstallRequiredSystemLibraries)
 include(CPack)

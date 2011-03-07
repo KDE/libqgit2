@@ -58,7 +58,7 @@ int TreeEntry::toObject(Object& object)
     return git_tree_entry_2object(&obj, m_treeEntry);
 }
 
-void TreeEntry::setAttributes(int attributes)
+int TreeEntry::setAttributes(int attributes)
 {
     return git_tree_entry_set_attributes(m_treeEntry, attributes);
 }

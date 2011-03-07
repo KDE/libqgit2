@@ -40,7 +40,7 @@ int Blob::lookup(Repository* repository, const OId& oid)
     return git_blob_lookup(&m_blob, repository->data(), oid.constData());
 }
 
-const char* Blob::rawContent()
+const void* Blob::rawContent()
 {
     return git_blob_rawcontent(m_blob);
 }
