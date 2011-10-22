@@ -15,6 +15,11 @@ cmake_install.cmake
 CMakeLists.txt.user
 CMakeLists.txt.user.*
 
+#Make
+[Mm]akefile
+
 #QtCreator
 qtcreator-build
 
+#Mac
+.DS_Store
