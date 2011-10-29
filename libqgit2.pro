@@ -6,7 +6,7 @@ TEMPLATE = lib
 TARGET = libqgit2
 
 DEPENDPATH += . ./src ./libgit2/src
-INCLUDEPATH += . ./src ./libgit2/include
+INCLUDEPATH += . ./src ./libgit2/include ./libgit2/src
 
 CONFIG += core staticlib
 
