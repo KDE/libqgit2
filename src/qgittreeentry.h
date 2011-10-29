@@ -26,14 +26,14 @@
 
 namespace LibQGit2
 {
-    class OId;
-    class Object;
-    class LIBQGIT2_TREEENTRY_EXPORT TreeEntry
+    class QGitOId;
+    class QGitObject;
+    class LIBQGIT2_TREEENTRY_EXPORT QGitTreeEntry
     {
         public:
-            TreeEntry(const git_tree_entry *treeEntry = 0, QObject* parent = 0 );
-            TreeEntry( const TreeEntry& other );
-            ~TreeEntry();
+            QGitTreeEntry(const git_tree_entry *treeEntry = 0, QObject* parent = 0 );
+            QGitTreeEntry( const QGitTreeEntry& other );
+            ~QGitTreeEntry();
 
         public:
             /**
@@ -53,7 +53,7 @@ namespace LibQGit2
              * Get the id of the object pointed by the entry
              * @return the oid of the object
              */
-            const OId* id() const;
+            const QGitOId* id() const;
 
             /**
              * Convert a tree entry to the Object it points too.
@@ -61,7 +61,7 @@ namespace LibQGit2
              * @param object pointer to the converted object
              * @return a reference to the pointed object in the repository
              */
-            int toObject(Object& object);
+            int toObject(QGitObject& object);
 
             /**
              * Change the attributes of a tree entry.
@@ -92,7 +92,7 @@ namespace LibQGit2
              *
              * @param oid new SHA1 oid for the entry
              */
-            void setId(const OId& oid);
+            void setId(const QGitOId& oid);
 
             git_tree_entry* data() const;
             const git_tree_entry* constData() const;

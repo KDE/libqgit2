@@ -22,16 +22,16 @@
 
 #include "libqgit2_export.h"
 
-#include "database.h"
-#include "object.h"
-#include "refs.h"
-#include "index.h"
+#include "qgitdatabase.h"
+#include "qgitobject.h"
+#include "qgitrefs.h"
+#include "qgitindex.h"
 
 #include <git2/repository.h>
 
 namespace LibQGit2
 {
-    class LIBQGIT2_REPOSITORY_EXPORT Repository
+    class LIBQGIT2_REPOSITORY_EXPORT QGitRepository
     {
         public:
             /**
@@ -48,15 +48,15 @@ namespace LibQGit2
              *
              * @return 0 on success; error code otherwise
              */
-            Repository(const QString& path, unsigned isBare, QObject* parent = 0 );
-            Repository(const git_repository *repository = 0, QObject* parent = 0 );
+            QGitRepository(const QString& path, unsigned isBare, QObject* parent = 0 );
+            QGitRepository(const git_repository *repository = 0, QObject* parent = 0 );
 
-            Repository( const Repository& other );
+            QGitRepository( const QGitRepository& other );
 
             /**
              * Destruct a previously allocated repository
              */
-            ~Repository();
+            ~QGitRepository();
 
         public:
             /**
@@ -140,7 +140,7 @@ namespace LibQGit2
              * @return 0 on success; error code otherwise
              */
             int open3(const QString& gitDir,
-                      Database *objectDatabase,
+                      QGitDatabase *objectDatabase,
                       const QString& gitIndexFile,
                       const QString& gitWorkTree);
 
@@ -160,14 +160,14 @@ namespace LibQGit2
              * @param type the type of the object
              * @return a reference to the object
              */
-            int lookup(Object *object, const OId& id, git_otype type);
+            int lookup(QGitObject *object, const QGitOId& id, git_otype type);
 
             /**
              * Get the object database behind a Git repository
              *
              * @return a pointer to the object db
              */
-            Database* database() const;
+            QGitDatabase* database() const;
 
             /**
              * Get the Index file of a Git repository
@@ -178,7 +178,7 @@ namespace LibQGit2
              * @param index Pointer where to store the index
              * @return 0 on success; error code if the index could not be opened
              */
-            int index(Index *index) const;
+            int index(QGitIndex *index) const;
 
             git_repository* data() const;
             const git_repository* constData() const;

@@ -17,83 +17,83 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "index.h"
+#include "qgitindex.h"
 
-#include "repository.h"
+#include "qgitrepository.h"
 
 using namespace LibQGit2;
 
-Index::Index( const QString& indexPath, QObject* parent )
+QGitIndex::QGitIndex( const QString& indexPath, QObject* parent )
 {
     git_index_open_bare(&m_index, indexPath.toAscii().data());
 }
 
-Index::Index(Repository* repository, QObject* parent )
+QGitIndex::QGitIndex(QGitRepository* repository, QObject* parent )
 {
     git_index_open_inrepo(&m_index, repository->data());
 }
 
-Index::Index( const Index& other )
+QGitIndex::QGitIndex( const QGitIndex& other )
 {
     m_index = other.m_index;
 }
 
-Index::~Index()
+QGitIndex::~QGitIndex()
 {
     git_index_free(m_index);
 }
 
-void Index::clear()
+void QGitIndex::clear()
 {
     return git_index_clear(m_index);
 }
 
-int Index::read() const
+int QGitIndex::read() const
 {
     return git_index_read(m_index);
 }
 
-int Index::write()
+int QGitIndex::write()
 {
     return git_index_write(m_index);
 }
 
-int Index::find(const QString& path)
+int QGitIndex::find(const QString& path)
 {
     return git_index_find(m_index, path.toAscii().constData());
 }
 
-int Index::add(const QString& path, int stage)
+int QGitIndex::add(const QString& path, int stage)
 {
     return git_index_add(m_index, path.toAscii().constData(), stage);
 }
 
-int Index::remove(int position)
+int QGitIndex::remove(int position)
 {
     return git_index_remove(m_index, position);
 }
 
-int Index::insert(const git_index_entry *source_entry)
+int QGitIndex::insert(const git_index_entry *source_entry)
 {
     return git_index_insert(m_index, source_entry);
 }
 
-git_index_entry* Index::get(int n) const
+git_index_entry* QGitIndex::get(int n) const
 {
     return git_index_get(m_index, n);
 }
 
-unsigned int Index::entryCount() const
+unsigned int QGitIndex::entryCount() const
 {
     return git_index_entrycount(m_index);
 }
 
-git_index* Index::data() const
+git_index* QGitIndex::data() const
 {
     return m_index;
 }
 
-const git_index* Index::constData() const
+const git_index* QGitIndex::constData() const
 {
     return const_cast<const git_index *>(m_index);
 }

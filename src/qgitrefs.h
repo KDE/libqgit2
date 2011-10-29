@@ -28,9 +28,9 @@
 
 namespace LibQGit2
 {
-    class Repository;
-    class OId;
-    class LIBQGIT2_REFS_EXPORT Refs
+    class QGitRepository;
+    class QGitOId;
+    class LIBQGIT2_REFS_EXPORT QGitRefs
     {
         public:
             /**
@@ -44,14 +44,14 @@ namespace LibQGit2
              * @param repository Repository where that reference exists
              * @return 0 on success; error code otherwise
              */
-            Refs(Repository* repository, QObject* parent = 0 );
+            QGitRefs(QGitRepository* repository, QObject* parent = 0 );
 
-            Refs( const Refs& other );
+            QGitRefs( const QGitRefs& other );
 
             /**
              * Free an existing reference object.
              */
-            ~Refs();
+            ~QGitRefs();
 
         public:
 
@@ -62,7 +62,7 @@ namespace LibQGit2
              *
              * @return a pointer to the oid if available, NULL otherwise
              */
-            const OId* oid() const;
+            const QGitOId* oid() const;
 
             /**
              * Get full name to the reference pointed by this reference
@@ -101,7 +101,7 @@ namespace LibQGit2
              * @param resolvedRef Pointer to the peeled reference
              * @return 0 on success; error code otherwise
              */
-            int resolve(Refs* resolvedRef);
+            int resolve(QGitRefs* resolvedRef);
 
             /**
              * Write a reference back to disk.
@@ -123,7 +123,7 @@ namespace LibQGit2
              *
              * @return a pointer to the repository
              */
-            Repository* owner();
+            QGitRepository* owner();
 
             /**
              * Set the name of a reference.
@@ -162,7 +162,7 @@ namespace LibQGit2
              *
              * @param target The new target OID for the reference
              */
-            void setOId(const OId& oid);
+            void setOId(const QGitOId& oid);
 
             git_reference* data() const;
             const git_reference* constData() const;

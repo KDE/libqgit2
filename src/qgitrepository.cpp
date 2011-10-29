@@ -17,36 +17,36 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "repository.h"
+#include "qgitrepository.h"
 
 using namespace LibQGit2;
 
-Repository::Repository(const QString& path, unsigned isBare, QObject* parent)
+QGitRepository::QGitRepository(const QString& path, unsigned isBare, QObject* parent)
 {
     git_repository_init(&m_repository, path.toAscii().constData(), isBare);
 }
 
-Repository::Repository(const git_repository *repository, QObject* parent)
+QGitRepository::QGitRepository(const git_repository *repository, QObject* parent)
     : m_repository(const_cast<git_repository *>(repository))
 {
 }
 
-Repository::Repository( const Repository& other )
+QGitRepository::QGitRepository( const QGitRepository& other )
 {
     m_repository = other.m_repository;
 }
 
-Repository::~Repository()
+QGitRepository::~QGitRepository()
 {
     git_repository_free(m_repository);
 }
 
-int Repository::open(const QString& path)
+int QGitRepository::open(const QString& path)
 {
     return git_repository_open(&m_repository, path.toAscii().constData());
 }
 
-int Repository::open2(const QString& gitDir,
+int QGitRepository::open2(const QString& gitDir,
                       const QString& gitObjectDirectory,
                       const QString& gitIndexFile,
                       const QString& gitWorkTree)
@@ -57,8 +57,8 @@ int Repository::open2(const QString& gitDir,
 }
 
 
-int Repository::open3(const QString& gitDir,
-                      Database *objectDatabase,
+int QGitRepository::open3(const QString& gitDir,
+                      QGitDatabase *objectDatabase,
                       const QString& gitIndexFile,
                       const QString& gitWorkTree)
 {
@@ -66,24 +66,24 @@ int Repository::open3(const QString& gitDir,
                                 gitIndexFile.toAscii().constData(), gitWorkTree.toAscii().constData());
 }
 
-Database* Repository::database() const
+QGitDatabase* QGitRepository::database() const
 {
-    Database *database = new Database(git_repository_database(m_repository));
+    QGitDatabase *database = new QGitDatabase(git_repository_database(m_repository));
     return database;
 }
 
-int Repository::index(Index *index) const
+int QGitRepository::index(QGitIndex *index) const
 {
     git_index *idx = index->data();
     return git_repository_index(&idx, m_repository);
 }
 
-git_repository* Repository::data() const
+git_repository* QGitRepository::data() const
 {
     return m_repository;
 }
 
-const git_repository* Repository::constData() const
+const git_repository* QGitRepository::constData() const
 {
     return const_cast<const git_repository *>(m_repository);
 }

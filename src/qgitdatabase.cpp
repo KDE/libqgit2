@@ -17,56 +17,55 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "rawobject.h"
-
-#include "database.h"
+#include "qgitdatabase.h"
 
 using namespace LibQGit2;
 
-RawObject::RawObject(QObject* parent)
+QGitDatabase::QGitDatabase( git_odb *odb, QObject* parent )
+    : m_database(odb)
 {
 }
 
-RawObject::RawObject(const RawObject& other)
+QGitDatabase::QGitDatabase( const QGitDatabase& other )
 {
-    m_rawObject = other.m_rawObject;
+    m_database = other.m_database;
 }
 
-RawObject::~RawObject()
+QGitDatabase::~QGitDatabase()
 {
 }
 
-int RawObject::read(Database *db, const OId *id)
+int QGitDatabase::open(const QString& objectsDir)
 {
-    return git_odb_read(m_rawObject, db->data(), id->constData());
+    return git_odb_open(&m_database, objectsDir.toAscii().constData());
 }
 
-int RawObject::readHeader(Database *db, const OId *id)
+void QGitDatabase::close()
 {
-    return git_odb_read_header(m_rawObject, db->data(), id->constData());
+    return git_odb_close(m_database);
 }
 
-int RawObject::write(OId *id, Database *db)
+int QGitDatabase::addBackend(QGitDatabaseBackend *backend, int priority)
 {
-    return git_odb_write(id->data(), db->data(), m_rawObject);
+    return git_odb_add_backend(m_database, (git_odb_backend *)backend, priority);
 }
 
-int RawObject::hash(OId *id)
+int QGitDatabase::addAlternate(QGitDatabaseBackend *backend, int priority)
 {
-    return git_rawobj_hash(id->data(), m_rawObject);
+    return git_odb_add_alternate(m_database, (git_odb_backend *)backend, priority);
 }
 
-void RawObject::close()
+int QGitDatabase::exists(QGitDatabase *db, const QGitOId *id)
 {
-    return git_rawobj_close(m_rawObject);
+    return git_odb_exists(db->data(), id->constData());
 }
 
-git_rawobj* RawObject::data() const
+git_odb* QGitDatabase::data() const
 {
-    return m_rawObject;
+    return m_database;
 }
 
-const git_rawobj* RawObject::constData() const
+const git_odb* QGitDatabase::constData() const
 {
-    return const_cast<const git_rawobj *>(m_rawObject);
+    return const_cast<const git_odb *>(m_database);
 }

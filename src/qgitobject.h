@@ -29,14 +29,14 @@
 
 namespace LibQGit2
 {
-    class Repository;
-    class OId;
-    class LIBQGIT2_OBJECT_EXPORT Object
+    class QGitRepository;
+    class QGitOId;
+    class LIBQGIT2_OBJECT_EXPORT QGitObject
     {
         public:
-            Object( const git_object *object = 0, QObject* parent = 0 );
-            Object( const Object& other );
-            ~Object();
+            QGitObject( const git_object *object = 0, QObject* parent = 0 );
+            QGitObject( const QGitObject& other );
+            ~QGitObject();
 
         public:
             /**
@@ -65,7 +65,7 @@ namespace LibQGit2
              *
              * @return the SHA1 id
              */
-            const OId* id() const;
+            const QGitOId* id() const;
 
             /**
              * * Get the object type of an object
@@ -80,7 +80,7 @@ namespace LibQGit2
              * @param obj the object
              * @return the repository who owns this object
              */
-            Repository* owner() const;
+            QGitRepository* owner() const;
 
             /**
              * Convert an object type to it's string representation.

@@ -17,67 +17,37 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "oid.h"
+#ifndef LIBQGIT2_DATABASEBACKEND_H
+#define LIBQGIT2_DATABASEBACKEND_H
 
-using namespace LibQGit2;
+#include "libqgit2_export.h"
 
-OId::OId( const git_oid *oid, QObject* parent )
-    : m_oid(const_cast<git_oid *>(oid))
+#include <QtCore/QString>
+
+#include <git2/odb_backend.h>
+
+namespace LibQGit2
 {
+    class LIBQGIT2_DATABASEBACKEND_EXPORT QGitDatabaseBackend
+    {
+        public:
+            QGitDatabaseBackend( QObject* parent = 0 );
+
+            QGitDatabaseBackend( const QGitDatabaseBackend& other );
+
+            ~QGitDatabaseBackend();
+
+        public:
+            int pack(const QString& objectsDir);
+
+            int loose(const QString& objectsDir);
+
+            git_odb_backend* data() const;
+            const git_odb_backend* constData() const;
+
+        private:
+            git_odb_backend *m_databaseBackend;
+    };
 }
 
-OId::OId( const OId& other )
-{
-    m_oid = other.m_oid;
-}
-
-OId::~OId()
-{
-}
-
-int OId::makeString(const QByteArray& string)
-{
-    return git_oid_mkstr(m_oid, string.constData());
-}
-
-void OId::makeRaw(const unsigned char *raw)
-{
-    return git_oid_mkraw(m_oid, raw);
-}
-
-void OId::format(char* string)
-{
-    return git_oid_fmt(string, m_oid);
-}
-
-void OId::pathFormat(char* string)
-{
-    return git_oid_pathfmt(string, m_oid);
-}
-
-char* OId::allocFormat()
-{
-    return git_oid_allocfmt(m_oid);
-}
-
-char* OId::toString(char* out, size_t n)
-{
-    return git_oid_to_string(out, n, m_oid);
-}
-
-int OId::compare(OId *oid)
-{
-    return git_oid_cmp(m_oid, oid->constData());
-}
-
-git_oid* OId::data() const
-{
-    return m_oid;
-}
-
-const git_oid* OId::constData() const
-{
-    return const_cast<const git_oid *>(m_oid);
-}
-
-
+#endif // LIBQGIT2_DATABASEBACKEND_H

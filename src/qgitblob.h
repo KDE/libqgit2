@@ -21,7 +21,7 @@
 #define LIBQGIT2_BLOB_H
 
 #include "libqgit2_export.h"
-#include "repository.h"
+#include "qgitrepository.h"
 
 #include <QtCore/QObject>
 
@@ -29,7 +29,7 @@
 
 namespace LibQGit2
 {
-    class LIBQGIT2_BLOB_EXPORT Blob
+    class LIBQGIT2_BLOB_EXPORT QGitBlob
     {
         public:
             /**
@@ -42,14 +42,14 @@ namespace LibQGit2
              * @param repository The repository where the object will reside
              * @return 0 on success; error code otherwise
              */
-            Blob(Repository* repository, QObject* parent = 0 );
+            QGitBlob(QGitRepository* repository, QObject* parent = 0 );
 
-            Blob( const Blob& other );
+            QGitBlob( const QGitBlob& other );
 
             /**
              * Delete a Blob previously allocated.
              */
-            ~Blob();
+            ~QGitBlob();
 
         public:
 
@@ -62,7 +62,7 @@ namespace LibQGit2
              * @param id identity of the blob to locate.
              * @return 0 on success; error code otherwise
              */
-            int lookup(Repository* repository, const OId& oid);
+            int lookup(QGitRepository* repository, const QGitOId& oid);
 
             /**
              * Get a read-only buffer with the raw content of a blob.
@@ -111,7 +111,7 @@ namespace LibQGit2
              * @param repository repository where the blob will be written
              * @param path file from which the blob will be created
              */
-            int writeFile(OId *writtenId, Repository *repository, const QString& path);
+            int writeFile(QGitOId *writtenId, QGitRepository *repository, const QString& path);
 
             git_blob* data() const;
             const git_blob* constData() const;

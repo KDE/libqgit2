@@ -17,93 +17,96 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "tree.h"
+#include "qgittree.h"
 
-#include "treeentry.h"
-#include "repository.h"
-#include "oid.h"
+#include "qgittreeentry.h"
+#include "qgitrepository.h"
+#include "qgitoid.h"
 
 using namespace LibQGit2;
 
-Tree::Tree(Repository *repository, QObject* parent)
+QGitTree::QGitTree(QGitRepository *repository, QObject* parent)
 {
     git_tree_new(&m_tree, repository->data());
 }
 
-Tree::Tree(const git_tree *tree, QObject* parent)
+QGitTree::QGitTree(const git_tree *tree, QObject* parent)
     : m_tree(const_cast<git_tree *>(tree))
 {
 }
 
-Tree::Tree( const Tree& other )
+QGitTree::QGitTree( const QGitTree& other )
 {
     m_tree = other.m_tree;
 }
 
-int Tree::lookup(Repository& repository, const OId& id)
+int QGitTree::lookup(QGitRepository& repository, const QGitOId& id)
 {
     return git_tree_lookup(&m_tree, (git_repository *)repository.data(), (git_oid *)id.data());
 }
 
-const OId* Tree::id()
+const QGitOId* QGitTree::id()
 {
-    const OId *oid = new OId(git_tree_id(m_tree));
+    const QGitOId *oid = new QGitOId(git_tree_id(m_tree));
     return oid;
 }
 
-size_t Tree::entryCount()
+size_t QGitTree::entryCount()
 {
     return git_tree_entrycount(m_tree);
 }
 
-TreeEntry* Tree::entryByName(const QString& fileName)
+QGitTreeEntry* QGitTree::entryByName(const QString& fileName)
 {
-    TreeEntry *treeEntry = new TreeEntry(git_tree_entry_byname(m_tree, fileName.toAscii().constData()));
+    QGitTreeEntry *treeEntry = new QGitTreeEntry(git_tree_entry_byname(m_tree, fileName.toAscii().constData()));
     return treeEntry;
 }
 
-TreeEntry* Tree::entryByIndex(int idx)
+QGitTreeEntry* QGitTree::entryByIndex(int idx)
 {
-    TreeEntry *treeEntry = new TreeEntry(git_tree_entry_byindex(m_tree, idx));
+    QGitTreeEntry *treeEntry = new QGitTreeEntry(git_tree_entry_byindex(m_tree, idx));
     return treeEntry;
 }
 
-int Tree::removeEntryByIndex(int idx)
+int QGitTree::removeEntryByIndex(int idx)
 {
     return git_tree_remove_entry_byindex(m_tree, idx);
 }
 
-int Tree::removeEntryByName(const QString& fileName)
+int QGitTree::removeEntryByName(const QString& fileName)
 {
     return git_tree_remove_entry_byname(m_tree, fileName.toAscii().constData());
 }
 
-void Tree::clearEntries()
+void QGitTree::clearEntries()
 {
     return git_tree_clear_entries(m_tree);
 }
 
-void Tree::setEntryId(TreeEntry* treeEntry, const OId& oid)
+void QGitTree::setEntryId(QGitTreeEntry* treeEntry, const QGitOId& oid)
 {
     return git_tree_entry_set_id(treeEntry->data(), oid.constData());
 }
 
-void Tree::setEntryName(TreeEntry* treeEntry, const QString& fileName)
+void QGitTree::setEntryName(QGitTreeEntry* treeEntry, const QString& fileName)
 {
     return git_tree_entry_set_name(treeEntry->data(), fileName.toAscii().constData());
 }
 
-int Tree::setEntryAttributes(TreeEntry* treeEntry, int attribute)
+int QGitTree::setEntryAttributes(QGitTreeEntry* treeEntry, int attribute)
 {
-    return git_tree_entry_set_attributes(treeEntry->data(), attribute);
+    git_tree_entry_set_attributes(treeEntry->data(), attribute);
+
+    //! @todo Find dependencies
+    return 0;
 }
 
-git_tree* Tree::data() const
+git_tree* QGitTree::data() const
 {
     return m_tree;
 }
 
-const git_tree* Tree::constData() const
+const git_tree* QGitTree::constData() const
 {
     return const_cast<const git_tree*>(m_tree);
 }

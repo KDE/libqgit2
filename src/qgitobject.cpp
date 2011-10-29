@@ -17,75 +17,75 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "object.h"
+#include "qgitobject.h"
 
-#include "oid.h"
-#include "repository.h"
+#include "qgitoid.h"
+#include "qgitrepository.h"
 
 using namespace LibQGit2;
 
-Object::Object( const git_object *object, QObject* parent )
+QGitObject::QGitObject( const git_object *object, QObject* parent )
     : m_object(const_cast<git_object *>(object))
 {
 }
 
-Object::Object( const Object& other )
+QGitObject::QGitObject( const QGitObject& other )
 {
     m_object = other.m_object;
 }
 
-Object::~Object()
+QGitObject::~QGitObject()
 {
 }
 
-int Object::write()
+int QGitObject::write()
 {
     return git_object_write(m_object);
 }
 
-const OId* Object::id() const
+const QGitOId* QGitObject::id() const
 {
-    const OId *oid = new OId(git_object_id(m_object));
+    const QGitOId *oid = new QGitOId(git_object_id(m_object));
     return oid;
 }
 
-git_otype Object::type() const
+git_otype QGitObject::type() const
 {
     return git_object_type(m_object);
 }
 
-Repository* Object::owner() const
+QGitRepository* QGitObject::owner() const
 {
-    Repository *repository = new Repository(git_object_owner(m_object));
+    QGitRepository *repository = new QGitRepository(git_object_owner(m_object));
     return repository;
 }
 
-QString Object::typeToString(git_otype type)
+QString QGitObject::typeToString(git_otype type)
 {
     return QString(git_object_type2string(type));
 }
 
-git_otype Object::stringToType(const QString& string)
+git_otype QGitObject::stringToType(const QString& string)
 {
     return git_object_string2type(string.toAscii().constData());
 }
 
-int Object::typeIsLoose(git_otype type)
+int QGitObject::typeIsLoose(git_otype type)
 {
     return git_object_typeisloose(type);
 }
 
-size_t Object::size(git_otype type)
+size_t QGitObject::size(git_otype type)
 {
     return git_object__size(type);
 }
 
-git_object* Object::data() const
+git_object* QGitObject::data() const
 {
     return m_object;
 }
 
-const git_object* Object::constData() const
+const git_object* QGitObject::constData() const
 {
     return const_cast<const git_object *>(m_object);
 }

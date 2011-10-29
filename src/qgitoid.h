@@ -29,17 +29,17 @@
 
 namespace LibQGit2
 {
-    class LIBQGIT2_OID_EXPORT OId
+    class LIBQGIT2_OID_EXPORT QGitOId
     {
         public:
-            OId( const git_oid *oid = 0, QObject* parent = 0 );
+            QGitOId( const git_oid *oid = 0, QObject* parent = 0 );
 
             /**
              * * Copy an oid from one class to another.
              * * @param other oid class to copy from.
              * */
-            OId( const OId& other );
-            ~OId();
+            QGitOId( const QGitOId& other );
+            ~QGitOId();
 
         public:
 
@@ -111,7 +111,7 @@ namespace LibQGit2
              * @param oid oid class compare with.
              * @return <0, 0, >0 if a < b, a == b, a > b.
              */
-            int compare(OId *oid);
+            int compare(QGitOId *oid);
 
             git_oid* data() const;
             const git_oid* constData() const;

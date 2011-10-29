@@ -26,8 +26,8 @@
 
 namespace LibQGit2
 {
-    class Repository;
-    class LIBQGIT2_INDEX_EXPORT Index
+    class QGitRepository;
+    class LIBQGIT2_INDEX_EXPORT QGitIndex
     {
         public:
             /**
@@ -42,7 +42,7 @@ namespace LibQGit2
              * @param index_path the path to the index file in disk
              * @return 0 on success; error code otherwise
              */
-            Index( const QString& indexPath, QObject* parent = 0 );
+            QGitIndex( const QString& indexPath, QObject* parent = 0 );
 
             /**
              * Open the Index inside the git repository pointed
@@ -52,14 +52,14 @@ namespace LibQGit2
              * @param index_path the path to the index file in disk
              * @return 0 on success; error code otherwise
              */
-            Index(Repository* repository, QObject* parent = 0 );
+            QGitIndex(QGitRepository* repository, QObject* parent = 0 );
 
-            Index( const Index& other );
+            QGitIndex( const QGitIndex& other );
 
             /**
              * Destruct an existing index object.
              */
-            ~Index();
+            ~QGitIndex();
 
         public:
 

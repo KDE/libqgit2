@@ -22,16 +22,16 @@
 
 #include "libqgit2_export.h"
 
-#include "signature.h"
-#include "oid.h"
-#include "repository.h"
+#include "qgitsignature.h"
+#include "qgitoid.h"
+#include "qgitrepository.h"
 
 #include <git2/tag.h>
 
 namespace LibQGit2
 {
-    class Object;
-    class LIBQGIT2_TAG_EXPORT Tag
+    class QGitObject;
+    class LIBQGIT2_TAG_EXPORT QGitTag
     {
         public:
             /**
@@ -44,10 +44,10 @@ namespace LibQGit2
              * @param repository The repository where the object will reside
              * @return 0 on success; error code otherwise
              */
-            Tag( Repository *repository, QObject* parent = 0 );
+            QGitTag( QGitRepository *repository, QObject* parent = 0 );
 
-            Tag( const Tag& other );
-            ~Tag();
+            QGitTag( const QGitTag& other );
+            ~QGitTag();
 
         public:
 
@@ -60,19 +60,19 @@ namespace LibQGit2
              * @param id identity of the tag to locate.
              * @return 0 on success; error code otherwise
              */
-            int lookup(Repository *repository, const OId& oid);
+            int lookup(QGitRepository *repository, const QGitOId& oid);
 
             /**
              * Get the id of a tag.
              * @return object identity for the tag.
              */
-            const OId* id() const;
+            const QGitOId* id() const;
 
             /**
              * Get the tagged object of a tag
              * @return reference to a repository object
              */
-            const Object* target() const;
+            const QGitObject* target() const;
 
             /**
              * Get the type of a tag's tagged object
@@ -90,7 +90,7 @@ namespace LibQGit2
              * Get the tagger (author) of a tag
              * @return reference to the tag's author
              */
-            const Signature* tagger() const;
+            const QGitSignature* tagger() const;
 
             /**
              * Get the message of a tag
@@ -102,7 +102,7 @@ namespace LibQGit2
              * Set the target of a tag (i.e. the object that the tag points to)
              * @param target the new tagged target
              */
-            void setTarget(const Object &target);
+            void setTarget(const QGitObject &target);
 
             /**
              * Set the name of a tag
@@ -114,7 +114,7 @@ namespace LibQGit2
              * Set the tagger of a tag
              * @param taggerSig signature of the tagging action
              */
-            void setTagger(const Signature& taggerSig);
+            void setTagger(const QGitSignature& taggerSig);
 
 
             /**

@@ -17,68 +17,71 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "treeentry.h"
+#include "qgittreeentry.h"
 
-#include "repository.h"
+#include "qgitrepository.h"
 
 using namespace LibQGit2;
 
-TreeEntry::TreeEntry(const git_tree_entry *treeEntry, QObject* parent)
+QGitTreeEntry::QGitTreeEntry(const git_tree_entry *treeEntry, QObject* parent)
     : m_treeEntry(const_cast<git_tree_entry *>(treeEntry))
 {
 }
 
-TreeEntry::TreeEntry( const TreeEntry& other )
+QGitTreeEntry::QGitTreeEntry( const QGitTreeEntry& other )
 {
 }
 
-TreeEntry::~TreeEntry()
+QGitTreeEntry::~QGitTreeEntry()
 {
 }
 
-unsigned int TreeEntry::attributes() const
+unsigned int QGitTreeEntry::attributes() const
 {
     return git_tree_entry_attributes(m_treeEntry);
 }
 
-const QString TreeEntry::name() const
+const QString QGitTreeEntry::name() const
 {
     return QString::fromUtf8(git_tree_entry_name(m_treeEntry));
 }
 
-const OId* TreeEntry::id() const
+const QGitOId* QGitTreeEntry::id() const
 {
-    const OId *oid = new OId(git_tree_entry_id(m_treeEntry));
+    const QGitOId *oid = new QGitOId(git_tree_entry_id(m_treeEntry));
     return oid;
 }
 
-int TreeEntry::toObject(Object& object)
+int QGitTreeEntry::toObject(QGitObject& object)
 {
     git_object *obj = object.data();
     return git_tree_entry_2object(&obj, m_treeEntry);
 }
 
-int TreeEntry::setAttributes(unsigned int attributes)
+int QGitTreeEntry::setAttributes(unsigned int attributes)
 {
-    return git_tree_entry_set_attributes(m_treeEntry, attributes);
+    git_tree_entry_set_attributes(m_treeEntry, attributes);
+
+    //! @todo Find dependencies
+    return 0;
 }
 
-void TreeEntry::setName(const QString& name)
+void QGitTreeEntry::setName(const QString& name)
 {
     return git_tree_entry_set_name(m_treeEntry, name.toAscii().constData());
 }
 
-void TreeEntry::setId(const OId& oid)
+void QGitTreeEntry::setId(const QGitOId& oid)
 {
     return git_tree_entry_set_id(m_treeEntry, oid.constData());
 }
 
-git_tree_entry* TreeEntry::data() const
+git_tree_entry* QGitTreeEntry::data() const
 {
     return m_treeEntry;
 }
 
-const git_tree_entry* TreeEntry::constData() const
+const git_tree_entry* QGitTreeEntry::constData() const
 {
     return const_cast<const git_tree_entry *>(m_treeEntry);
 }

@@ -17,38 +17,56 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "databasebackend.h"
+#include "qgitrawobject.h"
+
+#include "qgitdatabase.h"
 
 using namespace LibQGit2;
 
-DatabaseBackend::DatabaseBackend( QObject* parent )
+QGitRawObject::QGitRawObject(QObject* parent)
 {
 }
 
-DatabaseBackend::DatabaseBackend( const DatabaseBackend& other )
+QGitRawObject::QGitRawObject(const QGitRawObject& other)
+{
+    m_rawObject = other.m_rawObject;
+}
+
+QGitRawObject::~QGitRawObject()
 {
 }
 
-DatabaseBackend::~DatabaseBackend()
+int QGitRawObject::read(QGitDatabase *db, const QGitOId *id)
 {
+    return git_odb_read(m_rawObject, db->data(), id->constData());
 }
 
-int DatabaseBackend::pack(const QString& objectsDir)
+int QGitRawObject::readHeader(QGitDatabase *db, const QGitOId *id)
 {
-    return git_odb_backend_pack(&m_databaseBackend, objectsDir.toAscii().constData());
+    return git_odb_read_header(m_rawObject, db->data(), id->constData());
 }
 
-int DatabaseBackend::loose(const QString& objectsDir)
+int QGitRawObject::write(QGitOId *id, QGitDatabase *db)
 {
-    return git_odb_backend_loose(&m_databaseBackend, objectsDir.toAscii().constData());
+    return git_odb_write(id->data(), db->data(), m_rawObject);
 }
 
-git_odb_backend* DatabaseBackend::data() const
+int QGitRawObject::hash(QGitOId *id)
 {
-    return m_databaseBackend;
+    return git_rawobj_hash(id->data(), m_rawObject);
 }
 
-const git_odb_backend* DatabaseBackend::constData() const
+void QGitRawObject::close()
 {
-    return const_cast<const git_odb_backend *>(m_databaseBackend);
+    return git_rawobj_close(m_rawObject);
+}
+
+git_rawobj* QGitRawObject::data() const
+{
+    return m_rawObject;
+}
+
+const git_rawobj* QGitRawObject::constData() const
+{
+    return const_cast<const git_rawobj *>(m_rawObject);
 }

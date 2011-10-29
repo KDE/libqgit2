@@ -17,38 +17,38 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "signature.h"
+#include "qgitdatabasebackend.h"
 
 using namespace LibQGit2;
 
-Signature::Signature(const QString& name, const QString& email, QDateTime dateTime, int offset, QObject* parent)
-{
-    m_signature = git_signature_new(name.toAscii().data(), email.toAscii().data(), dateTime.toTime_t(), offset);
-}
-
-Signature::Signature(const git_signature *signature, QObject *parent)
-    : m_signature(const_cast<git_signature *>(signature))
+QGitDatabaseBackend::QGitDatabaseBackend( QObject* parent )
 {
 }
 
-Signature::Signature( const Signature& other )
+QGitDatabaseBackend::QGitDatabaseBackend( const QGitDatabaseBackend& other )
 {
-    m_signature = other.m_signature;
 }
 
-Signature::~Signature()
+QGitDatabaseBackend::~QGitDatabaseBackend()
 {
-    git_signature_free(m_signature);
 }
 
-git_signature* Signature::data() const
+int QGitDatabaseBackend::pack(const QString& objectsDir)
 {
-    return m_signature;
+    return git_odb_backend_pack(&m_databaseBackend, objectsDir.toAscii().constData());
 }
 
-const git_signature* Signature::constData() const
+int QGitDatabaseBackend::loose(const QString& objectsDir)
 {
-    return const_cast<const git_signature *>(m_signature);
+    return git_odb_backend_loose(&m_databaseBackend, objectsDir.toAscii().constData());
 }
 
+git_odb_backend* QGitDatabaseBackend::data() const
+{
+    return m_databaseBackend;
+}
 
+const git_odb_backend* QGitDatabaseBackend::constData() const
+{
+    return const_cast<const git_odb_backend *>(m_databaseBackend);
+}

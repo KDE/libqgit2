@@ -29,7 +29,7 @@
 
 namespace LibQGit2
 {
-    class LIBQGIT2_SIGNATURE_EXPORT Signature
+    class LIBQGIT2_SIGNATURE_EXPORT QGitSignature
     {
         public:
             /**
@@ -41,8 +41,8 @@ namespace LibQGit2
              * @time time when the action happened
              * @offset timezone offset in minutes for the time
              */
-            Signature( const QString& name, const QString& email, QDateTime dateTime, int offset, QObject* parent = 0 );
-            Signature( const git_signature *signature = 0, QObject* parent = 0 );
+            QGitSignature( const QString& name, const QString& email, QDateTime dateTime, int offset, QObject* parent = 0 );
+            QGitSignature( const git_signature *signature = 0, QObject* parent = 0 );
 
             /**
              * Construct a copy of an existing signature.
@@ -50,12 +50,12 @@ namespace LibQGit2
              * All internal strings are also duplicated.
              * @other signature to duplicated
              */
-            Signature( const Signature& other );
+            QGitSignature( const QGitSignature& other );
 
             /**
              * Delete an existing signature
              */
-            ~Signature();
+            ~QGitSignature();
 
             git_signature* data() const;
             const git_signature* constData() const;

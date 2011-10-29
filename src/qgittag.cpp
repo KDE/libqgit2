@@ -17,88 +17,88 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "tag.h"
+#include "qgittag.h"
 
 using namespace LibQGit2;
 
-Tag::Tag(Repository* repository, QObject* parent)
+QGitTag::QGitTag(QGitRepository* repository, QObject* parent)
 {
     git_tag_new(&m_tag, repository->data());
 }
 
-Tag::Tag( const Tag& other )
+QGitTag::QGitTag( const QGitTag& other )
 {
     m_tag = other.m_tag;
 }
 
-Tag::~Tag()
+QGitTag::~QGitTag()
 {
 }
 
-int Tag::lookup(Repository *repository, const OId& oid)
+int QGitTag::lookup(QGitRepository *repository, const QGitOId& oid)
 {
     return git_tag_lookup(&m_tag, repository->data(), oid.constData());
 }
 
-const OId* Tag::id() const
+const QGitOId* QGitTag::id() const
 {
-    const OId *oid = new OId(git_tag_id(m_tag));
+    const QGitOId *oid = new QGitOId(git_tag_id(m_tag));
     return oid;
 }
 
-const Object* Tag::target() const
+const QGitObject* QGitTag::target() const
 {
-    const Object *object = new Object(git_tag_target(m_tag));
+    const QGitObject *object = new QGitObject(git_tag_target(m_tag));
     return object;
 }
 
-git_otype Tag::type() const
+git_otype QGitTag::type() const
 {
     return git_tag_type(m_tag);
 }
 
-const QString Tag::name() const
+const QString QGitTag::name() const
 {
     return git_tag_name(m_tag);
 }
 
-const Signature* Tag::tagger() const
+const QGitSignature* QGitTag::tagger() const
 {
-    const Signature *signature = new Signature(git_tag_tagger(m_tag));
+    const QGitSignature *signature = new QGitSignature(git_tag_tagger(m_tag));
     return signature;
 }
 
-const QString Tag::message()
+const QString QGitTag::message()
 {
     return git_tag_message(m_tag);
 }
 
-void Tag::setTarget(const Object &target)
+void QGitTag::setTarget(const QGitObject &target)
 {
     return git_tag_set_target(m_tag, target.data());
 }
 
-void Tag::setName(const QString& name)
+void QGitTag::setName(const QString& name)
 {
     return git_tag_set_name(m_tag, name.toAscii().constData());
 }
 
-void Tag::setTagger(const Signature& taggerSig)
+void QGitTag::setTagger(const QGitSignature& taggerSig)
 {
     return git_tag_set_tagger(m_tag, taggerSig.data());
 }
 
-void Tag::setMessage(const QString& message)
+void QGitTag::setMessage(const QString& message)
 {
     return git_tag_set_message(m_tag, message.toAscii().constData());
 }
 
-git_tag* Tag::data() const
+git_tag* QGitTag::data() const
 {
     return m_tag;
 }
 
-const git_tag* Tag::constData() const
+const git_tag* QGitTag::constData() const
 {
     return const_cast<const git_tag *>(m_tag);
 }

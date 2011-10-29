@@ -17,61 +17,67 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "blob.h"
+#include "qgitoid.h"
 
 using namespace LibQGit2;
 
-Blob::Blob(Repository* repository, QObject* parent )
-{
-    git_blob_new(&m_blob, repository->data());
-}
-
-Blob::Blob( const Blob& other )
-{
-    m_blob = other.m_blob;
-}
-
-Blob::~Blob()
+QGitOId::QGitOId( const git_oid *oid, QObject* parent )
+    : m_oid(const_cast<git_oid *>(oid))
 {
 }
 
-int Blob::lookup(Repository* repository, const OId& oid)
+QGitOId::QGitOId( const QGitOId& other )
 {
-    return git_blob_lookup(&m_blob, repository->data(), oid.constData());
+    m_oid = other.m_oid;
 }
 
-const void* Blob::rawContent()
+QGitOId::~QGitOId()
 {
-    return git_blob_rawcontent(m_blob);
 }
 
-int Blob::rawSize()
+int QGitOId::makeString(const QByteArray& string)
 {
-    return git_blob_rawsize(m_blob);
+    return git_oid_mkstr(m_oid, string.constData());
 }
 
-int Blob::setRawContentFromFile(const QString& fileName)
+void QGitOId::makeRaw(const unsigned char *raw)
 {
-    return git_blob_set_rawcontent_fromfile(m_blob, fileName.toAscii().constData());
+    return git_oid_mkraw(m_oid, raw);
 }
 
-int Blob::setRawContent(const void* buffer, size_t len)
+void QGitOId::format(char* string)
 {
-    return git_blob_set_rawcontent(m_blob, buffer, len);
+    return git_oid_fmt(string, m_oid);
 }
 
-int Blob::writeFile(OId *writtenId, Repository *repository, const QString& path)
+void QGitOId::pathFormat(char* string)
 {
-    return git_blob_writefile(writtenId->data(), repository->data(), path.toAscii().constData());
+    return git_oid_pathfmt(string, m_oid);
 }
 
-git_blob* Blob::data() const
+char* QGitOId::allocFormat()
 {
-    return m_blob;
+    return git_oid_allocfmt(m_oid);
 }
 
-const git_blob* Blob::constData() const
+char* QGitOId::toString(char* out, size_t n)
 {
-    return const_cast<const git_blob *>(m_blob);
+    return git_oid_to_string(out, n, m_oid);
 }
+
+int QGitOId::compare(QGitOId *oid)
+{
+    return git_oid_cmp(m_oid, oid->constData());
+}
+
+git_oid* QGitOId::data() const
+{
+    return m_oid;
+}
+
+const git_oid* QGitOId::constData() const
+{
+    return const_cast<const git_oid *>(m_oid);
+}
+
 

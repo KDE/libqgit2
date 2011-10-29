@@ -22,8 +22,8 @@
 
 #include "libqgit2_export.h"
 
-#include "databasebackend.h"
-#include "oid.h"
+#include "qgitdatabasebackend.h"
+#include "qgitoid.h"
 
 #include <QtCore/QString>
 
@@ -31,7 +31,7 @@
 
 namespace LibQGit2
 {
-    class LIBQGIT2_DATABASE_EXPORT Database
+    class LIBQGIT2_DATABASE_EXPORT QGitDatabase
     {
         public:
             /**
@@ -41,11 +41,11 @@ namespace LibQGit2
              * backend must be manually added using `addBackend()`
              *
              */
-            Database( git_odb *odb = 0, QObject* parent = 0 );
+            QGitDatabase( git_odb *odb = 0, QObject* parent = 0 );
 
-            Database( const Database& other );
+            QGitDatabase( const QGitDatabase& other );
 
-            ~Database();
+            ~QGitDatabase();
 
         public:
             /**
@@ -78,7 +78,7 @@ namespace LibQGit2
              * @paramm backend pointer to a databaseBackend instance
              * @return 0 on sucess; error code otherwise
              */
-            int addBackend(DatabaseBackend *backend, int priority);
+            int addBackend(QGitDatabaseBackend *backend, int priority);
 
             /**
             * Add a custom backend to an existing Object DB; this
@@ -94,7 +94,7 @@ namespace LibQGit2
             * @paramm backend pointer to a databaseBackend instance
             * @return 0 on sucess; error code otherwise
             */
-            int addAlternate(DatabaseBackend *backend, int priority);
+            int addAlternate(QGitDatabaseBackend *backend, int priority);
 
             /**
              * Determine if the given object can be found in the object database.
@@ -105,7 +105,7 @@ namespace LibQGit2
              * - true, if the object was found
              * - false, otherwise
              */
-            int exists(Database *db, const OId *id);
+            int exists(QGitDatabase *db, const QGitOId *id);
 
             git_odb* data() const;
             const git_odb* constData() const;

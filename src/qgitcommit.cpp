@@ -17,126 +17,126 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "commit.h"
+#include "qgitcommit.h"
 
-#include "repository.h"
-#include "signature.h"
-#include "tree.h"
+#include "qgitrepository.h"
+#include "qgitsignature.h"
+#include "qgittree.h"
 
 using namespace LibQGit2;
 
-Commit::Commit( Repository *repository, QObject* parent)
+QGitCommit::QGitCommit( QGitRepository *repository, QObject* parent)
 {
     git_commit_new(&m_commit, repository->data());
 }
 
-Commit::Commit( const git_commit *commit, QObject* parent)
+QGitCommit::QGitCommit( const git_commit *commit, QObject* parent)
     : m_commit(const_cast<git_commit *>(m_commit))
 {
 }
 
-Commit::Commit( const Commit& other )
+QGitCommit::QGitCommit( const QGitCommit& other )
 {
     m_commit = other.m_commit;
 }
 
-Commit::~Commit()
+QGitCommit::~QGitCommit()
 {
 }
 
-int Commit::lookup(Repository *repository, const OId& oid)
+int QGitCommit::lookup(QGitRepository *repository, const QGitOId& oid)
 {
     return git_commit_lookup(&m_commit, repository->data(), oid.constData());
 }
 
-const OId* Commit::id() const
+const QGitOId* QGitCommit::id() const
 {
-    const OId *oid = new OId(git_commit_id(m_commit));
+    const QGitOId *oid = new QGitOId(git_commit_id(m_commit));
     return oid;
 }
 
-QString Commit::messageShort() const
+QString QGitCommit::messageShort() const
 {
     return QString::fromUtf8(git_commit_message_short(m_commit));
 }
 
-QString Commit::message() const
+QString QGitCommit::message() const
 {
     return QString::fromUtf8(git_commit_message(m_commit));
 }
 
-QDateTime Commit::dateTime() const
+QDateTime QGitCommit::dateTime() const
 {
     QDateTime dateTime;
     dateTime.setTime_t(git_commit_time(m_commit));
     return dateTime;
 }
 
-int Commit::timeOffset() const
+int QGitCommit::timeOffset() const
 {
     return git_commit_time_offset(m_commit);
 }
 
-const Signature* Commit::committer() const
+const QGitSignature* QGitCommit::committer() const
 {
-    const Signature *signature = new Signature(git_commit_committer(m_commit));
+    const QGitSignature *signature = new QGitSignature(git_commit_committer(m_commit));
     return signature;
 }
 
-const Signature* Commit::author() const
+const QGitSignature* QGitCommit::author() const
 {
-    const Signature *signature = new Signature(git_commit_author(m_commit));
+    const QGitSignature *signature = new QGitSignature(git_commit_author(m_commit));
     return signature;
 }
 
-const Tree* Commit::tree() const
+const QGitTree* QGitCommit::tree() const
 {
-    const Tree *tree = new Tree(git_commit_tree(m_commit));
+    const QGitTree *tree = new QGitTree(git_commit_tree(m_commit));
     return tree;
 }
 
-unsigned int Commit::parentCount() const
+unsigned int QGitCommit::parentCount() const
 {
     return git_commit_parentcount(m_commit);
 }
 
-Commit* Commit::parent(unsigned n) const
+QGitCommit* QGitCommit::parent(unsigned n) const
 {
-    Commit *commit = new Commit(git_commit_parent(m_commit, n));
+    QGitCommit *commit = new QGitCommit(git_commit_parent(m_commit, n));
     return commit;
 }
 
-int Commit::addParent(Commit* newParent)
+int QGitCommit::addParent(QGitCommit* newParent)
 {
     return git_commit_add_parent(m_commit, newParent->data());
 }
 
-void Commit::setMessage(const QString& message)
+void QGitCommit::setMessage(const QString& message)
 {
     return git_commit_set_message(m_commit, message.toAscii().constData());
 }
 
-void Commit::setCommitter(const Signature& committerSig)
+void QGitCommit::setCommitter(const QGitSignature& committerSig)
 {
     return git_commit_set_committer(m_commit, committerSig.constData());
 }
 
-void Commit::setAuthor(const Signature& authorSig)
+void QGitCommit::setAuthor(const QGitSignature& authorSig)
 {
     return git_commit_set_author(m_commit, authorSig.constData());
 }
 
-void Commit::setTree(const Tree& tree)
+void QGitCommit::setTree(const QGitTree& tree)
 {
     return git_commit_set_tree(m_commit, tree.data());
 }
 
-git_commit* Commit::data() const
+git_commit* QGitCommit::data() const
 {
     return m_commit;
 }
 
-const git_commit* Commit::constData() const
+const git_commit* QGitCommit::constData() const
 {
     return const_cast<const git_commit *>(m_commit);
 }

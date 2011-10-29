@@ -28,11 +28,11 @@
 
 namespace LibQGit2
 {
-    class OId;
-    class Signature;
-    class Tree;
-    class Repository;
-    class LIBQGIT2_COMMIT_EXPORT Commit
+    class QGitOId;
+    class QGitSignature;
+    class QGitTree;
+    class QGitRepository;
+    class LIBQGIT2_COMMIT_EXPORT QGitCommit
     {
         public:
             /**
@@ -45,12 +45,12 @@ namespace LibQGit2
              * @param repository The repository where the object will reside
              * @return 0 on success; error code otherwise
              */
-            Commit( Repository *repository, QObject* parent = 0 );
-            Commit( const git_commit *commit = 0, QObject* parent = 0 );
+            QGitCommit( QGitRepository *repository, QObject* parent = 0 );
+            QGitCommit( const git_commit *commit = 0, QObject* parent = 0 );
 
-            Commit( const Commit& other );
+            QGitCommit( const QGitCommit& other );
 
-            ~Commit();
+            ~QGitCommit();
 
         public:
 
@@ -64,13 +64,13 @@ namespace LibQGit2
              * an annotated tag it will be peeled back to the commit.
              * @return 0 on success; error code otherwise
              */
-            int lookup(Repository *repository, const OId& oid);
+            int lookup(QGitRepository *repository, const QGitOId& oid);
 
             /**
             * Get the id of a commit.
             * @return object identity for the commit.
             */
-            const OId* id() const;
+            const QGitOId* id() const;
 
             /**
              * Get the short (one line) message of a commit.
@@ -101,20 +101,20 @@ namespace LibQGit2
             * Get the committer of a commit.
             * @return the committer of a commit
             */
-            const Signature* committer() const;
+            const QGitSignature* committer() const;
 
 
             /**
             * Get the committer of a commit.
             * @return the committer of a commit
             */
-            const Signature* author() const;
+            const QGitSignature* author() const;
 
             /**
              * Get the tree pointed to by a commit.
              * @return the tree of a commit
              */
-            const Tree* tree() const;
+            const QGitTree* tree() const;
 
             /**
              * Get the number of parents of this commit
@@ -128,14 +128,14 @@ namespace LibQGit2
              * @param n the position of the entry
              * @return a pointer to the commit; NULL if out of bounds
              */
-            Commit* parent(unsigned n) const;
+            QGitCommit* parent(unsigned n) const;
 
             /**
              * Add a new parent commit to an existing commit
              * @param new_parent the new commit which will be a parent
              * @return 0 on success; error code otherwise
              */
-            int addParent(Commit* newParent);
+            int addParent(QGitCommit* newParent);
 
 
             /**
@@ -148,19 +148,19 @@ namespace LibQGit2
              * Set the committer of a commit
              * @param author_sig signature of the committer
              */
-            void setCommitter(const Signature& committerSig);
+            void setCommitter(const QGitSignature& committerSig);
 
             /**
              * Set the author of a commit
              * @param author_sig signature of the author
              */
-            void setAuthor(const Signature& authorSig);
+            void setAuthor(const QGitSignature& authorSig);
 
             /**
              * Set the tree which is pointed to by a commit
              * @param tree the new tree
              */
-            void setTree(const Tree& tree);
+            void setTree(const QGitTree& tree);
 
             git_commit* data() const;
             const git_commit* constData() const;

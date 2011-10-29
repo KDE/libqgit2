@@ -11,36 +11,37 @@ INCLUDEPATH += . ./src ./libgit2/include
 CONFIG += core staticlib
 
 # Input
-HEADERS += blob.h \
-           commit.h \
-           database.h \
-           databasebackend.h \
-           index.h \
-           object.h \
-           oid.h \
-           rawobject.h \
-           refs.h \
-           repository.h \
-           revwalk.h \
-           signature.h \
-           tag.h \
-           tree.h \
-           treeentry.h \
+HEADERS += qgitblob.h \
+           qgitcommit.h \
+           qgitdatabase.h \
+           qgitdatabasebackend.h \
+           qgitindex.h \
+           qgitobject.h \
+           qgitoid.h \
+           qgitrawobject.h \
+           qgitrefs.h \
+           qgitrepository.h \
+           qgitrevwalk.h \
+           qgitsignature.h \
+           qgittag.h \
+           qgittree.h \
+           qgittreeentry.h \
            qgit2.h \
            libqgit2_export.h
 
-SOURCES += blob.cpp \
-           commit.cpp \
-           database.cpp \
-           databasebackend.cpp \
-           index.cpp \
-           object.cpp \
-           oid.cpp \
-           rawobject.cpp \
-           refs.cpp \
-           repository.cpp \
-           revwalk.cpp \
-           signature.cpp \
-           tag.cpp \
-           tree.cpp \
-           treeentry.cpp
+SOURCES += qgitblob.cpp \
+           qgitcommit.cpp \
+           qgitdatabase.cpp \
+           qgitdatabasebackend.cpp \
+           qgitindex.cpp \
+           qgitobject.cpp \
+           qgitoid.cpp \
+           qgitrawobject.cpp \
+           qgitrefs.cpp \
+           qgitrepository.cpp \
+           qgitrevwalk.cpp \
+           qgitsignature.cpp \
+           qgittag.cpp \
+           qgittree.cpp \
+           qgittreeentry.cpp
+

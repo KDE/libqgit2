@@ -17,55 +17,38 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "database.h"
+#include "qgitsignature.h"
 
 using namespace LibQGit2;
 
-Database::Database( git_odb *odb, QObject* parent )
-    : m_database(odb)
+QGitSignature::QGitSignature(const QString& name, const QString& email, QDateTime dateTime, int offset, QObject* parent)
+{
+    m_signature = git_signature_new(name.toAscii().data(), email.toAscii().data(), dateTime.toTime_t(), offset);
+}
+
+QGitSignature::QGitSignature(const git_signature *signature, QObject *parent)
+    : m_signature(const_cast<git_signature *>(signature))
 {
 }
 
-Database::Database( const Database& other )
+QGitSignature::QGitSignature( const QGitSignature& other )
 {
-    m_database = other.m_database;
+    m_signature = other.m_signature;
 }
 
-Database::~Database()
+QGitSignature::~QGitSignature()
 {
+    git_signature_free(m_signature);
 }
 
-int Database::open(const QString& objectsDir)
+git_signature* QGitSignature::data() const
 {
-    return git_odb_open(&m_database, objectsDir.toAscii().constData());
+    return m_signature;
 }
 
-void Database::close()
+const git_signature* QGitSignature::constData() const
 {
-    return git_odb_close(m_database);
+    return const_cast<const git_signature *>(m_signature);
 }
 
-int Database::addBackend(DatabaseBackend *backend, int priority)
-{
-    return git_odb_add_backend(m_database, (git_odb_backend *)backend, priority);
-}
 
-int Database::addAlternate(DatabaseBackend *backend, int priority)
-{
-    return git_odb_add_alternate(m_database, (git_odb_backend *)backend, priority);
-}
-
-int Database::exists(Database *db, const OId *id)
-{
-    return git_odb_exists(db->data(), id->constData());
-}
-
-git_odb* Database::data() const
-{
-    return m_database;
-}
-
-const git_odb* Database::constData() const
-{
-    return const_cast<const git_odb *>(m_database);
-}

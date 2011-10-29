@@ -26,11 +26,10 @@
 
 namespace LibQGit2
 {
-    class Database;
-    class OId;
-    class LIBQGIT2_RAWOBJECT_EXPORT RawObject
+    class QGitDatabase;
+    class QGitOId;
+    class LIBQGIT2_RAWOBJECT_EXPORT QGitRawObject
     {
-            Q_OBJECT
         public:
             /**
              * Create a new object database with no backends.
@@ -39,11 +38,11 @@ namespace LibQGit2
              * backend must be manually added using `addBackend()`
              *
              */
-            RawObject( QObject* parent = 0 );
+            QGitRawObject( QObject* parent = 0 );
 
-            RawObject( const RawObject& other );
+            QGitRawObject( const QGitRawObject& other );
 
-            ~RawObject();
+            ~QGitRawObject();
 
         public:
             /**
@@ -57,7 +56,7 @@ namespace LibQGit2
              * - GIT_SUCCESS if the object was read;
              * - GIT_ENOTFOUND if the object is not in the database.
              */
-            int read(Database *db, const OId *id);
+            int read(QGitDatabase *db, const QGitOId *id);
 
             /**
              * Read the header of an object from the database, without
@@ -75,7 +74,7 @@ namespace LibQGit2
              * - GIT_SUCCESS if the object was read;
              * - GIT_ENOTFOUND if the object is not in the database.
              */
-            int readHeader(Database *db, const OId *id);
+            int readHeader(QGitDatabase *db, const QGitOId *id);
 
             /**
              * Write an object to the database.
@@ -87,7 +86,7 @@ namespace LibQGit2
              * - GIT_SUCCESS if the object was written;
              * - GIT_ERROR otherwise.
              */
-            int write(OId *id, Database *db);
+            int write(QGitOId *id, QGitDatabase *db);
 
             /**
              * Determine the object-ID (sha1 hash) of the given git_rawobj.
@@ -100,7 +99,7 @@ namespace LibQGit2
              * - GIT_SUCCESS if the object-ID was correctly determined.
              * - GIT_ERROR if the given object is malformed.
              */
-            int hash(OId *id);
+            int hash(QGitOId *id);
 
             /**
              * Release all memory used by the obj structure.

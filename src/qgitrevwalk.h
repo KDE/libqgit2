@@ -26,9 +26,9 @@
 
 namespace LibQGit2
 {
-    class Repository;
-    class Commit;
-    class LIBQGIT2_REVWALK_EXPORT RevWalk
+    class QGitRepository;
+    class QGitCommit;
+    class LIBQGIT2_REVWALK_EXPORT QGitRevWalk
     {
         public:
             /**
@@ -38,14 +38,14 @@ namespace LibQGit2
              * @param repo the repo to walk through
              * @return 0 on success; error code otherwise
              */
-            RevWalk(Repository* repository, QObject* parent = 0 );
+            QGitRevWalk(QGitRepository* repository, QObject* parent = 0 );
 
-            RevWalk( const RevWalk& other );
+            QGitRevWalk( const QGitRevWalk& other );
 
             /**
              * Delete a revwalk previously allocated.
              */
-            ~RevWalk();
+            ~QGitRevWalk();
 
         public:
 
@@ -61,13 +61,13 @@ namespace LibQGit2
              *
              * @param commit the commit to start from.
              */
-            int push(Commit *commit) const;
+            int push(QGitCommit *commit) const;
 
             /**
              * Mark a commit (and its ancestors) uninteresting for the output.
              * @param commit the commit that will be ignored during the traversal
              */
-            int hide(Commit *commit) const;
+            int hide(QGitCommit *commit) const;
 
             /**
              * Get the next commit from the revision traversal.
@@ -76,7 +76,7 @@ namespace LibQGit2
              * @return GIT_SUCCESS if the next commit was found;
              * GIT_EREVWALKOVER if there are no commits left to iterate
              */
-            int next(Commit *commit);
+            int next(QGitCommit *commit);
 
             /**
              * Change the sorting mode when iterating through the
@@ -92,7 +92,7 @@ namespace LibQGit2
              *
              * @return the repository being walked
              */
-            Repository* repository();
+            QGitRepository* repository();
 
             git_revwalk* data() const;
             const git_revwalk* constData() const;
