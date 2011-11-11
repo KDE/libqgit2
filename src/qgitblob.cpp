@@ -23,7 +23,7 @@ using namespace LibQGit2;
 
 QGitBlob::QGitBlob(QGitRepository* repository, QObject* parent )
 {
-    //git_blob_new(&m_blob, repository->data());
+    git_blob_new(&m_blob, repository->data());
 }
 
 QGitBlob::QGitBlob( const QGitBlob& other )
