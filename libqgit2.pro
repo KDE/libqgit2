@@ -32,7 +32,6 @@ HEADERS += \
     qgit2.h \
     \
     git2.h \
-    git2/zlib.h \
     git2/types.h \
     git2/tree.h \
     git2/thread-utils.h \
@@ -117,8 +116,7 @@ SOURCES += \
     blob.c \
     backends/sqlite.c \
     unix/map.c \
-    block-sha1/sha1.c \
-    git2/zlib.h
+    block-sha1/sha1.c
 
 
 
