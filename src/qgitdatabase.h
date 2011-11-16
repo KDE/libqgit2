@@ -41,7 +41,7 @@ namespace LibQGit2
              * backend must be manually added using `addBackend()`
              *
              */
-            QGitDatabase( git_odb *odb = 0, QObject* parent = 0 );
+            explicit QGitDatabase( git_odb *odb = 0);
 
             QGitDatabase( const QGitDatabase& other );
 

@@ -23,7 +23,7 @@
 
 using namespace LibQGit2;
 
-QGitRawObject::QGitRawObject(QObject* parent)
+QGitRawObject::QGitRawObject()
 {
 }
 
@@ -38,22 +38,28 @@ QGitRawObject::~QGitRawObject()
 
 int QGitRawObject::read(QGitDatabase *db, const QGitOId *id)
 {
-    return git_odb_read(m_rawObject, db->data(), id->constData());
+    return git_odb_read(m_rawObject, db->data(), id->data());
 }
 
 int QGitRawObject::readHeader(QGitDatabase *db, const QGitOId *id)
 {
-    return git_odb_read_header(m_rawObject, db->data(), id->constData());
+    return git_odb_read_header(m_rawObject, db->data(), id->data());
 }
 
-int QGitRawObject::write(QGitOId *id, QGitDatabase *db)
+int QGitRawObject::write(QGitOId &id, QGitDatabase *db)
 {
-    return git_odb_write(id->data(), db->data(), m_rawObject);
+    git_oid oid;
+    int ret = git_odb_write(&oid, db->data(), m_rawObject);
+    id.reset(&oid);
+    return ret;
 }
 
-int QGitRawObject::hash(QGitOId *id)
+int QGitRawObject::hash(QGitOId &id)
 {
-    return git_rawobj_hash(id->data(), m_rawObject);
+    git_oid oid;
+    int ret = git_rawobj_hash(&oid, m_rawObject);
+    id.reset(&oid);
+    return ret;
 }
 
 void QGitRawObject::close()

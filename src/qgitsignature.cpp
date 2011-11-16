@@ -21,12 +21,12 @@
 
 using namespace LibQGit2;
 
-QGitSignature::QGitSignature(const QString& name, const QString& email, QDateTime dateTime, int offset, QObject* parent)
+QGitSignature::QGitSignature(const QString& name, const QString& email, QDateTime dateTime, int offset)
 {
     m_signature = git_signature_new(name.toAscii().data(), email.toAscii().data(), dateTime.toTime_t(), offset);
 }
 
-QGitSignature::QGitSignature(const git_signature *signature, QObject *parent)
+QGitSignature::QGitSignature(const git_signature *signature)
     : m_signature(const_cast<git_signature *>(signature))
 {
 }

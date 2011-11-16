@@ -23,12 +23,12 @@
 
 using namespace LibQGit2;
 
-QGitIndex::QGitIndex( const QString& indexPath, QObject* parent )
+QGitIndex::QGitIndex(const QString& indexPath)
 {
     git_index_open_bare(&m_index, indexPath.toAscii().data());
 }
 
-QGitIndex::QGitIndex(QGitRepository* repository, QObject* parent )
+QGitIndex::QGitIndex(QGitRepository* repository)
 {
     git_index_open_inrepo(&m_index, repository->data());
 }

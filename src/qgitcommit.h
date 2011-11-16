@@ -45,8 +45,8 @@ namespace LibQGit2
              * @param repository The repository where the object will reside
              * @return 0 on success; error code otherwise
              */
-            QGitCommit( QGitRepository *repository, QObject* parent = 0 );
-            QGitCommit( const git_commit *commit = 0, QObject* parent = 0 );
+            explicit QGitCommit(QGitRepository *repository);
+            explicit QGitCommit(const git_commit *commit = 0);
 
             QGitCommit( const QGitCommit& other );
 
@@ -70,7 +70,7 @@ namespace LibQGit2
             * Get the id of a commit.
             * @return object identity for the commit.
             */
-            const QGitOId* id() const;
+            QGitOId id() const;
 
             /**
              * Get the short (one line) message of a commit.

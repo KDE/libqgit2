@@ -21,7 +21,7 @@
 
 using namespace LibQGit2;
 
-QGitDatabase::QGitDatabase( git_odb *odb, QObject* parent )
+QGitDatabase::QGitDatabase(git_odb *odb)
     : m_database(odb)
 {
 }
@@ -57,7 +57,7 @@ int QGitDatabase::addAlternate(QGitDatabaseBackend *backend, int priority)
 
 int QGitDatabase::exists(QGitDatabase *db, const QGitOId *id)
 {
-    return git_odb_exists(db->data(), id->constData());
+    return git_odb_exists(db->data(), id->data());
 }
 
 git_odb* QGitDatabase::data() const

@@ -21,9 +21,9 @@
 
 using namespace LibQGit2;
 
-QGitOId::QGitOId( const git_oid *oid, QObject* parent )
-    : m_oid(const_cast<git_oid *>(oid))
+QGitOId::QGitOId(const git_oid *oid)
 {
+    reset(oid);
 }
 
 QGitOId::QGitOId( const QGitOId& other )
@@ -35,49 +35,60 @@ QGitOId::~QGitOId()
 {
 }
 
-int QGitOId::makeString(const QByteArray& string)
+void QGitOId::reset(const git_oid *oid)
 {
-    return git_oid_mkstr(m_oid, string.constData());
+    if (oid != 0) {
+        QSharedPointer<git_oid> dup(new git_oid);
+        git_oid_cpy(dup.data(), oid);
+        m_oid = dup;
+    } else {
+        m_oid.clear();
+    }
 }
 
-void QGitOId::makeRaw(const unsigned char *raw)
+QGitOId QGitOId::fromString(const QByteArray& string)
 {
-    return git_oid_mkraw(m_oid, raw);
+    git_oid *oid = new git_oid;
+    git_oid_mkstr(oid, string.constData());
+    return QGitOId(oid);
 }
 
-void QGitOId::format(char* string)
+//void QGitOId::makeRaw(const unsigned char *raw)
+//{
+//    return git_oid_mkraw(m_oid, raw);
+//}
+
+QByteArray QGitOId::format() const
 {
-    return git_oid_fmt(string, m_oid);
+    if (isNull())
+        return QByteArray();
+
+    QByteArray ba(40, Qt::Uninitialized);
+    git_oid_fmt(ba.data(), m_oid.data());
+    return ba;
 }
 
 void QGitOId::pathFormat(char* string)
 {
-    return git_oid_pathfmt(string, m_oid);
-}
-
-char* QGitOId::allocFormat()
-{
-    return git_oid_allocfmt(m_oid);
-}
-
-char* QGitOId::toString(char* out, size_t n)
-{
-    return git_oid_to_string(out, n, m_oid);
+    return git_oid_pathfmt(string, data());
 }
 
 int QGitOId::compare(QGitOId *oid)
 {
-    return git_oid_cmp(m_oid, oid->constData());
+    return git_oid_cmp(data(), oid->data());
 }
 
-git_oid* QGitOId::data() const
+const git_oid* QGitOId::data() const
 {
-    return m_oid;
+    return m_oid.data();
 }
 
-const git_oid* QGitOId::constData() const
+//const git_oid* QGitOId::constData() const
+//{
+//    return m_oid.data();
+//}
+
+bool QGitOId::isNull() const
 {
-    return const_cast<const git_oid *>(m_oid);
+    return m_oid.isNull();
 }
-
-

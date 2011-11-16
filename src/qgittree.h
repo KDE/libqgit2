@@ -44,8 +44,8 @@ namespace LibQGit2
              * @param repo The repository where the object will reside
              * @return 0 on success; error code otherwise
              */
-            QGitTree(QGitRepository *repository, QObject* parent = 0 );
-            QGitTree(const git_tree *tree = 0, QObject* parent = 0 );
+            explicit QGitTree(QGitRepository *repository);
+            explicit QGitTree(const git_tree *tree = 0);
 
             QGitTree( const QGitTree& other );
             ~QGitTree();
@@ -66,7 +66,7 @@ namespace LibQGit2
              * * Get the id of a tree.
              * * @return object identity for the tree.
              * */
-            const QGitOId* id();
+            QGitOId id();
 
             /**
              * Get the number of entries listed in a tree

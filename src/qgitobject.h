@@ -34,7 +34,7 @@ namespace LibQGit2
     class LIBQGIT2_OBJECT_EXPORT QGitObject
     {
         public:
-            QGitObject( const git_object *object = 0, QObject* parent = 0 );
+            explicit QGitObject(const git_object *object = 0);
             QGitObject( const QGitObject& other );
             ~QGitObject();
 
@@ -65,7 +65,7 @@ namespace LibQGit2
              *
              * @return the SHA1 id
              */
-            const QGitOId* id() const;
+            QGitOId id() const;
 
             /**
              * * Get the object type of an object

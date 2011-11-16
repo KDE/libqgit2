@@ -21,7 +21,7 @@
 
 using namespace LibQGit2;
 
-QGitDatabaseBackend::QGitDatabaseBackend( QObject* parent )
+QGitDatabaseBackend::QGitDatabaseBackend()
 {
 }
 

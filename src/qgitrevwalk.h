@@ -38,7 +38,7 @@ namespace LibQGit2
              * @param repo the repo to walk through
              * @return 0 on success; error code otherwise
              */
-            QGitRevWalk(QGitRepository* repository, QObject* parent = 0 );
+            explicit QGitRevWalk(QGitRepository* repository);
 
             QGitRevWalk( const QGitRevWalk& other );
 

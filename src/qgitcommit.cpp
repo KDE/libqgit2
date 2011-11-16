@@ -25,12 +25,12 @@
 
 using namespace LibQGit2;
 
-QGitCommit::QGitCommit( QGitRepository *repository, QObject* parent)
+QGitCommit::QGitCommit(QGitRepository *repository)
 {
     git_commit_new(&m_commit, repository->data());
 }
 
-QGitCommit::QGitCommit( const git_commit *commit, QObject* parent)
+QGitCommit::QGitCommit(const git_commit *commit)
     : m_commit(const_cast<git_commit *>(m_commit))
 {
 }
@@ -46,13 +46,12 @@ QGitCommit::~QGitCommit()
 
 int QGitCommit::lookup(QGitRepository *repository, const QGitOId& oid)
 {
-    return git_commit_lookup(&m_commit, repository->data(), oid.constData());
+    return git_commit_lookup(&m_commit, repository->data(), oid.data());
 }
 
-const QGitOId* QGitCommit::id() const
+QGitOId QGitCommit::id() const
 {
-    const QGitOId *oid = new QGitOId(git_commit_id(m_commit));
-    return oid;
+    return QGitOId(git_commit_id(m_commit));
 }
 
 QString QGitCommit::messageShort() const

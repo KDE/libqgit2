@@ -24,7 +24,7 @@
 
 using namespace LibQGit2;
 
-QGitRefs::QGitRefs(QGitRepository* repository, QObject* parent)
+QGitRefs::QGitRefs(QGitRepository* repository)
 {
 }
 
@@ -37,10 +37,9 @@ QGitRefs::~QGitRefs()
 {
 }
 
-const QGitOId* QGitRefs::oid() const
+QGitOId QGitRefs::oid() const
 {
-    const QGitOId* oid = new QGitOId(git_reference_oid(m_reference));
-    return oid;
+    return QGitOId(git_reference_oid(m_reference));
 }
 
 QString QGitRefs::target() const
@@ -77,7 +76,7 @@ int QGitRefs::setTarget(const QString& target)
 
 void QGitRefs::setOId(const QGitOId& oid)
 {
-    git_reference_set_oid(m_reference, oid.constData());
+    git_reference_set_oid(m_reference, oid.data());
 }
 
 git_reference* QGitRefs::data() const

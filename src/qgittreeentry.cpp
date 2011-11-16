@@ -23,8 +23,8 @@
 
 using namespace LibQGit2;
 
-QGitTreeEntry::QGitTreeEntry(const git_tree_entry *treeEntry, QObject* parent)
-    : m_treeEntry(const_cast<git_tree_entry *>(treeEntry))
+QGitTreeEntry::QGitTreeEntry(git_tree_entry *treeEntry)
+    : m_treeEntry(treeEntry)
 {
 }
 
@@ -46,10 +46,9 @@ const QString QGitTreeEntry::name() const
     return QString::fromUtf8(git_tree_entry_name(m_treeEntry));
 }
 
-const QGitOId* QGitTreeEntry::id() const
+QGitOId QGitTreeEntry::id() const
 {
-    const QGitOId *oid = new QGitOId(git_tree_entry_id(m_treeEntry));
-    return oid;
+    return QGitOId(git_tree_entry_id(m_treeEntry));
 }
 
 int QGitTreeEntry::toObject(QGitObject& object)
@@ -73,7 +72,7 @@ void QGitTreeEntry::setName(const QString& name)
 
 void QGitTreeEntry::setId(const QGitOId& oid)
 {
-    return git_tree_entry_set_id(m_treeEntry, oid.constData());
+    return git_tree_entry_set_id(m_treeEntry, oid.data());
 }
 
 git_tree_entry* QGitTreeEntry::data() const

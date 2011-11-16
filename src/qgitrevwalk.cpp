@@ -24,7 +24,7 @@
 
 using namespace LibQGit2;
 
-QGitRevWalk::QGitRevWalk(QGitRepository* repository, QObject* parent)
+QGitRevWalk::QGitRevWalk(QGitRepository* repository)
 {
     git_revwalk_new(&m_revWalk, repository->data());
 }

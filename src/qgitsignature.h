@@ -41,8 +41,8 @@ namespace LibQGit2
              * @time time when the action happened
              * @offset timezone offset in minutes for the time
              */
-            QGitSignature( const QString& name, const QString& email, QDateTime dateTime, int offset, QObject* parent = 0 );
-            QGitSignature( const git_signature *signature = 0, QObject* parent = 0 );
+            QGitSignature(const QString& name, const QString& email, QDateTime dateTime, int offset);
+            explicit QGitSignature(const git_signature *signature = 0);
 
             /**
              * Construct a copy of an existing signature.

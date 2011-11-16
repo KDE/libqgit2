@@ -38,7 +38,7 @@ namespace LibQGit2
              * backend must be manually added using `addBackend()`
              *
              */
-            QGitRawObject( QObject* parent = 0 );
+            QGitRawObject();
 
             QGitRawObject( const QGitRawObject& other );
 
@@ -86,7 +86,7 @@ namespace LibQGit2
              * - GIT_SUCCESS if the object was written;
              * - GIT_ERROR otherwise.
              */
-            int write(QGitOId *id, QGitDatabase *db);
+            int write(QGitOId &id, QGitDatabase *db);
 
             /**
              * Determine the object-ID (sha1 hash) of the given git_rawobj.
@@ -99,7 +99,7 @@ namespace LibQGit2
              * - GIT_SUCCESS if the object-ID was correctly determined.
              * - GIT_ERROR if the given object is malformed.
              */
-            int hash(QGitOId *id);
+            int hash(QGitOId &id);
 
             /**
              * Release all memory used by the obj structure.

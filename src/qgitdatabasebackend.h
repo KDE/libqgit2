@@ -31,7 +31,7 @@ namespace LibQGit2
     class LIBQGIT2_DATABASEBACKEND_EXPORT QGitDatabaseBackend
     {
         public:
-            QGitDatabaseBackend( QObject* parent = 0 );
+            QGitDatabaseBackend();
 
             QGitDatabaseBackend( const QGitDatabaseBackend& other );
 

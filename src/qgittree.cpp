@@ -25,12 +25,12 @@
 
 using namespace LibQGit2;
 
-QGitTree::QGitTree(QGitRepository *repository, QObject* parent)
+QGitTree::QGitTree(QGitRepository *repository)
 {
     git_tree_new(&m_tree, repository->data());
 }
 
-QGitTree::QGitTree(const git_tree *tree, QObject* parent)
+QGitTree::QGitTree(const git_tree *tree)
     : m_tree(const_cast<git_tree *>(tree))
 {
 }
@@ -40,15 +40,18 @@ QGitTree::QGitTree( const QGitTree& other )
     m_tree = other.m_tree;
 }
 
+QGitTree::~QGitTree()
+{
+}
+
 int QGitTree::lookup(QGitRepository& repository, const QGitOId& id)
 {
     return git_tree_lookup(&m_tree, (git_repository *)repository.data(), (git_oid *)id.data());
 }
 
-const QGitOId* QGitTree::id()
+QGitOId QGitTree::id()
 {
-    const QGitOId *oid = new QGitOId(git_tree_id(m_tree));
-    return oid;
+    return QGitOId(git_tree_id(m_tree));
 }
 
 size_t QGitTree::entryCount()
@@ -85,7 +88,7 @@ void QGitTree::clearEntries()
 
 void QGitTree::setEntryId(QGitTreeEntry* treeEntry, const QGitOId& oid)
 {
-    return git_tree_entry_set_id(treeEntry->data(), oid.constData());
+    return git_tree_entry_set_id(treeEntry->data(), oid.data());
 }
 
 void QGitTree::setEntryName(QGitTreeEntry* treeEntry, const QString& fileName)

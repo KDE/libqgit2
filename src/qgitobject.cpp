@@ -24,7 +24,7 @@
 
 using namespace LibQGit2;
 
-QGitObject::QGitObject( const git_object *object, QObject* parent )
+QGitObject::QGitObject(const git_object *object)
     : m_object(const_cast<git_object *>(object))
 {
 }
@@ -43,10 +43,9 @@ int QGitObject::write()
     return git_object_write(m_object);
 }
 
-const QGitOId* QGitObject::id() const
+QGitOId QGitObject::id() const
 {
-    const QGitOId *oid = new QGitOId(git_object_id(m_object));
-    return oid;
+    return QGitOId(git_object_id(m_object));
 }
 
 git_otype QGitObject::type() const

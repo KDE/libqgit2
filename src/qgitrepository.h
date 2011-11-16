@@ -48,8 +48,8 @@ namespace LibQGit2
              *
              * @return 0 on success; error code otherwise
              */
-            QGitRepository(const QString& path, unsigned isBare, QObject* parent = 0 );
-            QGitRepository(const git_repository *repository = 0, QObject* parent = 0 );
+            explicit QGitRepository(const QString& path, unsigned isBare);
+            explicit QGitRepository(const git_repository *repository = 0);
 
             QGitRepository( const QGitRepository& other );
 

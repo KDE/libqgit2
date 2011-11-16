@@ -21,7 +21,7 @@
 
 using namespace LibQGit2;
 
-QGitTag::QGitTag(QGitRepository* repository, QObject* parent)
+QGitTag::QGitTag(QGitRepository* repository)
 {
     git_tag_new(&m_tag, repository->data());
 }
@@ -37,13 +37,12 @@ QGitTag::~QGitTag()
 
 int QGitTag::lookup(QGitRepository *repository, const QGitOId& oid)
 {
-    return git_tag_lookup(&m_tag, repository->data(), oid.constData());
+    return git_tag_lookup(&m_tag, repository->data(), oid.data());
 }
 
-const QGitOId* QGitTag::id() const
+QGitOId QGitTag::id() const
 {
-    const QGitOId *oid = new QGitOId(git_tag_id(m_tag));
-    return oid;
+    return QGitOId(git_tag_id(m_tag));
 }
 
 const QGitObject* QGitTag::target() const

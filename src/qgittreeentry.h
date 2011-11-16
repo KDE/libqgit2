@@ -31,7 +31,7 @@ namespace LibQGit2
     class LIBQGIT2_TREEENTRY_EXPORT QGitTreeEntry
     {
         public:
-            QGitTreeEntry(const git_tree_entry *treeEntry = 0, QObject* parent = 0 );
+            explicit QGitTreeEntry(git_tree_entry *treeEntry = 0);
             QGitTreeEntry( const QGitTreeEntry& other );
             ~QGitTreeEntry();
 
@@ -53,7 +53,7 @@ namespace LibQGit2
              * Get the id of the object pointed by the entry
              * @return the oid of the object
              */
-            const QGitOId* id() const;
+            QGitOId id() const;
 
             /**
              * Convert a tree entry to the Object it points too.

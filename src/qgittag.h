@@ -44,7 +44,7 @@ namespace LibQGit2
              * @param repository The repository where the object will reside
              * @return 0 on success; error code otherwise
              */
-            QGitTag( QGitRepository *repository, QObject* parent = 0 );
+            explicit QGitTag(QGitRepository *repository);
 
             QGitTag( const QGitTag& other );
             ~QGitTag();
@@ -66,7 +66,7 @@ namespace LibQGit2
              * Get the id of a tag.
              * @return object identity for the tag.
              */
-            const QGitOId* id() const;
+            QGitOId id() const;
 
             /**
              * Get the tagged object of a tag

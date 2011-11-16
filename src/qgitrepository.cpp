@@ -21,12 +21,12 @@
 
 using namespace LibQGit2;
 
-QGitRepository::QGitRepository(const QString& path, unsigned isBare, QObject* parent)
+QGitRepository::QGitRepository(const QString& path, unsigned isBare)
 {
     git_repository_init(&m_repository, path.toAscii().constData(), isBare);
 }
 
-QGitRepository::QGitRepository(const git_repository *repository, QObject* parent)
+QGitRepository::QGitRepository(const git_repository *repository)
     : m_repository(const_cast<git_repository *>(repository))
 {
 }

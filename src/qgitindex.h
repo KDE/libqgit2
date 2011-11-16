@@ -42,7 +42,7 @@ namespace LibQGit2
              * @param index_path the path to the index file in disk
              * @return 0 on success; error code otherwise
              */
-            QGitIndex( const QString& indexPath, QObject* parent = 0 );
+            explicit QGitIndex(const QString& indexPath);
 
             /**
              * Open the Index inside the git repository pointed
@@ -52,7 +52,7 @@ namespace LibQGit2
              * @param index_path the path to the index file in disk
              * @return 0 on success; error code otherwise
              */
-            QGitIndex(QGitRepository* repository, QObject* parent = 0 );
+            explicit QGitIndex(QGitRepository* repository);
 
             QGitIndex( const QGitIndex& other );
 
