@@ -73,33 +73,22 @@ namespace LibQGit2
 
             /**
              * Format a git_oid into a loose-object path string.
-             * <p>
+             *
              * The resulting string is "aa/...", where "aa" is the first two
              * hex digitis of the oid and "..." is the remaining 38 digits.
-             *
-             * @param str output hex string; must be pointing at the start of
-             * the hex sequence and have at least the number of bytes
-             * needed for an oid encoded in hex (41 bytes). Only the
-             * oid digits are written; a '\\0' terminator must be added
-             * by the caller if it is required.
              */
-            void pathFormat(char* string);
-
-            /**
-             * Compare two oid class.
-             * @param oid oid class compare with.
-             * @return <0, 0, >0 if a < b, a == b, a > b.
-             */
-            int compare(const QGitOId& oid); // XXX operator==
-
-            bool isNull() const;
+            QByteArray pathFormat() const;
 
             const git_oid* data() const;
-//            const git_oid* constData() const;
 
         private:
-            QSharedPointer<const git_oid> m_oid;
+            git_oid m_oid;
     };
+
+    /**
+     * Compare two oid objects
+     */
+    bool operator==(const QGitOId& oid1, const QGitOId& oid2);
 }
 
 #endif // LIBQGIT2_OID_H

@@ -26,9 +26,9 @@ QGitOId::QGitOId(const git_oid *oid)
     reset(oid);
 }
 
-QGitOId::QGitOId( const QGitOId& other )
+QGitOId::QGitOId(const QGitOId& other)
 {
-    m_oid = other.m_oid;
+    reset(other.data());
 }
 
 QGitOId::~QGitOId()
@@ -37,20 +37,14 @@ QGitOId::~QGitOId()
 
 void QGitOId::reset(const git_oid *oid)
 {
-    if (oid != 0) {
-        QSharedPointer<git_oid> dup(new git_oid);
-        git_oid_cpy(dup.data(), oid);
-        m_oid = dup;
-    } else {
-        m_oid.clear();
-    }
+    git_oid_cpy(&m_oid, oid);
 }
 
 QGitOId QGitOId::fromString(const QByteArray& string)
 {
-    git_oid *oid = new git_oid;
-    git_oid_mkstr(oid, string.constData());
-    return QGitOId(oid);
+    git_oid oid;
+    git_oid_mkstr(&oid, string.constData());
+    return QGitOId(&oid);
 }
 
 //void QGitOId::makeRaw(const unsigned char *raw)
@@ -60,35 +54,24 @@ QGitOId QGitOId::fromString(const QByteArray& string)
 
 QByteArray QGitOId::format() const
 {
-    if (isNull())
-        return QByteArray();
-
-    QByteArray ba(40, Qt::Uninitialized);
-    git_oid_fmt(ba.data(), m_oid.data());
+    QByteArray ba(GIT_OID_HEXSZ, Qt::Uninitialized);
+    git_oid_fmt(ba.data(), data());
     return ba;
 }
 
-void QGitOId::pathFormat(char* string)
+QByteArray QGitOId::pathFormat() const
 {
-    return git_oid_pathfmt(string, data());
-}
-
-int QGitOId::compare(const QGitOId& oid)
-{
-    return git_oid_cmp(data(), oid.data());
+    QByteArray ba(GIT_OID_HEXSZ+1, Qt::Uninitialized);
+    git_oid_pathfmt(ba.data(), data());
+    return ba;
 }
 
 const git_oid* QGitOId::data() const
 {
-    return m_oid.data();
+    return &m_oid;
 }
 
-//const git_oid* QGitOId::constData() const
-//{
-//    return m_oid.data();
-//}
-
-bool QGitOId::isNull() const
+bool operator==(const QGitOId& oid1, const QGitOId& oid2)
 {
-    return m_oid.isNull();
+    return git_oid_cmp(oid1.data(), oid2.data()) == 0;
 }
