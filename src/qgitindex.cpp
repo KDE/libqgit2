@@ -18,6 +18,7 @@
  */
 
 #include "qgitindex.h"
+#include "qgitindexentry.h"
 
 #include "qgitrepository.h"
 
@@ -75,14 +76,14 @@ int QGitIndex::remove(int position)
     return git_index_remove(m_index, position);
 }
 
-int QGitIndex::insert(const git_index_entry *source_entry)
+int QGitIndex::insert(const QGitIndexEntry &source_entry)
 {
-    return git_index_insert(m_index, source_entry);
+    return git_index_insert(m_index, source_entry.data());
 }
 
-git_index_entry* QGitIndex::get(int n) const
+QGitIndexEntry QGitIndex::get(int n) const
 {
-    return git_index_get(m_index, n);
+    return QGitIndexEntry(git_index_get(m_index, n));
 }
 
 unsigned int QGitIndex::entryCount() const

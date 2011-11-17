@@ -27,6 +27,8 @@
 namespace LibQGit2
 {
     class QGitRepository;
+    class QGitIndexEntry;
+
     class LIBQGIT2_INDEX_EXPORT QGitIndex
     {
         public:
@@ -122,7 +124,7 @@ namespace LibQGit2
              * @param source_entry new entry object
              * @return 0 on success, otherwise an error code
              */
-            int insert(const git_index_entry *source_entry);
+            int insert(const QGitIndexEntry& source_entry);
 
             /**
              * Get a pointer to one of the entries in the index
@@ -133,7 +135,7 @@ namespace LibQGit2
              * @param n the position of the entry
              * @return a pointer to the entry; NULL if out of bounds
              */
-            git_index_entry* get(int n) const;
+            QGitIndexEntry get(int n) const;
 
             /**
              * Get the count of entries currently in the index
