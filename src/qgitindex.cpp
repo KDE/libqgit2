@@ -21,11 +21,13 @@
 
 #include "qgitrepository.h"
 
+#include <QtCore/QFile>
+
 using namespace LibQGit2;
 
 QGitIndex::QGitIndex(const QString& indexPath)
 {
-    git_index_open_bare(&m_index, indexPath.toAscii().data());
+    git_index_open_bare(&m_index, QFile::encodeName(indexPath));
 }
 
 QGitIndex::QGitIndex(QGitRepository* repository)
@@ -60,12 +62,12 @@ int QGitIndex::write()
 
 int QGitIndex::find(const QString& path)
 {
-    return git_index_find(m_index, path.toAscii().constData());
+    return git_index_find(m_index, QFile::encodeName(path));
 }
 
 int QGitIndex::add(const QString& path, int stage)
 {
-    return git_index_add(m_index, path.toAscii().constData(), stage);
+    return git_index_add(m_index, QFile::encodeName(path), stage);
 }
 
 int QGitIndex::remove(int position)

@@ -66,7 +66,7 @@ QString QGitObject::typeToString(git_otype type)
 
 git_otype QGitObject::stringToType(const QString& string)
 {
-    return git_object_string2type(string.toAscii().constData());
+    return git_object_string2type(qPrintable(string));
 }
 
 int QGitObject::typeIsLoose(git_otype type)

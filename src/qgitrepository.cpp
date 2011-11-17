@@ -19,11 +19,13 @@
 
 #include "qgitrepository.h"
 
+#include <QtCore/QFile>
+
 using namespace LibQGit2;
 
 QGitRepository::QGitRepository(const QString& path, unsigned isBare)
 {
-    git_repository_init(&m_repository, path.toAscii().constData(), isBare);
+    git_repository_init(&m_repository, QFile::encodeName(path), isBare);
 }
 
 QGitRepository::QGitRepository(const git_repository *repository)
@@ -43,7 +45,7 @@ QGitRepository::~QGitRepository()
 
 int QGitRepository::open(const QString& path)
 {
-    return git_repository_open(&m_repository, path.toAscii().constData());
+    return git_repository_open(&m_repository, QFile::encodeName(path));
 }
 
 int QGitRepository::open2(const QString& gitDir,
@@ -51,9 +53,11 @@ int QGitRepository::open2(const QString& gitDir,
                       const QString& gitIndexFile,
                       const QString& gitWorkTree)
 {
-    return git_repository_open2(&m_repository, gitDir.toAscii().constData(),
-                                gitObjectDirectory.toAscii().constData(), gitIndexFile.toAscii().constData(),
-                                gitWorkTree.toAscii().constData());
+    return git_repository_open2(&m_repository,
+                                QFile::encodeName(gitDir),
+                                QFile::encodeName(gitObjectDirectory),
+                                QFile::encodeName(gitIndexFile),
+                                QFile::encodeName(gitWorkTree));
 }
 
 
@@ -62,8 +66,11 @@ int QGitRepository::open3(const QString& gitDir,
                       const QString& gitIndexFile,
                       const QString& gitWorkTree)
 {
-    return git_repository_open3(&m_repository, gitDir.toAscii().constData(), objectDatabase->data(),
-                                gitIndexFile.toAscii().constData(), gitWorkTree.toAscii().constData());
+    return git_repository_open3(&m_repository,
+                                QFile::encodeName(gitDir),
+                                objectDatabase->data(),
+                                QFile::encodeName(gitIndexFile),
+                                QFile::encodeName(gitWorkTree));
 }
 
 QGitDatabase* QGitRepository::database() const

@@ -79,7 +79,7 @@ void QGitTag::setTarget(const QGitObject &target)
 
 void QGitTag::setName(const QString& name)
 {
-    return git_tag_set_name(m_tag, name.toAscii().constData());
+    return git_tag_set_name(m_tag, qPrintable(name));
 }
 
 void QGitTag::setTagger(const QGitSignature& taggerSig)
@@ -89,7 +89,7 @@ void QGitTag::setTagger(const QGitSignature& taggerSig)
 
 void QGitTag::setMessage(const QString& message)
 {
-    return git_tag_set_message(m_tag, message.toAscii().constData());
+    return git_tag_set_message(m_tag, qPrintable(message));
 }
 
 git_tag* QGitTag::data() const

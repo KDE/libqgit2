@@ -112,7 +112,7 @@ int QGitCommit::addParent(QGitCommit* newParent)
 
 void QGitCommit::setMessage(const QString& message)
 {
-    return git_commit_set_message(m_commit, message.toAscii().constData());
+    return git_commit_set_message(m_commit, qPrintable(message));
 }
 
 void QGitCommit::setCommitter(const QGitSignature& committerSig)

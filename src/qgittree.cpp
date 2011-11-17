@@ -23,6 +23,8 @@
 #include "qgitrepository.h"
 #include "qgitoid.h"
 
+#include <QtCore/QFile>
+
 using namespace LibQGit2;
 
 QGitTree::QGitTree(QGitRepository *repository)
@@ -61,7 +63,7 @@ size_t QGitTree::entryCount()
 
 QGitTreeEntry* QGitTree::entryByName(const QString& fileName)
 {
-    QGitTreeEntry *treeEntry = new QGitTreeEntry(git_tree_entry_byname(m_tree, fileName.toAscii().constData()));
+    QGitTreeEntry *treeEntry = new QGitTreeEntry(git_tree_entry_byname(m_tree, QFile::encodeName(fileName)));
     return treeEntry;
 }
 
@@ -78,7 +80,7 @@ int QGitTree::removeEntryByIndex(int idx)
 
 int QGitTree::removeEntryByName(const QString& fileName)
 {
-    return git_tree_remove_entry_byname(m_tree, fileName.toAscii().constData());
+    return git_tree_remove_entry_byname(m_tree, QFile::encodeName(fileName));
 }
 
 void QGitTree::clearEntries()
@@ -93,7 +95,7 @@ void QGitTree::setEntryId(QGitTreeEntry* treeEntry, const QGitOId& oid)
 
 void QGitTree::setEntryName(QGitTreeEntry* treeEntry, const QString& fileName)
 {
-    return git_tree_entry_set_name(treeEntry->data(), fileName.toAscii().constData());
+    return git_tree_entry_set_name(treeEntry->data(), QFile::encodeName(fileName));
 }
 
 int QGitTree::setEntryAttributes(QGitTreeEntry* treeEntry, int attribute)

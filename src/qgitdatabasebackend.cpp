@@ -19,6 +19,8 @@
 
 #include "qgitdatabasebackend.h"
 
+#include <QtCore/QFile>
+
 using namespace LibQGit2;
 
 QGitDatabaseBackend::QGitDatabaseBackend()
@@ -35,12 +37,12 @@ QGitDatabaseBackend::~QGitDatabaseBackend()
 
 int QGitDatabaseBackend::pack(const QString& objectsDir)
 {
-    return git_odb_backend_pack(&m_databaseBackend, objectsDir.toAscii().constData());
+    return git_odb_backend_pack(&m_databaseBackend, QFile::encodeName(objectsDir));
 }
 
 int QGitDatabaseBackend::loose(const QString& objectsDir)
 {
-    return git_odb_backend_loose(&m_databaseBackend, objectsDir.toAscii().constData());
+    return git_odb_backend_loose(&m_databaseBackend, QFile::encodeName(objectsDir));
 }
 
 git_odb_backend* QGitDatabaseBackend::data() const
@@ -50,5 +52,5 @@ git_odb_backend* QGitDatabaseBackend::data() const
 
 const git_odb_backend* QGitDatabaseBackend::constData() const
 {
-    return const_cast<const git_odb_backend *>(m_databaseBackend);
+    return m_databaseBackend;
 }

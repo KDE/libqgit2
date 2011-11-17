@@ -18,7 +18,8 @@
  */
 
 #include "qgitblob.h"
-#include <QFile>
+
+#include <QtCore/QFile>
 
 using namespace LibQGit2;
 
@@ -53,7 +54,7 @@ int QGitBlob::rawSize()
 
 int QGitBlob::setRawContentFromFile(const QString& fileName)
 {
-    return git_blob_set_rawcontent_fromfile(m_blob, fileName.toAscii().constData());
+    return git_blob_set_rawcontent_fromfile(m_blob, QFile::encodeName(fileName));
 }
 
 int QGitBlob::setRawContent(const void* buffer, size_t len)

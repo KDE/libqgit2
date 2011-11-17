@@ -23,7 +23,7 @@ using namespace LibQGit2;
 
 QGitSignature::QGitSignature(const QString& name, const QString& email, QDateTime dateTime, int offset)
 {
-    m_signature = git_signature_new(name.toAscii().data(), email.toAscii().data(), dateTime.toTime_t(), offset);
+    m_signature = git_signature_new(qPrintable(name), qPrintable(email), dateTime.toTime_t(), offset);
 }
 
 QGitSignature::QGitSignature(const git_signature *signature)

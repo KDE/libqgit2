@@ -19,6 +19,8 @@
 
 #include "qgitdatabase.h"
 
+#include <QtCore/QFile>
+
 using namespace LibQGit2;
 
 QGitDatabase::QGitDatabase(git_odb *odb)
@@ -37,7 +39,7 @@ QGitDatabase::~QGitDatabase()
 
 int QGitDatabase::open(const QString& objectsDir)
 {
-    return git_odb_open(&m_database, objectsDir.toAscii().constData());
+    return git_odb_open(&m_database, QFile::encodeName(objectsDir));
 }
 
 void QGitDatabase::close()

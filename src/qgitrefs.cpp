@@ -22,6 +22,8 @@
 #include "qgitoid.h"
 #include "qgitrepository.h"
 
+#include <QtCore/QFile>
+
 using namespace LibQGit2;
 
 QGitRefs::QGitRefs(QGitRepository* repository)
@@ -71,7 +73,7 @@ QGitRepository* QGitRefs::owner()
 
 int QGitRefs::setTarget(const QString& target)
 {
-    return git_reference_set_target(m_reference, target.toAscii().constData());
+    return git_reference_set_target(m_reference, QFile::encodeName(target));
 }
 
 void QGitRefs::setOId(const QGitOId& oid)

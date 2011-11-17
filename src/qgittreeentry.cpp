@@ -21,6 +21,8 @@
 
 #include "qgitrepository.h"
 
+#include <QtCore/QFile>
+
 using namespace LibQGit2;
 
 QGitTreeEntry::QGitTreeEntry(git_tree_entry *treeEntry)
@@ -67,7 +69,7 @@ int QGitTreeEntry::setAttributes(unsigned int attributes)
 
 void QGitTreeEntry::setName(const QString& name)
 {
-    return git_tree_entry_set_name(m_treeEntry, name.toAscii().constData());
+    return git_tree_entry_set_name(m_treeEntry, QFile::encodeName(name));
 }
 
 void QGitTreeEntry::setId(const QGitOId& oid)
