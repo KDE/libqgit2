@@ -27,13 +27,13 @@
 
 using namespace LibQGit2;
 
-QGitTree::QGitTree(QGitRepository *repository)
+QGitTree::QGitTree(const QGitRepository& repository)
 {
-    git_tree_new(&m_tree, repository->data());
+    git_tree_new(&m_tree, repository.data());
 }
 
-QGitTree::QGitTree(const git_tree *tree)
-    : m_tree(const_cast<git_tree *>(tree))
+QGitTree::QGitTree(git_tree *tree)
+    : m_tree(tree)
 {
 }
 
@@ -61,16 +61,14 @@ size_t QGitTree::entryCount()
     return git_tree_entrycount(m_tree);
 }
 
-QGitTreeEntry* QGitTree::entryByName(const QString& fileName)
+QGitTreeEntry QGitTree::entryByName(const QString& fileName)
 {
-    QGitTreeEntry *treeEntry = new QGitTreeEntry(git_tree_entry_byname(m_tree, QFile::encodeName(fileName)));
-    return treeEntry;
+    return QGitTreeEntry(git_tree_entry_byname(m_tree, QFile::encodeName(fileName)));
 }
 
-QGitTreeEntry* QGitTree::entryByIndex(int idx)
+QGitTreeEntry QGitTree::entryByIndex(int idx)
 {
-    QGitTreeEntry *treeEntry = new QGitTreeEntry(git_tree_entry_byindex(m_tree, idx));
-    return treeEntry;
+    return QGitTreeEntry(git_tree_entry_byindex(m_tree, idx));
 }
 
 int QGitTree::removeEntryByIndex(int idx)
@@ -88,19 +86,19 @@ void QGitTree::clearEntries()
     return git_tree_clear_entries(m_tree);
 }
 
-void QGitTree::setEntryId(QGitTreeEntry* treeEntry, const QGitOId& oid)
+void QGitTree::setEntryId(QGitTreeEntry& treeEntry, const QGitOId& oid)
 {
-    return git_tree_entry_set_id(treeEntry->data(), oid.data());
+    return git_tree_entry_set_id(treeEntry.data(), oid.data());
 }
 
-void QGitTree::setEntryName(QGitTreeEntry* treeEntry, const QString& fileName)
+void QGitTree::setEntryName(QGitTreeEntry& treeEntry, const QString& fileName)
 {
-    return git_tree_entry_set_name(treeEntry->data(), QFile::encodeName(fileName));
+    return git_tree_entry_set_name(treeEntry.data(), QFile::encodeName(fileName));
 }
 
-int QGitTree::setEntryAttributes(QGitTreeEntry* treeEntry, int attribute)
+int QGitTree::setEntryAttributes(QGitTreeEntry& treeEntry, int attribute)
 {
-    git_tree_entry_set_attributes(treeEntry->data(), attribute);
+    git_tree_entry_set_attributes(treeEntry.data(), attribute);
 
     //! @todo Find dependencies
     return 0;
@@ -113,6 +111,29 @@ git_tree* QGitTree::data() const
 
 const git_tree* QGitTree::constData() const
 {
-    return const_cast<const git_tree*>(m_tree);
+    return m_tree;
 }
 
+QGitConstTree::QGitConstTree(const git_tree *tree)
+    : d(tree)
+{
+}
+
+QGitConstTree::QGitConstTree(const QGitConstTree& other)
+    : d(other.data())
+{
+}
+
+QGitConstTree::QGitConstTree(const QGitTree& other)
+    : d(other.data())
+{
+}
+
+QGitConstTree::~QGitConstTree()
+{
+}
+
+const git_tree *QGitConstTree::data() const
+{
+    return d;
+}

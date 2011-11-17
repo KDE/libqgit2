@@ -26,8 +26,8 @@ QGitSignature::QGitSignature(const QString& name, const QString& email, QDateTim
     m_signature = git_signature_new(qPrintable(name), qPrintable(email), dateTime.toTime_t(), offset);
 }
 
-QGitSignature::QGitSignature(const git_signature *signature)
-    : m_signature(const_cast<git_signature *>(signature))
+QGitSignature::QGitSignature(git_signature *signature)
+    : m_signature(signature)
 {
 }
 
@@ -48,7 +48,30 @@ git_signature* QGitSignature::data() const
 
 const git_signature* QGitSignature::constData() const
 {
-    return const_cast<const git_signature *>(m_signature);
+    return m_signature;
 }
 
 
+QGitConstSignature::QGitConstSignature(const git_signature *signature)
+    : d(signature)
+{
+}
+
+QGitConstSignature::QGitConstSignature(const QGitConstSignature& other)
+    : d(other.data())
+{
+}
+
+QGitConstSignature::QGitConstSignature(const QGitSignature& other)
+    : d(other.data())
+{
+}
+
+QGitConstSignature::~QGitConstSignature()
+{
+}
+
+const git_signature *QGitConstSignature::data() const
+{
+    return d;
+}

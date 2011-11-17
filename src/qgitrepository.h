@@ -49,7 +49,7 @@ namespace LibQGit2
              * @return 0 on success; error code otherwise
              */
             explicit QGitRepository(const QString& path, unsigned isBare);
-            explicit QGitRepository(const git_repository *repository = 0);
+            explicit QGitRepository(git_repository *repository = 0);
 
             QGitRepository( const QGitRepository& other );
 
@@ -160,7 +160,7 @@ namespace LibQGit2
              * @param type the type of the object
              * @return a reference to the object
              */
-            int lookup(QGitObject *object, const QGitOId& id, git_otype type);
+            int lookup(QGitObject& object, const QGitOId& id, git_otype type);
 
             /**
              * Get the object database behind a Git repository
@@ -178,7 +178,7 @@ namespace LibQGit2
              * @param index Pointer where to store the index
              * @return 0 on success; error code if the index could not be opened
              */
-            int index(QGitIndex *index) const;
+            int index(QGitIndex& index) const;
 
             git_repository* data() const;
             const git_repository* constData() const;

@@ -42,7 +42,7 @@ namespace LibQGit2
              * @param repository The repository where the object will reside
              * @return 0 on success; error code otherwise
              */
-            explicit QGitBlob(QGitRepository* repository);
+            explicit QGitBlob(const QGitRepository& repository);
 
             QGitBlob( const QGitBlob& other );
 
@@ -62,7 +62,7 @@ namespace LibQGit2
              * @param id identity of the blob to locate.
              * @return 0 on success; error code otherwise
              */
-            int lookup(QGitRepository* repository, const QGitOId& oid);
+            int lookup(const QGitRepository& repository, const QGitOId& oid);
 
             /**
              * Get a read-only buffer with the raw content of a blob.
@@ -111,7 +111,7 @@ namespace LibQGit2
              * @param repository repository where the blob will be written
              * @param path file from which the blob will be created
              */
-            int writeFile(QGitOId &writtenId, QGitRepository *repository, const QString& path);
+            int writeFile(QGitOId& writtenId, const QGitRepository& repository, const QString& path);
 
             git_blob* data() const;
             const git_blob* constData() const;

@@ -30,7 +30,8 @@ QGitTreeEntry::QGitTreeEntry(git_tree_entry *treeEntry)
 {
 }
 
-QGitTreeEntry::QGitTreeEntry( const QGitTreeEntry& other )
+QGitTreeEntry::QGitTreeEntry(const QGitTreeEntry& other)
+    : m_treeEntry(other.m_treeEntry)
 {
 }
 
@@ -84,6 +85,6 @@ git_tree_entry* QGitTreeEntry::data() const
 
 const git_tree_entry* QGitTreeEntry::constData() const
 {
-    return const_cast<const git_tree_entry *>(m_treeEntry);
+    return m_treeEntry;
 }
 

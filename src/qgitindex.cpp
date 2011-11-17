@@ -31,14 +31,19 @@ QGitIndex::QGitIndex(const QString& indexPath)
     git_index_open_bare(&m_index, QFile::encodeName(indexPath));
 }
 
-QGitIndex::QGitIndex(QGitRepository* repository)
+QGitIndex::QGitIndex(const QGitRepository& repository)
 {
-    git_index_open_inrepo(&m_index, repository->data());
+    git_index_open_inrepo(&m_index, repository.data());
 }
 
 QGitIndex::QGitIndex( const QGitIndex& other )
 {
     m_index = other.m_index;
+}
+
+void QGitIndex::reset(git_index *data)
+{
+    m_index = data;
 }
 
 QGitIndex::~QGitIndex()
@@ -98,5 +103,5 @@ git_index* QGitIndex::data() const
 
 const git_index* QGitIndex::constData() const
 {
-    return const_cast<const git_index *>(m_index);
+    return m_index;
 }

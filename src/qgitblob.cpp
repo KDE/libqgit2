@@ -23,9 +23,9 @@
 
 using namespace LibQGit2;
 
-QGitBlob::QGitBlob(QGitRepository* repository)
+QGitBlob::QGitBlob(const QGitRepository& repository)
 {
-    git_blob_new(&m_blob, repository->data());
+    git_blob_new(&m_blob, repository.data());
 }
 
 QGitBlob::QGitBlob( const QGitBlob& other )
@@ -37,9 +37,9 @@ QGitBlob::~QGitBlob()
 {
 }
 
-int QGitBlob::lookup(QGitRepository* repository, const QGitOId& oid)
+int QGitBlob::lookup(const QGitRepository& repository, const QGitOId& oid)
 {
-    return git_blob_lookup(&m_blob, repository->data(), oid.data());
+    return git_blob_lookup(&m_blob, repository.data(), oid.data());
 }
 
 const void* QGitBlob::rawContent()
@@ -62,10 +62,10 @@ int QGitBlob::setRawContent(const void* buffer, size_t len)
     return git_blob_set_rawcontent(m_blob, buffer, len);
 }
 
-int QGitBlob::writeFile(QGitOId &writtenId, QGitRepository *repository, const QString& path)
+int QGitBlob::writeFile(QGitOId& writtenId, const QGitRepository& repository, const QString& path)
 {
     git_oid oid;
-    int ret = git_blob_writefile(&oid, repository->data(), QFile::encodeName(path));
+    int ret = git_blob_writefile(&oid, repository.data(), QFile::encodeName(path));
     writtenId.reset(&oid);
     return ret;
 }
@@ -77,6 +77,6 @@ git_blob* QGitBlob::data() const
 
 const git_blob* QGitBlob::constData() const
 {
-    return const_cast<const git_blob *>(m_blob);
+    return m_blob;
 }
 

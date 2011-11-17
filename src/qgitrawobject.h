@@ -56,7 +56,7 @@ namespace LibQGit2
              * - GIT_SUCCESS if the object was read;
              * - GIT_ENOTFOUND if the object is not in the database.
              */
-            int read(QGitDatabase *db, const QGitOId *id);
+            int read(QGitDatabase *db, const QGitOId& id);
 
             /**
              * Read the header of an object from the database, without
@@ -74,7 +74,7 @@ namespace LibQGit2
              * - GIT_SUCCESS if the object was read;
              * - GIT_ENOTFOUND if the object is not in the database.
              */
-            int readHeader(QGitDatabase *db, const QGitOId *id);
+            int readHeader(QGitDatabase *db, const QGitOId& id);
 
             /**
              * Write an object to the database.

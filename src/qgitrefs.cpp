@@ -26,7 +26,7 @@
 
 using namespace LibQGit2;
 
-QGitRefs::QGitRefs(QGitRepository* repository)
+QGitRefs::QGitRefs(const QGitRepository& repository)
 {
 }
 
@@ -65,10 +65,9 @@ int QGitRefs::resolve(QGitRefs* resolvedRef)
     return git_reference_resolve(&reference, m_reference);
 }
 
-QGitRepository* QGitRefs::owner()
+QGitRepository QGitRefs::owner()
 {
-    QGitRepository* repository = new QGitRepository(git_reference_owner(m_reference));
-    return repository;
+    return QGitRepository(git_reference_owner(m_reference));
 }
 
 int QGitRefs::setTarget(const QString& target)
@@ -88,6 +87,6 @@ git_reference* QGitRefs::data() const
 
 const git_reference* QGitRefs::constData() const
 {
-    return const_cast<const git_reference *>(m_reference);
+    return m_reference;
 }
 

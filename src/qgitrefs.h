@@ -44,7 +44,7 @@ namespace LibQGit2
              * @param repository Repository where that reference exists
              * @return 0 on success; error code otherwise
              */
-            explicit QGitRefs(QGitRepository* repository);
+            explicit QGitRefs(const QGitRepository& repository);
 
             QGitRefs( const QGitRefs& other );
 
@@ -123,7 +123,7 @@ namespace LibQGit2
              *
              * @return a pointer to the repository
              */
-            QGitRepository* owner();
+            QGitRepository owner();
 
             /**
              * Set the name of a reference.

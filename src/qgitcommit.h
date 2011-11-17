@@ -30,8 +30,11 @@ namespace LibQGit2
 {
     class QGitOId;
     class QGitSignature;
+    class QGitConstSignature;
     class QGitTree;
+    class QGitConstTree;
     class QGitRepository;
+
     class LIBQGIT2_COMMIT_EXPORT QGitCommit
     {
         public:
@@ -45,12 +48,14 @@ namespace LibQGit2
              * @param repository The repository where the object will reside
              * @return 0 on success; error code otherwise
              */
-            explicit QGitCommit(QGitRepository *repository);
+            explicit QGitCommit(const QGitRepository& repository);
             explicit QGitCommit(git_commit *commit = 0);
 
             QGitCommit( const QGitCommit& other );
 
             ~QGitCommit();
+
+            void reset(git_commit *commit = 0);
 
         public:
 
@@ -64,7 +69,7 @@ namespace LibQGit2
              * an annotated tag it will be peeled back to the commit.
              * @return 0 on success; error code otherwise
              */
-            int lookup(QGitRepository *repository, const QGitOId& oid);
+            int lookup(const QGitRepository& repository, const QGitOId& oid);
 
             /**
             * Get the id of a commit.
@@ -101,20 +106,20 @@ namespace LibQGit2
             * Get the committer of a commit.
             * @return the committer of a commit
             */
-            const QGitSignature* committer() const;
+            QGitConstSignature committer() const;
 
 
             /**
             * Get the committer of a commit.
             * @return the committer of a commit
             */
-            const QGitSignature* author() const;
+            QGitConstSignature author() const;
 
             /**
              * Get the tree pointed to by a commit.
              * @return the tree of a commit
              */
-            const QGitTree* tree() const;
+            QGitConstTree tree() const;
 
             /**
              * Get the number of parents of this commit
@@ -128,14 +133,14 @@ namespace LibQGit2
              * @param n the position of the entry
              * @return a pointer to the commit; NULL if out of bounds
              */
-            QGitCommit* parent(unsigned n) const;
+            QGitCommit parent(unsigned n) const;
 
             /**
              * Add a new parent commit to an existing commit
              * @param new_parent the new commit which will be a parent
              * @return 0 on success; error code otherwise
              */
-            int addParent(QGitCommit* newParent);
+            int addParent(const QGitCommit& newParent);
 
 
             /**

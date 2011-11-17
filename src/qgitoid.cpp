@@ -73,9 +73,9 @@ void QGitOId::pathFormat(char* string)
     return git_oid_pathfmt(string, data());
 }
 
-int QGitOId::compare(QGitOId *oid)
+int QGitOId::compare(const QGitOId& oid)
 {
-    return git_oid_cmp(data(), oid->data());
+    return git_oid_cmp(data(), oid.data());
 }
 
 const git_oid* QGitOId::data() const

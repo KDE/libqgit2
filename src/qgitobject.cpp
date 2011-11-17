@@ -24,8 +24,8 @@
 
 using namespace LibQGit2;
 
-QGitObject::QGitObject(const git_object *object)
-    : m_object(const_cast<git_object *>(object))
+QGitObject::QGitObject(git_object *object)
+    : m_object(object)
 {
 }
 
@@ -53,10 +53,9 @@ git_otype QGitObject::type() const
     return git_object_type(m_object);
 }
 
-QGitRepository* QGitObject::owner() const
+QGitRepository QGitObject::owner() const
 {
-    QGitRepository *repository = new QGitRepository(git_object_owner(m_object));
-    return repository;
+    return QGitRepository(git_object_owner(m_object));
 }
 
 QString QGitObject::typeToString(git_otype type)
@@ -86,9 +85,30 @@ git_object* QGitObject::data() const
 
 const git_object* QGitObject::constData() const
 {
-    return const_cast<const git_object *>(m_object);
+    return m_object;
 }
 
 
+QGitConstObject::QGitConstObject(const git_object *object)
+    : d(object)
+{
+}
 
+QGitConstObject::QGitConstObject(const QGitConstObject& other)
+    : d(other.d)
+{
+}
 
+QGitConstObject::QGitConstObject(const QGitObject& other)
+    : d(other.data())
+{
+}
+
+QGitConstObject::~QGitConstObject()
+{
+}
+
+const git_object* QGitConstObject::data() const
+{
+    return d;
+}

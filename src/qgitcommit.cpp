@@ -25,9 +25,9 @@
 
 using namespace LibQGit2;
 
-QGitCommit::QGitCommit(QGitRepository *repository)
+QGitCommit::QGitCommit(const QGitRepository& repository)
 {
-    git_commit_new(&m_commit, repository->data());
+    git_commit_new(&m_commit, repository.data());
 }
 
 QGitCommit::QGitCommit(git_commit *commit)
@@ -44,9 +44,14 @@ QGitCommit::~QGitCommit()
 {
 }
 
-int QGitCommit::lookup(QGitRepository *repository, const QGitOId& oid)
+void QGitCommit::reset(git_commit *commit)
 {
-    return git_commit_lookup(&m_commit, repository->data(), oid.data());
+    m_commit = commit;
+}
+
+int QGitCommit::lookup(const QGitRepository& repository, const QGitOId& oid)
+{
+    return git_commit_lookup(&m_commit, repository.data(), oid.data());
 }
 
 QGitOId QGitCommit::id() const
@@ -76,22 +81,19 @@ int QGitCommit::timeOffset() const
     return git_commit_time_offset(m_commit);
 }
 
-const QGitSignature* QGitCommit::committer() const
+QGitConstSignature QGitCommit::committer() const
 {
-    const QGitSignature *signature = new QGitSignature(git_commit_committer(m_commit));
-    return signature;
+    return QGitConstSignature(git_commit_committer(m_commit));
 }
 
-const QGitSignature* QGitCommit::author() const
+QGitConstSignature QGitCommit::author() const
 {
-    const QGitSignature *signature = new QGitSignature(git_commit_author(m_commit));
-    return signature;
+    return QGitConstSignature(git_commit_author(m_commit));
 }
 
-const QGitTree* QGitCommit::tree() const
+QGitConstTree QGitCommit::tree() const
 {
-    const QGitTree *tree = new QGitTree(git_commit_tree(m_commit));
-    return tree;
+    return QGitConstTree(git_commit_tree(m_commit));
 }
 
 unsigned int QGitCommit::parentCount() const
@@ -99,15 +101,14 @@ unsigned int QGitCommit::parentCount() const
     return git_commit_parentcount(m_commit);
 }
 
-QGitCommit* QGitCommit::parent(unsigned n) const
+QGitCommit QGitCommit::parent(unsigned n) const
 {
-    QGitCommit *commit = new QGitCommit(git_commit_parent(m_commit, n));
-    return commit;
+    return QGitCommit(git_commit_parent(m_commit, n));
 }
 
-int QGitCommit::addParent(QGitCommit* newParent)
+int QGitCommit::addParent(const QGitCommit& newParent)
 {
-    return git_commit_add_parent(m_commit, newParent->data());
+    return git_commit_add_parent(m_commit, newParent.data());
 }
 
 void QGitCommit::setMessage(const QString& message)
@@ -137,6 +138,6 @@ git_commit* QGitCommit::data() const
 
 const git_commit* QGitCommit::constData() const
 {
-    return const_cast<const git_commit *>(m_commit);
+    return m_commit;
 }
 

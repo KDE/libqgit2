@@ -44,8 +44,8 @@ namespace LibQGit2
              * @param repo The repository where the object will reside
              * @return 0 on success; error code otherwise
              */
-            explicit QGitTree(QGitRepository *repository);
-            explicit QGitTree(const git_tree *tree = 0);
+            explicit QGitTree(const QGitRepository& repository);
+            explicit QGitTree(git_tree *tree = 0);
 
             QGitTree( const QGitTree& other );
             ~QGitTree();
@@ -79,14 +79,14 @@ namespace LibQGit2
              * @param filename the filename of the desired entry
              * @return the tree entry; NULL if not found
              */
-            QGitTreeEntry* entryByName(const QString& fileName);
+            QGitTreeEntry entryByName(const QString& fileName);
 
             /**
              * Lookup a tree entry by its position in the tree
              * @param idx the position in the entry list
              * @return the tree entry; NULL if not found
              */
-            QGitTreeEntry* entryByIndex(int idx);
+            QGitTreeEntry entryByIndex(int idx);
 
             /**
              * Add a new entry to the tree and return the new entry.
@@ -102,7 +102,7 @@ namespace LibQGit2
              * @param attributes UNIX file attributes for the entry
              * @return 0 on success; otherwise error code
              */
-            int addEntry(QGitTreeEntry *entryOut, const QGitOId& id, const QString& fileName, int attributes);
+            int addEntry(QGitTreeEntry& entryOut, const QGitOId& id, const QString& fileName, int attributes);
 
             /**
              * Remove an entry by its index.
@@ -146,7 +146,7 @@ namespace LibQGit2
              * @param entry Entry object which will be modified
              * @param oid new SHA1 oid for the entry
              */
-            void setEntryId(QGitTreeEntry* treeEntry, const QGitOId& oid);
+            void setEntryId(QGitTreeEntry& treeEntry, const QGitOId& oid);
 
             /**
              * Change the filename of a tree entry.
@@ -157,7 +157,7 @@ namespace LibQGit2
              * @param entry Entry object which will be modified
              * @param fileName new filename for the entry
              */
-            void setEntryName(QGitTreeEntry* treeEntry, const QString& fileName);
+            void setEntryName(QGitTreeEntry& treeEntry, const QString& fileName);
 
             /**
              * Change the attributes of a tree entry.
@@ -167,13 +167,27 @@ namespace LibQGit2
              *
              * @param attribute new attributes for the entry
              */
-            int setEntryAttributes(QGitTreeEntry* treeEntry, int attribute);
+            int setEntryAttributes(QGitTreeEntry& treeEntry, int attribute);
 
             git_tree* data() const;
             const git_tree* constData() const;
 
         private:
             git_tree *m_tree;
+    };
+
+    class LIBQGIT2_TREE_EXPORT QGitConstTree
+    {
+        public:
+            QGitConstTree(const git_tree *tree);
+            QGitConstTree(const QGitConstTree& other);
+            QGitConstTree(const QGitTree& other);
+            ~QGitConstTree();
+
+            const git_tree *data() const;
+
+        private:
+            const git_tree *d;
     };
 }
 

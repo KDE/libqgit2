@@ -31,10 +31,11 @@ namespace LibQGit2
 {
     class QGitRepository;
     class QGitOId;
+
     class LIBQGIT2_OBJECT_EXPORT QGitObject
     {
         public:
-            explicit QGitObject(const git_object *object = 0);
+            explicit QGitObject(git_object *object = 0);
             QGitObject( const QGitObject& other );
             ~QGitObject();
 
@@ -80,7 +81,7 @@ namespace LibQGit2
              * @param obj the object
              * @return the repository who owns this object
              */
-            QGitRepository* owner() const;
+            QGitRepository owner() const;
 
             /**
              * Convert an object type to it's string representation.
@@ -129,6 +130,21 @@ namespace LibQGit2
 
         private:
             git_object *m_object;
+    };
+
+
+    class LIBQGIT2_OBJECT_EXPORT QGitConstObject
+    {
+        public:
+            explicit QGitConstObject(const git_object *object = 0);
+            QGitConstObject(const QGitConstObject& other);
+            QGitConstObject(const QGitObject& other);
+            ~QGitConstObject();
+
+            const git_object* data() const;
+
+        private:
+            const git_object *d;
     };
 }
 

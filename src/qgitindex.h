@@ -54,9 +54,11 @@ namespace LibQGit2
              * @param index_path the path to the index file in disk
              * @return 0 on success; error code otherwise
              */
-            explicit QGitIndex(QGitRepository* repository);
+            explicit QGitIndex(const QGitRepository& repository);
 
             QGitIndex( const QGitIndex& other );
+
+            void reset(git_index *data);
 
             /**
              * Destruct an existing index object.

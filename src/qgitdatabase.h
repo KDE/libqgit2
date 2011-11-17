@@ -105,7 +105,7 @@ namespace LibQGit2
              * - true, if the object was found
              * - false, otherwise
              */
-            int exists(QGitDatabase *db, const QGitOId *id);
+            int exists(QGitDatabase *db, const QGitOId& id);
 
             git_odb* data() const;
             const git_odb* constData() const;

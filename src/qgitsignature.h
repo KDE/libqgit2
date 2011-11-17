@@ -42,7 +42,7 @@ namespace LibQGit2
              * @offset timezone offset in minutes for the time
              */
             QGitSignature(const QString& name, const QString& email, QDateTime dateTime, int offset);
-            explicit QGitSignature(const git_signature *signature = 0);
+            explicit QGitSignature(git_signature *signature = 0);
 
             /**
              * Construct a copy of an existing signature.
@@ -62,6 +62,22 @@ namespace LibQGit2
 
         private:
             git_signature *m_signature;
+    };
+
+    class LIBQGIT2_SIGNATURE_EXPORT QGitConstSignature
+    {
+        public:
+            explicit QGitConstSignature(const git_signature *signature = 0);
+
+            QGitConstSignature(const QGitConstSignature& other);
+            QGitConstSignature(const QGitSignature& other);
+
+            ~QGitConstSignature();
+
+            const git_signature *data() const;
+
+        private:
+            const git_signature *d;
     };
 }
 

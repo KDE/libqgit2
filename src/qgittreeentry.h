@@ -32,7 +32,7 @@ namespace LibQGit2
     {
         public:
             explicit QGitTreeEntry(git_tree_entry *treeEntry = 0);
-            QGitTreeEntry( const QGitTreeEntry& other );
+            QGitTreeEntry(const QGitTreeEntry& other);
             ~QGitTreeEntry();
 
         public:

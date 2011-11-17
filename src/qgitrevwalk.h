@@ -38,7 +38,7 @@ namespace LibQGit2
              * @param repo the repo to walk through
              * @return 0 on success; error code otherwise
              */
-            explicit QGitRevWalk(QGitRepository* repository);
+            explicit QGitRevWalk(const QGitRepository& repository);
 
             QGitRevWalk( const QGitRevWalk& other );
 
@@ -61,13 +61,13 @@ namespace LibQGit2
              *
              * @param commit the commit to start from.
              */
-            int push(QGitCommit *commit) const;
+            int push(const QGitCommit& commit) const;
 
             /**
              * Mark a commit (and its ancestors) uninteresting for the output.
              * @param commit the commit that will be ignored during the traversal
              */
-            int hide(QGitCommit *commit) const;
+            int hide(const QGitCommit& commit) const;
 
             /**
              * Get the next commit from the revision traversal.
@@ -76,7 +76,7 @@ namespace LibQGit2
              * @return GIT_SUCCESS if the next commit was found;
              * GIT_EREVWALKOVER if there are no commits left to iterate
              */
-            int next(QGitCommit *commit);
+            int next(QGitCommit& commit);
 
             /**
              * Change the sorting mode when iterating through the
@@ -92,7 +92,7 @@ namespace LibQGit2
              *
              * @return the repository being walked
              */
-            QGitRepository* repository();
+            QGitRepository repository();
 
             git_revwalk* data() const;
             const git_revwalk* constData() const;

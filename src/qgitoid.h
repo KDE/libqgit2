@@ -90,7 +90,7 @@ namespace LibQGit2
              * @param oid oid class compare with.
              * @return <0, 0, >0 if a < b, a == b, a > b.
              */
-            int compare(QGitOId *oid);
+            int compare(const QGitOId& oid); // XXX operator==
 
             bool isNull() const;
 

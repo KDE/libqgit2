@@ -24,9 +24,9 @@
 
 using namespace LibQGit2;
 
-QGitRevWalk::QGitRevWalk(QGitRepository* repository)
+QGitRevWalk::QGitRevWalk(const QGitRepository& repository)
 {
-    git_revwalk_new(&m_revWalk, repository->data());
+    git_revwalk_new(&m_revWalk, repository.data());
 }
 
 QGitRevWalk::QGitRevWalk( const QGitRevWalk& other )
@@ -44,20 +44,22 @@ void QGitRevWalk::reset() const
     return git_revwalk_reset(m_revWalk);
 }
 
-int QGitRevWalk::push(QGitCommit *commit) const
+int QGitRevWalk::push(const QGitCommit& commit) const
 {
-    return git_revwalk_push(m_revWalk, commit->data());
+    return git_revwalk_push(m_revWalk, commit.data());
 }
 
-int QGitRevWalk::hide(QGitCommit *commit) const
+int QGitRevWalk::hide(const QGitCommit& commit) const
 {
-    return git_revwalk_hide(m_revWalk, commit->data());
+    return git_revwalk_hide(m_revWalk, commit.data());
 }
 
-int QGitRevWalk::next(QGitCommit *commit)
+int QGitRevWalk::next(QGitCommit& commit)
 {
-    git_commit *c = commit->data();
-    return git_revwalk_next(&c, m_revWalk);
+    git_commit *c;
+    int ret = git_revwalk_next(&c, m_revWalk);
+    commit.reset(c);
+    return ret;
 }
 
 int QGitRevWalk::sorting(unsigned int sortMode)
@@ -65,10 +67,9 @@ int QGitRevWalk::sorting(unsigned int sortMode)
     return git_revwalk_sorting(m_revWalk, sortMode);
 }
 
-QGitRepository* QGitRevWalk::repository()
+QGitRepository QGitRevWalk::repository()
 {
-   QGitRepository *repository = new QGitRepository(git_revwalk_repository(m_revWalk));
-    return repository;
+    return QGitRepository(git_revwalk_repository(m_revWalk));
 }
 
 git_revwalk* QGitRevWalk::data() const
@@ -78,6 +79,6 @@ git_revwalk* QGitRevWalk::data() const
 
 const git_revwalk* QGitRevWalk::constData() const
 {
-    return const_cast<const git_revwalk *>(m_revWalk);
+    return m_revWalk;
 }
 

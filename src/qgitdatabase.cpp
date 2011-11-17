@@ -57,9 +57,9 @@ int QGitDatabase::addAlternate(QGitDatabaseBackend *backend, int priority)
     return git_odb_add_alternate(m_database, (git_odb_backend *)backend, priority);
 }
 
-int QGitDatabase::exists(QGitDatabase *db, const QGitOId *id)
+int QGitDatabase::exists(QGitDatabase *db, const QGitOId& id)
 {
-    return git_odb_exists(db->data(), id->data());
+    return git_odb_exists(db->data(), id.data());
 }
 
 git_odb* QGitDatabase::data() const
@@ -69,5 +69,5 @@ git_odb* QGitDatabase::data() const
 
 const git_odb* QGitDatabase::constData() const
 {
-    return const_cast<const git_odb *>(m_database);
+    return m_database;
 }

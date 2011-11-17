@@ -28,8 +28,8 @@ QGitRepository::QGitRepository(const QString& path, unsigned isBare)
     git_repository_init(&m_repository, QFile::encodeName(path), isBare);
 }
 
-QGitRepository::QGitRepository(const git_repository *repository)
-    : m_repository(const_cast<git_repository *>(repository))
+QGitRepository::QGitRepository(git_repository *repository)
+    : m_repository(repository)
 {
 }
 
@@ -79,10 +79,12 @@ QGitDatabase* QGitRepository::database() const
     return database;
 }
 
-int QGitRepository::index(QGitIndex *index) const
+int QGitRepository::index(QGitIndex& index) const
 {
-    git_index *idx = index->data();
-    return git_repository_index(&idx, m_repository);
+    git_index *idx;
+    int ret = git_repository_index(&idx, m_repository);
+    index.reset(idx);
+    return ret;
 }
 
 git_repository* QGitRepository::data() const
@@ -92,6 +94,6 @@ git_repository* QGitRepository::data() const
 
 const git_repository* QGitRepository::constData() const
 {
-    return const_cast<const git_repository *>(m_repository);
+    return m_repository;
 }
 

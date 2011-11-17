@@ -21,9 +21,9 @@
 
 using namespace LibQGit2;
 
-QGitTag::QGitTag(QGitRepository* repository)
+QGitTag::QGitTag(const QGitRepository& repository)
 {
-    git_tag_new(&m_tag, repository->data());
+    git_tag_new(&m_tag, repository.data());
 }
 
 QGitTag::QGitTag( const QGitTag& other )
@@ -35,9 +35,9 @@ QGitTag::~QGitTag()
 {
 }
 
-int QGitTag::lookup(QGitRepository *repository, const QGitOId& oid)
+int QGitTag::lookup(const QGitRepository& repository, const QGitOId& oid)
 {
-    return git_tag_lookup(&m_tag, repository->data(), oid.data());
+    return git_tag_lookup(&m_tag, repository.data(), oid.data());
 }
 
 QGitOId QGitTag::id() const
@@ -45,10 +45,9 @@ QGitOId QGitTag::id() const
     return QGitOId(git_tag_id(m_tag));
 }
 
-const QGitObject* QGitTag::target() const
+QGitConstObject QGitTag::target() const
 {
-    const QGitObject *object = new QGitObject(git_tag_target(m_tag));
-    return object;
+    return QGitConstObject(git_tag_target(m_tag));
 }
 
 git_otype QGitTag::type() const
@@ -61,10 +60,9 @@ const QString QGitTag::name() const
     return git_tag_name(m_tag);
 }
 
-const QGitSignature* QGitTag::tagger() const
+QGitConstSignature QGitTag::tagger() const
 {
-    const QGitSignature *signature = new QGitSignature(git_tag_tagger(m_tag));
-    return signature;
+    return QGitConstSignature(git_tag_tagger(m_tag));
 }
 
 const QString QGitTag::message()
@@ -99,6 +97,6 @@ git_tag* QGitTag::data() const
 
 const git_tag* QGitTag::constData() const
 {
-    return const_cast<const git_tag *>(m_tag);
+    return m_tag;
 }
 

@@ -31,6 +31,8 @@
 namespace LibQGit2
 {
     class QGitObject;
+    class QGitConstObject;
+
     class LIBQGIT2_TAG_EXPORT QGitTag
     {
         public:
@@ -44,7 +46,7 @@ namespace LibQGit2
              * @param repository The repository where the object will reside
              * @return 0 on success; error code otherwise
              */
-            explicit QGitTag(QGitRepository *repository);
+            explicit QGitTag(const QGitRepository& repository);
 
             QGitTag( const QGitTag& other );
             ~QGitTag();
@@ -60,7 +62,7 @@ namespace LibQGit2
              * @param id identity of the tag to locate.
              * @return 0 on success; error code otherwise
              */
-            int lookup(QGitRepository *repository, const QGitOId& oid);
+            int lookup(const QGitRepository& repository, const QGitOId& oid);
 
             /**
              * Get the id of a tag.
@@ -72,7 +74,7 @@ namespace LibQGit2
              * Get the tagged object of a tag
              * @return reference to a repository object
              */
-            const QGitObject* target() const;
+            QGitConstObject target() const;
 
             /**
              * Get the type of a tag's tagged object
@@ -90,7 +92,7 @@ namespace LibQGit2
              * Get the tagger (author) of a tag
              * @return reference to the tag's author
              */
-            const QGitSignature* tagger() const;
+            QGitConstSignature tagger() const;
 
             /**
              * Get the message of a tag

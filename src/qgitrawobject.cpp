@@ -36,14 +36,14 @@ QGitRawObject::~QGitRawObject()
 {
 }
 
-int QGitRawObject::read(QGitDatabase *db, const QGitOId *id)
+int QGitRawObject::read(QGitDatabase *db, const QGitOId& id)
 {
-    return git_odb_read(m_rawObject, db->data(), id->data());
+    return git_odb_read(m_rawObject, db->data(), id.data());
 }
 
-int QGitRawObject::readHeader(QGitDatabase *db, const QGitOId *id)
+int QGitRawObject::readHeader(QGitDatabase *db, const QGitOId& id)
 {
-    return git_odb_read_header(m_rawObject, db->data(), id->data());
+    return git_odb_read_header(m_rawObject, db->data(), id.data());
 }
 
 int QGitRawObject::write(QGitOId &id, QGitDatabase *db)
@@ -74,5 +74,5 @@ git_rawobj* QGitRawObject::data() const
 
 const git_rawobj* QGitRawObject::constData() const
 {
-    return const_cast<const git_rawobj *>(m_rawObject);
+    return m_rawObject;
 }
