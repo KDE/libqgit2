@@ -30,8 +30,8 @@ QGitCommit::QGitCommit(QGitRepository *repository)
     git_commit_new(&m_commit, repository->data());
 }
 
-QGitCommit::QGitCommit(const git_commit *commit)
-    : m_commit(const_cast<git_commit *>(m_commit))
+QGitCommit::QGitCommit(git_commit *commit)
+    : m_commit(commit)
 {
 }
 

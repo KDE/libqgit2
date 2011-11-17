@@ -46,7 +46,7 @@ namespace LibQGit2
              * @return 0 on success; error code otherwise
              */
             explicit QGitCommit(QGitRepository *repository);
-            explicit QGitCommit(const git_commit *commit = 0);
+            explicit QGitCommit(git_commit *commit = 0);
 
             QGitCommit( const QGitCommit& other );
 
