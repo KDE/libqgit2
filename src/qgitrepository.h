@@ -163,6 +163,11 @@ namespace LibQGit2
             int lookup(QGitObject& object, const QGitOId& id, git_otype type);
 
             /**
+             * Lookup a reference given it's name
+             */
+            QGitRef lookup(const QString& name);
+
+            /**
              * Get the object database behind a Git repository
              *
              * @return a pointer to the object db

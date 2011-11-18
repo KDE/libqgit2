@@ -30,6 +30,11 @@ QGitRef::QGitRef(const QGitRepository& repository)
 {
 }
 
+QGitRef::QGitRef(git_reference *ref)
+    : m_reference(ref)
+{
+}
+
 QGitRef::QGitRef( const QGitRef& other )
 {
     m_reference = other.m_reference;
@@ -37,11 +42,6 @@ QGitRef::QGitRef( const QGitRef& other )
 
 QGitRef::~QGitRef()
 {
-}
-
-int QGitRef::lookup(const QString& name, const QGitRepository& repository)
-{
-    return git_reference_lookup(&m_reference, repository.data(), QFile::encodeName(name));
 }
 
 QGitOId QGitRef::oid() const

@@ -73,6 +73,13 @@ int QGitRepository::open3(const QString& gitDir,
                                 QFile::encodeName(gitWorkTree));
 }
 
+QGitRef QGitRepository::lookup(const QString& name)
+{
+    git_reference *ref;
+    git_reference_lookup(&ref, data(), QFile::encodeName(name));
+    return QGitRef(ref);
+}
+
 QGitDatabase* QGitRepository::database() const
 {
     QGitDatabase *database = new QGitDatabase(git_repository_database(m_repository));

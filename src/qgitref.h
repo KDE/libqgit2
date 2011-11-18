@@ -46,6 +46,8 @@ namespace LibQGit2
              */
             explicit QGitRef(const QGitRepository& repository);
 
+            explicit QGitRef(git_reference *ref);
+
             QGitRef( const QGitRef& other );
 
             /**
@@ -54,8 +56,6 @@ namespace LibQGit2
             ~QGitRef();
 
         public:
-
-            int lookup(const QString& name, const QGitRepository& repository);
 
             /**
              * Get the OID pointed to by a reference.
