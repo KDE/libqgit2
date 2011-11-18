@@ -41,7 +41,7 @@ namespace LibQGit2
              * @time time when the action happened
              * @offset timezone offset in minutes for the time
              */
-            QGitSignature(const QString& name, const QString& email, QDateTime dateTime, int offset);
+            QGitSignature(const QString& name, const QString& email, QDateTime dateTime);
             explicit QGitSignature(git_signature *signature = 0);
 
             /**
@@ -57,22 +57,30 @@ namespace LibQGit2
              */
             ~QGitSignature();
 
+            QString name() const;
+            QString email() const;
+            QDateTime when() const;
+
             git_signature* data() const;
             const git_signature* constData() const;
 
         private:
-            git_signature *m_signature;
+            git_signature *d;
     };
 
-    class LIBQGIT2_SIGNATURE_EXPORT QGitConstSignature
+    class LIBQGIT2_SIGNATURE_EXPORT QGitSignatureRef
     {
         public:
-            explicit QGitConstSignature(const git_signature *signature = 0);
+            explicit QGitSignatureRef(const git_signature *signature = 0);
 
-            QGitConstSignature(const QGitConstSignature& other);
-            QGitConstSignature(const QGitSignature& other);
+            QGitSignatureRef(const QGitSignatureRef& other);
+            QGitSignatureRef(const QGitSignature& other);
 
-            ~QGitConstSignature();
+            ~QGitSignatureRef();
+
+            QString name() const;
+            QString email() const;
+            QDateTime when() const;
 
             const git_signature *data() const;
 

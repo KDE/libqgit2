@@ -60,9 +60,9 @@ const QString QGitTag::name() const
     return git_tag_name(m_tag);
 }
 
-QGitConstSignature QGitTag::tagger() const
+QGitSignatureRef QGitTag::tagger() const
 {
-    return QGitConstSignature(git_tag_tagger(m_tag));
+    return QGitSignatureRef(git_tag_tagger(m_tag));
 }
 
 const QString QGitTag::message()

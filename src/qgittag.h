@@ -92,7 +92,7 @@ namespace LibQGit2
              * Get the tagger (author) of a tag
              * @return reference to the tag's author
              */
-            QGitConstSignature tagger() const;
+            QGitSignatureRef tagger() const;
 
             /**
              * Get the message of a tag

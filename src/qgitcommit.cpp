@@ -81,14 +81,14 @@ int QGitCommit::timeOffset() const
     return git_commit_time_offset(m_commit);
 }
 
-QGitConstSignature QGitCommit::committer() const
+QGitSignatureRef QGitCommit::committer() const
 {
-    return QGitConstSignature(git_commit_committer(m_commit));
+    return QGitSignatureRef(git_commit_committer(m_commit));
 }
 
-QGitConstSignature QGitCommit::author() const
+QGitSignatureRef QGitCommit::author() const
 {
-    return QGitConstSignature(git_commit_author(m_commit));
+    return QGitSignatureRef(git_commit_author(m_commit));
 }
 
 QGitConstTree QGitCommit::tree() const
