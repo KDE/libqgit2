@@ -24,7 +24,7 @@
 
 #include "qgitdatabase.h"
 #include "qgitobject.h"
-#include "qgitrefs.h"
+#include "qgitref.h"
 #include "qgitindex.h"
 
 #include <git2/repository.h>

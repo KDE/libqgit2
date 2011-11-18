@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "qgitrefs.h"
+#include "qgitref.h"
 
 #include "qgitoid.h"
 #include "qgitrepository.h"
@@ -26,70 +26,70 @@
 
 using namespace LibQGit2;
 
-QGitRefs::QGitRefs(const QGitRepository& repository)
+QGitRef::QGitRef(const QGitRepository& repository)
 {
 }
 
-QGitRefs::QGitRefs( const QGitRefs& other )
+QGitRef::QGitRef( const QGitRef& other )
 {
     m_reference = other.m_reference;
 }
 
-QGitRefs::~QGitRefs()
+QGitRef::~QGitRef()
 {
 }
 
-int QGitRefs::lookup(const QString& name, const QGitRepository& repository)
+int QGitRef::lookup(const QString& name, const QGitRepository& repository)
 {
     return git_reference_lookup(&m_reference, repository.data(), QFile::encodeName(name));
 }
 
-QGitOId QGitRefs::oid() const
+QGitOId QGitRef::oid() const
 {
     return QGitOId(git_reference_oid(m_reference));
 }
 
-QString QGitRefs::target() const
+QString QGitRef::target() const
 {
     return QString::fromUtf8(git_reference_target(m_reference));
 }
 
-git_rtype QGitRefs::type() const
+git_rtype QGitRef::type() const
 {
     return git_reference_type(m_reference);
 }
 
-QString QGitRefs::name() const
+QString QGitRef::name() const
 {
     return QString::fromUtf8(git_reference_name(m_reference));
 }
 
-int QGitRefs::resolve(QGitRefs* resolvedRef)
+int QGitRef::resolve(QGitRef* resolvedRef)
 {
     return git_reference_resolve(&resolvedRef->m_reference, m_reference);
 }
 
-QGitRepository QGitRefs::owner()
+QGitRepository QGitRef::owner()
 {
     return QGitRepository(git_reference_owner(m_reference));
 }
 
-int QGitRefs::setTarget(const QString& target)
+int QGitRef::setTarget(const QString& target)
 {
     return git_reference_set_target(m_reference, QFile::encodeName(target));
 }
 
-void QGitRefs::setOId(const QGitOId& oid)
+void QGitRef::setOId(const QGitOId& oid)
 {
     git_reference_set_oid(m_reference, oid.data());
 }
 
-git_reference* QGitRefs::data() const
+git_reference* QGitRef::data() const
 {
     return m_reference;
 }
 
-const git_reference* QGitRefs::constData() const
+const git_reference* QGitRef::constData() const
 {
     return m_reference;
 }

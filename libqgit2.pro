@@ -23,7 +23,7 @@ HEADERS += \
     qgitobject.h \
     qgitoid.h \
     qgitrawobject.h \
-    qgitrefs.h \
+    qgitref.h \
     qgitrepository.h \
     qgitrevwalk.h \
     qgitsignature.h \
@@ -85,7 +85,7 @@ SOURCES += \
     qgitobject.cpp \
     qgitoid.cpp \
     qgitrawobject.cpp \
-    qgitrefs.cpp \
+    qgitref.cpp \
     qgitrepository.cpp \
     qgitrevwalk.cpp \
     qgitsignature.cpp \

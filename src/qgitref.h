@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef LIBQGIT2_REFS_H
-#define LIBQGIT2_REFS_H
+#ifndef LIBQGIT2_REF_H
+#define LIBQGIT2_REF_H
 
 #include "libqgit2_export.h"
 
@@ -30,7 +30,7 @@ namespace LibQGit2
 {
     class QGitRepository;
     class QGitOId;
-    class LIBQGIT2_REFS_EXPORT QGitRefs
+    class LIBQGIT2_REFS_EXPORT QGitRef
     {
         public:
             /**
@@ -44,14 +44,14 @@ namespace LibQGit2
              * @param repository Repository where that reference exists
              * @return 0 on success; error code otherwise
              */
-            explicit QGitRefs(const QGitRepository& repository);
+            explicit QGitRef(const QGitRepository& repository);
 
-            QGitRefs( const QGitRefs& other );
+            QGitRef( const QGitRef& other );
 
             /**
              * Free an existing reference object.
              */
-            ~QGitRefs();
+            ~QGitRef();
 
         public:
 
@@ -103,7 +103,7 @@ namespace LibQGit2
              * @param resolvedRef Pointer to the peeled reference
              * @return 0 on success; error code otherwise
              */
-            int resolve(QGitRefs* resolvedRef);
+            int resolve(QGitRef* resolvedRef);
 
             /**
              * Write a reference back to disk.
@@ -174,4 +174,4 @@ namespace LibQGit2
     };
 }
 
-#endif // LIBQGIT2_REFS_H
+#endif // LIBQGIT2_REF_H
