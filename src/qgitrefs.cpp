@@ -39,6 +39,11 @@ QGitRefs::~QGitRefs()
 {
 }
 
+int QGitRefs::lookup(const QString& name, const QGitRepository& repository)
+{
+    return git_reference_lookup(&m_reference, repository.data(), QFile::encodeName(name));
+}
+
 QGitOId QGitRefs::oid() const
 {
     return QGitOId(git_reference_oid(m_reference));
@@ -61,8 +66,7 @@ QString QGitRefs::name() const
 
 int QGitRefs::resolve(QGitRefs* resolvedRef)
 {
-    git_reference *reference = resolvedRef->data();
-    return git_reference_resolve(&reference, m_reference);
+    return git_reference_resolve(&resolvedRef->m_reference, m_reference);
 }
 
 QGitRepository QGitRefs::owner()

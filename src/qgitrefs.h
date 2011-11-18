@@ -55,6 +55,8 @@ namespace LibQGit2
 
         public:
 
+            int lookup(const QString& name, const QGitRepository& repository);
+
             /**
              * Get the OID pointed to by a reference.
              *
