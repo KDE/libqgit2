@@ -103,7 +103,7 @@ namespace LibQGit2
              * @param resolvedRef Pointer to the peeled reference
              * @return 0 on success; error code otherwise
              */
-            int resolve(QGitRef* resolvedRef);
+            QGitRef resolve() const;
 
             /**
              * Write a reference back to disk.

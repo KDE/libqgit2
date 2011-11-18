@@ -64,9 +64,11 @@ QString QGitRef::name() const
     return QString::fromUtf8(git_reference_name(m_reference));
 }
 
-int QGitRef::resolve(QGitRef* resolvedRef)
+QGitRef QGitRef::resolve() const
 {
-    return git_reference_resolve(&resolvedRef->m_reference, m_reference);
+    git_reference *ref;
+    git_reference_resolve(&ref, m_reference);
+    return QGitRef(ref);
 }
 
 QGitRepository QGitRef::owner()
