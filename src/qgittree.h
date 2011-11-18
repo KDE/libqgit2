@@ -175,20 +175,6 @@ namespace LibQGit2
         private:
             git_tree *m_tree;
     };
-
-    class LIBQGIT2_TREE_EXPORT QGitConstTree
-    {
-        public:
-            QGitConstTree(const git_tree *tree);
-            QGitConstTree(const QGitConstTree& other);
-            QGitConstTree(const QGitTree& other);
-            ~QGitConstTree();
-
-            const git_tree *data() const;
-
-        private:
-            const git_tree *d;
-    };
 }
 
 #endif // LIBQGIT2_TREE_H

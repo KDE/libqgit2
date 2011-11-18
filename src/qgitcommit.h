@@ -119,7 +119,7 @@ namespace LibQGit2
              * Get the tree pointed to by a commit.
              * @return the tree of a commit
              */
-            QGitConstTree tree() const;
+            QGitTree tree() const;
 
             /**
              * Get the number of parents of this commit

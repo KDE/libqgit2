@@ -91,9 +91,9 @@ QGitSignatureRef QGitCommit::author() const
     return QGitSignatureRef(git_commit_author(m_commit));
 }
 
-QGitConstTree QGitCommit::tree() const
+QGitTree QGitCommit::tree() const
 {
-    return QGitConstTree(git_commit_tree(m_commit));
+    return QGitTree(const_cast<git_tree*>(git_commit_tree(m_commit)));
 }
 
 unsigned int QGitCommit::parentCount() const

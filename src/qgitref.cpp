@@ -26,10 +26,6 @@
 
 using namespace LibQGit2;
 
-QGitRef::QGitRef(const QGitRepository& repository)
-{
-}
-
 QGitRef::QGitRef(git_reference *ref)
     : m_reference(ref)
 {

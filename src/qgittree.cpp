@@ -113,27 +113,3 @@ const git_tree* QGitTree::constData() const
 {
     return m_tree;
 }
-
-QGitConstTree::QGitConstTree(const git_tree *tree)
-    : d(tree)
-{
-}
-
-QGitConstTree::QGitConstTree(const QGitConstTree& other)
-    : d(other.data())
-{
-}
-
-QGitConstTree::QGitConstTree(const QGitTree& other)
-    : d(other.data())
-{
-}
-
-QGitConstTree::~QGitConstTree()
-{
-}
-
-const git_tree *QGitConstTree::data() const
-{
-    return d;
-}

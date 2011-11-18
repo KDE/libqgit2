@@ -34,19 +34,9 @@ namespace LibQGit2
     {
         public:
             /**
-             * Create a new reference.
-             *
-             * The reference will be empty and exclusively
-             * in-memory until it is filled with the setter
-             * methods and written back to disk using
-             * `git_reference_write`.
-             *
-             * @param repository Repository where that reference exists
-             * @return 0 on success; error code otherwise
+             * Create an invalid (null) reference
              */
-            explicit QGitRef(const QGitRepository& repository);
-
-            explicit QGitRef(git_reference *ref);
+            explicit QGitRef(git_reference *ref = 0);
 
             QGitRef(const QGitRef& other);
 
