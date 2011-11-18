@@ -22,35 +22,36 @@
 using namespace LibQGit2;
 
 QGitOId::QGitOId(const git_oid *oid)
+    : d(GIT_OID_RAWSZ, 0)
 {
-    reset(oid);
+    if (oid != 0) {
+        git_oid_cpy(data(), oid);
+    }
 }
 
 QGitOId::QGitOId(const QGitOId& other)
+    : d(other.d)
 {
-    reset(other.data());
 }
 
 QGitOId::~QGitOId()
 {
 }
 
-void QGitOId::reset(const git_oid *oid)
-{
-    git_oid_cpy(&m_oid, oid);
-}
-
 QGitOId QGitOId::fromString(const QByteArray& string)
 {
-    git_oid oid;
-    git_oid_mkstr(&oid, string.constData());
-    return QGitOId(&oid);
+    QGitOId oid;
+    git_oid_mkstr(oid.data(), string.constData());
+    return oid;
 }
 
-//void QGitOId::makeRaw(const unsigned char *raw)
-//{
-//    return git_oid_mkraw(m_oid, raw);
-//}
+QGitOId QGitOId::fromRawData(const QByteArray& raw)
+{
+    Q_ASSERT(raw.size() == GIT_OID_RAWSZ);
+    QGitOId oid;
+    oid.d = raw;
+    return oid;
+}
 
 QByteArray QGitOId::format() const
 {
@@ -66,9 +67,19 @@ QByteArray QGitOId::pathFormat() const
     return ba;
 }
 
+git_oid* QGitOId::data()
+{
+    return reinterpret_cast<git_oid*>(d.data());
+}
+
 const git_oid* QGitOId::data() const
 {
-    return &m_oid;
+    return reinterpret_cast<const git_oid*>(d.constData());
+}
+
+const git_oid* QGitOId::constData() const
+{
+    return reinterpret_cast<const git_oid*>(d.constData());
 }
 
 bool operator==(const QGitOId& oid1, const QGitOId& oid2)

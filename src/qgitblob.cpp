@@ -64,10 +64,7 @@ int QGitBlob::setRawContent(const void* buffer, size_t len)
 
 int QGitBlob::writeFile(QGitOId& writtenId, const QGitRepository& repository, const QString& path)
 {
-    git_oid oid;
-    int ret = git_blob_writefile(&oid, repository.data(), QFile::encodeName(path));
-    writtenId.reset(&oid);
-    return ret;
+    return git_blob_writefile(writtenId.data(), repository.data(), QFile::encodeName(path));
 }
 
 git_blob* QGitBlob::data() const

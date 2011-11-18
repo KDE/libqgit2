@@ -49,11 +49,6 @@ namespace LibQGit2
             ~QGitOId();
 
             /**
-             * Replace the value with the given oid
-             */
-            void reset(const git_oid *oid = 0);
-
-            /**
              * Parse a hex formatted object id into a OId.
              * @param str input hex string; (at least 40 bytes).
              * @return OId; null OId on failure.
@@ -64,7 +59,7 @@ namespace LibQGit2
              * Copy an already raw oid into a git_oid structure.
              * @param raw the raw input bytes to be copied.
              */
-//            void makeRaw(const unsigned char *raw);
+            static QGitOId fromRawData(const QByteArray& raw);
 
             /**
              * Format a OId into a hex string.
@@ -79,10 +74,12 @@ namespace LibQGit2
              */
             QByteArray pathFormat() const;
 
+            git_oid* data();
             const git_oid* data() const;
+            const git_oid* constData() const;
 
         private:
-            git_oid m_oid;
+            QByteArray d;
     };
 
     /**

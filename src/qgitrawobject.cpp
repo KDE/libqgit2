@@ -48,18 +48,12 @@ int QGitRawObject::readHeader(QGitDatabase *db, const QGitOId& id)
 
 int QGitRawObject::write(QGitOId &id, QGitDatabase *db)
 {
-    git_oid oid;
-    int ret = git_odb_write(&oid, db->data(), m_rawObject);
-    id.reset(&oid);
-    return ret;
+    return git_odb_write(id.data(), db->data(), m_rawObject);
 }
 
 int QGitRawObject::hash(QGitOId &id)
 {
-    git_oid oid;
-    int ret = git_rawobj_hash(&oid, m_rawObject);
-    id.reset(&oid);
-    return ret;
+    return git_rawobj_hash(id.data(), m_rawObject);
 }
 
 void QGitRawObject::close()
