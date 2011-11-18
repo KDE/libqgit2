@@ -48,7 +48,7 @@ namespace LibQGit2
 
             explicit QGitRef(git_reference *ref);
 
-            QGitRef( const QGitRef& other );
+            QGitRef(const QGitRef& other);
 
             /**
              * Free an existing reference object.

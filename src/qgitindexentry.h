@@ -56,6 +56,9 @@ namespace LibQGit2
              */
             QString path() const;
 
+            /**
+             * Get the size of the file
+             */
             qint64 fileSize() const;
 
             const git_index_entry *data() const;
