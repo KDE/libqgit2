@@ -80,6 +80,20 @@ QGitRef QGitRepository::lookup(const QString& name)
     return QGitRef(ref);
 }
 
+QGitRef QGitRepository::createRef(const QString& name, const QGitOId& oid)
+{
+    git_reference *ref;
+    git_reference_create_oid(&ref, data(), QFile::encodeName(name), oid.data());
+    return QGitRef(ref);
+}
+
+QGitRef QGitRepository::createSymbolicRef(const QString& name, const QString& target)
+{
+    git_reference *ref;
+    git_reference_create_symbolic(&ref, data(), QFile::encodeName(name), QFile::encodeName(target));
+    return QGitRef(ref);
+}
+
 QGitDatabase* QGitRepository::database() const
 {
     QGitDatabase *database = new QGitDatabase(git_repository_database(m_repository));

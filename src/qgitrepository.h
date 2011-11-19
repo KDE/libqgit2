@@ -167,6 +167,9 @@ namespace LibQGit2
              */
             QGitRef lookup(const QString& name);
 
+            QGitRef createRef(const QString& name, const QGitOId& oid);
+            QGitRef createSymbolicRef(const QString& name, const QString& target);
+
             /**
              * Get the object database behind a Git repository
              *
