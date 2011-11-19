@@ -48,7 +48,7 @@ QGitTree::~QGitTree()
 
 int QGitTree::lookup(QGitRepository& repository, const QGitOId& id)
 {
-    return git_tree_lookup(&m_tree, (git_repository *)repository.data(), (git_oid *)id.data());
+    return git_tree_lookup(&m_tree, repository.data(), id.data());
 }
 
 QGitOId QGitTree::id()

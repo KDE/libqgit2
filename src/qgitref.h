@@ -33,11 +33,15 @@ namespace LibQGit2
     class LIBQGIT2_REFS_EXPORT QGitRef
     {
         public:
+
             /**
-             * Create an invalid (null) reference
+             * Create an new ref object
              */
             explicit QGitRef(git_reference *ref = 0);
 
+            /**
+             * Copy constructor
+             */
             QGitRef(const QGitRef& other);
 
             /**

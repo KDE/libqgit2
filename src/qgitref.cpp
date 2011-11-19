@@ -31,9 +31,9 @@ QGitRef::QGitRef(git_reference *ref)
 {
 }
 
-QGitRef::QGitRef( const QGitRef& other )
+QGitRef::QGitRef(const QGitRef& other)
+    : m_reference(other.m_reference)
 {
-    m_reference = other.m_reference;
 }
 
 QGitRef::~QGitRef()
