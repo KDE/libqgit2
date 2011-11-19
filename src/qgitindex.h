@@ -26,6 +26,7 @@
 
 namespace LibQGit2
 {
+    class QGitOId;
     class QGitRepository;
     class QGitIndexEntry;
 
@@ -66,6 +67,11 @@ namespace LibQGit2
             ~QGitIndex();
 
         public:
+
+            /**
+             * Create a new tree object from the index
+             */
+            QGitOId createTree();
 
             /**
              * Clear the contents (all the entries) of an index object.

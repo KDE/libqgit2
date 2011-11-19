@@ -19,6 +19,7 @@
 
 #include "qgitindex.h"
 #include "qgitindexentry.h"
+#include "qgittree.h"
 
 #include "qgitrepository.h"
 
@@ -49,6 +50,13 @@ void QGitIndex::reset(git_index *data)
 QGitIndex::~QGitIndex()
 {
     git_index_free(m_index);
+}
+
+QGitOId QGitIndex::createTree()
+{
+    QGitOId oid;
+    git_tree_create_fromindex(oid.data(), data());
+    return oid;
 }
 
 void QGitIndex::clear()
