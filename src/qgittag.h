@@ -31,24 +31,14 @@
 namespace LibQGit2
 {
     class QGitObject;
-    class QGitConstObject;
 
     class LIBQGIT2_TAG_EXPORT QGitTag
     {
         public:
-            /**
-             * Construct a new in-memory Tag.
-             *
-             * The tag object must be manually filled using
-             * setter methods before it can be written to its
-             * repository.
-             *
-             * @param repository The repository where the object will reside
-             * @return 0 on success; error code otherwise
-             */
-            explicit QGitTag(const QGitRepository& repository);
 
-            QGitTag( const QGitTag& other );
+            explicit QGitTag(git_tag *tag = 0);
+
+            QGitTag(const QGitTag& other);
             ~QGitTag();
 
         public:
@@ -74,7 +64,7 @@ namespace LibQGit2
              * Get the tagged object of a tag
              * @return reference to a repository object
              */
-            QGitConstObject target() const;
+            QGitObject target() const;
 
             /**
              * Get the type of a tag's tagged object
@@ -99,31 +89,6 @@ namespace LibQGit2
              * @return message of the tag
              */
             const QString message();
-
-            /**
-             * Set the target of a tag (i.e. the object that the tag points to)
-             * @param target the new tagged target
-             */
-            void setTarget(const QGitObject &target);
-
-            /**
-             * Set the name of a tag
-             * @param name the new name for the tag
-             */
-            void setName(const QString& name);
-
-            /**
-             * Set the tagger of a tag
-             * @param taggerSig signature of the tagging action
-             */
-            void setTagger(const QGitSignature& taggerSig);
-
-
-            /**
-             * Set the message of a tag
-             * @param message the new tagger for the tag
-             */
-            void setMessage(const QString& message);
 
             git_tag* data() const;
             const git_tag* constData() const;

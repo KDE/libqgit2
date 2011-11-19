@@ -80,17 +80,17 @@ QGitRef QGitRepository::lookup(const QString& name)
     return QGitRef(ref);
 }
 
-QGitRef QGitRepository::createRef(const QString& name, const QGitOId& oid)
+QGitRef QGitRepository::createRef(const QString& name, const QGitOId& oid, bool force)
 {
     git_reference *ref;
-    git_reference_create_oid(&ref, data(), QFile::encodeName(name), oid.data());
+    git_reference_create_oid(&ref, data(), QFile::encodeName(name), oid.data(), force);
     return QGitRef(ref);
 }
 
-QGitRef QGitRepository::createSymbolicRef(const QString& name, const QString& target)
+QGitRef QGitRepository::createSymbolicRef(const QString& name, const QString& target, bool force)
 {
     git_reference *ref;
-    git_reference_create_symbolic(&ref, data(), QFile::encodeName(name), QFile::encodeName(target));
+    git_reference_create_symbolic(&ref, data(), QFile::encodeName(name), QFile::encodeName(target), force);
     return QGitRef(ref);
 }
 

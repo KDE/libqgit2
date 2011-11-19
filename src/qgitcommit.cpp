@@ -25,11 +25,6 @@
 
 using namespace LibQGit2;
 
-QGitCommit::QGitCommit(const QGitRepository& repository)
-{
-    git_commit_new(&m_commit, repository.data());
-}
-
 QGitCommit::QGitCommit(git_commit *commit)
     : m_commit(commit)
 {
@@ -57,11 +52,6 @@ int QGitCommit::lookup(const QGitRepository& repository, const QGitOId& oid)
 QGitOId QGitCommit::id() const
 {
     return QGitOId(git_commit_id(m_commit));
-}
-
-QString QGitCommit::messageShort() const
-{
-    return QString::fromUtf8(git_commit_message_short(m_commit));
 }
 
 QString QGitCommit::message() const
@@ -93,7 +83,9 @@ QGitSignatureRef QGitCommit::author() const
 
 QGitTree QGitCommit::tree() const
 {
-    return QGitTree(const_cast<git_tree*>(git_commit_tree(m_commit)));
+    git_tree *tree;
+    git_commit_tree(&tree, m_commit);
+    return QGitTree(tree);
 }
 
 unsigned int QGitCommit::parentCount() const
@@ -103,32 +95,9 @@ unsigned int QGitCommit::parentCount() const
 
 QGitCommit QGitCommit::parent(unsigned n) const
 {
-    return QGitCommit(git_commit_parent(m_commit, n));
-}
-
-int QGitCommit::addParent(const QGitCommit& newParent)
-{
-    return git_commit_add_parent(m_commit, newParent.data());
-}
-
-void QGitCommit::setMessage(const QString& message)
-{
-    return git_commit_set_message(m_commit, qPrintable(message));
-}
-
-void QGitCommit::setCommitter(const QGitSignature& committerSig)
-{
-    return git_commit_set_committer(m_commit, committerSig.constData());
-}
-
-void QGitCommit::setAuthor(const QGitSignature& authorSig)
-{
-    return git_commit_set_author(m_commit, authorSig.constData());
-}
-
-void QGitCommit::setTree(const QGitTree& tree)
-{
-    return git_commit_set_tree(m_commit, tree.data());
+    git_commit *parent;
+    git_commit_parent(&parent, m_commit, n);
+    return QGitCommit(parent);
 }
 
 git_commit* QGitCommit::data() const

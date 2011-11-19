@@ -27,7 +27,8 @@
 namespace LibQGit2
 {
     class QGitRepository;
-    class QGitCommit;
+    class QGitOId;
+
     class LIBQGIT2_REVWALK_EXPORT QGitRevWalk
     {
         public:
@@ -61,13 +62,13 @@ namespace LibQGit2
              *
              * @param commit the commit to start from.
              */
-            int push(const QGitCommit& commit) const;
+            int push(const QGitOId& commit) const;
 
             /**
              * Mark a commit (and its ancestors) uninteresting for the output.
              * @param commit the commit that will be ignored during the traversal
              */
-            int hide(const QGitCommit& commit) const;
+            int hide(const QGitOId& commit) const;
 
             /**
              * Get the next commit from the revision traversal.
@@ -76,7 +77,7 @@ namespace LibQGit2
              * @return GIT_SUCCESS if the next commit was found;
              * GIT_EREVWALKOVER if there are no commits left to iterate
              */
-            int next(QGitCommit& commit);
+            QGitOId next();
 
             /**
              * Change the sorting mode when iterating through the
@@ -84,7 +85,7 @@ namespace LibQGit2
              * Changing the sorting mode resets the walker.
              * @param sortMode combination of GIT_RPSORT_XXX flags
              */
-            int sorting(unsigned int sortMode);
+            void sorting(unsigned int sortMode);
 
             /**
              * Return the repository on which this walker

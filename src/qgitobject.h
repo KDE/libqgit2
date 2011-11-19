@@ -40,23 +40,6 @@ namespace LibQGit2
             ~QGitObject();
 
         public:
-            /**
-             * Write back an object to disk.
-             *
-             * The object will be written to its corresponding
-             * repository.
-             *
-             * If the object has no changes since it was first
-             * read from the repository, no actions will take place.
-             *
-             * If the object has been modified since it was read from
-             * the repository, or it has been created from scratch
-             * in memory, it will be written to the repository and
-             * its SHA1 ID will be updated accordingly.
-             *
-             * @return 0 on success; otherwise an error code
-             */
-            int write();
 
             /**
              * Get the id (SHA1) of a repository object
@@ -130,21 +113,6 @@ namespace LibQGit2
 
         private:
             git_object *m_object;
-    };
-
-
-    class LIBQGIT2_OBJECT_EXPORT QGitConstObject
-    {
-        public:
-            explicit QGitConstObject(const git_object *object = 0);
-            QGitConstObject(const QGitConstObject& other);
-            QGitConstObject(const QGitObject& other);
-            ~QGitConstObject();
-
-            const git_object* data() const;
-
-        private:
-            const git_object *d;
     };
 }
 

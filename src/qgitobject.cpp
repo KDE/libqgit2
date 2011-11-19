@@ -38,11 +38,6 @@ QGitObject::~QGitObject()
 {
 }
 
-int QGitObject::write()
-{
-    return git_object_write(m_object);
-}
-
 QGitOId QGitObject::id() const
 {
     return QGitOId(git_object_id(m_object));
@@ -86,29 +81,4 @@ git_object* QGitObject::data() const
 const git_object* QGitObject::constData() const
 {
     return m_object;
-}
-
-
-QGitConstObject::QGitConstObject(const git_object *object)
-    : d(object)
-{
-}
-
-QGitConstObject::QGitConstObject(const QGitConstObject& other)
-    : d(other.d)
-{
-}
-
-QGitConstObject::QGitConstObject(const QGitObject& other)
-    : d(other.data())
-{
-}
-
-QGitConstObject::~QGitConstObject()
-{
-}
-
-const git_object* QGitConstObject::data() const
-{
-    return d;
 }

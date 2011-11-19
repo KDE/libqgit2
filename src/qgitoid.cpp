@@ -41,7 +41,7 @@ QGitOId::~QGitOId()
 QGitOId QGitOId::fromString(const QByteArray& string)
 {
     QGitOId oid;
-    git_oid_mkstr(oid.data(), string.constData());
+    git_oid_fromstr(oid.data(), string.constData());
     return oid;
 }
 

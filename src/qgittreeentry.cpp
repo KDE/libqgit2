@@ -25,7 +25,7 @@
 
 using namespace LibQGit2;
 
-QGitTreeEntry::QGitTreeEntry(git_tree_entry *treeEntry)
+QGitTreeEntry::QGitTreeEntry(const git_tree_entry *treeEntry)
     : m_treeEntry(treeEntry)
 {
 }
@@ -54,31 +54,14 @@ QGitOId QGitTreeEntry::id() const
     return QGitOId(git_tree_entry_id(m_treeEntry));
 }
 
-int QGitTreeEntry::toObject(QGitObject& object)
+QGitObject QGitTreeEntry::toObject(const QGitRepository& repo)
 {
-    git_object *obj = object.data();
-    return git_tree_entry_2object(&obj, m_treeEntry);
+    git_object *obj;
+    git_tree_entry_2object(&obj, repo.data(), m_treeEntry);
+    return QGitObject(obj);
 }
 
-int QGitTreeEntry::setAttributes(unsigned int attributes)
-{
-    git_tree_entry_set_attributes(m_treeEntry, attributes);
-
-    //! @todo Find dependencies
-    return 0;
-}
-
-void QGitTreeEntry::setName(const QString& name)
-{
-    return git_tree_entry_set_name(m_treeEntry, QFile::encodeName(name));
-}
-
-void QGitTreeEntry::setId(const QGitOId& oid)
-{
-    return git_tree_entry_set_id(m_treeEntry, oid.data());
-}
-
-git_tree_entry* QGitTreeEntry::data() const
+const git_tree_entry* QGitTreeEntry::data() const
 {
     return m_treeEntry;
 }

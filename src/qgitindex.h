@@ -106,7 +106,7 @@ namespace LibQGit2
              * @param stage stage for the entry
              * @return 0 on success, otherwise an error code
              */
-            int add(const QString& path, int stage);
+            int add(const QString& path, int stage = 0);
 
             /**
              * Remove an entry from the index

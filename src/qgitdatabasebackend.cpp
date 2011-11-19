@@ -42,7 +42,7 @@ int QGitDatabaseBackend::pack(const QString& objectsDir)
 
 int QGitDatabaseBackend::loose(const QString& objectsDir)
 {
-    return git_odb_backend_loose(&m_databaseBackend, QFile::encodeName(objectsDir));
+    return git_odb_backend_loose(&m_databaseBackend, QFile::encodeName(objectsDir), -1, 0);
 }
 
 git_odb_backend* QGitDatabaseBackend::data() const

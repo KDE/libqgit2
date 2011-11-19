@@ -44,27 +44,26 @@ void QGitRevWalk::reset() const
     return git_revwalk_reset(m_revWalk);
 }
 
-int QGitRevWalk::push(const QGitCommit& commit) const
+int QGitRevWalk::push(const QGitOId& oid) const
 {
-    return git_revwalk_push(m_revWalk, commit.data());
+    return git_revwalk_push(m_revWalk, oid.data());
 }
 
-int QGitRevWalk::hide(const QGitCommit& commit) const
+int QGitRevWalk::hide(const QGitOId& oid) const
 {
-    return git_revwalk_hide(m_revWalk, commit.data());
+    return git_revwalk_hide(m_revWalk, oid.data());
 }
 
-int QGitRevWalk::next(QGitCommit& commit)
+QGitOId QGitRevWalk::next()
 {
-    git_commit *c;
-    int ret = git_revwalk_next(&c, m_revWalk);
-    commit.reset(c);
-    return ret;
+    QGitOId oid;
+    git_revwalk_next(oid.data(), m_revWalk);
+    return oid;
 }
 
-int QGitRevWalk::sorting(unsigned int sortMode)
+void QGitRevWalk::sorting(unsigned int sortMode)
 {
-    return git_revwalk_sorting(m_revWalk, sortMode);
+    git_revwalk_sorting(m_revWalk, sortMode);
 }
 
 QGitRepository QGitRevWalk::repository()

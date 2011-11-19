@@ -28,10 +28,12 @@ namespace LibQGit2
 {
     class QGitOId;
     class QGitObject;
+    class QGitRepository;
+
     class LIBQGIT2_TREEENTRY_EXPORT QGitTreeEntry
     {
         public:
-            explicit QGitTreeEntry(git_tree_entry *treeEntry = 0);
+            explicit QGitTreeEntry(const git_tree_entry *treeEntry = 0);
             QGitTreeEntry(const QGitTreeEntry& other);
             ~QGitTreeEntry();
 
@@ -61,44 +63,13 @@ namespace LibQGit2
              * @param object pointer to the converted object
              * @return a reference to the pointed object in the repository
              */
-            int toObject(QGitObject& object);
+            QGitObject toObject(const QGitRepository& repo);
 
-            /**
-             * Change the attributes of a tree entry.
-             *
-             * This will mark the tree that contains the entry as modified;
-             * the modified entry will be written back to disk on the next write()
-             * call of the Object class
-             *
-             * @param oid new attributes for the entry
-             */
-            int setAttributes(unsigned int attributes);
-
-            /**
-             * Change the filename of a tree entry.
-             *
-             * This will mark the tree that contains the entry as modified;
-             * the modified entry will be written back to disk on the next git_object_write()
-             *
-             * @param oid new filename for the entry
-             */
-            void setName(const QString& name);
-
-            /**
-             * Change the SHA1 id of a tree entry.
-             *
-             * This will mark the tree that contains the entry as modified;
-             * the modified entry will be written back to disk on the next git_object_write()
-             *
-             * @param oid new SHA1 oid for the entry
-             */
-            void setId(const QGitOId& oid);
-
-            git_tree_entry* data() const;
+            const git_tree_entry* data() const;
             const git_tree_entry* constData() const;
 
         private:
-            git_tree_entry *m_treeEntry;
+            const git_tree_entry *m_treeEntry;
     };
 }
 

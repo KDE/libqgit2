@@ -34,17 +34,7 @@ namespace LibQGit2
     class LIBQGIT2_TREE_EXPORT QGitTree
     {
         public:
-            /**
-             * Construct a new in-memory tree.
-             *
-             * The tree object must be manually filled using
-             * setter methods before it can be written to its
-             * repository.
-             *
-             * @param repo The repository where the object will reside
-             * @return 0 on success; error code otherwise
-             */
-            explicit QGitTree(const QGitRepository& repository);
+
             explicit QGitTree(git_tree *tree = 0);
 
             QGitTree( const QGitTree& other );
@@ -87,87 +77,6 @@ namespace LibQGit2
              * @return the tree entry; NULL if not found
              */
             QGitTreeEntry entryByIndex(int idx);
-
-            /**
-             * Add a new entry to the tree and return the new entry.
-             *
-             * This will mark the tree as modified; the new entry will
-             * be written back to disk on the next write() call of the Object class
-             *
-             * @param entryOut Pointer to the entry that just got
-             * created. May be NULL if you are not interested on
-             * getting the new entry
-             * @iparam id OID for the tree entry
-             * @param filename Filename for the tree entry
-             * @param attributes UNIX file attributes for the entry
-             * @return 0 on success; otherwise error code
-             */
-            int addEntry(QGitTreeEntry& entryOut, const QGitOId& id, const QString& fileName, int attributes);
-
-            /**
-             * Remove an entry by its index.
-             *
-             * Index must be >= 0 and < than entryCount().
-             *
-             * This will mark the tree as modified; the modified entry will
-             * be written back to disk on the next write() call of the Object class
-             *
-             * @param idx index of the entry
-             * @return 0 on successful removal; GIT_ENOTFOUND if the entry wasn't found
-             */
-            int removeEntryByIndex(int idx);
-
-            /**
-             * Remove an entry by its filename.
-             *
-             * This will mark the tree as modified; the modified entry will
-             * be written back to disk on the next write() call of the Object class
-             *
-             * @param fileName File name of the entry
-             * @return 0 on successful removal; GIT_ENOTFOUND if the entry wasn't found
-             */
-            int removeEntryByName(const QString& fileName);
-
-            /**
-             * Clear all the entries in a tree.
-             *
-             * This will mark the tree as modified; the modified entry will
-             * be written back to disk on the next write() call of the Object class
-             *
-             */
-            void clearEntries();
-
-            /**
-             * Change the SHA1 id of a tree entry.
-             *
-             * This will mark the tree that contains the entry as modified;
-             * the modified entry will be written back to disk on the next write() call of the Object class
-             *
-             * @param entry Entry object which will be modified
-             * @param oid new SHA1 oid for the entry
-             */
-            void setEntryId(QGitTreeEntry& treeEntry, const QGitOId& oid);
-
-            /**
-             * Change the filename of a tree entry.
-             *
-             * This will mark the tree that contains the entry as modified;
-             * the modified entry will be written back to disk on the next write() call of the Object class
-             *
-             * @param entry Entry object which will be modified
-             * @param fileName new filename for the entry
-             */
-            void setEntryName(QGitTreeEntry& treeEntry, const QString& fileName);
-
-            /**
-             * Change the attributes of a tree entry.
-             *
-             * This will mark the tree that contains the entry as modified;
-             * the modified entry will be written back to disk on the next git_object_write()
-             *
-             * @param attribute new attributes for the entry
-             */
-            int setEntryAttributes(QGitTreeEntry& treeEntry, int attribute);
 
             git_tree* data() const;
             const git_tree* constData() const;

@@ -22,7 +22,6 @@ HEADERS += \
     qgitindexentry.h \
     qgitobject.h \
     qgitoid.h \
-    qgitrawobject.h \
     qgitref.h \
     qgitrepository.h \
     qgitrevwalk.h \
@@ -84,7 +83,6 @@ SOURCES += \
     qgitindexentry.cpp \
     qgitobject.cpp \
     qgitoid.cpp \
-    qgitrawobject.cpp \
     qgitref.cpp \
     qgitrepository.cpp \
     qgitrevwalk.cpp \
@@ -93,9 +91,14 @@ SOURCES += \
     qgittree.cpp \
     qgittreeentry.cpp \
     \
+    buffer.c \
     vector.c \
     util.c \
+    cache.c \
+    config.c \
+    config_file.c \
     tree.c \
+    tree-cache.c \
     thread-utils.c \
     tag.c \
     signature.c \
@@ -116,9 +119,14 @@ SOURCES += \
     delta-apply.c \
     commit.c \
     blob.c \
-    backends/sqlite.c \
+    mwindow.c \
+    pack.c \
+    path.c \
+    posix.c \
+    sha1.c \
+    sha1_lookup.c \
+    tsort.c \
     unix/map.c \
-    block-sha1/sha1.c
 
 
 

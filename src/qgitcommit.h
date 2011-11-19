@@ -32,23 +32,12 @@ namespace LibQGit2
     class QGitSignature;
     class QGitSignatureRef;
     class QGitTree;
-    class QGitConstTree;
     class QGitRepository;
 
     class LIBQGIT2_COMMIT_EXPORT QGitCommit
     {
         public:
-            /**
-             * Create a new in-memory git_commit.
-             *
-             * The commit object must be manually filled using
-             * setter methods before it can be written to its
-             * repository.
-             *
-             * @param repository The repository where the object will reside
-             * @return 0 on success; error code otherwise
-             */
-            explicit QGitCommit(const QGitRepository& repository);
+
             explicit QGitCommit(git_commit *commit = 0);
 
             QGitCommit( const QGitCommit& other );
@@ -76,12 +65,6 @@ namespace LibQGit2
             * @return object identity for the commit.
             */
             QGitOId id() const;
-
-            /**
-             * Get the short (one line) message of a commit.
-             * @return the short message of a commit
-             */
-            QString messageShort() const;
 
             /**
              * Get the full message of a commit.
@@ -134,38 +117,6 @@ namespace LibQGit2
              * @return a pointer to the commit; NULL if out of bounds
              */
             QGitCommit parent(unsigned n) const;
-
-            /**
-             * Add a new parent commit to an existing commit
-             * @param new_parent the new commit which will be a parent
-             * @return 0 on success; error code otherwise
-             */
-            int addParent(const QGitCommit& newParent);
-
-
-            /**
-             * Set the message of a commit
-             * @param message the new message
-             */
-            void setMessage(const QString& message);
-
-            /**
-             * Set the committer of a commit
-             * @param author_sig signature of the committer
-             */
-            void setCommitter(const QGitSignature& committerSig);
-
-            /**
-             * Set the author of a commit
-             * @param author_sig signature of the author
-             */
-            void setAuthor(const QGitSignature& authorSig);
-
-            /**
-             * Set the tree which is pointed to by a commit
-             * @param tree the new tree
-             */
-            void setTree(const QGitTree& tree);
 
             git_commit* data() const;
             const git_commit* constData() const;

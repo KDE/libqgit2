@@ -32,19 +32,9 @@ namespace LibQGit2
     class LIBQGIT2_BLOB_EXPORT QGitBlob
     {
         public:
-            /**
-             * Construct a new in-memory Blob.
-             *
-             * The blob object must be manually filled using
-             * the 'set_rawcontent' methods before it can
-             * be written back to disk.
-             *
-             * @param repository The repository where the object will reside
-             * @return 0 on success; error code otherwise
-             */
-            explicit QGitBlob(const QGitRepository& repository);
+            explicit QGitBlob(git_blob *blob = 0);
 
-            QGitBlob( const QGitBlob& other );
+            QGitBlob(const QGitBlob& other);
 
             /**
              * Delete a Blob previously allocated.
@@ -82,25 +72,6 @@ namespace LibQGit2
              * @return size on bytes
              */
             int rawSize();
-
-            /**
-             * Fill a blob with the contents inside
-             * the pointed file.
-             *
-             * @param filename name of the file to read
-             * @return 0 on success; error code otherwise
-             */
-            int setRawContentFromFile(const QString& fileName);
-
-            /**
-             * Fill a blob with the contents inside
-             * the pointed buffer
-             *
-             * @param buffer buffer with the contents for the blob
-             * @param len size of the buffer
-             * @return 0 on success; error code otherwise
-             */
-            int setRawContent(const void* buffer, size_t len);
 
             /**
              * Read a file from the working folder of a repository

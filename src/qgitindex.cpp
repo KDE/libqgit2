@@ -28,12 +28,12 @@ using namespace LibQGit2;
 
 QGitIndex::QGitIndex(const QString& indexPath)
 {
-    git_index_open_bare(&m_index, QFile::encodeName(indexPath));
+    git_index_open(&m_index, QFile::encodeName(indexPath));
 }
 
 QGitIndex::QGitIndex(const QGitRepository& repository)
 {
-    git_index_open_inrepo(&m_index, repository.data());
+    git_repository_index(&m_index, repository.data());
 }
 
 QGitIndex::QGitIndex( const QGitIndex& other )
@@ -83,7 +83,7 @@ int QGitIndex::remove(int position)
 
 int QGitIndex::insert(const QGitIndexEntry &source_entry)
 {
-    return git_index_insert(m_index, source_entry.data());
+    return git_index_append2(m_index, source_entry.data());
 }
 
 QGitIndexEntry QGitIndex::get(int n) const
