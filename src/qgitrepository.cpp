@@ -18,8 +18,14 @@
  */
 
 #include "qgitrepository.h"
+#include "qgitcommit.h"
+#include "qgittree.h"
+#include "qgitsignature.h"
+
+#include <git2/commit.h>
 
 #include <QtCore/QFile>
+#include <QtCore/QVector>
 
 using namespace LibQGit2;
 
@@ -92,6 +98,24 @@ QGitRef QGitRepository::createSymbolicRef(const QString& name, const QString& ta
     git_reference *ref;
     git_reference_create_symbolic(&ref, data(), QFile::encodeName(name), QFile::encodeName(target), force);
     return QGitRef(ref);
+}
+
+QGitOId QGitRepository::createCommit(const QString& ref,
+                                     const QGitSignatureRef& author,
+                                     const QGitSignatureRef& committer,
+                                     const QString& message,
+                                     const QGitTree& tree,
+                                     const QList<QGitCommit>& parents)
+{
+    QVector<const git_commit*> p;
+    foreach (const QGitCommit& parent, parents) {
+        p.append(parent.data());
+    }
+
+    QGitOId oid;
+    git_commit_create(oid.data(), data(), QFile::encodeName(ref), author.data(), committer.data(),
+                      NULL, message.toUtf8(), tree.data(), p.size(), p.data());
+    return oid;
 }
 
 QGitDatabase* QGitRepository::database() const

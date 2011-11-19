@@ -31,6 +31,10 @@
 
 namespace LibQGit2
 {
+    class QGitCommit;
+    class QGitTree;
+    class QGitSignatureRef;
+
     class LIBQGIT2_REPOSITORY_EXPORT QGitRepository
     {
         public:
@@ -169,6 +173,13 @@ namespace LibQGit2
 
             QGitRef createRef(const QString& name, const QGitOId& oid, bool force = true);
             QGitRef createSymbolicRef(const QString& name, const QString& target, bool force = true);
+
+            QGitOId createCommit(const QString& ref,
+                                 const QGitSignatureRef& author,
+                                 const QGitSignatureRef& committer,
+                                 const QString& message,
+                                 const QGitTree& tree,
+                                 const QList<QGitCommit>& parents);
 
             /**
              * Get the object database behind a Git repository
