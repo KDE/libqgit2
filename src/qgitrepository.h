@@ -65,6 +65,7 @@ namespace LibQGit2
             ~QGitRepository();
 
         public:
+
             /**
              * Open a git repository.
              *
@@ -151,19 +152,60 @@ namespace LibQGit2
                       const QString& gitWorkTree);
 
             /**
-             * Lookup a reference given it's name
+             * Lookup a reference by its name in a repository.
              */
             QGitRef lookupRef(const QString& name);
 
+            /**
+             * Lookup a commit object from a repository.
+             */
             QGitCommit lookupCommit(const QGitOId& oid);
+
+            /**
+             * Lookup a tag object from the repository.
+             */
             QGitTag lookupTag(const QGitOId& oid);
+
+            /**
+             * Lookup a tree object from the repository.
+             */
             QGitTree lookupTree(const QGitOId& oid);
+
+            /**
+             * Lookup a blob object from a repository.
+             */
             QGitBlob lookupBlob(const QGitOId& oid);
+
+            /**
+             * Lookup a reference to one of the objects in a repostory.
+             */
             QGitObject lookupAny(const QGitOId& oid);
 
-            QGitRef createRef(const QString& name, const QGitOId& oid, bool force = true);
-            QGitRef createSymbolicRef(const QString& name, const QString& target, bool force = true);
+            /**
+             * Create a new object id reference.
+             *
+             * The reference will be created in the repository and written
+             * to the disk.
+             *
+             * If `overwrite` is true and there already exists a reference
+             * with the same name, it will be overwritten.
+             */
+            QGitRef createRef(const QString& name, const QGitOId& oid, bool overwrite = true);
 
+            /**
+             * Create a new symbolic reference.
+             *
+             * The reference will be created in the repository and written
+             * to the disk.
+             *
+             * If `overwrite` is true and there already exists a reference
+             * with the same name, it will be overwritten.
+             */
+            QGitRef createSymbolicRef(const QString& name, const QString& target, bool overwrite = true);
+
+            /**
+             * Create a new commit in the repository
+             */
             QGitOId createCommit(const QString& ref,
                                  const QGitSignatureRef& author,
                                  const QGitSignatureRef& committer,
@@ -171,6 +213,13 @@ namespace LibQGit2
                                  const QGitTree& tree,
                                  const QList<QGitCommit>& parents);
 
+            /**
+             * Create a new tag in the repository from an object
+             *
+             * A new reference will also be created pointing to
+             * this tag object. If `overwrite` is true and a reference
+             * already exists with the given name, it'll be replaced.
+             */
             QGitOId createTag(const QString& name,
                               const QGitObject& target,
                               const QGitSignatureRef& tagger,

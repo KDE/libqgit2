@@ -124,17 +124,17 @@ QGitObject QGitRepository::lookupAny(const QGitOId &id)
     return QGitObject(object);
 }
 
-QGitRef QGitRepository::createRef(const QString& name, const QGitOId& oid, bool force)
+QGitRef QGitRepository::createRef(const QString& name, const QGitOId& oid, bool overwrite)
 {
     git_reference *ref;
-    git_reference_create_oid(&ref, data(), QFile::encodeName(name), oid.data(), force);
+    git_reference_create_oid(&ref, data(), QFile::encodeName(name), oid.data(), overwrite);
     return QGitRef(ref);
 }
 
-QGitRef QGitRepository::createSymbolicRef(const QString& name, const QString& target, bool force)
+QGitRef QGitRepository::createSymbolicRef(const QString& name, const QString& target, bool overwrite)
 {
     git_reference *ref;
-    git_reference_create_symbolic(&ref, data(), QFile::encodeName(name), QFile::encodeName(target), force);
+    git_reference_create_symbolic(&ref, data(), QFile::encodeName(name), QFile::encodeName(target), overwrite);
     return QGitRef(ref);
 }
 
