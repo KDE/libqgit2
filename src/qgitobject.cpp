@@ -78,6 +78,11 @@ QGitBlob QGitObject::toBlob() const
     return blob;
 }
 
+bool QGitObject::isNull() const
+{
+    return d.isNull();
+}
+
 QGitOId QGitObject::oid() const
 {
     return QGitOId(git_object_id(data()));
