@@ -32,7 +32,9 @@
 namespace LibQGit2
 {
     class QGitCommit;
+    class QGitTag;
     class QGitTree;
+    class QGitBlob;
     class QGitSignatureRef;
 
     class LIBQGIT2_REPOSITORY_EXPORT QGitRepository
@@ -172,6 +174,9 @@ namespace LibQGit2
             QGitRef lookup(const QString& name);
 
             QGitCommit lookupCommit(const QGitOId& oid);
+            QGitTag lookupTag(const QGitOId& oid);
+            QGitTree lookupTree(const QGitOId& oid);
+            QGitBlob lookupBlob(const QGitOId& oid);
 
             QGitRef createRef(const QString& name, const QGitOId& oid, bool force = true);
             QGitRef createSymbolicRef(const QString& name, const QString& target, bool force = true);

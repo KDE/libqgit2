@@ -24,12 +24,12 @@
 using namespace LibQGit2;
 
 QGitBlob::QGitBlob(git_blob *blob)
-    : m_blob(blob)
+    : d(blob, git_blob_close)
 {
 }
 
 QGitBlob::QGitBlob( const QGitBlob& other )
-    : m_blob(other.m_blob)
+    : d(other.d)
 {
 }
 
@@ -37,19 +37,14 @@ QGitBlob::~QGitBlob()
 {
 }
 
-int QGitBlob::lookup(const QGitRepository& repository, const QGitOId& oid)
+const void* QGitBlob::rawContent() const
 {
-    return git_blob_lookup(&m_blob, repository.data(), oid.data());
+    return git_blob_rawcontent(data());
 }
 
-const void* QGitBlob::rawContent()
+int QGitBlob::rawSize() const
 {
-    return git_blob_rawcontent(m_blob);
-}
-
-int QGitBlob::rawSize()
-{
-    return git_blob_rawsize(m_blob);
+    return git_blob_rawsize(data());
 }
 
 int QGitBlob::writeFile(QGitOId& writtenId, const QGitRepository& repository, const QString& path)
@@ -59,11 +54,11 @@ int QGitBlob::writeFile(QGitOId& writtenId, const QGitRepository& repository, co
 
 git_blob* QGitBlob::data() const
 {
-    return m_blob;
+    return d.data();
 }
 
 const git_blob* QGitBlob::constData() const
 {
-    return m_blob;
+    return d.data();
 }
 

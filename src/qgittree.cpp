@@ -28,50 +28,45 @@
 using namespace LibQGit2;
 
 QGitTree::QGitTree(git_tree *tree)
-    : m_tree(tree)
+    : d(tree, git_tree_close)
 {
 }
 
 QGitTree::QGitTree( const QGitTree& other )
+    : d(other.d)
 {
-    m_tree = other.m_tree;
 }
 
 QGitTree::~QGitTree()
 {
 }
 
-int QGitTree::lookup(QGitRepository& repository, const QGitOId& id)
+QGitOId QGitTree::oid()
 {
-    return git_tree_lookup(&m_tree, repository.data(), id.data());
-}
-
-QGitOId QGitTree::id()
-{
-    return QGitOId(git_tree_id(m_tree));
+    return QGitOId(git_tree_id(data()));
 }
 
 size_t QGitTree::entryCount()
 {
-    return git_tree_entrycount(m_tree);
+    return git_tree_entrycount(data());
 }
 
 QGitTreeEntry QGitTree::entryByName(const QString& fileName)
 {
-    return QGitTreeEntry(git_tree_entry_byname(m_tree, QFile::encodeName(fileName)));
+    return QGitTreeEntry(git_tree_entry_byname(data(), QFile::encodeName(fileName)));
 }
 
 QGitTreeEntry QGitTree::entryByIndex(int idx)
 {
-    return QGitTreeEntry(git_tree_entry_byindex(m_tree, idx));
+    return QGitTreeEntry(git_tree_entry_byindex(data(), idx));
 }
 
 git_tree* QGitTree::data() const
 {
-    return m_tree;
+    return d.data();
 }
 
 const git_tree* QGitTree::constData() const
 {
-    return m_tree;
+    return d.data();
 }

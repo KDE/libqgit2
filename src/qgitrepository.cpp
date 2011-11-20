@@ -19,10 +19,13 @@
 
 #include "qgitrepository.h"
 #include "qgitcommit.h"
+#include "qgittag.h"
 #include "qgittree.h"
+#include "qgitblob.h"
 #include "qgitsignature.h"
 
 #include <git2/commit.h>
+#include <git2/tag.h>
 
 #include <QtCore/QFile>
 #include <QtCore/QVector>
@@ -91,6 +94,27 @@ QGitCommit QGitRepository::lookupCommit(const QGitOId& oid)
     git_commit *commit;
     git_commit_lookup(&commit, data(), oid.data());
     return QGitCommit(commit);
+}
+
+QGitTag QGitRepository::lookupTag(const QGitOId& oid)
+{
+    git_tag *tag;
+    git_tag_lookup(&tag, data(), oid.data());
+    return QGitTag(tag);
+}
+
+QGitTree QGitRepository::lookupTree(const QGitOId& oid)
+{
+    git_tree *tree;
+    git_tree_lookup(&tree, data(), oid.data());
+    return QGitTree(tree);
+}
+
+QGitBlob QGitRepository::lookupBlob(const QGitOId& oid)
+{
+    git_blob *blob;
+    git_blob_lookup(&blob, data(), oid.data());
+    return QGitBlob(blob);
 }
 
 QGitRef QGitRepository::createRef(const QString& name, const QGitOId& oid, bool force)

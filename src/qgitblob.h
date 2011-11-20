@@ -23,7 +23,7 @@
 #include "libqgit2_export.h"
 #include "qgitrepository.h"
 
-#include <QtCore/QObject>
+#include <QtCore/QSharedPointer>
 
 #include <git2/blob.h>
 
@@ -41,19 +41,6 @@ namespace LibQGit2
              */
             ~QGitBlob();
 
-        public:
-
-            /**
-             * Lookup a blob object from a repository.
-             * The generated blob object is owned by the revision
-             * repo and shall not be freed by the user.
-             *
-             * @param repository the repository to use when locating the blob.
-             * @param id identity of the blob to locate.
-             * @return 0 on success; error code otherwise
-             */
-            int lookup(const QGitRepository& repository, const QGitOId& oid);
-
             /**
              * Get a read-only buffer with the raw content of a blob.
              *
@@ -64,14 +51,14 @@ namespace LibQGit2
              *
              * @return the pointer; NULL if the blob has no contents
              */
-            const void* rawContent();
+            const void* rawContent() const;
 
             /**
              * Get the size in bytes of the contents of a blob
              *
              * @return size on bytes
              */
-            int rawSize();
+            int rawSize() const;
 
             /**
              * Read a file from the working folder of a repository
@@ -88,7 +75,7 @@ namespace LibQGit2
             const git_blob* constData() const;
 
         private:
-            git_blob *m_blob;
+            QSharedPointer<git_blob> d;
     };
 }
 

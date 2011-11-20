@@ -23,6 +23,7 @@
 #include "libqgit2_export.h"
 
 #include <QtCore/QString>
+#include <QtCore/QSharedPointer>
 
 #include <git2/tree.h>
 
@@ -40,23 +41,11 @@ namespace LibQGit2
             QGitTree( const QGitTree& other );
             ~QGitTree();
 
-        public:
-            /**
-             * Lookup a tree object from the repository.
-             * The generated tree object is owned by the revision
-             * repo and shall not be freed by the user.
-             *
-             * @param repo the repo to use when locating the tree.
-             * @param id identity of the tree to locate.
-             * @return 0 on success; error code otherwise
-             */
-            int lookup(QGitRepository& repository, const QGitOId& id);
-
             /**
              * * Get the id of a tree.
              * * @return object identity for the tree.
              * */
-            QGitOId id();
+            QGitOId oid();
 
             /**
              * Get the number of entries listed in a tree
@@ -82,7 +71,7 @@ namespace LibQGit2
             const git_tree* constData() const;
 
         private:
-            git_tree *m_tree;
+            QSharedPointer<git_tree> d;
     };
 }
 

@@ -28,6 +28,8 @@
 
 #include <git2/tag.h>
 
+#include <QtCore/QSharedPointer>
+
 namespace LibQGit2
 {
     class QGitObject;
@@ -41,24 +43,11 @@ namespace LibQGit2
             QGitTag(const QGitTag& other);
             ~QGitTag();
 
-        public:
-
-            /**
-             * Lookup a tag object from the repository.
-             * The generated tag object is owned by the revision
-             * repo and shall not be freed by the user.
-             *
-             * @param repository the repository to use when locating the tag.
-             * @param id identity of the tag to locate.
-             * @return 0 on success; error code otherwise
-             */
-            int lookup(const QGitRepository& repository, const QGitOId& oid);
-
             /**
              * Get the id of a tag.
              * @return object identity for the tag.
              */
-            QGitOId id() const;
+            QGitOId oid() const;
 
             /**
              * Get the tagged object of a tag
@@ -94,7 +83,7 @@ namespace LibQGit2
             const git_tag* constData() const;
 
         private:
-            git_tag *m_tag;
+            QSharedPointer<git_tag> d;
     };
 }
 

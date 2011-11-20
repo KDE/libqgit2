@@ -24,6 +24,7 @@
 
 #include <QtCore/QString>
 #include <QtCore/QDateTime>
+#include <QtCore/QSharedPointer>
 
 #include <git2/object.h>
 
@@ -36,7 +37,7 @@ namespace LibQGit2
     {
         public:
             explicit QGitObject(git_object *object = 0);
-            QGitObject( const QGitObject& other );
+            QGitObject(const QGitObject& other);
             ~QGitObject();
 
         public:
@@ -49,7 +50,7 @@ namespace LibQGit2
              *
              * @return the SHA1 id
              */
-            QGitOId id() const;
+            QGitOId oid() const;
 
             /**
              * * Get the object type of an object
@@ -112,7 +113,7 @@ namespace LibQGit2
             const git_object* constData() const;
 
         private:
-            git_object *m_object;
+            QSharedPointer<git_object> d;
     };
 }
 
