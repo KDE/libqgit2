@@ -57,10 +57,10 @@ int QGitRepository::open(const QString& path)
     return git_repository_open(&m_repository, QFile::encodeName(path));
 }
 
-int QGitRepository::open2(const QString& gitDir,
-                      const QString& gitObjectDirectory,
-                      const QString& gitIndexFile,
-                      const QString& gitWorkTree)
+int QGitRepository::open(const QString& gitDir,
+                         const QString& gitObjectDirectory,
+                         const QString& gitIndexFile,
+                         const QString& gitWorkTree)
 {
     return git_repository_open2(&m_repository,
                                 QFile::encodeName(gitDir),
@@ -70,10 +70,10 @@ int QGitRepository::open2(const QString& gitDir,
 }
 
 
-int QGitRepository::open3(const QString& gitDir,
-                      QGitDatabase *objectDatabase,
-                      const QString& gitIndexFile,
-                      const QString& gitWorkTree)
+int QGitRepository::open(const QString& gitDir,
+                         QGitDatabase *objectDatabase,
+                         const QString& gitIndexFile,
+                         const QString& gitWorkTree)
 {
     return git_repository_open3(&m_repository,
                                 QFile::encodeName(gitDir),

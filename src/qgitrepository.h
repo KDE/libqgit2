@@ -114,10 +114,10 @@ namespace LibQGit2
              *
              * @return 0 on success; error code otherwise
              */
-            int open2(const QString& gitDir,
-                      const QString& gitObjectDirectory,
-                      const QString& gitIndexFile,
-                      const QString& gitWorkTree);
+            int open(const QString& gitDir,
+                     const QString& gitObjectDirectory,
+                     const QString& gitIndexFile,
+                     const QString& gitWorkTree);
 
 
             /**
@@ -146,10 +146,10 @@ namespace LibQGit2
              *
              * @return 0 on success; error code otherwise
              */
-            int open3(const QString& gitDir,
-                      QGitDatabase *objectDatabase,
-                      const QString& gitIndexFile,
-                      const QString& gitWorkTree);
+            int open(const QString& gitDir,
+                     QGitDatabase *objectDatabase,
+                     const QString& gitIndexFile,
+                     const QString& gitWorkTree);
 
             /**
              * Lookup a reference by its name in a repository.
