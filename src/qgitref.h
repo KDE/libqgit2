@@ -70,13 +70,14 @@ namespace LibQGit2
             QString target() const;
 
             /**
-             * Get the type of a reference
-             *
-             * Either direct (GIT_REF_OID) or symbolic (GIT_REF_SYMBOLIC)
-             *
-             * @return the type
+             * Return true if the reference is direct (i.e. a reference to an OID)
              */
-            git_rtype type() const;
+            bool isDirect() const;
+
+            /**
+             * Return true if the reference is symbolig (i.e. a reference to another ref)
+             */
+            bool isSymbolic() const;
 
             /**
              * Get the full name of a reference

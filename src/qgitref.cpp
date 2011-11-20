@@ -50,9 +50,14 @@ QString QGitRef::target() const
     return QString::fromUtf8(git_reference_target(m_reference));
 }
 
-git_rtype QGitRef::type() const
+bool QGitRef::isDirect() const
 {
-    return git_reference_type(m_reference);
+    return git_reference_type(m_reference) == GIT_REF_OID;
+}
+
+bool QGitRef::isSymbolic() const
+{
+    return git_reference_type(m_reference) == GIT_REF_SYMBOLIC;
 }
 
 QString QGitRef::name() const
