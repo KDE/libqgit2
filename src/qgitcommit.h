@@ -20,10 +20,9 @@
 #ifndef LIBQGIT2_HASHTABLE_H
 #define LIBQGIT2_HASHTABLE_H
 
-#include "libqgit2_export.h"
+#include "qgitobject.h"
 
 #include <QtCore/QDateTime>
-#include <QtCore/QSharedPointer>
 
 #include <git2/commit.h>
 
@@ -35,7 +34,7 @@ namespace LibQGit2
     class QGitTree;
     class QGitRepository;
 
-    class LIBQGIT2_COMMIT_EXPORT QGitCommit
+    class LIBQGIT2_COMMIT_EXPORT QGitCommit : public QGitObject
     {
         public:
 
@@ -46,7 +45,7 @@ namespace LibQGit2
              */
             explicit QGitCommit(git_commit *commit = 0);
 
-            QGitCommit( const QGitCommit& other );
+            QGitCommit(const QGitCommit& other);
 
             ~QGitCommit();
 
@@ -110,9 +109,6 @@ namespace LibQGit2
 
             git_commit* data() const;
             const git_commit* constData() const;
-
-        private:
-            QSharedPointer<git_commit> d;
     };
 }
 

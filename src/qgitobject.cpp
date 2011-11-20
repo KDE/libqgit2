@@ -21,6 +21,10 @@
 
 #include "qgitoid.h"
 #include "qgitrepository.h"
+#include "qgitcommit.h"
+#include "qgittag.h"
+#include "qgittree.h"
+#include "qgitblob.h"
 
 using namespace LibQGit2;
 
@@ -36,6 +40,15 @@ QGitObject::QGitObject(const QGitObject& other)
 
 QGitObject::~QGitObject()
 {
+}
+
+QGitCommit QGitObject::toCommit() const
+{
+    QGitCommit commit;
+    if (type() == GIT_OBJ_COMMIT) {
+        commit.d = d;
+    }
+    return commit;
 }
 
 QGitOId QGitObject::oid() const

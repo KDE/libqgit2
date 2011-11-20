@@ -32,6 +32,10 @@ namespace LibQGit2
 {
     class QGitRepository;
     class QGitOId;
+    class QGitCommit;
+    class QGitTag;
+    class QGitTree;
+    class QGitBlob;
 
     class LIBQGIT2_OBJECT_EXPORT QGitObject
     {
@@ -44,9 +48,10 @@ namespace LibQGit2
              */
             explicit QGitObject(git_object *object = 0);
             QGitObject(const QGitObject& other);
+
             ~QGitObject();
 
-        public:
+            QGitCommit toCommit() const;
 
             /**
              * Get the id (SHA1) of a repository object

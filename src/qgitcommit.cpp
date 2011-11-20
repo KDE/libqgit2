@@ -26,12 +26,12 @@
 using namespace LibQGit2;
 
 QGitCommit::QGitCommit(git_commit *commit)
-    : d(commit, git_commit_close)
+    : QGitObject(reinterpret_cast<git_object*>(commit))
 {
 }
 
 QGitCommit::QGitCommit(const QGitCommit& other)
-    : d(other.d)
+    : QGitObject(other)
 {
 }
 
@@ -92,10 +92,10 @@ QGitCommit QGitCommit::parent(unsigned n) const
 
 git_commit* QGitCommit::data() const
 {
-    return d.data();
+    return reinterpret_cast<git_commit*>(QGitObject::data());
 }
 
 const git_commit* QGitCommit::constData() const
 {
-    return d.data();
+    return reinterpret_cast<git_commit*>(QGitObject::data());
 }
