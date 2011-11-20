@@ -51,6 +51,33 @@ QGitCommit QGitObject::toCommit() const
     return commit;
 }
 
+QGitTag QGitObject::toTag() const
+{
+    QGitTag tag;
+    if (type() == GIT_OBJ_TAG) {
+        tag.d = d;
+    }
+    return tag;
+}
+
+QGitTree QGitObject::toTree() const
+{
+    QGitTree tree;
+    if (type() == GIT_OBJ_TREE) {
+        tree.d = d;
+    }
+    return tree;
+}
+
+QGitBlob QGitObject::toBlob() const
+{
+    QGitBlob blob;
+    if (type() == GIT_OBJ_BLOB) {
+        blob.d = d;
+    }
+    return blob;
+}
+
 QGitOId QGitObject::oid() const
 {
     return QGitOId(git_object_id(data()));

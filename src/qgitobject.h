@@ -52,6 +52,9 @@ namespace LibQGit2
             ~QGitObject();
 
             QGitCommit toCommit() const;
+            QGitTag toTag() const;
+            QGitTree toTree() const;
+            QGitBlob toBlob() const;
 
             /**
              * Get the id (SHA1) of a repository object
