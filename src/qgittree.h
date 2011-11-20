@@ -20,10 +20,9 @@
 #ifndef LIBQGIT2_TREE_H
 #define LIBQGIT2_TREE_H
 
-#include "libqgit2_export.h"
+#include "qgitobject.h"
 
 #include <QtCore/QString>
-#include <QtCore/QSharedPointer>
 
 #include <git2/tree.h>
 
@@ -32,7 +31,8 @@ namespace LibQGit2
     class QGitRepository;
     class QGitOId;
     class QGitTreeEntry;
-    class LIBQGIT2_TREE_EXPORT QGitTree
+
+    class LIBQGIT2_TREE_EXPORT QGitTree : public QGitObject
     {
         public:
 
@@ -74,9 +74,6 @@ namespace LibQGit2
 
             git_tree* data() const;
             const git_tree* constData() const;
-
-        private:
-            QSharedPointer<git_tree> d;
     };
 }
 

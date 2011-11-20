@@ -18,16 +18,18 @@
  */
 
 #include "qgittag.h"
+#include "qgitoid.h"
+#include "qgitsignature.h"
 
 using namespace LibQGit2;
 
 QGitTag::QGitTag(git_tag *tag)
-    : d(tag, git_tag_close)
+    : QGitObject(reinterpret_cast<git_object*>(tag))
 {
 }
 
 QGitTag::QGitTag(const QGitTag& other)
-    : d(other.d)
+    : QGitObject(other)
 {
 }
 
@@ -69,11 +71,11 @@ const QString QGitTag::message()
 
 git_tag* QGitTag::data() const
 {
-    return d.data();
+    return reinterpret_cast<git_tag*>(QGitObject::data());
 }
 
 const git_tag* QGitTag::constData() const
 {
-    return d.data();
+    return reinterpret_cast<git_tag*>(QGitObject::data());
 }
 

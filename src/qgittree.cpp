@@ -28,12 +28,12 @@
 using namespace LibQGit2;
 
 QGitTree::QGitTree(git_tree *tree)
-    : d(tree, git_tree_close)
+    : QGitObject(reinterpret_cast<git_object*>(tree))
 {
 }
 
 QGitTree::QGitTree( const QGitTree& other )
-    : d(other.d)
+    : QGitObject(other)
 {
 }
 
@@ -63,10 +63,10 @@ QGitTreeEntry QGitTree::entryByIndex(int idx)
 
 git_tree* QGitTree::data() const
 {
-    return d.data();
+    return reinterpret_cast<git_tree*>(QGitObject::data());
 }
 
 const git_tree* QGitTree::constData() const
 {
-    return d.data();
+    return reinterpret_cast<git_tree*>(QGitObject::data());
 }

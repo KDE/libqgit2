@@ -18,18 +18,20 @@
  */
 
 #include "qgitblob.h"
+#include "qgitoid.h"
+#include "qgitrepository.h"
 
 #include <QtCore/QFile>
 
 using namespace LibQGit2;
 
 QGitBlob::QGitBlob(git_blob *blob)
-    : d(blob, git_blob_close)
+    : QGitObject(reinterpret_cast<git_object*>(blob))
 {
 }
 
 QGitBlob::QGitBlob( const QGitBlob& other )
-    : d(other.d)
+    : QGitObject(other)
 {
 }
 
@@ -54,11 +56,11 @@ int QGitBlob::writeFile(QGitOId& writtenId, const QGitRepository& repository, co
 
 git_blob* QGitBlob::data() const
 {
-    return d.data();
+    return reinterpret_cast<git_blob*>(QGitObject::data());
 }
 
 const git_blob* QGitBlob::constData() const
 {
-    return d.data();
+    return reinterpret_cast<git_blob*>(QGitObject::data());
 }
 

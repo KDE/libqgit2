@@ -20,21 +20,16 @@
 #ifndef LIBQGIT2_TAG_H
 #define LIBQGIT2_TAG_H
 
-#include "libqgit2_export.h"
-
-#include "qgitsignature.h"
-#include "qgitoid.h"
-#include "qgitrepository.h"
+#include "qgitobject.h"
 
 #include <git2/tag.h>
 
-#include <QtCore/QSharedPointer>
-
 namespace LibQGit2
 {
-    class QGitObject;
+    class QGitOId;
+    class QGitSignatureRef;
 
-    class LIBQGIT2_TAG_EXPORT QGitTag
+    class LIBQGIT2_TAG_EXPORT QGitTag : public QGitObject
     {
         public:
 
@@ -56,7 +51,6 @@ namespace LibQGit2
 
             /**
              * Get the tagged object of a tag
-             * @return reference to a repository object
              */
             QGitObject target() const;
 
@@ -86,9 +80,6 @@ namespace LibQGit2
 
             git_tag* data() const;
             const git_tag* constData() const;
-
-        private:
-            QSharedPointer<git_tag> d;
     };
 }
 

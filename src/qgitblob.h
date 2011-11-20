@@ -20,16 +20,13 @@
 #ifndef LIBQGIT2_BLOB_H
 #define LIBQGIT2_BLOB_H
 
-#include "libqgit2_export.h"
-#include "qgitrepository.h"
-
-#include <QtCore/QSharedPointer>
+#include "qgitobject.h"
 
 #include <git2/blob.h>
 
 namespace LibQGit2
 {
-    class LIBQGIT2_BLOB_EXPORT QGitBlob
+    class LIBQGIT2_BLOB_EXPORT QGitBlob : public QGitObject
     {
         public:
 
@@ -78,9 +75,6 @@ namespace LibQGit2
 
             git_blob* data() const;
             const git_blob* constData() const;
-
-        private:
-            QSharedPointer<git_blob> d;
     };
 }
 
