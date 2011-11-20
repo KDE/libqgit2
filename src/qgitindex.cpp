@@ -25,6 +25,8 @@
 
 #include <QtCore/QFile>
 
+#include <git2/tree.h>
+
 using namespace LibQGit2;
 
 QGitIndex::QGitIndex(const QString& indexPath)

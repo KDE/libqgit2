@@ -22,7 +22,7 @@
 
 #include "qgitobject.h"
 
-#include <git2/blob.h>
+struct git_blob;
 
 namespace LibQGit2
 {

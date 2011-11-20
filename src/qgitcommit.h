@@ -24,7 +24,7 @@
 
 #include <QtCore/QDateTime>
 
-#include <git2/commit.h>
+struct git_commit;
 
 namespace LibQGit2
 {

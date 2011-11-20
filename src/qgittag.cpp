@@ -21,6 +21,8 @@
 #include "qgitoid.h"
 #include "qgitsignature.h"
 
+#include <git2/tag.h>
+
 using namespace LibQGit2;
 
 QGitTag::QGitTag(git_tag *tag)
@@ -47,11 +49,6 @@ QGitObject QGitTag::target() const
     git_object *obj;
     git_tag_target(&obj, data());
     return QGitObject(obj);
-}
-
-git_otype QGitTag::type() const
-{
-    return git_tag_type(data());
 }
 
 const QString QGitTag::name() const

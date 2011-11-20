@@ -22,7 +22,7 @@
 
 #include "qgitobject.h"
 
-#include <git2/tag.h>
+struct git_tag;
 
 namespace LibQGit2
 {
@@ -53,12 +53,6 @@ namespace LibQGit2
              * Get the tagged object of a tag
              */
             QGitObject target() const;
-
-            /**
-             * Get the type of a tag's tagged object
-             * @return type of the tagged object
-             */
-            git_otype type() const;
 
             /**
              * Get the name of a tag

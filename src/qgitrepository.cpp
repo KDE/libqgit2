@@ -27,6 +27,8 @@
 #include <git2/refs.h>
 #include <git2/commit.h>
 #include <git2/tag.h>
+#include <git2/tree.h>
+#include <git2/blob.h>
 
 #include <QtCore/QFile>
 #include <QtCore/QVector>
