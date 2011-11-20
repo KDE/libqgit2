@@ -3,7 +3,7 @@
 ######################################################################
 
 TEMPLATE = lib
-TARGET = libqgit2
+TARGET = qgit2
 
 DEPENDPATH += . src \
     libgit2/src libgit2/include libgit2/include/git2
