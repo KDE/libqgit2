@@ -171,6 +171,12 @@ namespace LibQGit2
                                  const QGitTree& tree,
                                  const QList<QGitCommit>& parents);
 
+            QGitOId createTag(const QString& name,
+                              const QGitObject& target,
+                              const QGitSignatureRef& tagger,
+                              const QString& message,
+                              bool overwrite = true);
+
             /**
              * Get the object database behind a Git repository
              *

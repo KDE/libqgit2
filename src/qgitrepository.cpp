@@ -156,6 +156,18 @@ QGitOId QGitRepository::createCommit(const QString& ref,
     return oid;
 }
 
+QGitOId QGitRepository::createTag(const QString& name,
+                                  const QGitObject& target,
+                                  const QGitSignatureRef& tagger,
+                                  const QString& message,
+                                  bool overwrite)
+{
+    QGitOId oid;
+    git_tag_create(oid.data(), data(), QFile::encodeName(name), target.data(),
+                   tagger.data(), message.toUtf8(), overwrite);
+    return oid;
+}
+
 QGitDatabase* QGitRepository::database() const
 {
     QGitDatabase *database = new QGitDatabase(git_repository_database(m_repository));
