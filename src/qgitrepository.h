@@ -151,24 +151,6 @@ namespace LibQGit2
                       const QString& gitWorkTree);
 
             /**
-             * Lookup a reference to one of the objects in the repostory.
-             *
-             * The generated reference is owned by the repository and
-             * should not be freed by the user.
-             *
-             * The 'type' parameter must match the type of the object
-             * in the odb; the method will fail otherwise.
-             * The special value 'GIT_OBJ_ANY' may be passed to let
-             * the method guess the object's type.
-             *
-             * @param object pointer to the looked-up object
-             * @param id the unique identifier for the object
-             * @param type the type of the object
-             * @return a reference to the object
-             */
-            int lookup(QGitObject& object, const QGitOId& id, git_otype type);
-
-            /**
              * Lookup a reference given it's name
              */
             QGitRef lookupRef(const QString& name);
@@ -177,6 +159,7 @@ namespace LibQGit2
             QGitTag lookupTag(const QGitOId& oid);
             QGitTree lookupTree(const QGitOId& oid);
             QGitBlob lookupBlob(const QGitOId& oid);
+            QGitObject lookupAny(const QGitOId& oid);
 
             QGitRef createRef(const QString& name, const QGitOId& oid, bool force = true);
             QGitRef createSymbolicRef(const QString& name, const QString& target, bool force = true);

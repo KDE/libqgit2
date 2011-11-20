@@ -117,6 +117,13 @@ QGitBlob QGitRepository::lookupBlob(const QGitOId& oid)
     return QGitBlob(blob);
 }
 
+QGitObject QGitRepository::lookupAny(const QGitOId &id)
+{
+    git_object *object;
+    git_object_lookup(&object, data(), id.data(), GIT_OBJ_ANY);
+    return QGitObject(object);
+}
+
 QGitRef QGitRepository::createRef(const QString& name, const QGitOId& oid, bool force)
 {
     git_reference *ref;
