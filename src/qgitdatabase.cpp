@@ -21,6 +21,8 @@
 
 #include <QtCore/QFile>
 
+#include <git2/odb.h>
+
 using namespace LibQGit2;
 
 QGitDatabase::QGitDatabase(git_odb *odb)

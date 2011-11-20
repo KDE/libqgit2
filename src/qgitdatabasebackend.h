@@ -24,7 +24,7 @@
 
 #include <QtCore/QString>
 
-#include <git2/odb_backend.h>
+struct git_odb_backend;
 
 namespace LibQGit2
 {

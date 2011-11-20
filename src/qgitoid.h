@@ -25,7 +25,7 @@
 #include <QtCore/QString>
 #include <QtCore/QDateTime>
 
-#include <git2/oid.h>
+typedef struct _git_oid git_oid;
 
 namespace LibQGit2
 {

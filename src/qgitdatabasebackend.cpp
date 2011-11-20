@@ -21,6 +21,8 @@
 
 #include <QtCore/QFile>
 
+#include <git2/odb_backend.h>
+
 using namespace LibQGit2;
 
 QGitDatabaseBackend::QGitDatabaseBackend()

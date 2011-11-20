@@ -27,7 +27,7 @@
 #include "qgitref.h"
 #include "qgitindex.h"
 
-#include <git2/repository.h>
+struct git_repository;
 
 namespace LibQGit2
 {

@@ -19,6 +19,8 @@
 
 #include "qgitoid.h"
 
+#include <git2/oid.h>
+
 using namespace LibQGit2;
 
 QGitOId::QGitOId(const git_oid *oid)

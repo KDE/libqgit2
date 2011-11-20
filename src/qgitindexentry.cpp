@@ -22,6 +22,8 @@
 
 #include <QtCore/QFile>
 
+#include <git2/index.h>
+
 using namespace LibQGit2;
 
 QGitIndexEntry::QGitIndexEntry(git_index_entry *data)
