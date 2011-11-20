@@ -47,15 +47,52 @@ namespace LibQGit2
              * object.
              */
             explicit QGitObject(git_object *object = 0);
+
+            /**
+             * Copy constructor.
+             */
             QGitObject(const QGitObject& other);
 
+            /**
+             * Destructor.
+             */
             ~QGitObject();
 
+            /**
+             * Convert a generic object into a commit object.
+             *
+             * If the type of the object is commit, then a valid commit object is returned,
+             * otherwise the returned object will be null.
+             */
             QGitCommit toCommit() const;
+
+            /**
+             * Convert a generic object into a tag object.
+             *
+             * If the type of the object is tag, then a valid tag object is returned,
+             * otherwise the returned object will be null.
+             */
             QGitTag toTag() const;
+
+            /**
+             * Convert a generic object into a tree object.
+             *
+             * If the type of the object is tree, then a valid tree object is returned,
+             * otherwise the returned object will be null.
+             */
             QGitTree toTree() const;
+
+            /**
+             * Convert a generic object into a blob object.
+             *
+             * If the type of the object is blob, then a valid blob object is returned,
+             * otherwise the returned object will be null.
+             */
             QGitBlob toBlob() const;
 
+            /**
+             * Return true if the git object pointer owned by this instance is null
+             */
             bool isNull() const;
 
             /**
