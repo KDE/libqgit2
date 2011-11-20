@@ -36,6 +36,11 @@ namespace LibQGit2
     {
         public:
 
+            /**
+             * Creates a QGitTree that points to tree. The pointer object becomes managed by
+             * this QGitTree, and must not be passed to another QGitTree or closed outside this
+             * object.
+             */
             explicit QGitTree(git_tree *tree = 0);
 
             QGitTree( const QGitTree& other );

@@ -36,6 +36,12 @@ namespace LibQGit2
     class LIBQGIT2_OBJECT_EXPORT QGitObject
     {
         public:
+
+            /**
+             * Creates a QGitObject that points to object. The pointer object becomes managed by
+             * this QGitObject, and must not be passed to another QGitObject or closed outside this
+             * object.
+             */
             explicit QGitObject(git_object *object = 0);
             QGitObject(const QGitObject& other);
             ~QGitObject();

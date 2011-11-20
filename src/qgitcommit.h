@@ -39,6 +39,11 @@ namespace LibQGit2
     {
         public:
 
+            /**
+             * Creates a QGitCommit that points to commit. The pointer object becomes managed by
+             * this QGitCommit, and must not be passed to another QGitCommit or closed outside this
+             * object.
+             */
             explicit QGitCommit(git_commit *commit = 0);
 
             QGitCommit( const QGitCommit& other );

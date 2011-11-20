@@ -32,8 +32,13 @@ namespace LibQGit2
     class LIBQGIT2_BLOB_EXPORT QGitBlob
     {
         public:
-            explicit QGitBlob(git_blob *blob = 0);
 
+            /**
+             * Creates a QGitBlob that points to blob. The pointer object becomes managed by
+             * this QGitBlob, and must not be passed to another QGitBlob or closed outside this
+             * object.
+             */
+            explicit QGitBlob(git_blob *blob = 0);
             QGitBlob(const QGitBlob& other);
 
             /**

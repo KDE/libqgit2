@@ -38,6 +38,11 @@ namespace LibQGit2
     {
         public:
 
+            /**
+             * Creates a QGitTag that points to tag. The pointer object becomes managed by
+             * this QGitTag, and must not be passed to another QGitTag or closed outside this
+             * object.
+             */
             explicit QGitTag(git_tag *tag = 0);
 
             QGitTag(const QGitTag& other);
