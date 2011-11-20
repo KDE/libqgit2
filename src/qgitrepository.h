@@ -171,7 +171,7 @@ namespace LibQGit2
             /**
              * Lookup a reference given it's name
              */
-            QGitRef lookup(const QString& name);
+            QGitRef lookupRef(const QString& name);
 
             QGitCommit lookupCommit(const QGitOId& oid);
             QGitTag lookupTag(const QGitOId& oid);
