@@ -92,35 +92,35 @@ QGitRef QGitRepository::lookupRef(const QString& name)
 QGitCommit QGitRepository::lookupCommit(const QGitOId& oid)
 {
     git_commit *commit = 0;
-    git_commit_lookup(&commit, data(), oid.data());
+    git_commit_lookup_prefix(&commit, data(), oid.data(), oid.length());
     return QGitCommit(commit);
 }
 
 QGitTag QGitRepository::lookupTag(const QGitOId& oid)
 {
     git_tag *tag = 0;
-    git_tag_lookup(&tag, data(), oid.data());
+    git_tag_lookup_prefix(&tag, data(), oid.data(), oid.length());
     return QGitTag(tag);
 }
 
 QGitTree QGitRepository::lookupTree(const QGitOId& oid)
 {
     git_tree *tree = 0;
-    git_tree_lookup(&tree, data(), oid.data());
+    git_tree_lookup_prefix(&tree, data(), oid.data(), oid.length());
     return QGitTree(tree);
 }
 
 QGitBlob QGitRepository::lookupBlob(const QGitOId& oid)
 {
     git_blob *blob = 0;
-    git_blob_lookup(&blob, data(), oid.data());
+    git_blob_lookup_prefix(&blob, data(), oid.data(), oid.length());
     return QGitBlob(blob);
 }
 
-QGitObject QGitRepository::lookupAny(const QGitOId &id)
+QGitObject QGitRepository::lookupAny(const QGitOId &oid)
 {
     git_object *object = 0;
-    git_object_lookup(&object, data(), id.data(), GIT_OBJ_ANY);
+    git_object_lookup_prefix(&object, data(), oid.data(), oid.length(), GIT_OBJ_ANY);
     return QGitObject(object);
 }
 

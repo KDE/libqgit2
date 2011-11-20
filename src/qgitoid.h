@@ -50,7 +50,11 @@ namespace LibQGit2
 
             /**
              * Parse a hex formatted object id into a OId.
-             * @param str input hex string; (at least 40 bytes).
+             *
+             * @param string
+             * Input hex string; if less than 40 bytes, prefix lookup will be performed. Must be
+             * at least 4 bytes.
+             *
              * @return OId; null OId on failure.
              */
             static QGitOId fromString(const QByteArray& string);
@@ -77,6 +81,8 @@ namespace LibQGit2
             git_oid* data();
             const git_oid* data() const;
             const git_oid* constData() const;
+
+            int length() const;
 
         private:
             QByteArray d;
