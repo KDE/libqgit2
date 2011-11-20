@@ -178,6 +178,17 @@ namespace LibQGit2
                               bool overwrite = true);
 
             /**
+             * Read a file from the working folder of a repository
+             * and write it to the Object Database as a loose blob
+             */
+            QGitOId createBlobFromFile(const QString& path);
+
+            /**
+             * Write an in-memory buffer to the ODB as a blob
+             */
+            QGitOId createBlobFromBuffer(const QByteArray& buffer);
+
+            /**
              * Get the object database behind a Git repository
              *
              * @return a pointer to the object db

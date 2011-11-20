@@ -62,17 +62,6 @@ namespace LibQGit2
              */
             int rawSize() const;
 
-            /**
-             * Read a file from the working folder of a repository
-             * and write it to the Object Database as a loose blob,
-             * if such doesn't exist yet.
-             *
-             * @param writtenId return the id of the written blob
-             * @param repository repository where the blob will be written
-             * @param path file from which the blob will be created
-             */
-            int writeFile(QGitOId& writtenId, const QGitRepository& repository, const QString& path);
-
             git_blob* data() const;
             const git_blob* constData() const;
     };

@@ -168,6 +168,20 @@ QGitOId QGitRepository::createTag(const QString& name,
     return oid;
 }
 
+QGitOId QGitRepository::createBlobFromFile(const QString& path)
+{
+    QGitOId oid;
+    git_blob_create_fromfile(oid.data(), data(), QFile::encodeName(path));
+    return oid;
+}
+
+QGitOId QGitRepository::createBlobFromBuffer(const QByteArray& buffer)
+{
+    QGitOId oid;
+    git_blob_create_frombuffer(oid.data(), data(), buffer.data(), buffer.size());
+    return oid;
+}
+
 QGitDatabase* QGitRepository::database() const
 {
     QGitDatabase *database = new QGitDatabase(git_repository_database(m_repository));

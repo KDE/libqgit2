@@ -49,11 +49,6 @@ int QGitBlob::rawSize() const
     return git_blob_rawsize(data());
 }
 
-int QGitBlob::writeFile(QGitOId& writtenId, const QGitRepository& repository, const QString& path)
-{
-    return git_blob_create_fromfile(writtenId.data(), repository.data(), QFile::encodeName(path));
-}
-
 git_blob* QGitBlob::data() const
 {
     return reinterpret_cast<git_blob*>(QGitObject::data());
