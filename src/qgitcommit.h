@@ -23,6 +23,7 @@
 #include "libqgit2_export.h"
 
 #include <QtCore/QDateTime>
+#include <QtCore/QSharedPointer>
 
 #include <git2/commit.h>
 
@@ -44,27 +45,11 @@ namespace LibQGit2
 
             ~QGitCommit();
 
-            void reset(git_commit *commit = 0);
-
-        public:
-
-            /**
-             * Lookup a commit object from a repository.
-             * The generated commit object is owned by the revision
-             * repo and shall not be freed by the user.
-             *
-             * @param repo the repo to use when locating the commit.
-             * @param id identity of the commit to locate. If the object is
-             * an annotated tag it will be peeled back to the commit.
-             * @return 0 on success; error code otherwise
-             */
-            int lookup(const QGitRepository& repository, const QGitOId& oid);
-
             /**
             * Get the id of a commit.
             * @return object identity for the commit.
             */
-            QGitOId id() const;
+            QGitOId oid() const;
 
             /**
              * Get the full message of a commit.
@@ -122,7 +107,7 @@ namespace LibQGit2
             const git_commit* constData() const;
 
         private:
-            git_commit *m_commit;
+            QSharedPointer<git_commit> d;
     };
 }
 

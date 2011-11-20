@@ -86,6 +86,13 @@ QGitRef QGitRepository::lookup(const QString& name)
     return QGitRef(ref);
 }
 
+QGitCommit QGitRepository::lookupCommit(const QGitOId& oid)
+{
+    git_commit *commit;
+    git_commit_lookup(&commit, data(), oid.data());
+    return QGitCommit(commit);
+}
+
 QGitRef QGitRepository::createRef(const QString& name, const QGitOId& oid, bool force)
 {
     git_reference *ref;

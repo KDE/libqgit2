@@ -171,6 +171,8 @@ namespace LibQGit2
              */
             QGitRef lookup(const QString& name);
 
+            QGitCommit lookupCommit(const QGitOId& oid);
+
             QGitRef createRef(const QString& name, const QGitOId& oid, bool force = true);
             QGitRef createSymbolicRef(const QString& name, const QString& target, bool force = true);
 
