@@ -33,16 +33,13 @@ namespace LibQGit2
     {
         public:
             /**
-             * Construct a new action signature. The signature must be freed
-             * manually
+             * Construct a new action signature.
              *
              * @name name of the person
              * @email email of the person
              * @time time when the action happened
-             * @offset timezone offset in minutes for the time
              */
             QGitSignature(const QString& name, const QString& email, QDateTime dateTime);
-            explicit QGitSignature(git_signature *signature = 0);
 
             /**
              * Construct a copy of an existing signature.
@@ -50,7 +47,7 @@ namespace LibQGit2
              * All internal strings are also duplicated.
              * @other signature to duplicated
              */
-            QGitSignature( const QGitSignature& other );
+            QGitSignature(const QGitSignature& other);
 
             /**
              * Delete an existing signature
@@ -61,8 +58,7 @@ namespace LibQGit2
             QString email() const;
             QDateTime when() const;
 
-            git_signature* data() const;
-            const git_signature* constData() const;
+            const git_signature* data() const;
 
         private:
             git_signature *d;
