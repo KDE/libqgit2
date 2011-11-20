@@ -164,10 +164,6 @@ namespace LibQGit2
                 return data() == 0;
             }
 
-            bool isValid() const {
-                return !isNull();
-            }
-
             git_reference* data() const;
             const git_reference* constData() const;
 
