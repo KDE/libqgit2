@@ -23,6 +23,8 @@
 #include "qgitsignature.h"
 #include "qgittree.h"
 
+#include <git2/commit.h>
+
 using namespace LibQGit2;
 
 QGitCommit::QGitCommit(git_commit *commit)

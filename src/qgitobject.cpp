@@ -26,6 +26,8 @@
 #include "qgittree.h"
 #include "qgitblob.h"
 
+#include <git2/object.h>
+
 using namespace LibQGit2;
 
 QGitObject::QGitObject(git_object *object)
@@ -45,7 +47,7 @@ QGitObject::~QGitObject()
 QGitCommit QGitObject::toCommit() const
 {
     QGitCommit commit;
-    if (type() == GIT_OBJ_COMMIT) {
+    if (isCommit()) {
         commit.d = d;
     }
     return commit;
@@ -54,7 +56,7 @@ QGitCommit QGitObject::toCommit() const
 QGitTag QGitObject::toTag() const
 {
     QGitTag tag;
-    if (type() == GIT_OBJ_TAG) {
+    if (isTag()) {
         tag.d = d;
     }
     return tag;
@@ -63,7 +65,7 @@ QGitTag QGitObject::toTag() const
 QGitTree QGitObject::toTree() const
 {
     QGitTree tree;
-    if (type() == GIT_OBJ_TREE) {
+    if (isTree()) {
         tree.d = d;
     }
     return tree;
@@ -72,7 +74,7 @@ QGitTree QGitObject::toTree() const
 QGitBlob QGitObject::toBlob() const
 {
     QGitBlob blob;
-    if (type() == GIT_OBJ_BLOB) {
+    if (isBlob()) {
         blob.d = d;
     }
     return blob;
@@ -88,14 +90,29 @@ QGitOId QGitObject::oid() const
     return QGitOId(git_object_id(data()));
 }
 
-git_otype QGitObject::type() const
+bool QGitObject::isCommit() const
 {
-    return git_object_type(data());
+    return git_object_type(data()) == GIT_OBJ_COMMIT;
+}
+
+bool QGitObject::isTag() const
+{
+    return git_object_type(data()) == GIT_OBJ_TAG;
+}
+
+bool QGitObject::isTree() const
+{
+    return git_object_type(data()) == GIT_OBJ_TREE;
+}
+
+bool QGitObject::isBlob() const
+{
+    return git_object_type(data()) == GIT_OBJ_BLOB;
 }
 
 QString QGitObject::typeString() const
 {
-    return QString(git_object_type2string(type()));
+    return QString(git_object_type2string(git_object_type(data())));
 }
 
 QGitRepository QGitObject::owner() const

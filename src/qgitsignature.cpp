@@ -26,6 +26,11 @@ QGitSignature::QGitSignature(const QString& name, const QString& email, QDateTim
     git_signature_new(&d, qPrintable(name), qPrintable(email), dateTime.toTime_t(), dateTime.utcOffset() / 60);
 }
 
+QGitSignature::QGitSignature(const QString& name, const QString& email)
+{
+    git_signature_now(&d, qPrintable(name), qPrintable(email));
+}
+
 QGitSignature::QGitSignature(const QGitSignature& other)
 {
     d = git_signature_dup(other.d);

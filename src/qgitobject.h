@@ -26,7 +26,7 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QSharedPointer>
 
-#include <git2/object.h>
+struct git_object;
 
 namespace LibQGit2
 {
@@ -106,11 +106,24 @@ namespace LibQGit2
             QGitOId oid() const;
 
             /**
-             * Get the object type of an object
-             *
-             * @return the object's type
+             * Return true if the object represents a commit; false otherwise
              */
-            git_otype type() const;
+            bool isCommit() const;
+
+            /**
+             * Return true if the object represents a tag; false otherwise
+             */
+            bool isTag() const;
+
+            /**
+             * Return true if the object represents a tree; false otherwise
+             */
+            bool isTree() const;
+
+            /**
+             * Return true if the object represents a blob; false otherwise
+             */
+            bool isBlob() const;
 
             /**
              * Get the object type as a string

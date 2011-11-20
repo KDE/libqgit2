@@ -45,14 +45,15 @@ bool LibQGit2::QGitOId::isValid() const
 
 QGitOId QGitOId::fromString(const QByteArray& string)
 {
+    int len = qMin(string.length(), GIT_OID_HEXSZ);
     QGitOId oid;
-    git_oid_fromstr(oid.data(), string.constData());
+    oid.d.resize(len);
+    git_oid_fromstrn(oid.data(), string.constData(), len);
     return oid;
 }
 
 QGitOId QGitOId::fromRawData(const QByteArray& raw)
 {
-    Q_ASSERT(raw.size() == GIT_OID_RAWSZ);
     QGitOId oid;
     oid.d = raw;
     return oid;
@@ -90,4 +91,9 @@ const git_oid* QGitOId::constData() const
 bool operator==(const QGitOId& oid1, const QGitOId& oid2)
 {
     return git_oid_cmp(oid1.data(), oid2.data()) == 0;
+}
+
+int QGitOId::length() const
+{
+    return d.length();
 }

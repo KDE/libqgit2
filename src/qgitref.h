@@ -24,7 +24,7 @@
 
 #include <QtCore/QString>
 
-#include <git2/refs.h>
+struct git_reference;
 
 namespace LibQGit2
 {
@@ -70,13 +70,14 @@ namespace LibQGit2
             QString target() const;
 
             /**
-             * Get the type of a reference
-             *
-             * Either direct (GIT_REF_OID) or symbolic (GIT_REF_SYMBOLIC)
-             *
-             * @return the type
+             * Return true if the reference is direct (i.e. a reference to an OID)
              */
-            git_rtype type() const;
+            bool isDirect() const;
+
+            /**
+             * Return true if the reference is symbolig (i.e. a reference to another ref)
+             */
+            bool isSymbolic() const;
 
             /**
              * Get the full name of a reference
@@ -162,10 +163,6 @@ namespace LibQGit2
 
             bool isNull() const {
                 return data() == 0;
-            }
-
-            bool isValid() const {
-                return !isNull();
             }
 
             git_reference* data() const;

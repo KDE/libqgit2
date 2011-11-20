@@ -23,6 +23,8 @@
 
 #include <QtCore/QFile>
 
+#include <git2/blob.h>
+
 using namespace LibQGit2;
 
 QGitBlob::QGitBlob(git_blob *blob)

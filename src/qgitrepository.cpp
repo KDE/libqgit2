@@ -24,8 +24,11 @@
 #include "qgitblob.h"
 #include "qgitsignature.h"
 
+#include <git2/refs.h>
 #include <git2/commit.h>
 #include <git2/tag.h>
+#include <git2/tree.h>
+#include <git2/blob.h>
 
 #include <QtCore/QFile>
 #include <QtCore/QVector>
@@ -84,56 +87,56 @@ int QGitRepository::open(const QString& gitDir,
 
 QGitRef QGitRepository::lookupRef(const QString& name) const
 {
-    git_reference *ref;
+    git_reference *ref = 0;
     git_reference_lookup(&ref, data(), QFile::encodeName(name));
     return QGitRef(ref);
 }
 
 QGitCommit QGitRepository::lookupCommit(const QGitOId& oid) const
 {
-    git_commit *commit;
-    git_commit_lookup(&commit, data(), oid.data());
+    git_commit *commit = 0;
+    git_commit_lookup_prefix(&commit, data(), oid.data(), oid.length());
     return QGitCommit(commit);
 }
 
 QGitTag QGitRepository::lookupTag(const QGitOId& oid) const
 {
-    git_tag *tag;
-    git_tag_lookup(&tag, data(), oid.data());
+    git_tag *tag = 0;
+    git_tag_lookup_prefix(&tag, data(), oid.data(), oid.length());
     return QGitTag(tag);
 }
 
 QGitTree QGitRepository::lookupTree(const QGitOId& oid) const
 {
-    git_tree *tree;
-    git_tree_lookup(&tree, data(), oid.data());
+    git_tree *tree = 0;
+    git_tree_lookup_prefix(&tree, data(), oid.data(), oid.length());
     return QGitTree(tree);
 }
 
 QGitBlob QGitRepository::lookupBlob(const QGitOId& oid) const
 {
-    git_blob *blob;
-    git_blob_lookup(&blob, data(), oid.data());
+    git_blob *blob = 0;
+    git_blob_lookup_prefix(&blob, data(), oid.data(), oid.length());
     return QGitBlob(blob);
 }
 
-QGitObject QGitRepository::lookupAny(const QGitOId &id) const
+QGitObject QGitRepository::lookupAny(const QGitOId &oid) const
 {
-    git_object *object;
-    git_object_lookup(&object, data(), id.data(), GIT_OBJ_ANY);
+    git_object *object = 0;
+    git_object_lookup_prefix(&object, data(), oid.data(), oid.length(), GIT_OBJ_ANY);
     return QGitObject(object);
 }
 
 QGitRef QGitRepository::createRef(const QString& name, const QGitOId& oid, bool overwrite)
 {
-    git_reference *ref;
+    git_reference *ref = 0;
     git_reference_create_oid(&ref, data(), QFile::encodeName(name), oid.data(), overwrite);
     return QGitRef(ref);
 }
 
 QGitRef QGitRepository::createSymbolicRef(const QString& name, const QString& target, bool overwrite)
 {
-    git_reference *ref;
+    git_reference *ref = 0;
     git_reference_create_symbolic(&ref, data(), QFile::encodeName(name), QFile::encodeName(target), overwrite);
     return QGitRef(ref);
 }

@@ -24,7 +24,7 @@
 
 #include <QtCore/QString>
 
-#include <git2/tree.h>
+struct git_tree;
 
 namespace LibQGit2
 {
