@@ -22,7 +22,7 @@
 
 #include "libqgit2_export.h"
 
-#include <git2/index.h>
+struct git_index_entry;
 
 namespace LibQGit2
 {

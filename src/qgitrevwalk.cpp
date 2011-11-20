@@ -22,6 +22,8 @@
 #include "qgitcommit.h"
 #include "qgitrepository.h"
 
+#include <git2/revwalk.h>
+
 using namespace LibQGit2;
 
 QGitRevWalk::QGitRevWalk(const QGitRepository& repository)

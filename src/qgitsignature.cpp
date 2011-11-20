@@ -19,6 +19,8 @@
 
 #include "qgitsignature.h"
 
+#include <git2/signature.h>
+
 using namespace LibQGit2;
 
 QGitSignature::QGitSignature(const QString& name, const QString& email, QDateTime dateTime)

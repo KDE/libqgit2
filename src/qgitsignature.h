@@ -25,7 +25,7 @@
 #include <QtCore/QString>
 #include <QtCore/QDateTime>
 
-#include <git2/signature.h>
+struct git_signature;
 
 namespace LibQGit2
 {

@@ -23,6 +23,8 @@
 
 #include <QtCore/QFile>
 
+#include <git2/tree.h>
+
 using namespace LibQGit2;
 
 QGitTreeEntry::QGitTreeEntry(const git_tree_entry *treeEntry)

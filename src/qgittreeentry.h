@@ -22,7 +22,7 @@
 
 #include "libqgit2_export.h"
 
-#include <git2/tree.h>
+struct git_tree_entry;
 
 namespace LibQGit2
 {
