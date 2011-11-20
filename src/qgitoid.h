@@ -62,6 +62,12 @@ namespace LibQGit2
             static QGitOId fromRawData(const QByteArray& raw);
 
             /**
+              Checks if this is a valid Git OId. An OId is invalid if it is empty or 0x0000... (20 byte).
+              @return True, if the OId is valid. False if not.
+              */
+            bool isValid() const;
+
+            /**
              * Format a OId into a hex string.
              */
             QByteArray format() const;
