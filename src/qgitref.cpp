@@ -24,6 +24,8 @@
 
 #include <QtCore/QFile>
 
+#include <git2/refs.h>
+
 using namespace LibQGit2;
 
 QGitRef::QGitRef(git_reference *ref)

@@ -24,7 +24,7 @@
 
 #include <QtCore/QString>
 
-#include <git2/refs.h>
+struct git_reference;
 
 namespace LibQGit2
 {
