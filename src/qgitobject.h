@@ -69,11 +69,16 @@ namespace LibQGit2
             QGitOId oid() const;
 
             /**
-             * * Get the object type of an object
-             * *
-             * * @return the object's type
-             * */
+             * Get the object type of an object
+             *
+             * @return the object's type
+             */
             git_otype type() const;
+
+            /**
+             * Get the object type as a string
+             */
+            QString typeString() const;
 
             /**
              * Get the repository that owns this object
@@ -82,48 +87,6 @@ namespace LibQGit2
              * @return the repository who owns this object
              */
             QGitRepository owner() const;
-
-            /**
-             * Convert an object type to it's string representation.
-             *
-             * The result is a string in static memory and
-             * should not be free()'ed.
-             *
-             * @param type object type to convert.
-             * @return the corresponding string representation.
-             */
-            static QString typeToString(git_otype type);
-
-            /**
-             * Convert a string object type representation to it's git_otype.
-             *
-             * @param string the string to convert.
-             * @return the corresponding git_otype.
-             */
-            static git_otype stringToType(const QString& string);
-
-            /**
-             * Determine if the given git_otype is a valid loose object type.
-             *
-             * @param type object type to test.
-             * @return true if the type represents a valid loose object type,
-             * false otherwise.
-             */
-            static int typeIsLoose(git_otype type);
-
-            /**
-             * Get the size in bytes for the structure which
-             * acts as an in-memory representation of any given
-             * object type.
-             *
-             * For all the core types, this would the equivalent
-             * of calling `sizeof(git_commit)` if the core types
-             * were not opaque on the external API.
-             *
-             * @param type object type to get its size
-             * @return size in bytes of the object
-             */
-            static size_t size(git_otype type);
 
             git_object* data() const;
             const git_object* constData() const;

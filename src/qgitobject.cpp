@@ -93,29 +93,14 @@ git_otype QGitObject::type() const
     return git_object_type(data());
 }
 
+QString QGitObject::typeString() const
+{
+    return QString(git_object_type2string(type()));
+}
+
 QGitRepository QGitObject::owner() const
 {
     return QGitRepository(git_object_owner(data()));
-}
-
-QString QGitObject::typeToString(git_otype type)
-{
-    return QString(git_object_type2string(type));
-}
-
-git_otype QGitObject::stringToType(const QString& string)
-{
-    return git_object_string2type(qPrintable(string));
-}
-
-int QGitObject::typeIsLoose(git_otype type)
-{
-    return git_object_typeisloose(type);
-}
-
-size_t QGitObject::size(git_otype type)
-{
-    return git_object__size(type);
 }
 
 git_object* QGitObject::data() const
