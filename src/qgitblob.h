@@ -36,10 +36,15 @@ namespace LibQGit2
              * object.
              */
             explicit QGitBlob(git_blob *blob = 0);
+
+            /**
+             * Copy constructor; creates a copy of the object, sharing the same underlaying data
+             * structure.
+             */
             QGitBlob(const QGitBlob& other);
 
             /**
-             * Delete a Blob previously allocated.
+             * Destroys the object.
              */
             ~QGitBlob();
 

@@ -43,7 +43,15 @@ namespace LibQGit2
              */
             explicit QGitTree(git_tree *tree = 0);
 
-            QGitTree( const QGitTree& other );
+            /**
+             * Copy constructor; creates a copy of the object, sharing the same underlaying data
+             * structure.
+             */
+            QGitTree(const QGitTree& other);
+
+            /**
+             * Destroys the object.
+             */
             ~QGitTree();
 
             /**

@@ -49,12 +49,13 @@ namespace LibQGit2
             explicit QGitObject(git_object *object = 0);
 
             /**
-             * Copy constructor.
+             * Copy constructor; creates a copy of the object, sharing the same underlaying data
+             * structure.
              */
             QGitObject(const QGitObject& other);
 
             /**
-             * Destructor.
+             * Destroys the object.
              */
             ~QGitObject();
 

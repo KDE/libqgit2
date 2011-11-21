@@ -53,7 +53,11 @@ namespace LibQGit2
              */
             explicit QGitRepository(git_repository *repository = 0, bool own = false);
 
-            QGitRepository( const QGitRepository& other );
+            /**
+             * Copy constructor; creates a copy of the object, sharing the same underlaying data
+             * structure.
+             */
+            QGitRepository(const QGitRepository& other);
 
             /**
              * Destruct a previously allocated repository
