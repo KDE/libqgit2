@@ -164,7 +164,7 @@ namespace LibQGit2
             /**
              * Retrieve and resolve the reference pointed at by HEAD.
              */
-            QGitRef head();
+            QGitRef head() const;
 
             /**
              * Check if a repository's HEAD is detached
