@@ -45,8 +45,15 @@ namespace LibQGit2
              */
             explicit QGitCommit(git_commit *commit = 0);
 
+            /**
+             * Copy constructor; creates a copy of the object, sharing the same underlaying data
+             * structure.
+             */
             QGitCommit(const QGitCommit& other);
 
+            /**
+             * Destroys the object.
+             */
             ~QGitCommit();
 
             /**

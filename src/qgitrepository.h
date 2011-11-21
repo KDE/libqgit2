@@ -27,6 +27,8 @@
 #include "qgitref.h"
 #include "qgitindex.h"
 
+#include <QtCore/QSharedPointer>
+
 struct git_repository;
 
 namespace LibQGit2
@@ -40,12 +42,30 @@ namespace LibQGit2
     class LIBQGIT2_REPOSITORY_EXPORT QGitRepository
     {
         public:
+
+            /**
+             * Construct a wrapper around a libgit2 repository pointer.
+             *
+             * If `own` is true, this QGitRepository takes ownership of the pointer, and makes
+             * sure it is freed when the owner is deleted, unless there are other instances
+             * sharing the ownership. If `own` is true, the pointer must not be freed manually,
+             * and must not be passed to another QGitRepository instance also with `own` true.
+             */
+            explicit QGitRepository(git_repository *repository = 0, bool own = false);
+
+            /**
+             * Copy constructor; creates a copy of the object, sharing the same underlaying data
+             * structure.
+             */
+            QGitRepository(const QGitRepository& other);
+
+            /**
+             * Destruct a previously allocated repository
+             */
+            ~QGitRepository();
+
             /**
              * Constructs a new Git repository in the given folder.
-             *
-             * TODO:
-             * - Reinit the repository
-             * - Create config files
              *
              * @param path the path to the repository
              * @param isBare if true, a Git repository without a working directory is created
@@ -54,17 +74,7 @@ namespace LibQGit2
              *
              * @return 0 on success; error code otherwise
              */
-            explicit QGitRepository(const QString& path, unsigned isBare);
-            explicit QGitRepository(git_repository *repository = 0);
-
-            QGitRepository( const QGitRepository& other );
-
-            /**
-             * Destruct a previously allocated repository
-             */
-            ~QGitRepository();
-
-        public:
+            int init(const QString& path, bool isBare);
 
             /**
              * Open a git repository.
@@ -150,6 +160,60 @@ namespace LibQGit2
                      QGitDatabase *objectDatabase,
                      const QString& gitIndexFile,
                      const QString& gitWorkTree);
+
+            /**
+             * Retrieve and resolve the reference pointed at by HEAD.
+             */
+            QGitRef head();
+
+            /**
+             * Check if a repository's HEAD is detached
+             *
+             * A repository's HEAD is detached when it points directly to a commit
+             * instead of a branch.
+             */
+            bool isHeadDetached() const;
+
+            /**
+             * Check if the current branch is an orphan
+             *
+             * An orphan branch is one named from HEAD but which doesn't exist in
+             * the refs namespace, because it doesn't have any commit to point to.
+             */
+            bool isHeadOrphan() const;
+
+            /**
+             * Check if a repository is empty
+             *
+             * An empty repository has just been initialized and contains
+             * no commits.
+             */
+            bool isEmpty() const;
+
+            /**
+             * Check if a repository is bare
+             */
+            bool isBare() const;
+
+            /**
+             * Get the path to the repository
+             */
+            QString path() const;
+
+            /**
+             * Get the path to the index
+             */
+            QString indexPath() const;
+
+            /**
+             * Get the path to the ODB
+             */
+            QString databasePath() const;
+
+            /**
+             * Get the path to the working directory
+             */
+            QString workDirPath() const;
 
             /**
              * Lookup a reference by its name in a repository.
@@ -249,17 +313,15 @@ namespace LibQGit2
              *
              * This is a cheap operation; the index is only opened on the first call,
              * and subsequent calls only retrieve the previous pointer.
-             *
-             * @param index Pointer where to store the index
-             * @return 0 on success; error code if the index could not be opened
              */
-            int index(QGitIndex& index) const;
+            QGitIndex index() const;
 
             git_repository* data() const;
             const git_repository* constData() const;
 
         private:
-            git_repository *m_repository;
+            typedef QSharedPointer<git_repository> ptr_type;
+            ptr_type d;
     };
 }
 

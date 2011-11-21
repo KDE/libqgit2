@@ -22,6 +22,8 @@
 
 #include "libqgit2_export.h"
 
+#include <QtCore/QSharedPointer>
+
 struct git_index;
 
 namespace LibQGit2
@@ -33,9 +35,28 @@ namespace LibQGit2
     class LIBQGIT2_INDEX_EXPORT QGitIndex
     {
         public:
+
             /**
-             * Create a new Git index object as a memory representation
-             * of the Git index file in 'index_path', without a repository
+             * Creates a QGitIndex that points to 'index'. The pointer 'index' becomes managed by
+             * this QGitIndex, and must not be passed to another QGitIndex or freed outside this
+             * object.
+             */
+            explicit QGitIndex(git_index *index = 0);
+
+            /**
+             * Copy constructor; creates a copy of the object, sharing the same underlaying data
+             * structure.
+             */
+            QGitIndex(const QGitIndex& other);
+
+            /**
+             * Destruct an existing index object.
+             */
+            ~QGitIndex();
+
+            /**
+             * Create a index object as a memory representation
+             * of the Git index file in 'indexPath', without a repository
              * to back it.
              *
              * Since there is no ODB behind this index, any Index methods
@@ -45,28 +66,7 @@ namespace LibQGit2
              * @param index_path the path to the index file in disk
              * @return 0 on success; error code otherwise
              */
-            explicit QGitIndex(const QString& indexPath);
-
-            /**
-             * Open the Index inside the git repository pointed
-             * by 'repo'.
-             *
-             * @param repo the git repo which owns the index
-             * @param index_path the path to the index file in disk
-             * @return 0 on success; error code otherwise
-             */
-            explicit QGitIndex(const QGitRepository& repository);
-
-            QGitIndex( const QGitIndex& other );
-
-            void reset(git_index *data);
-
-            /**
-             * Destruct an existing index object.
-             */
-            ~QGitIndex();
-
-        public:
+            int open(const QString& indexPath);
 
             /**
              * Create a new tree object from the index
@@ -156,7 +156,8 @@ namespace LibQGit2
             const git_index* constData() const;
 
         private:
-            git_index *m_index;
+            typedef QSharedPointer<git_index> ptr_type;
+            ptr_type d;
     };
 }
 

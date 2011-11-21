@@ -40,7 +40,15 @@ namespace LibQGit2
              */
             explicit QGitTag(git_tag *tag = 0);
 
+            /**
+             * Copy constructor; creates a copy of the object, sharing the same underlaying data
+             * structure.
+             */
             QGitTag(const QGitTag& other);
+
+            /**
+             * Destroys the object.
+             */
             ~QGitTag();
 
             /**
