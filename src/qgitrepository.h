@@ -27,6 +27,8 @@
 #include "qgitref.h"
 #include "qgitindex.h"
 
+#include <QtCore/QSharedPointer>
+
 struct git_repository;
 
 namespace LibQGit2
@@ -55,7 +57,16 @@ namespace LibQGit2
              * @return 0 on success; error code otherwise
              */
             explicit QGitRepository(const QString& path, unsigned isBare);
-            explicit QGitRepository(git_repository *repository = 0);
+
+            /**
+             * Construct a wrapper around a libgit2 repository pointer.
+             *
+             * If `own` is true, this QGitRepository takes ownership of the pointer, and makes
+             * sure it is freed when the owner is deleted, unless there are other instances
+             * sharing the ownership. If `own` is true, the pointer must not be freed manually,
+             * and must not be passed to another QGitRepository instance also with `own` true.
+             */
+            explicit QGitRepository(git_repository *repository = 0, bool own = false);
 
             QGitRepository( const QGitRepository& other );
 
@@ -259,7 +270,8 @@ namespace LibQGit2
             const git_repository* constData() const;
 
         private:
-            git_repository *m_repository;
+            typedef QSharedPointer<git_repository> ptr_type;
+            ptr_type d;
     };
 }
 
