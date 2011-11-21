@@ -41,14 +41,6 @@ namespace {
 void do_not_free(git_repository*) {}
 }
 
-QGitRepository::QGitRepository(const QString& path, unsigned isBare)
-{
-    git_repository *repo = 0;
-    int ret = git_repository_init(&repo, QFile::encodeName(path), isBare);
-    if (ret == GIT_SUCCESS)
-        d = ptr_type(repo, git_repository_free);
-}
-
 QGitRepository::QGitRepository(git_repository *repository, bool own)
     : d(repository, own ? git_repository_free : do_not_free)
 {
@@ -61,6 +53,16 @@ QGitRepository::QGitRepository( const QGitRepository& other )
 
 QGitRepository::~QGitRepository()
 {
+}
+
+int QGitRepository::init(const QString& path, bool isBare)
+{
+    d.clear();
+    git_repository *repo = 0;
+    int ret = git_repository_init(&repo, QFile::encodeName(path), isBare);
+    if (ret == GIT_SUCCESS)
+        d = ptr_type(repo, git_repository_free);
+    return ret;
 }
 
 int QGitRepository::open(const QString& path)

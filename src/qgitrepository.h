@@ -42,21 +42,6 @@ namespace LibQGit2
     class LIBQGIT2_REPOSITORY_EXPORT QGitRepository
     {
         public:
-            /**
-             * Constructs a new Git repository in the given folder.
-             *
-             * TODO:
-             * - Reinit the repository
-             * - Create config files
-             *
-             * @param path the path to the repository
-             * @param isBare if true, a Git repository without a working directory is created
-             * at the pointed path. If false, provided path will be considered as the working
-             * directory into which the .git directory will be created.
-             *
-             * @return 0 on success; error code otherwise
-             */
-            explicit QGitRepository(const QString& path, unsigned isBare);
 
             /**
              * Construct a wrapper around a libgit2 repository pointer.
@@ -75,7 +60,17 @@ namespace LibQGit2
              */
             ~QGitRepository();
 
-        public:
+            /**
+             * Constructs a new Git repository in the given folder.
+             *
+             * @param path the path to the repository
+             * @param isBare if true, a Git repository without a working directory is created
+             * at the pointed path. If false, provided path will be considered as the working
+             * directory into which the .git directory will be created.
+             *
+             * @return 0 on success; error code otherwise
+             */
+            int init(const QString& path, bool isBare);
 
             /**
              * Open a git repository.
