@@ -218,12 +218,11 @@ QGitDatabase* QGitRepository::database() const
     return database;
 }
 
-int QGitRepository::index(QGitIndex& index) const
+QGitIndex QGitRepository::index() const
 {
     git_index *idx;
-    int ret = git_repository_index(&idx, data());
-    index.reset(idx);
-    return ret;
+    git_repository_index(&idx, data());
+    return QGitIndex(idx);
 }
 
 git_repository* QGitRepository::data() const

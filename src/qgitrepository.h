@@ -255,11 +255,8 @@ namespace LibQGit2
              *
              * This is a cheap operation; the index is only opened on the first call,
              * and subsequent calls only retrieve the previous pointer.
-             *
-             * @param index Pointer where to store the index
-             * @return 0 on success; error code if the index could not be opened
              */
-            int index(QGitIndex& index) const;
+            QGitIndex index() const;
 
             git_repository* data() const;
             const git_repository* constData() const;
