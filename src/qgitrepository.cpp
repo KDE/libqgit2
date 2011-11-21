@@ -112,7 +112,7 @@ int QGitRepository::open(const QString& gitDir,
     return ret;
 }
 
-QGitRef QGitRepository::head()
+QGitRef QGitRepository::head() const
 {
     git_reference *ref = 0;
     git_repository_head(&ref, data());
