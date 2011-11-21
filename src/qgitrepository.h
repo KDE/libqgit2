@@ -162,6 +162,11 @@ namespace LibQGit2
                      const QString& gitWorkTree);
 
             /**
+             * Retrieve and resolve the reference pointed at by HEAD.
+             */
+            QGitRef head();
+
+            /**
              * Lookup a reference by its name in a repository.
              */
             QGitRef lookupRef(const QString& name);

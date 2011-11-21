@@ -112,6 +112,13 @@ int QGitRepository::open(const QString& gitDir,
     return ret;
 }
 
+QGitRef QGitRepository::head()
+{
+    git_reference *ref = 0;
+    git_repository_head(&ref, data());
+    return QGitRef(ref);
+}
+
 QGitRef QGitRepository::lookupRef(const QString& name)
 {
     git_reference *ref = 0;
