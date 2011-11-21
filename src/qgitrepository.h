@@ -167,6 +167,55 @@ namespace LibQGit2
             QGitRef head();
 
             /**
+             * Check if a repository's HEAD is detached
+             *
+             * A repository's HEAD is detached when it points directly to a commit
+             * instead of a branch.
+             */
+            bool isHeadDetached() const;
+
+            /**
+             * Check if the current branch is an orphan
+             *
+             * An orphan branch is one named from HEAD but which doesn't exist in
+             * the refs namespace, because it doesn't have any commit to point to.
+             */
+            bool isHeadOrphan() const;
+
+            /**
+             * Check if a repository is empty
+             *
+             * An empty repository has just been initialized and contains
+             * no commits.
+             */
+            bool isEmpty() const;
+
+            /**
+             * Check if a repository is bare
+             */
+            bool isBare() const;
+
+            /**
+             * Get the path to the repository
+             */
+            QString path() const;
+
+            /**
+             * Get the path to the index
+             */
+            QString indexPath() const;
+
+            /**
+             * Get the path to the ODB
+             */
+            QString databasePath() const;
+
+            /**
+             * Get the path to the working directory
+             */
+            QString workDirPath() const;
+
+            /**
              * Lookup a reference by its name in a repository.
              */
             QGitRef lookupRef(const QString& name);

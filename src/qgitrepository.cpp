@@ -119,6 +119,46 @@ QGitRef QGitRepository::head()
     return QGitRef(ref);
 }
 
+bool QGitRepository::isHeadDetached() const
+{
+    return git_repository_head_detached(data()) == 1;
+}
+
+bool QGitRepository::isHeadOrphan() const
+{
+    return git_repository_head_orphan(data()) == 1;
+}
+
+bool QGitRepository::isEmpty() const
+{
+    return git_repository_is_empty(data()) == 1;
+}
+
+bool QGitRepository::isBare() const
+{
+    return git_repository_is_bare(data()) == 1;
+}
+
+QString QGitRepository::path() const
+{
+    return QFile::decodeName(git_repository_path(data(), GIT_REPO_PATH));
+}
+
+QString QGitRepository::indexPath() const
+{
+    return QFile::decodeName(git_repository_path(data(), GIT_REPO_PATH_INDEX));
+}
+
+QString QGitRepository::databasePath() const
+{
+    return QFile::decodeName(git_repository_path(data(), GIT_REPO_PATH_ODB));
+}
+
+QString QGitRepository::workDirPath() const
+{
+    return QFile::decodeName(git_repository_path(data(), GIT_REPO_PATH_WORKDIR));
+}
+
 QGitRef QGitRepository::lookupRef(const QString& name)
 {
     git_reference *ref = 0;
