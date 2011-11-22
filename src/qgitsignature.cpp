@@ -23,24 +23,66 @@
 
 using namespace LibQGit2;
 
-QGitSignature::QGitSignature(const QString& name, const QString& email, QDateTime dateTime)
+QGitSignatureBuilder::QGitSignatureBuilder(const QString& name, const QString& email, QDateTime dateTime)
 {
     git_signature_new(&d, qPrintable(name), qPrintable(email), dateTime.toTime_t(), dateTime.utcOffset() / 60);
 }
 
-QGitSignature::QGitSignature(const QString& name, const QString& email)
+QGitSignatureBuilder::QGitSignatureBuilder(const QString& name, const QString& email)
 {
     git_signature_now(&d, qPrintable(name), qPrintable(email));
 }
 
-QGitSignature::QGitSignature(const QGitSignature& other)
+QGitSignatureBuilder::QGitSignatureBuilder(const QGitSignatureBuilder& other)
 {
     d = git_signature_dup(other.d);
 }
 
-QGitSignature::~QGitSignature()
+QGitSignatureBuilder::~QGitSignatureBuilder()
 {
     git_signature_free(d);
+}
+
+QString QGitSignatureBuilder::name() const
+{
+    return QString(d->name);
+}
+
+QString QGitSignatureBuilder::email() const
+{
+    return QString(d->email);
+}
+
+QDateTime QGitSignatureBuilder::when() const
+{
+    QDateTime dt;
+    dt.setTime_t(d->when.time);
+    dt.setUtcOffset(d->when.offset * 60);
+    return dt;
+}
+
+const git_signature* QGitSignatureBuilder::data() const
+{
+    return d;
+}
+
+QGitSignature::QGitSignature(const git_signature *signature)
+    : d(signature)
+{
+}
+
+QGitSignature::QGitSignature(const QGitSignature& other)
+    : d(other.data())
+{
+}
+
+QGitSignature::QGitSignature(const QGitSignatureBuilder& other)
+    : d(other.data())
+{
+}
+
+QGitSignature::~QGitSignature()
+{
 }
 
 QString QGitSignature::name() const
@@ -61,49 +103,7 @@ QDateTime QGitSignature::when() const
     return dt;
 }
 
-const git_signature* QGitSignature::data() const
-{
-    return d;
-}
-
-QGitSignatureRef::QGitSignatureRef(const git_signature *signature)
-    : d(signature)
-{
-}
-
-QGitSignatureRef::QGitSignatureRef(const QGitSignatureRef& other)
-    : d(other.data())
-{
-}
-
-QGitSignatureRef::QGitSignatureRef(const QGitSignature& other)
-    : d(other.data())
-{
-}
-
-QGitSignatureRef::~QGitSignatureRef()
-{
-}
-
-QString QGitSignatureRef::name() const
-{
-    return QString(d->name);
-}
-
-QString QGitSignatureRef::email() const
-{
-    return QString(d->email);
-}
-
-QDateTime QGitSignatureRef::when() const
-{
-    QDateTime dt;
-    dt.setTime_t(d->when.time);
-    dt.setUtcOffset(d->when.offset * 60);
-    return dt;
-}
-
-const git_signature *QGitSignatureRef::data() const
+const git_signature *QGitSignature::data() const
 {
     return d;
 }

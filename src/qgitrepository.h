@@ -37,7 +37,7 @@ namespace LibQGit2
     class QGitTag;
     class QGitTree;
     class QGitBlob;
-    class QGitSignatureRef;
+    class QGitSignature;
 
     class LIBQGIT2_REPOSITORY_EXPORT QGitRepository
     {
@@ -271,8 +271,8 @@ namespace LibQGit2
              * Create a new commit in the repository
              */
             QGitOId createCommit(const QString& ref,
-                                 const QGitSignatureRef& author,
-                                 const QGitSignatureRef& committer,
+                                 const QGitSignature& author,
+                                 const QGitSignature& committer,
                                  const QString& message,
                                  const QGitTree& tree,
                                  const QList<QGitCommit>& parents);
@@ -286,7 +286,7 @@ namespace LibQGit2
              */
             QGitOId createTag(const QString& name,
                               const QGitObject& target,
-                              const QGitSignatureRef& tagger,
+                              const QGitSignature& tagger,
                               const QString& message,
                               bool overwrite = true);
 

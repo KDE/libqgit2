@@ -30,7 +30,6 @@ namespace LibQGit2
 {
     class QGitOId;
     class QGitSignature;
-    class QGitSignatureRef;
     class QGitTree;
     class QGitRepository;
 
@@ -85,14 +84,14 @@ namespace LibQGit2
             * Get the committer of a commit.
             * @return the committer of a commit
             */
-            QGitSignatureRef committer() const;
+            QGitSignature committer() const;
 
 
             /**
             * Get the committer of a commit.
             * @return the committer of a commit
             */
-            QGitSignatureRef author() const;
+            QGitSignature author() const;
 
             /**
              * Get the tree pointed to by a commit.

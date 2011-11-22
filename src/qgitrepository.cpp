@@ -216,8 +216,8 @@ QGitRef QGitRepository::createSymbolicRef(const QString& name, const QString& ta
 }
 
 QGitOId QGitRepository::createCommit(const QString& ref,
-                                     const QGitSignatureRef& author,
-                                     const QGitSignatureRef& committer,
+                                     const QGitSignature& author,
+                                     const QGitSignature& committer,
                                      const QString& message,
                                      const QGitTree& tree,
                                      const QList<QGitCommit>& parents)
@@ -235,7 +235,7 @@ QGitOId QGitRepository::createCommit(const QString& ref,
 
 QGitOId QGitRepository::createTag(const QString& name,
                                   const QGitObject& target,
-                                  const QGitSignatureRef& tagger,
+                                  const QGitSignature& tagger,
                                   const QString& message,
                                   bool overwrite)
 {
