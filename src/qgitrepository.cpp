@@ -23,6 +23,7 @@
 #include "qgittree.h"
 #include "qgitblob.h"
 #include "qgitsignature.h"
+#include "qgitexception.h"
 
 #include <git2/errors.h>
 #include <git2/repository.h>
@@ -258,7 +259,9 @@ QGitOId QGitRepository::createTag(const QString& name,
 
 void QGitRepository::deleteTag(const QString& name)
 {
-    git_tag_delete(data(), QFile::encodeName(name));
+    int ret = git_tag_delete(data(), QFile::encodeName(name));
+    if (ret != GIT_SUCCESS)
+        throw QGitException();
 }
 
 QGitOId QGitRepository::createBlobFromFile(const QString& path)

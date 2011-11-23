@@ -29,6 +29,7 @@ HEADERS += \
     qgittag.h \
     qgittree.h \
     qgittreeentry.h \
+    qgitexception.h \
     qgit2.h \
     \
     git2.h \
@@ -90,6 +91,7 @@ SOURCES += \
     qgittag.cpp \
     qgittree.cpp \
     qgittreeentry.cpp \
+    qgitexception.cpp \
     \
     buffer.c \
     vector.c \
