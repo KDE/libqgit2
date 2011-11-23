@@ -29,6 +29,14 @@ namespace LibQGit2
         public:
             const char *what() const throw();
     };
+
+    inline int qGitThrow(int ret)
+    {
+        if (ret < 0) {
+            throw QGitException();
+        }
+        return ret;
+    }
 }
 
 #endif // LIBQGIT2_EXCEPTION_H
