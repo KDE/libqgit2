@@ -256,6 +256,11 @@ QGitOId QGitRepository::createTag(const QString& name,
     return oid;
 }
 
+void QGitRepository::deleteTag(const QString& name)
+{
+    git_tag_delete(data(), QFile::encodeName(name));
+}
+
 QGitOId QGitRepository::createBlobFromFile(const QString& path)
 {
     QGitOId oid;

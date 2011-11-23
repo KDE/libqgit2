@@ -302,6 +302,11 @@ namespace LibQGit2
                               bool overwrite = true);
 
             /**
+             * Delete an existing tag reference.
+             */
+            void deleteTag(const QString& name);
+
+            /**
              * Read a file from the working folder of a repository
              * and write it to the Object Database as a loose blob
              */
