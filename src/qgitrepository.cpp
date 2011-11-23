@@ -34,6 +34,7 @@
 
 #include <QtCore/QFile>
 #include <QtCore/QVector>
+#include <QtCore/QStringList>
 
 using namespace LibQGit2;
 
@@ -267,6 +268,20 @@ QGitOId QGitRepository::createBlobFromBuffer(const QByteArray& buffer)
     QGitOId oid;
     git_blob_create_frombuffer(oid.data(), data(), buffer.data(), buffer.size());
     return oid;
+}
+
+QStringList QGitRepository::listTags(const QString& pattern)
+{
+    QStringList list;
+    git_strarray tags;
+    int ret = git_tag_list_match(&tags, qPrintable(pattern), data());
+    if (ret == GIT_SUCCESS) {
+        for (size_t i = 0; i < tags.count; i++) {
+            list << QString(tags.strings[i]);
+        }
+        git_strarray_free(&tags);
+    }
+    return list;
 }
 
 QGitDatabase* QGitRepository::database() const

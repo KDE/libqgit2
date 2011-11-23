@@ -313,6 +313,17 @@ namespace LibQGit2
             QGitOId createBlobFromBuffer(const QByteArray& buffer);
 
             /**
+             * Create a list with all the tags in the Repository
+             * which name match a defined pattern
+             *
+             * If an empty pattern is provided, all the tags
+             * will be returned.
+             *
+             * @param pattern Standard fnmatch pattern
+             */
+            QStringList listTags(const QString& pattern = "");
+
+            /**
              * Get the object database behind a Git repository
              *
              * @return a pointer to the object db
