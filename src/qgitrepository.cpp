@@ -235,6 +235,16 @@ QGitOId QGitRepository::createCommit(const QString& ref,
 
 QGitOId QGitRepository::createTag(const QString& name,
                                   const QGitObject& target,
+                                  bool overwrite)
+{
+    QGitOId oid;
+    git_tag_create_lightweight(oid.data(), data(), QFile::encodeName(name),
+                               target.data(), overwrite);
+    return oid;
+}
+
+QGitOId QGitRepository::createTag(const QString& name,
+                                  const QGitObject& target,
                                   const QGitSignature& tagger,
                                   const QString& message,
                                   bool overwrite)

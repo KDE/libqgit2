@@ -278,6 +278,17 @@ namespace LibQGit2
                                  const QList<QGitCommit>& parents);
 
             /**
+             * Create a new lightweight tag pointing at a target object
+             *
+             * A new direct reference will be created pointing to
+             * this target object. If `force` is true and a reference
+             * already exists with the given name, it'll be replaced.
+             */
+            QGitOId createTag(const QString& name,
+                              const QGitObject& target,
+                              bool overwrite = true);
+
+            /**
              * Create a new tag in the repository from an object
              *
              * A new reference will also be created pointing to
