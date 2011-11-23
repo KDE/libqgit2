@@ -59,6 +59,8 @@ namespace LibQGit2
 
             /**
              * Get the tagged object of a tag
+             *
+             * @throws QGitException
              */
             QGitObject target() const;
 

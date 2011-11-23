@@ -22,6 +22,7 @@
 #include "qgitrepository.h"
 #include "qgitsignature.h"
 #include "qgittree.h"
+#include "qgitexception.h"
 
 #include <git2/commit.h>
 
@@ -76,7 +77,7 @@ QGitSignature QGitCommit::author() const
 QGitTree QGitCommit::tree() const
 {
     git_tree *tree;
-    git_commit_tree(&tree, data());
+    qGitThrow(git_commit_tree(&tree, data()));
     return QGitTree(tree);
 }
 
@@ -88,7 +89,7 @@ unsigned int QGitCommit::parentCount() const
 QGitCommit QGitCommit::parent(unsigned n) const
 {
     git_commit *parent;
-    git_commit_parent(&parent, data(), n);
+    qGitThrow(git_commit_parent(&parent, data(), n));
     return QGitCommit(parent);
 }
 

@@ -48,6 +48,7 @@ namespace LibQGit2
              * @param name name of the person
              * @param email email of the person
              * @param dateTime time when the action happened
+             * @throws QGitException
              */
             QGitSignatureBuilder(const QString& name, const QString& email, QDateTime dateTime);
 
@@ -57,6 +58,7 @@ namespace LibQGit2
              *
              * @param name name of the person
              * @param email email of the person
+             * @throws QGitException
              */
             QGitSignatureBuilder(const QString& name, const QString& email);
 

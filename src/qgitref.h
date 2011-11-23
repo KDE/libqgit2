@@ -97,6 +97,7 @@ namespace LibQGit2
              *
              * @param resolvedRef Pointer to the peeled reference
              * @return 0 on success; error code otherwise
+             * @throws QGitException
              */
             QGitRef resolve() const;
 
@@ -144,8 +145,9 @@ namespace LibQGit2
              * to disk.
              *
              * @param target The new target for the reference
+             * @throws QGitException
              */
-            int setTarget(const QString& target);
+            void setTarget(const QString& target);
 
             /**
              * Set the OID target of a reference.
@@ -158,6 +160,7 @@ namespace LibQGit2
              * to disk.
              *
              * @param target The new target OID for the reference
+             * @throws QGitException
              */
             void setOId(const QGitOId& oid);
 

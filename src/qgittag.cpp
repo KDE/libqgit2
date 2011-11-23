@@ -20,6 +20,7 @@
 #include "qgittag.h"
 #include "qgitoid.h"
 #include "qgitsignature.h"
+#include "qgitexception.h"
 
 #include <git2/tag.h>
 
@@ -47,7 +48,7 @@ QGitOId QGitTag::oid() const
 QGitObject QGitTag::target() const
 {
     git_object *obj;
-    git_tag_target(&obj, data());
+    qGitThrow(git_tag_target(&obj, data()));
     return QGitObject(obj);
 }
 

@@ -18,6 +18,7 @@
  */
 
 #include "qgitoid.h"
+#include "qgitexception.h"
 
 #include <git2/oid.h>
 
@@ -45,7 +46,7 @@ QGitOId QGitOId::fromString(const QByteArray& string)
     int len = qMin(string.length(), GIT_OID_HEXSZ);
     QGitOId oid;
     oid.d.resize(len);
-    git_oid_fromstrn(oid.data(), string.constData(), len);
+    qGitThrow(git_oid_fromstrn(oid.data(), string.constData(), len));
     return oid;
 }
 

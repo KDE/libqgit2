@@ -56,6 +56,7 @@ namespace LibQGit2
              * at least 4 bytes.
              *
              * @return OId; null OId on failure.
+             * @throws QGitException
              */
             static QGitOId fromString(const QByteArray& string);
 

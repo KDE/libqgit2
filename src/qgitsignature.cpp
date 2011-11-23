@@ -18,6 +18,7 @@
  */
 
 #include "qgitsignature.h"
+#include "qgitexception.h"
 
 #include <git2/signature.h>
 
@@ -25,12 +26,12 @@ using namespace LibQGit2;
 
 QGitSignatureBuilder::QGitSignatureBuilder(const QString& name, const QString& email, QDateTime dateTime)
 {
-    git_signature_new(&d, qPrintable(name), qPrintable(email), dateTime.toTime_t(), dateTime.utcOffset() / 60);
+    qGitThrow(git_signature_new(&d, qPrintable(name), qPrintable(email), dateTime.toTime_t(), dateTime.utcOffset() / 60));
 }
 
 QGitSignatureBuilder::QGitSignatureBuilder(const QString& name, const QString& email)
 {
-    git_signature_now(&d, qPrintable(name), qPrintable(email));
+    qGitThrow(git_signature_now(&d, qPrintable(name), qPrintable(email)));
 }
 
 QGitSignatureBuilder::QGitSignatureBuilder(const QGitSignatureBuilder& other)

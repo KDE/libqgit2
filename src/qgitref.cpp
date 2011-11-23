@@ -21,6 +21,7 @@
 
 #include "qgitoid.h"
 #include "qgitrepository.h"
+#include "qgitexception.h"
 
 #include <QtCore/QFile>
 
@@ -70,7 +71,7 @@ QString QGitRef::name() const
 QGitRef QGitRef::resolve() const
 {
     git_reference *ref;
-    git_reference_resolve(&ref, m_reference);
+    qGitThrow(git_reference_resolve(&ref, m_reference));
     return QGitRef(ref);
 }
 
@@ -79,14 +80,14 @@ QGitRepository QGitRef::owner()
     return QGitRepository(git_reference_owner(m_reference));
 }
 
-int QGitRef::setTarget(const QString& target)
+void QGitRef::setTarget(const QString& target)
 {
-    return git_reference_set_target(m_reference, QFile::encodeName(target));
+    qGitThrow(git_reference_set_target(m_reference, QFile::encodeName(target)));
 }
 
 void QGitRef::setOId(const QGitOId& oid)
 {
-    git_reference_set_oid(m_reference, oid.data());
+    qGitThrow(git_reference_set_oid(m_reference, oid.data()));
 }
 
 git_reference* QGitRef::data() const
