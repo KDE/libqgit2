@@ -27,16 +27,19 @@ namespace LibQGit2
     class LIBQGIT2_EXPORT QGitException : public std::exception
     {
         public:
+            QGitException(int error);
+
+            ~QGitException() throw();
+
             const char *what() const throw();
+
+            QByteArray message() const;
+
+        private:
+            QByteArray m;
     };
 
-    inline int qGitThrow(int ret)
-    {
-        if (ret < 0) {
-            throw QGitException();
-        }
-        return ret;
-    }
+    int qGitThrow(int ret);
 }
 
 #endif // LIBQGIT2_EXCEPTION_H

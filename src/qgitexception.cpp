@@ -21,10 +21,32 @@
 
 #include <git2/errors.h>
 
-using namespace LibQGit2;
+namespace LibQGit2
+{
 
+QGitException::QGitException(int error)
+{
+    if (git_lasterror())
+        m = git_lasterror();
+    else
+        m = git_strerror(error);
+}
+
+QGitException::~QGitException() throw()
+{
+}
 
 const char *QGitException::what() const throw()
 {
-    return git_lasterror();
+    return m;
+}
+
+int qGitThrow(int ret)
+{
+    if (ret < 0) {
+        throw QGitException(ret);
+    }
+    return ret;
+}
+
 }
