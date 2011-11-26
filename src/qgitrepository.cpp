@@ -113,6 +113,13 @@ void QGitRepository::open(const QString& gitDir,
     d = ptr_type(repo, git_repository_free);
 }
 
+void QGitRepository::discoverAndOpen(const QString &startPath,
+                                     bool acrossFs,
+                                     const QStringList &ceilingDirs)
+{
+    open(discover(startPath, acrossFs, ceilingDirs));
+}
+
 QGitRef QGitRepository::head() const
 {
     git_reference *ref = 0;

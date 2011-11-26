@@ -194,6 +194,17 @@ namespace LibQGit2
                       const QString& gitWorkTree);
 
             /**
+             * Convenience function for finding and opening a git repository.
+             *
+             * Calls discover() with the given arguments, and passes the result to open().
+             *
+             * @throws QGitException
+             */
+            void discoverAndOpen(const QString &startPath,
+                                 bool acrossFs = false,
+                                 const QStringList &ceilingDirs = QStringList());
+
+            /**
              * Retrieve and resolve the reference pointed at by HEAD.
              *
              * @throws QGitException
