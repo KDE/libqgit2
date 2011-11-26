@@ -18,8 +18,8 @@
  */
 
 #include "qgittreeentry.h"
-
 #include "qgitrepository.h"
+#include "qgitexception.h"
 
 #include <QtCore/QFile>
 
@@ -51,7 +51,7 @@ const QString QGitTreeEntry::name() const
     return QString::fromUtf8(git_tree_entry_name(m_treeEntry));
 }
 
-QGitOId QGitTreeEntry::id() const
+QGitOId QGitTreeEntry::oid() const
 {
     return QGitOId(git_tree_entry_id(m_treeEntry));
 }
@@ -59,7 +59,7 @@ QGitOId QGitTreeEntry::id() const
 QGitObject QGitTreeEntry::toObject(const QGitRepository& repo)
 {
     git_object *obj;
-    git_tree_entry_2object(&obj, repo.data(), m_treeEntry);
+    qGitThrow(git_tree_entry_2object(&obj, repo.data(), m_treeEntry));
     return QGitObject(obj);
 }
 

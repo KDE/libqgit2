@@ -55,13 +55,14 @@ namespace LibQGit2
              * Get the id of the object pointed by the entry
              * @return the oid of the object
              */
-            QGitOId id() const;
+            QGitOId oid() const;
 
             /**
              * Convert a tree entry to the Object it points too.
              *
              * @param object pointer to the converted object
              * @return a reference to the pointed object in the repository
+             * @throws QGitException
              */
             QGitObject toObject(const QGitRepository& repo);
 
