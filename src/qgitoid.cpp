@@ -86,9 +86,14 @@ const git_oid* QGitOId::constData() const
     return reinterpret_cast<const git_oid*>(d.constData());
 }
 
-bool operator==(const QGitOId& oid1, const QGitOId& oid2)
+bool QGitOId::operator ==(const QGitOId &other) const
 {
-    return git_oid_cmp(oid1.data(), oid2.data()) == 0;
+    return git_oid_cmp(this->data(), other.data()) == 0;
+}
+
+bool QGitOId::operator !=(const QGitOId &other) const
+{
+    return git_oid_cmp(this->data(), other.data()) != 0;
 }
 
 int QGitOId::length() const

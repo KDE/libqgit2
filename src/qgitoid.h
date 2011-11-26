@@ -91,14 +91,15 @@ namespace LibQGit2
              */
             int length() const;
 
+            /**
+             * Compare two oid objects
+             */
+            bool operator ==(QGitOId const &other) const;
+            bool operator !=(QGitOId const &other) const;
+
         private:
             QByteArray d;
     };
-
-    /**
-     * Compare two oid objects
-     */
-    bool operator==(const QGitOId& oid1, const QGitOId& oid2);
 }
 
 #endif // LIBQGIT2_OID_H
