@@ -28,6 +28,7 @@
 #include "qgitindex.h"
 
 #include <QtCore/QSharedPointer>
+#include <QtCore/QStringList>
 
 struct git_repository;
 
@@ -63,6 +64,37 @@ namespace LibQGit2
              * Destruct a previously allocated repository
              */
             ~QGitRepository();
+
+            /**
+             * Look for a git repository and return its path. The lookup start from startPath and
+             * walk across parent directories if nothing has been found. The lookup ends when the
+             * first repository is found, or when reaching a directory that is referenced in
+             * ceilingDirs, or when the filesystem changes (unless acrossFs is true).
+             *
+             * The method will automatically detect if the repository is bare (if there is a
+             * repository).
+             *
+             * The function will only return successfully if a repository was found, otherwise an
+             * exception is thrown, providing an error message.
+             *
+             * @param startPath
+             * The base path where the lookup starts.
+             *
+             * @param acrossFs
+             * If true, then the lookup will not stop when a filesystem device change is detected
+             * while exploring parent directories.
+             *
+             * @param ceilingDirs
+             * A list of absolute symbolic link free paths. The lookup will stop if any of these
+             * paths are reached. Note that the lookup always performs on startPath no matter if
+             * startPath appears in ceilingDirs.
+             *
+             * @return The path of the found repository
+             * @throws QGitException
+             */
+            static QString discover(const QString& startPath,
+                                    bool acrossFs = false,
+                                    const QStringList& ceilingDirs = QStringList());
 
             /**
              * Constructs a new Git repository in the given folder.

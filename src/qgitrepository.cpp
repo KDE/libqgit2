@@ -57,6 +57,16 @@ QGitRepository::~QGitRepository()
 {
 }
 
+QString QGitRepository::discover(const QString& startPath, bool acrossFs, const QStringList& ceilingDirs)
+{
+    QByteArray repoPath(GIT_PATH_MAX, Qt::Uninitialized);
+    QByteArray joinedCeilingDirs = QFile::encodeName(ceilingDirs.join(QChar(GIT_PATH_LIST_SEPARATOR)));
+    qGitThrow(git_repository_discover(repoPath.data(), repoPath.length(),
+                                      QFile::encodeName(startPath),
+                                      acrossFs, joinedCeilingDirs));
+    return QFile::decodeName(repoPath);
+}
+
 void QGitRepository::init(const QString& path, bool isBare)
 {
     d.clear();
