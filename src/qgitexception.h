@@ -33,7 +33,7 @@ namespace LibQGit2
 
             const char *what() const throw();
 
-            QByteArray message() const;
+            QByteArray message() const throw();
 
         private:
             QByteArray m;

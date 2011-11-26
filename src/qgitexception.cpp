@@ -41,6 +41,11 @@ const char *QGitException::what() const throw()
     return m;
 }
 
+QByteArray QGitException::message() const throw()
+{
+    return m;
+}
+
 int qGitThrow(int ret)
 {
     if (ret < 0) {
