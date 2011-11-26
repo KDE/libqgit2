@@ -31,50 +31,7 @@ HEADERS += \
     qgittree.h \
     qgittreeentry.h \
     qgitexception.h \
-    qgit2.h \
-    \
-    git2.h \
-    git2/types.h \
-    git2/tree.h \
-    git2/thread-utils.h \
-    git2/tag.h \
-    git2/signature.h \
-    git2/revwalk.h \
-    git2/repository.h \
-    git2/refs.h \
-    git2/oid.h \
-    git2/odb.h \
-    git2/odb_backend.h \
-    git2/object.h \
-    git2/index.h \
-    git2/errors.h \
-    git2/common.h \
-    git2/commit.h \
-    git2/blob.h \
-    util.h \
-    tree.h \
-    thread-utils.h \
-    tag.h \
-    t03-data.h \
-    signature.h \
-    revwalk.h \
-    repository.h \
-    refs.h \
-    odb.h \
-    msvc-compat.h \
-    mingw-compat.h \
-    index.h \
-    hashtable.h \
-    hash.h \
-    fileops.h \
-    filebuf.h \
-    dir.h \
-    delta-apply.h \
-    common.h \
-    commit.h \
-    bswap.h \
-    blob.h \
-    block-sha1/sha1.h
+    qgit2.h
 
 SOURCES += \
     qgitblob.cpp \
@@ -101,6 +58,7 @@ SOURCES += \
     cache.c \
     config.c \
     config_file.c \
+    pqueue.c \
     tree.c \
     tree-cache.c \
     thread-utils.c \
