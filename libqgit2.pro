@@ -20,6 +20,7 @@ HEADERS += \
     qgitdatabasebackend.h \
     qgitindex.h \
     qgitindexentry.h \
+    qgitindexmodel.h \
     qgitobject.h \
     qgitoid.h \
     qgitref.h \
@@ -82,6 +83,7 @@ SOURCES += \
     qgitdatabasebackend.cpp \
     qgitindex.cpp \
     qgitindexentry.cpp \
+    qgitindexmodel.cpp \
     qgitobject.cpp \
     qgitoid.cpp \
     qgitref.cpp \
