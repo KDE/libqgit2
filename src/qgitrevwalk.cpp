@@ -63,7 +63,6 @@ QGitOId QGitRevWalk::next()
     return oid;
 }
 
-void QGitRevWalk::sorting(unsigned int sortMode)
 void QGitRevWalk::setSorting(SortModes sortMode)
 {
     // wrap c defines
