@@ -24,7 +24,7 @@
 
 #include <QtCore/QSharedPointer>
 
-struct git_index;
+class git_index;
 
 namespace LibQGit2
 {
