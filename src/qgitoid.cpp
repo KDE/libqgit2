@@ -22,7 +22,8 @@
 
 #include <git2/oid.h>
 
-using namespace LibQGit2;
+namespace LibQGit2
+{
 
 QGitOId::QGitOId(const git_oid *oid)
     : d(GIT_OID_RAWSZ, '\0')
@@ -94,17 +95,19 @@ const git_oid* QGitOId::constData() const
     return reinterpret_cast<const git_oid*>(d.constData());
 }
 
-bool QGitOId::operator ==(const QGitOId &other) const
+bool operator ==(const QGitOId &oid1, const QGitOId &oid2)
 {
-    return git_oid_cmp(this->data(), other.data()) == 0;
+    return git_oid_cmp(oid1.data(), oid2.data()) == 0;
 }
 
-bool QGitOId::operator !=(const QGitOId &other) const
+bool operator !=(const QGitOId &oid1, const QGitOId &oid2)
 {
-    return git_oid_cmp(this->data(), other.data()) != 0;
+    return !(operator ==(oid1, oid2));
 }
 
 int QGitOId::length() const
 {
     return d.length() * 2;
 }
+
+} // LibQGit2
