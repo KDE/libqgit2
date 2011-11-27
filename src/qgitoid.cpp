@@ -45,7 +45,7 @@ QGitOId::~QGitOId()
 bool QGitOId::isValid() const
 {
     return ( !d.isEmpty() &&
-             (d.length() == GIT_OID_RAWSZ) &&
+             (d.length() <= GIT_OID_RAWSZ) &&
              (d != QByteArray(GIT_OID_RAWSZ, '\0'))
              );
 }
