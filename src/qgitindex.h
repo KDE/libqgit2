@@ -32,6 +32,13 @@ namespace LibQGit2
     class QGitRepository;
     class QGitIndexEntry;
 
+    /**
+     * @brief Wrapper class for git_index.
+     * Represents a Git index a.k.a "the stage".
+     *
+     * @ingroup LibQGit2
+     * @{
+     */
     class LIBQGIT2_INDEX_EXPORT QGitIndex
     {
         public:
@@ -161,6 +168,8 @@ namespace LibQGit2
             typedef QSharedPointer<git_index> ptr_type;
             ptr_type d;
     };
+
+    /**@}*/
 }
 
 #endif // LIBQGIT2_INDEX_H

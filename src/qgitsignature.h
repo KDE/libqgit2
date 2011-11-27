@@ -30,13 +30,16 @@ struct git_signature;
 namespace LibQGit2
 {
     /**
-     * This class is used for constructing new action signatures, e.g. when creating commits.
+     * @brief This class is used for constructing new action signatures, e.g. when creating commits.
      *
      * The underlaying data structure is owned by the object, and deleted when the object is
      * destroyed.
      *
      * The interface provided by this class is identical to QGitSignature, with additional
      * constructors for creating new signatures.
+     *
+     * @ingroup LibQGit2
+     * @{
      */
     class LIBQGIT2_SIGNATURE_EXPORT QGitSignatureBuilder
     {
@@ -97,13 +100,18 @@ namespace LibQGit2
             git_signature *d;
     };
 
+    /**@}*/
+
     /**
-     * This class provides a thin wrapper around an existing signature data structure.
+     * @brief This class provides a thin wrapper around an existing signature data structure.
      *
      * An instance of this class does not own the underlaying data structure, only a reference
      * (pointer) to it.
      *
      * Use QGitSignatureBuilder to create new signatures.
+     *
+     * @ingroup LibQGit2
+     * @{
      */
     class LIBQGIT2_SIGNATURE_EXPORT QGitSignature
     {
@@ -151,6 +159,8 @@ namespace LibQGit2
         private:
             const git_signature *d;
     };
+
+    /**@}*/
 }
 
 #endif // LIBQGIT2_SIGNATURE_H

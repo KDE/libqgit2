@@ -29,6 +29,13 @@ namespace LibQGit2
     class QGitOId;
     class QGitSignature;
 
+    /**
+     * @brief Wrapper class for git_tag.
+     * Represents a Git tag object.
+     *
+     * @ingroup LibQGit2
+     * @{
+     */
     class LIBQGIT2_TAG_EXPORT QGitTag : public QGitObject
     {
         public:
@@ -85,6 +92,8 @@ namespace LibQGit2
             git_tag* data() const;
             const git_tag* constData() const;
     };
+
+    /**@}*/
 }
 
 #endif // LIBQGIT2_TAG_H

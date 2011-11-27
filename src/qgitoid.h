@@ -29,6 +29,13 @@ typedef struct _git_oid git_oid;
 
 namespace LibQGit2
 {
+    /**
+     * @brief Wrapper class for git_oid.
+     * Represents a Git sha1 object id.
+     *
+     * @ingroup LibQGit2
+     * @{
+     */
     class LIBQGIT2_OID_EXPORT QGitOId
     {
         public:
@@ -106,6 +113,8 @@ namespace LibQGit2
         private:
             QByteArray d;
     };
+
+    /**@}*/
 }
 
 #endif // LIBQGIT2_OID_H

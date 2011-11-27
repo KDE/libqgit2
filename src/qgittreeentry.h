@@ -30,6 +30,13 @@ namespace LibQGit2
     class QGitObject;
     class QGitRepository;
 
+    /**
+     * @brief Wrapper class for git_tree_entry.
+     * Represents a Git child tree entry, that can either point to another tree object or a blob.
+     *
+     * @ingroup LibQGit2
+     * @{
+     */
     class LIBQGIT2_TREEENTRY_EXPORT QGitTreeEntry
     {
         public:
@@ -72,6 +79,8 @@ namespace LibQGit2
         private:
             const git_tree_entry *m_treeEntry;
     };
+
+    /**@}*/
 }
 
 #endif // LIBQGIT2_TREEENTRY_H

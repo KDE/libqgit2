@@ -30,6 +30,13 @@ namespace LibQGit2
     class QGitOId;
     class QGitCommit;
 
+    /**
+      * @brief Wrapper class for git_revwalk.
+      * The revision walker can be used to traverse Git commit history. It features sorting abilities and more.
+      *
+      * @ingroup LibQGit2
+      * @{
+      */
     class LIBQGIT2_REVWALK_EXPORT QGitRevWalk
     {
         public:
@@ -38,19 +45,17 @@ namespace LibQGit2
              */
             enum SortMode
             {
-                None            = 0x0
-                , Time          = 0x1
-                , Topological   = 0x2
-                , Reverse       = 0x4
+                None            = 0x0   //!< GIT_SORT_NONE
+                , Time          = 0x1   //!< GIT_SORT_TIME
+                , Topological   = 0x2   //!< GIT_SORT_TOPOLOGICAL
+                , Reverse       = 0x4   //!< GIT_SORT_REVERSE
             };
-            Q_DECLARE_FLAGS(SortModes, SortMode)
+            Q_DECLARE_FLAGS(SortModes, SortMode) //!< Combination of SortMode
 
             /**
              * Allocate a new revision walker to iterate through a repo.
              *
-             * @param walker pointer to the new revision walker
              * @param repo the repo to walk through
-             * @return 0 on success; error code otherwise
              */
             explicit QGitRevWalk(const QGitRepository& repository);
 
@@ -65,7 +70,6 @@ namespace LibQGit2
 
             /**
              * Reset the walking machinery for reuse.
-             * @param walker handle to reset.
              */
             void reset() const;
 
@@ -100,7 +104,7 @@ namespace LibQGit2
              * Change the sorting mode when iterating through the
              * repository's contents.
              * Changing the sorting mode resets the walker.
-             * @param sortMode combination of GIT_RPSORT_XXX flags
+             * @param sortMode The sorting mode @see SortModes.
              */
             void setSorting(SortModes sortMode);
 
@@ -120,6 +124,8 @@ namespace LibQGit2
     };
 
     Q_DECLARE_OPERATORS_FOR_FLAGS(QGitRevWalk::SortModes)
+
+    /**@}*/
 }
 
 #endif // LIBQGIT2_REVWALK_H

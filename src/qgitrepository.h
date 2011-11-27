@@ -40,6 +40,13 @@ namespace LibQGit2
     class QGitBlob;
     class QGitSignature;
 
+    /**
+     * @brief Wrapper class for git_repository.
+     * Represents a Git repository.
+     *
+     * @ingroup LibQGit2
+     * @{
+     */
     class LIBQGIT2_REPOSITORY_EXPORT QGitRepository
     {
         public:
@@ -434,6 +441,8 @@ namespace LibQGit2
             typedef QSharedPointer<git_repository> ptr_type;
             ptr_type d;
     };
+
+    /**@}*/
 }
 
 #endif // LIBQGIT2_REPOSITORY_H

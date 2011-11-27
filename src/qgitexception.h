@@ -24,6 +24,12 @@
 
 namespace LibQGit2
 {
+    /**
+     * @brief Exception class to throw Git exceptions.
+     *
+     * @ingroup LibQGit2
+     * @{
+     */
     class LIBQGIT2_EXPORT QGitException : public std::exception
     {
         public:
@@ -40,6 +46,8 @@ namespace LibQGit2
     };
 
     int qGitThrow(int ret);
+
+    /**@}*/
 }
 
 #endif // LIBQGIT2_EXCEPTION_H

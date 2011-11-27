@@ -23,6 +23,10 @@
 #include <QtCore/qglobal.h>
 #include <QtCore/QObject>
 
+/** @defgroup LibQGit2 The Qt Library for Git revision control featuring libgit2
+ * Qt wrapper classes for the LibGit2 library.
+ */
+
 #ifndef LIBQGIT2_EXPORT
 #if defined(MAKE_LIBQGIT2_LIB)
 #define LIBQGIT2_EXPORT Q_DECL_EXPORT

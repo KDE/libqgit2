@@ -26,6 +26,13 @@ struct git_blob;
 
 namespace LibQGit2
 {
+    /**
+     * @brief Wrapper class for git_blob.
+     * Represents a Git blob (binary large object).
+     *
+     * @ingroup LibQGit2
+     * @{
+     */
     class LIBQGIT2_BLOB_EXPORT QGitBlob : public QGitObject
     {
         public:
@@ -70,6 +77,8 @@ namespace LibQGit2
             git_blob* data() const;
             const git_blob* constData() const;
     };
+
+    /**@}*/
 }
 
 #endif // LIBQGIT2_BLOB_H

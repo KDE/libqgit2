@@ -32,6 +32,13 @@ namespace LibQGit2
     class QGitOId;
     class QGitTreeEntry;
 
+    /**
+     * @brief Wrapper class for git_tree.
+     * Represents a Git tree object.
+     *
+     * @ingroup LibQGit2
+     * @{
+     */
     class LIBQGIT2_TREE_EXPORT QGitTree : public QGitObject
     {
         public:
@@ -83,6 +90,8 @@ namespace LibQGit2
             git_tree* data() const;
             const git_tree* constData() const;
     };
+
+    /**@}*/
 }
 
 #endif // LIBQGIT2_TREE_H

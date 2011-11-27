@@ -30,6 +30,14 @@ namespace LibQGit2
 {
     class QGitRepository;
     class QGitOId;
+
+    /**
+     * @brief Wrapper class for git_refs.
+     * Represents a Git reference. Reference objects are branches, tags, etc.
+     *
+     * @ingroup LibQGit2
+     * @{
+     */
     class LIBQGIT2_REFS_EXPORT QGitRef
     {
         public:
@@ -174,6 +182,8 @@ namespace LibQGit2
         private:
             git_reference *m_reference;
     };
+
+    /**@}*/
 }
 
 #endif // LIBQGIT2_REF_H

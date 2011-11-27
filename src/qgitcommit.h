@@ -33,6 +33,13 @@ namespace LibQGit2
     class QGitTree;
     class QGitRepository;
 
+    /**
+     * @brief Wrapper class for git_commit.
+     * Represents a Git commit object.
+     *
+     * @ingroup LibQGit2
+     * @{
+     */
     class LIBQGIT2_COMMIT_EXPORT QGitCommit : public QGitObject
     {
         public:
@@ -118,6 +125,8 @@ namespace LibQGit2
             git_commit* data() const;
             const git_commit* constData() const;
     };
+
+    /**@}*/
 }
 
 #endif // LIBQGIT2_HASHTABLE_H
