@@ -45,8 +45,8 @@ QGitOId QGitOId::fromString(const QByteArray& string)
 {
     int len = qMin(string.length(), GIT_OID_HEXSZ);
     QGitOId oid;
-    oid.d.resize(len);
     qGitThrow(git_oid_fromstrn(oid.data(), string.constData(), len));
+    oid.d.resize(len / 2);
     return oid;
 }
 
@@ -93,5 +93,5 @@ bool operator==(const QGitOId& oid1, const QGitOId& oid2)
 
 int QGitOId::length() const
 {
-    return d.length();
+    return d.length() * 2;
 }

@@ -83,6 +83,12 @@ namespace LibQGit2
             const git_oid* data() const;
             const git_oid* constData() const;
 
+            /**
+             * Returns the length of the OId as a number of hexadecimal characters.
+             *
+             * The full length of a OId is 40, but the OId represented by this class may be smaller,
+             * if it represents a prefix created with fromString().
+             */
             int length() const;
 
         private:
