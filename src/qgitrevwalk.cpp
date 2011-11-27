@@ -64,8 +64,18 @@ QGitOId QGitRevWalk::next()
 }
 
 void QGitRevWalk::sorting(unsigned int sortMode)
+void QGitRevWalk::setSorting(SortModes sortMode)
 {
-    git_revwalk_sorting(m_revWalk, sortMode);
+    // wrap c defines
+    unsigned int sort = GIT_SORT_NONE;
+    if (sortMode | Time)
+        sort |= GIT_SORT_TIME;
+    if (sortMode | Topological)
+        sort |= GIT_SORT_TOPOLOGICAL;
+    if (sortMode | Reverse)
+        sort |= GIT_SORT_REVERSE;
+
+    git_revwalk_sorting(m_revWalk, sort);
 }
 
 QGitRepository QGitRevWalk::repository()

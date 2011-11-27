@@ -33,6 +33,18 @@ namespace LibQGit2
     {
         public:
             /**
+             * Defines the sortmode when walking revisions.
+             */
+            enum SortMode
+            {
+                None            = 0x0
+                , Time          = 0x1
+                , Topological   = 0x2
+                , Reverse       = 0x4
+            };
+            Q_DECLARE_FLAGS(SortModes, SortMode)
+
+            /**
              * Allocate a new revision walker to iterate through a repo.
              *
              * @param walker pointer to the new revision walker
@@ -85,7 +97,7 @@ namespace LibQGit2
              * Changing the sorting mode resets the walker.
              * @param sortMode combination of GIT_RPSORT_XXX flags
              */
-            void sorting(unsigned int sortMode);
+            void setSorting(SortModes sortMode);
 
             /**
              * Return the repository on which this walker
@@ -101,6 +113,8 @@ namespace LibQGit2
         private:
             git_revwalk *m_revWalk;
     };
+
+    Q_DECLARE_OPERATORS_FOR_FLAGS(QGitRevWalk::SortModes)
 }
 
 #endif // LIBQGIT2_REVWALK_H
