@@ -28,6 +28,7 @@ namespace LibQGit2
 {
     class QGitRepository;
     class QGitOId;
+    class QGitCommit;
 
     class LIBQGIT2_REVWALK_EXPORT QGitRevWalk
     {
@@ -74,7 +75,7 @@ namespace LibQGit2
              *
              * @param commit the commit to start from.
              */
-            int push(const QGitOId& commit) const;
+            int push(const QGitCommit& commit) const;
 
             /**
              * Mark a commit (and its ancestors) uninteresting for the output.
@@ -83,13 +84,17 @@ namespace LibQGit2
             int hide(const QGitOId& commit) const;
 
             /**
-             * Get the next commit from the revision traversal.
-             *
-             * @param commit Pointer where to store the next commit
-             * @return GIT_SUCCESS if the next commit was found;
-             * GIT_EREVWALKOVER if there are no commits left to iterate
+             * Get the oid of the next commit from the revision traversal.
              */
-            QGitOId next();
+            LibQGit2::QGitOId next() const;
+
+            /**
+             * Get the next commit from the revision traversal and look it up in the owner repository.
+             * @param commit The next commit within the set repository, when it was found;
+             * Otherwise an empty QGitCommit will be set.
+             * @return True when the commit was found.
+             */
+            bool next(QGitCommit & commit);
 
             /**
              * Change the sorting mode when iterating through the

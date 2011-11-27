@@ -23,6 +23,7 @@
 #include "qgitrepository.h"
 
 #include <git2/revwalk.h>
+#include <common.h>
 
 using namespace LibQGit2;
 
@@ -46,9 +47,9 @@ void QGitRevWalk::reset() const
     return git_revwalk_reset(m_revWalk);
 }
 
-int QGitRevWalk::push(const QGitOId& oid) const
+int QGitRevWalk::push(const QGitCommit& commit) const
 {
-    return git_revwalk_push(m_revWalk, oid.data());
+    return git_revwalk_push(m_revWalk, commit.oid().data());
 }
 
 int QGitRevWalk::hide(const QGitOId& oid) const
@@ -56,11 +57,24 @@ int QGitRevWalk::hide(const QGitOId& oid) const
     return git_revwalk_hide(m_revWalk, oid.data());
 }
 
-QGitOId QGitRevWalk::next()
+QGitOId QGitRevWalk::next() const
 {
     QGitOId oid;
     git_revwalk_next(oid.data(), m_revWalk);
     return oid;
+}
+
+bool QGitRevWalk::next(QGitCommit & commit)
+{
+    QGitOId oid;
+    int err = git_revwalk_next(oid.data(), m_revWalk);
+
+    if ( (err != GIT_SUCCESS) || !oid.isValid() )
+        commit = QGitCommit();
+    else
+        commit = (repository().lookupCommit(oid));
+
+    return !commit.isNull();
 }
 
 void QGitRevWalk::setSorting(SortModes sortMode)
