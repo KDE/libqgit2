@@ -7,11 +7,11 @@ TARGET = qgit2
 
 DEPENDPATH += . src \
     libgit2/src libgit2/include libgit2/include/git2 \
-    #libgit2/deps/http-parser libgit2/deps/zlib
+    libgit2/deps/http-parser
 
 INCLUDEPATH += . src \
     libgit2/include libgit2/src \
-    #libgit2/deps/http-parser libgit2/deps/zlib
+    libgit2/deps/http-parser
 
 CONFIG += staticlib
 
@@ -57,5 +57,11 @@ SOURCES += \
     qgitexception.cpp
 
 include(libgit2.pri)
-#include(http-parser.pri)
-#include(zlib.pri)
+include(http-parser.pri)
+
+#win32: {
+    DEFINES += STDC
+    INCLUDEPATH += libgit2/deps/zlib
+    DEPENDPATH += libgit2/deps/zlib
+    include(zlib.pri)
+#}
