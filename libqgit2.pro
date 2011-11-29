@@ -6,8 +6,12 @@ TEMPLATE = lib
 TARGET = qgit2
 
 DEPENDPATH += . src \
-    libgit2/src libgit2/include libgit2/include/git2
-INCLUDEPATH += . src libgit2/include libgit2/src
+    libgit2/src libgit2/include libgit2/include/git2 \
+    #libgit2/deps/http-parser libgit2/deps/zlib
+
+INCLUDEPATH += . src \
+    libgit2/include libgit2/src \
+    #libgit2/deps/http-parser libgit2/deps/zlib
 
 CONFIG += staticlib
 
@@ -50,59 +54,8 @@ SOURCES += \
     qgittag.cpp \
     qgittree.cpp \
     qgittreeentry.cpp \
-    qgitexception.cpp \
-    \
-    buffer.c \
-    vector.c \
-    util.c \
-    cache.c \
-    config.c \
-    config_file.c \
-    pqueue.c \
-    tree.c \
-    tree-cache.c \
-    thread-utils.c \
-    tag.c \
-    signature.c \
-    revwalk.c \
-    repository.c \
-    refs.c \
-    oid.c \
-    odb.c \
-    odb_pack.c \
-    odb_loose.c \
-    object.c \
-    index.c \
-    hashtable.c \
-    hash.c \
-    fileops.c \
-    filebuf.c \
-    errors.c \
-    delta-apply.c \
-    commit.c \
-    blob.c \
-    mwindow.c \
-    pack.c \
-    path.c \
-    posix.c \
-    sha1.c \
-    sha1_lookup.c \
-    tsort.c \
-    unix/map.c \
+    qgitexception.cpp
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+include(libgit2.pri)
+#include(http-parser.pri)
+#include(zlib.pri)
