@@ -26,7 +26,7 @@ namespace LibQGit2
 {
 
 QGitOId::QGitOId(const git_oid *oid)
-    : d(GIT_OID_RAWSZ, '\0')
+    : d(GIT_OID_RAWSZ, 0)
 {
     if (oid != 0) {
         git_oid_cpy(data(), oid);
@@ -46,7 +46,7 @@ bool QGitOId::isValid() const
 {
     return ( !d.isEmpty() &&
              (d.length() <= GIT_OID_RAWSZ) &&
-             (d != QByteArray(GIT_OID_RAWSZ, '\0'))
+             (d != QByteArray(GIT_OID_RAWSZ, 0))
              );
 }
 
