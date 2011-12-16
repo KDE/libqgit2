@@ -415,7 +415,7 @@ namespace LibQGit2
              * @param pattern Standard fnmatch pattern
              * @throws QGitException
              */
-            QStringList listTags(const QString& pattern = "");
+            QStringList listTags(const QString& pattern = QString()) const;
 
             /**
              * Get the object database behind a Git repository

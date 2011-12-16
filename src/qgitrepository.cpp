@@ -282,12 +282,13 @@ QGitOId QGitRepository::createBlobFromBuffer(const QByteArray& buffer)
     return oid;
 }
 
-QStringList QGitRepository::listTags(const QString& pattern)
+QStringList QGitRepository::listTags(const QString& pattern) const
 {
     QStringList list;
     git_strarray tags;
     qGitThrow(git_tag_list_match(&tags, qPrintable(pattern), data()));
-    for (size_t i = 0; i < tags.count; i++) {
+    for (size_t i = 0; i < tags.count; ++i)
+    {
         list << QString(tags.strings[i]);
     }
     git_strarray_free(&tags);
