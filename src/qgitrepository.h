@@ -418,6 +418,14 @@ namespace LibQGit2
             QStringList listTags(const QString& pattern = QString()) const;
 
             /**
+             * Create a list with all references in the Repository.
+             *
+             * @param pattern Standard fnmatch pattern
+             * @throws QGitException
+             */
+            QStringList listReferences() const;
+
+            /**
              * Get the object database behind a Git repository
              *
              * @return a pointer to the object db

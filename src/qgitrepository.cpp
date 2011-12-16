@@ -295,6 +295,19 @@ QStringList QGitRepository::listTags(const QString& pattern) const
     return list;
 }
 
+QStringList QGitRepository::listReferences() const
+{
+    QStringList list;
+    git_strarray refs;
+    qGitThrow(git_reference_listall( &refs, data(), GIT_REF_LISTALL));
+    for (size_t i = 0; i < refs.count; ++i)
+    {
+        list << QString(refs.strings[i]);
+    }
+    git_strarray_free(&refs);
+    return list;
+}
+
 QGitDatabase* QGitRepository::database() const
 {
     QGitDatabase *database = new QGitDatabase(git_repository_database(data()));
