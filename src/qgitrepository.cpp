@@ -37,11 +37,12 @@
 #include <QtCore/QVector>
 #include <QtCore/QStringList>
 
-using namespace LibQGit2;
-
 namespace {
 void do_not_free(git_repository*) {}
 }
+
+namespace LibQGit2
+{
 
 QGitRepository::QGitRepository(git_repository *repository, bool own)
     : d(repository, own ? git_repository_free : do_not_free)
@@ -331,3 +332,4 @@ const git_repository* QGitRepository::constData() const
     return d.data();
 }
 
+} // namespace LibQGit2
