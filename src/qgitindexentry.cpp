@@ -24,7 +24,8 @@
 
 #include <git2/index.h>
 
-using namespace LibQGit2;
+namespace LibQGit2
+{
 
 QGitIndexEntry::QGitIndexEntry(git_index_entry *data)
     : d(data)
@@ -59,3 +60,5 @@ const git_index_entry *QGitIndexEntry::data() const
 {
     return d;
 }
+
+} // namespace LibQGit2

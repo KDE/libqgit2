@@ -27,7 +27,8 @@
 
 #include <git2/refs.h>
 
-using namespace LibQGit2;
+namespace LibQGit2
+{
 
 QGitRef::QGitRef(git_reference *ref)
     : m_reference(ref)
@@ -100,3 +101,4 @@ const git_reference* QGitRef::constData() const
     return m_reference;
 }
 
+} // namespace LibQGit2

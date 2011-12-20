@@ -26,7 +26,8 @@
 
 #include <git2/commit.h>
 
-using namespace LibQGit2;
+namespace LibQGit2
+{
 
 QGitCommit::QGitCommit(git_commit *commit)
     : QGitObject(reinterpret_cast<git_object*>(commit))
@@ -102,3 +103,5 @@ const git_commit* QGitCommit::constData() const
 {
     return reinterpret_cast<git_commit*>(QGitObject::data());
 }
+
+} // namespace LibQGit2

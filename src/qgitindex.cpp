@@ -31,7 +31,8 @@
 #include <git2/repository.h>
 #include <git2/tree.h>
 
-using namespace LibQGit2;
+namespace LibQGit2
+{
 
 QGitIndex::QGitIndex(git_index *index)
     : d(index, git_index_free)
@@ -116,3 +117,5 @@ const git_index* QGitIndex::constData() const
 {
     return d.data();
 }
+
+} // namespace LibQGit2

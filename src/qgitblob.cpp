@@ -25,7 +25,8 @@
 
 #include <git2/blob.h>
 
-using namespace LibQGit2;
+namespace LibQGit2
+{
 
 QGitBlob::QGitBlob(git_blob *blob)
     : QGitObject(reinterpret_cast<git_object*>(blob))
@@ -61,3 +62,4 @@ const git_blob* QGitBlob::constData() const
     return reinterpret_cast<git_blob*>(QGitObject::data());
 }
 
+} // namespace LibQGit2

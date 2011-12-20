@@ -27,7 +27,8 @@
 
 #include <git2/tree.h>
 
-using namespace LibQGit2;
+namespace LibQGit2
+{
 
 QGitTree::QGitTree(git_tree *tree)
     : QGitObject(reinterpret_cast<git_object*>(tree))
@@ -72,3 +73,5 @@ const git_tree* QGitTree::constData() const
 {
     return reinterpret_cast<git_tree*>(QGitObject::data());
 }
+
+} // namespace LibQGit2

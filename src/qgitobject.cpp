@@ -28,7 +28,8 @@
 
 #include <git2/object.h>
 
-using namespace LibQGit2;
+namespace LibQGit2
+{
 
 QGitObject::QGitObject(git_object *object)
     : d(object, git_object_close)
@@ -129,3 +130,5 @@ const git_object* QGitObject::constData() const
 {
     return d.data();
 }
+
+} // namespace LibQGit2

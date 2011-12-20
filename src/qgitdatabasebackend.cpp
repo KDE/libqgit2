@@ -23,7 +23,8 @@
 
 #include <git2/odb_backend.h>
 
-using namespace LibQGit2;
+namespace LibQGit2
+{
 
 QGitDatabaseBackend::QGitDatabaseBackend()
 {
@@ -56,3 +57,5 @@ const git_odb_backend* QGitDatabaseBackend::constData() const
 {
     return m_databaseBackend;
 }
+
+} // namespace LibQGit2

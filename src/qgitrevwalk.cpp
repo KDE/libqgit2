@@ -25,7 +25,8 @@
 #include <git2/revwalk.h>
 #include <common.h>
 
-using namespace LibQGit2;
+namespace LibQGit2
+{
 
 QGitRevWalk::QGitRevWalk(const QGitRepository& repository)
 {
@@ -106,3 +107,4 @@ const git_revwalk* QGitRevWalk::constData() const
     return m_revWalk;
 }
 
+} // namespace LibQGit2

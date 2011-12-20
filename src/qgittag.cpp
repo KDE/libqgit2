@@ -24,7 +24,8 @@
 
 #include <git2/tag.h>
 
-using namespace LibQGit2;
+namespace LibQGit2
+{
 
 QGitTag::QGitTag(git_tag *tag)
     : QGitObject(reinterpret_cast<git_object*>(tag))
@@ -77,3 +78,4 @@ const git_tag* QGitTag::constData() const
     return reinterpret_cast<git_tag*>(QGitObject::data());
 }
 
+} // namespace LibQGit2

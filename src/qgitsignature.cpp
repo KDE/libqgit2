@@ -22,7 +22,8 @@
 
 #include <git2/signature.h>
 
-using namespace LibQGit2;
+namespace LibQGit2
+{
 
 QGitSignatureBuilder::QGitSignatureBuilder(const QString& name, const QString& email, QDateTime dateTime)
 {
@@ -108,3 +109,5 @@ const git_signature *QGitSignature::data() const
 {
     return d;
 }
+
+} // namespace LibQGit2

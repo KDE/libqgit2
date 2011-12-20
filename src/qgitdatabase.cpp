@@ -23,7 +23,8 @@
 
 #include <git2/odb.h>
 
-using namespace LibQGit2;
+namespace LibQGit2
+{
 
 QGitDatabase::QGitDatabase(git_odb *odb)
     : m_database(odb)
@@ -73,3 +74,5 @@ const git_odb* QGitDatabase::constData() const
 {
     return m_database;
 }
+
+} // namespace LibQGit2

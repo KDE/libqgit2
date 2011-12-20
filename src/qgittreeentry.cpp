@@ -25,7 +25,8 @@
 
 #include <git2/tree.h>
 
-using namespace LibQGit2;
+namespace LibQGit2
+{
 
 QGitTreeEntry::QGitTreeEntry(const git_tree_entry *treeEntry)
     : m_treeEntry(treeEntry)
@@ -73,3 +74,4 @@ const git_tree_entry* QGitTreeEntry::constData() const
     return m_treeEntry;
 }
 
+} // namespace LibQGit2
