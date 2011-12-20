@@ -22,7 +22,7 @@
 
 #include "libqgit2_export.h"
 
-class git_revwalk;
+struct git_revwalk;
 
 namespace LibQGit2
 {

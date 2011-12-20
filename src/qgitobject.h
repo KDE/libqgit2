@@ -26,7 +26,7 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QSharedPointer>
 
-class git_object;
+struct git_object;
 
 namespace LibQGit2
 {
