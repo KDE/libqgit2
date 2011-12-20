@@ -33,7 +33,9 @@
 #include <git2/tree.h>
 #include <git2/blob.h>
 
+#include <QtCore/QDir>
 #include <QtCore/QFile>
+#include <QtCore/QFileInfo>
 #include <QtCore/QVector>
 #include <QtCore/QStringList>
 
@@ -146,6 +148,15 @@ bool QGitRepository::isEmpty() const
 bool QGitRepository::isBare() const
 {
     return qGitThrow(git_repository_is_bare(data())) == 1;
+}
+
+QString QGitRepository::name() const
+{
+    QString repoPath = QDir::cleanPath( workDirPath() );
+    if (repoPath.isEmpty())
+        repoPath = QDir::cleanPath( path() );
+
+    return QFileInfo(repoPath).fileName();
 }
 
 QString QGitRepository::path() const

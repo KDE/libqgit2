@@ -256,6 +256,12 @@ namespace LibQGit2
             bool isBare() const;
 
             /**
+             * The name equals the repositories working directory name.
+             * In case of a bare repository, the name equals the repositorie's directory.
+             */
+            QString name() const;
+
+            /**
              * Get the path to the repository
              */
             QString path() const;
