@@ -69,25 +69,20 @@ QGitOId QGitOId::fromRawData(const QByteArray& raw)
 QByteArray QGitOId::format() const
 {
     QByteArray ba(GIT_OID_HEXSZ, Qt::Uninitialized);
-    git_oid_fmt(ba.data(), data());
+    git_oid_fmt(ba.data(), constData());
     return ba;
 }
 
 QByteArray QGitOId::pathFormat() const
 {
     QByteArray ba(GIT_OID_HEXSZ+1, Qt::Uninitialized);
-    git_oid_pathfmt(ba.data(), data());
+    git_oid_pathfmt(ba.data(), constData());
     return ba;
 }
 
 git_oid* QGitOId::data()
 {
     return reinterpret_cast<git_oid*>(d.data());
-}
-
-const git_oid* QGitOId::data() const
-{
-    return reinterpret_cast<const git_oid*>(d.constData());
 }
 
 const git_oid* QGitOId::constData() const
@@ -97,7 +92,7 @@ const git_oid* QGitOId::constData() const
 
 bool operator ==(const QGitOId &oid1, const QGitOId &oid2)
 {
-    return git_oid_cmp(oid1.data(), oid2.data()) == 0;
+    return git_oid_cmp(oid1.constData(), oid2.constData()) == 0;
 }
 
 bool operator !=(const QGitOId &oid1, const QGitOId &oid2)

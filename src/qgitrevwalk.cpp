@@ -55,7 +55,7 @@ int QGitRevWalk::push(const QGitCommit& commit) const
 
 int QGitRevWalk::hide(const QGitOId& oid) const
 {
-    return git_revwalk_hide(m_revWalk, oid.data());
+    return git_revwalk_hide(m_revWalk, oid.constData());
 }
 
 QGitOId QGitRevWalk::next() const

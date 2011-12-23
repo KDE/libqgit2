@@ -93,7 +93,6 @@ namespace LibQGit2
             QByteArray pathFormat() const;
 
             git_oid* data();
-            const git_oid* data() const;
             const git_oid* constData() const;
 
             /**

@@ -88,7 +88,7 @@ void QGitRef::setTarget(const QString& target)
 
 void QGitRef::setOId(const QGitOId& oid)
 {
-    qGitThrow(git_reference_set_oid(m_reference, oid.data()));
+    qGitThrow(git_reference_set_oid(m_reference, oid.constData()));
 }
 
 git_reference* QGitRef::data() const
