@@ -172,9 +172,7 @@ namespace LibQGit2
              */
             void setOId(const QGitOId& oid);
 
-            bool isNull() const {
-                return data() == 0;
-            }
+            bool isNull() const;
 
             git_reference* data() const;
             const git_reference* constData() const;

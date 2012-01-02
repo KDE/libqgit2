@@ -91,6 +91,11 @@ void QGitRef::setOId(const QGitOId& oid)
     qGitThrow(git_reference_set_oid(m_reference, oid.constData()));
 }
 
+bool QGitRef::isNull() const
+{
+    return data() == 0;
+}
+
 git_reference* QGitRef::data() const
 {
     return m_reference;
