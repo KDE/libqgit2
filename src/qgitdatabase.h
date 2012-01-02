@@ -82,7 +82,7 @@ namespace LibQGit2
              *
              * Read <odb_backends.h> for more information.
              *
-             * @paramm backend pointer to a databaseBackend instance
+             * @param backend pointer to a databaseBackend instance
              * @return 0 on sucess; error code otherwise
              */
             int addBackend(QGitDatabaseBackend *backend, int priority);
@@ -98,7 +98,7 @@ namespace LibQGit2
             *
             * Read <odb_backends.h> for more information.
             *
-            * @paramm backend pointer to a databaseBackend instance
+            * @param backend pointer to a databaseBackend instance
             * @return 0 on sucess; error code otherwise
             */
             int addAlternate(QGitDatabaseBackend *backend, int priority);
