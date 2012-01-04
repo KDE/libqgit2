@@ -47,12 +47,12 @@ QGitSignatureBuilder::~QGitSignatureBuilder()
 
 QString QGitSignatureBuilder::name() const
 {
-    return QString(d->name);
+    return QString::fromUtf8(d->name);
 }
 
 QString QGitSignatureBuilder::email() const
 {
-    return QString(d->email);
+    return QString::fromUtf8(d->email);
 }
 
 QDateTime QGitSignatureBuilder::when() const
@@ -89,12 +89,12 @@ QGitSignature::~QGitSignature()
 
 QString QGitSignature::name() const
 {
-    return QString(d->name);
+    return QString::fromUtf8(d->name);
 }
 
 QString QGitSignature::email() const
 {
-    return QString(d->email);
+    return QString::fromUtf8(d->email);
 }
 
 QDateTime QGitSignature::when() const
