@@ -122,6 +122,13 @@ namespace LibQGit2
              */
             QGitCommit parent(unsigned n) const;
 
+            /**
+             * Get the object id of the specified parent of the commit.
+             * @param n the position of the entry
+             * @return the parent's object id or an empty id, when there is no parent
+             */
+            QGitOId parentId(unsigned n) const;
+
             git_commit* data() const;
             const git_commit* constData() const;
     };

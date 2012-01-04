@@ -94,6 +94,13 @@ QGitCommit QGitCommit::parent(unsigned n) const
     return QGitCommit(parent);
 }
 
+QGitOId QGitCommit::parentId(unsigned n) const
+{
+    git_oid *parentId;
+    git_commit_parent_oid(data(), n);
+    return QGitOId(parentId);
+}
+
 git_commit* QGitCommit::data() const
 {
     return reinterpret_cast<git_commit*>(QGitObject::data());
