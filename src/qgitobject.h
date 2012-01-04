@@ -152,6 +152,15 @@ namespace LibQGit2
             QSharedPointer<git_object> d;
     };
 
+    /**
+     * Compares two QGitObjects. Objects are equal when their oid is.
+     */
+    bool operator ==(const QGitObject &o1, const QGitObject &o2);
+    /**
+     * Compares two QGitObjects. Objects are equal when their oid is.
+     */
+    bool operator !=(const QGitObject &o1, const QGitObject &o2);
+
     /**@}*/
 }
 

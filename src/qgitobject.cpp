@@ -131,4 +131,14 @@ const git_object* QGitObject::constData() const
     return d.data();
 }
 
+bool operator ==(const QGitObject &o1, const QGitObject &o2)
+{
+    return (o1.oid() == o2.oid());
+}
+
+bool operator !=(const QGitObject &o1, const QGitObject &o2)
+{
+    return !(operator ==(o1, o2));
+}
+
 } // namespace LibQGit2
