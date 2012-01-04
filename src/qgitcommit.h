@@ -117,7 +117,7 @@ namespace LibQGit2
             /**
              * Get the specified parent of the commit.
              * @param n the position of the entry
-             * @return a pointer to the commit; NULL if out of bounds
+             * @return the parent commit or an empty commit, when there is no parent
              * @throws QGitException
              */
             QGitCommit parent(unsigned n) const;
