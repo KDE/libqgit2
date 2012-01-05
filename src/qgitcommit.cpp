@@ -53,6 +53,11 @@ QString QGitCommit::message() const
     return QString::fromUtf8(git_commit_message(data()));
 }
 
+QString QGitCommit::shortMessage(int maxLen) const
+{
+    return message().left(maxLen).split(QRegExp("(\\r|\\n)")).first();
+}
+
 QDateTime QGitCommit::dateTime() const
 {
     QDateTime dateTime;

@@ -75,6 +75,14 @@ namespace LibQGit2
             QString message() const;
 
             /**
+             * Get the first part of the commit message (similar to git log --oneline).
+             * The string is further cut when a linebreak is found.
+             * @param maxLen maximal length of the resulting string. Default is 80 characters.
+             * @return the short message
+             */
+            QString shortMessage(int maxLen = 80) const;
+
+            /**
              * Get the commit time (i.e. committer time) of a commit.
              * @return the time of a commit
              */
