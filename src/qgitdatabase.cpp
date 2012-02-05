@@ -47,7 +47,7 @@ int QGitDatabase::open(const QString& objectsDir)
 
 void QGitDatabase::close()
 {
-    return git_odb_close(m_database);
+    return git_odb_free(m_database);
 }
 
 int QGitDatabase::addBackend(QGitDatabaseBackend *backend, int priority)

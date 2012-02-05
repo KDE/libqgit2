@@ -32,7 +32,7 @@ namespace LibQGit2
 {
 
 QGitObject::QGitObject(git_object *object)
-    : d(object, git_object_close)
+    : d(object, git_object_free)
 {
 }
 

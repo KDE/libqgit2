@@ -86,36 +86,6 @@ void QGitRepository::open(const QString& path)
     d = ptr_type(repo, git_repository_free);
 }
 
-void QGitRepository::open(const QString& gitDir,
-                          const QString& gitObjectDirectory,
-                          const QString& gitIndexFile,
-                          const QString& gitWorkTree)
-{
-    d.clear();
-    git_repository *repo = 0;
-    qGitThrow(git_repository_open2(&repo,
-                                   QFile::encodeName(gitDir),
-                                   QFile::encodeName(gitObjectDirectory),
-                                   QFile::encodeName(gitIndexFile),
-                                   QFile::encodeName(gitWorkTree)));
-    d = ptr_type(repo, git_repository_free);
-}
-
-void QGitRepository::open(const QString& gitDir,
-                          QGitDatabase *objectDatabase,
-                          const QString& gitIndexFile,
-                          const QString& gitWorkTree)
-{
-    d.clear();
-    git_repository *repo = 0;
-    qGitThrow(git_repository_open3(&repo,
-                                   QFile::encodeName(gitDir),
-                                   objectDatabase->data(),
-                                   QFile::encodeName(gitIndexFile),
-                                   QFile::encodeName(gitWorkTree)));
-    d = ptr_type(repo, git_repository_free);
-}
-
 void QGitRepository::discoverAndOpen(const QString &startPath,
                                      bool acrossFs,
                                      const QStringList &ceilingDirs)
@@ -153,7 +123,7 @@ bool QGitRepository::isBare() const
 QString QGitRepository::name() const
 {
     QString repoPath = QDir::cleanPath( workDirPath() );
-    if (repoPath.isEmpty())
+    if (isBare())
         repoPath = QDir::cleanPath( path() );
 
     return QFileInfo(repoPath).fileName();
@@ -161,22 +131,12 @@ QString QGitRepository::name() const
 
 QString QGitRepository::path() const
 {
-    return QFile::decodeName(git_repository_path(data(), GIT_REPO_PATH));
-}
-
-QString QGitRepository::indexPath() const
-{
-    return QFile::decodeName(git_repository_path(data(), GIT_REPO_PATH_INDEX));
-}
-
-QString QGitRepository::databasePath() const
-{
-    return QFile::decodeName(git_repository_path(data(), GIT_REPO_PATH_ODB));
+    return QFile::decodeName(git_repository_path(data()));
 }
 
 QString QGitRepository::workDirPath() const
 {
-    return QFile::decodeName(git_repository_path(data(), GIT_REPO_PATH_WORKDIR));
+    return QFile::decodeName(git_repository_workdir(data()));
 }
 
 QGitRef QGitRepository::lookupRef(const QString& name) const
@@ -320,10 +280,11 @@ QStringList QGitRepository::listReferences() const
     return list;
 }
 
-QGitDatabase* QGitRepository::database() const
+QGitDatabase QGitRepository::database() const
 {
-    QGitDatabase *database = new QGitDatabase(git_repository_database(data()));
-    return database;
+    git_odb *odb;
+    qGitThrow( git_repository_odb(&odb, data()) );
+    return QGitDatabase(odb);
 }
 
 QGitIndex QGitRepository::index() const

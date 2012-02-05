@@ -140,67 +140,6 @@ namespace LibQGit2
             void open(const QString& path);
 
             /**
-             * Open a git repository by manually specifying all its paths
-             *
-             * @param gitDir The full path to the repository folder
-             * e.g. a '.git' folder for live repos, any folder for bare
-             * Equivalent to $GIT_DIR.
-             * Cannot be NULL.
-             *
-             * @param gitObjectDirectory The full path to the ODB folder.
-             * the folder where all the loose and packed objects are stored
-             * Equivalent to $GIT_OBJECT_DIRECTORY.
-             * If NULL, "$GIT_DIR/objects/" is assumed.
-             *
-             * @param gitIndexFile The full path to the index (dircache) file
-             * Equivalent to $GIT_INDEX_FILE.
-             * If NULL, "$GIT_DIR/index" is assumed.
-             *
-             * @param gitWorkTree The full path to the working tree of the repository,
-             * if the repository is not bare.
-             * Equivalent to $GIT_WORK_TREE.
-             * If NULL, the repository is assumed to be bare.
-             *
-             * @throws QGitException
-             */
-            void open(const QString& gitDir,
-                      const QString& gitObjectDirectory,
-                      const QString& gitIndexFile,
-                      const QString& gitWorkTree);
-
-
-            /**
-             * Open a git repository by manually specifying its paths and
-             * the object database it will use.
-             *
-             * @param gitDir The full path to the repository folder
-             * e.g. a '.git' folder for live repos, any folder for bare
-             * Equivalent to $GIT_DIR.
-             * Cannot be NULL.
-             *
-             * @param objectDatabase A pointer to a git_odb created & initialized
-             * by the user (e.g. with custom backends). This object database
-             * will be owned by the repository and will be automatically free'd.
-             * It should not be manually free'd by the user, or this
-             * git_repository object will become invalid.
-             *
-             * @param gitIndexFile The full path to the index (dircache) file
-             * Equivalent to $GIT_INDEX_FILE.
-             * If NULL, "$GIT_DIR/index" is assumed.
-             *
-             * @param gitWorkTree The full path to the working tree of the repository,
-             * if the repository is not bare.
-             * Equivalent to $GIT_WORK_TREE.
-             * If NULL, the repository is assumed to be bare.
-             *
-             * @throws QGitException
-             */
-            void open(const QString& gitDir,
-                      QGitDatabase *objectDatabase,
-                      const QString& gitIndexFile,
-                      const QString& gitWorkTree);
-
-            /**
              * Convenience function for finding and opening a git repository.
              *
              * Calls discover() with the given arguments, and passes the result to open().
@@ -265,16 +204,6 @@ namespace LibQGit2
              * Get the path to the repository
              */
             QString path() const;
-
-            /**
-             * Get the path to the index
-             */
-            QString indexPath() const;
-
-            /**
-             * Get the path to the ODB
-             */
-            QString databasePath() const;
 
             /**
              * Get the path to the working directory
@@ -436,7 +365,7 @@ namespace LibQGit2
              *
              * @return a pointer to the object db
              */
-            QGitDatabase* database() const;
+            LibQGit2::QGitDatabase database() const;
 
             /**
              * Get the Index file of a Git repository
