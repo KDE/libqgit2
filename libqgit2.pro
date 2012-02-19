@@ -35,7 +35,8 @@ HEADERS += \
     qgittree.h \
     qgittreeentry.h \
     qgitexception.h \
-    qgit2.h
+    qgit2.h \
+    src/qgitconfig.h
 
 SOURCES += \
     qgitblob.cpp \
@@ -54,7 +55,8 @@ SOURCES += \
     qgittag.cpp \
     qgittree.cpp \
     qgittreeentry.cpp \
-    qgitexception.cpp
+    qgitexception.cpp \
+    src/qgitconfig.cpp
 
 include(libgit2.pri)
 include(http-parser.pri)
