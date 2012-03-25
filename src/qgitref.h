@@ -129,7 +129,7 @@ namespace LibQGit2
              *
              * @return a pointer to the repository
              */
-            QGitRepository owner();
+            QGitRepository owner() const;
 
             /**
              * Set the name of a reference.

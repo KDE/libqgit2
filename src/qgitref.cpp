@@ -76,7 +76,7 @@ QGitRef QGitRef::resolve() const
     return QGitRef(ref);
 }
 
-QGitRepository QGitRef::owner()
+QGitRepository QGitRef::owner() const
 {
     return QGitRepository(git_reference_owner(m_reference));
 }
