@@ -68,6 +68,11 @@ namespace LibQGit2
             const void* rawContent() const;
 
             /**
+              * @return The blob content as QByteArray.
+              */
+            QByteArray content() const;
+
+            /**
              * Get the size in bytes of the contents of a blob
              *
              * @return size on bytes

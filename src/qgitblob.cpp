@@ -47,6 +47,11 @@ const void* QGitBlob::rawContent() const
     return git_blob_rawcontent(data());
 }
 
+QByteArray QGitBlob::content() const
+{
+    return QByteArray::fromRawData( static_cast<const char *>(rawContent()), rawSize() );
+}
+
 int QGitBlob::rawSize() const
 {
     return git_blob_rawsize(data());
