@@ -57,7 +57,6 @@ namespace LibQGit2
              */
             const QString name() const;
 
-
             /**
              * Get the id of the object pointed by the entry
              * @return the oid of the object
@@ -73,11 +72,10 @@ namespace LibQGit2
              */
             QGitObject toObject(const QGitRepository& repo);
 
-            const git_tree_entry* data() const;
             const git_tree_entry* constData() const;
 
         private:
-            const git_tree_entry *m_treeEntry;
+            const git_tree_entry *d;
     };
 
     /**@}*/
