@@ -42,6 +42,11 @@ QGitTreeEntry::~QGitTreeEntry()
 {
 }
 
+bool QGitTreeEntry::isNull() const
+{
+    return constData() == 0;
+}
+
 unsigned int QGitTreeEntry::attributes() const
 {
     return git_tree_entry_attributes(d);

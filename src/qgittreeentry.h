@@ -46,6 +46,11 @@ namespace LibQGit2
 
         public:
             /**
+              * @return true when internal pointer is 0; otherwise false
+              */
+            bool isNull() const;
+
+            /**
              * Get the UNIX file attributes of a tree entry
              * @return attributes as an integer
              */
