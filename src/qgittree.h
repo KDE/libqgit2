@@ -78,14 +78,14 @@ namespace LibQGit2
              * @param filename the filename of the desired entry
              * @return the tree entry; NULL if not found
              */
-            QGitTreeEntry entryByName(const QString& fileName);
+            QGitTreeEntry entryByName(const QString& fileName) const;
 
             /**
              * Lookup a tree entry by its position in the tree
              * @param idx the position in the entry list
              * @return the tree entry; NULL if not found
              */
-            QGitTreeEntry entryByIndex(int idx);
+            QGitTreeEntry entryByIndex(int idx) const;
 
             git_tree* data() const;
             const git_tree* constData() const;
