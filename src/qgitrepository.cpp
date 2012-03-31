@@ -17,13 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "qgitrepository.h"
-#include "qgitcommit.h"
-#include "qgittag.h"
-#include "qgittree.h"
-#include "qgitblob.h"
-#include "qgitsignature.h"
-#include "qgitexception.h"
+#include <qgitrepository.h>
+#include <qgitcommit.h>
+#include <qgitconfig.h>
+#include <qgittag.h>
+#include <qgittree.h>
+#include <qgitblob.h>
+#include <qgitsignature.h>
+#include <qgitexception.h>
 
 #include <git2/errors.h>
 #include <git2/repository.h>
@@ -137,6 +138,13 @@ QString QGitRepository::path() const
 QString QGitRepository::workDirPath() const
 {
     return QFile::decodeName(git_repository_workdir(data()));
+}
+
+QGitConfig QGitRepository::configuration() const
+{
+    git_config *cfg;
+    qGitThrow( git_repository_config(&cfg, data()) );
+    return QGitConfig(cfg);
 }
 
 QGitRef QGitRepository::lookupRef(const QString& name) const

@@ -35,6 +35,7 @@ struct git_repository;
 namespace LibQGit2
 {
     class QGitCommit;
+    class QGitConfig;
     class QGitTag;
     class QGitTree;
     class QGitBlob;
@@ -209,6 +210,11 @@ namespace LibQGit2
              * Get the path to the working directory
              */
             QString workDirPath() const;
+
+            /**
+             * The repositories configuration file. Includes the global git configuration file.
+             */
+            QGitConfig configuration() const;
 
             /**
              * Lookup a reference by its name in a repository.
