@@ -41,28 +41,41 @@ namespace LibQGit2
     {
     public:
         /**
-          The configuration´s priority, when a value is read.
+          * Default contructor to create a new configuration object.
+          *
+          * @param cfg when given this instance is used instead of creating a new one
           */
-        enum AccessPriority
-        {
-            Global  = 1,
-            Local   = 2
-        };
-
-   public:
-        QGitConfig();
+        QGitConfig(git_config *cfg = 0);
+        QGitConfig(const QGitConfig &other);
         virtual ~QGitConfig();
 
-        bool open(const QString &path);
-        bool open(const QGitRepository &repo);
+        /**
+          * Creates a new configuration object and adds the global Git configuration when found.
+          * Otherwise an empty configuration object is created.
+          *
+          * @return the new instance
+          */
+        static QGitConfig fromGlobalConfig();
 
         /**
-          * Read a value from the configuration.
-          * @todo handle the QVariant type correctly
+          * Appends a config file with the given access priority.
+          *
+          * @param path the absolute path to the config file
+          * @param priority the access priority; values with higher priority are accessed first
+          *
+          * @return true on success
+          */
+        bool append(const QString &path, int priority);
+
+        /**
+          * Reads a single value from the configuration.
+          *
+          * @return the value as QVariant or an empty QVariant instance
           */
         QVariant value(const QString &key, const QVariant &defaultValue = QVariant()) const;
+
         /**
-          * Write a value in the configuration.
+          * Writes a value in the configuration with the highest priority.
           *
           * @param key the name of the value to write
           * @param value the value
@@ -70,15 +83,13 @@ namespace LibQGit2
           * @todo handle the QVariant type correctly
           */
         void setValue(const QString &key, const QVariant &value);
+
         /**
           * Remove a value from the configuration.
           *
           * @param key the name for the value to remove
           */
         void remove(const QString &key);
-
-        //! @todo implement QGitConfig::foreach
-        //foreach()
 
     public:
         /**

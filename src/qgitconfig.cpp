@@ -25,25 +25,34 @@
 #include <git2/errors.h>
 #include <git2/config.h>
 
-#include <qgitexception.h>
-#include <qgitrepository.h>
+#include <src/qgitexception.h>
+#include <src/qgitrepository.h>
 
 namespace LibQGit2
 {
 
-
-QGitConfig::QGitConfig()
-    : d(0)
+QGitConfig::QGitConfig(git_config *cfg)
+    : d(cfg)
 {
-    // try to open the global configuration file
-    // on error, initialize the internal pointer
-    if ( git_config_open_global(&d) < GIT_SUCCESS)
-        git_config_new(&d);
+}
+
+QGitConfig::QGitConfig(const QGitConfig &other)
+    : d(other.d)
+{
 }
 
 QGitConfig::~QGitConfig()
 {
     git_config_free(d);
+}
+
+QGitConfig QGitConfig::fromGlobalConfig()
+{
+    git_config *    cfg;
+    if ( git_config_open_global(&cfg) == GIT_SUCCESS )
+        return QGitConfig(cfg);
+
+    return QGitConfig();
 }
 
 QString QGitConfig::findGlobal()
@@ -62,14 +71,9 @@ QString QGitConfig::findSystem()
     return QFile::decodeName(buffer);
 }
 
-bool QGitConfig::open(const QString &path)
+bool QGitConfig::append(const QString &path, int priority)
 {
-    return GIT_SUCCESS == git_config_add_file_ondisk(d, QFile::encodeName(path).constData(), Local);
-}
-
-bool QGitConfig::open(const QGitRepository &repo)
-{
-    return open(QDir::cleanPath(repo.path() + "/config"));
+    return GIT_SUCCESS == git_config_add_file_ondisk(d, QFile::encodeName(path).constData(), priority);
 }
 
 QVariant QGitConfig::value(const QString &key, const QVariant &defaultValue) const
