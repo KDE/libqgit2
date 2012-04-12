@@ -23,7 +23,7 @@
 #include "qgitrepository.h"
 
 #include <git2/revwalk.h>
-#include <common.h>
+#include <git2/errors.h>
 
 namespace LibQGit2
 {
