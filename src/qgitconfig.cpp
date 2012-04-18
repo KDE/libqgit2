@@ -34,6 +34,8 @@ namespace LibQGit2
 QGitConfig::QGitConfig(git_config *cfg)
     : d(cfg)
 {
+    if (d == 0)
+        git_config_new(&d);
 }
 
 QGitConfig::QGitConfig(const QGitConfig &other)

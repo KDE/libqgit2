@@ -41,9 +41,9 @@ namespace LibQGit2
     {
     public:
         /**
-          * Default contructor to create a new configuration object.
+          * Default constructor to create a new configuration object.
           *
-          * @param cfg when given this instance is used instead of creating a new one
+          * @param cfg when given, the instance is used instead of creating a new one
           */
         QGitConfig(git_config *cfg = 0);
         QGitConfig(const QGitConfig &other);
