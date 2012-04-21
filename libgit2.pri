@@ -6,20 +6,27 @@ SOURCES += \
     cache.c \
     commit.c \
     config.c \
+    config_cache.c \
     config_file.c \
+    crlf.c \
     delta-apply.c \
+    diff.c \
+    diff_output.c \
     errors.c \
     fetch.c \
     filebuf.c \
     fileops.c \
+    filter.c \
     global.c \
     hash.c \
     hashtable.c \
     ignore.c \
     index.c \
     indexer.c \
+    iterator.c \
     mwindow.c \
     netops.c \
+    notes.c \
     object.c \
     odb.c \
     odb_loose.c \
@@ -41,6 +48,7 @@ SOURCES += \
     sha1_lookup.c \
     signature.c \
     status.c \
+    submodule.c \
     tag.c \
     thread-utils.c \
     transport.c \
