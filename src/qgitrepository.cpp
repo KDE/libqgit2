@@ -25,6 +25,7 @@
 #include <qgitblob.h>
 #include <qgitsignature.h>
 #include <qgitexception.h>
+#include <qgitsubmodule.h>
 
 #include <git2/errors.h>
 #include <git2/repository.h>
@@ -288,6 +289,13 @@ QStringList QGitRepository::listReferences() const
     return list;
 }
 
+QGitSubmoduleList QGitRepository::listSubmodules() const
+{
+    QGitPrivateSubmoduleLookupInfo submoduleInfo( data() );
+    git_submodule_foreach(data(), &addToSubmoduleList, &submoduleInfo);
+    return submoduleInfo.submodules;
+}
+
 QGitDatabase QGitRepository::database() const
 {
     git_odb *odb;
@@ -310,6 +318,20 @@ git_repository* QGitRepository::data() const
 const git_repository* QGitRepository::constData() const
 {
     return d.data();
+}
+
+int QGitRepository::addToSubmoduleList(const char *name, void *payload)
+{
+    Q_ASSERT(payload != 0);
+
+    QGitPrivateSubmoduleLookupInfo * submoduleInfo = static_cast<QGitPrivateSubmoduleLookupInfo *>(payload);
+
+    git_submodule *submodule;
+    if ( git_submodule_lookup(&submodule, submoduleInfo->repo, name) == GIT_SUCCESS)
+    {
+        QGitSubmodule * newModule = reinterpret_cast<QGitSubmodule *>(submodule);
+        submoduleInfo->submodules.append(*newModule);
+    }
 }
 
 } // namespace LibQGit2

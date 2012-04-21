@@ -26,6 +26,7 @@
 #include "qgitobject.h"
 #include "qgitref.h"
 #include "qgitindex.h"
+#include "qgitsubmodule.h"
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStringList>
@@ -347,7 +348,7 @@ namespace LibQGit2
             QGitOId createBlobFromBuffer(const QByteArray& buffer);
 
             /**
-             * Create a list with all the tags in the Repository
+             * Creates a list with all the tags in the Repository
              * which name match a defined pattern
              *
              * If an empty pattern is provided, all the tags
@@ -359,12 +360,17 @@ namespace LibQGit2
             QStringList listTags(const QString& pattern = QString()) const;
 
             /**
-             * Create a list with all references in the Repository.
+             * Creates a list with all references in the Repository.
              *
              * @param pattern Standard fnmatch pattern
              * @throws QGitException
              */
             QStringList listReferences() const;
+
+            /**
+              * Creates a list with all submodules in a repository.
+              */
+            LibQGit2::QGitSubmoduleList listSubmodules() const;
 
             /**
              * Get the object database behind a Git repository
@@ -389,6 +395,21 @@ namespace LibQGit2
         private:
             typedef QSharedPointer<git_repository> ptr_type;
             ptr_type d;
+
+        private:
+            struct QGitPrivateSubmoduleLookupInfo
+            {
+                git_repository *                    repo;
+                QGitSubmoduleList                   submodules;
+
+                QGitPrivateSubmoduleLookupInfo(git_repository *owner) : repo(owner) {}
+            };
+
+            /**
+              * Used as callback function for git_submodule_foreach.
+              */
+            static int addToSubmoduleList(const char *name, void *payload);
+
     };
 
     /**@}*/
