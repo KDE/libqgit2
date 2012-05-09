@@ -26,6 +26,8 @@
 
 #include <git2/commit.h>
 
+#include <QtCore/QTextCodec>
+
 namespace LibQGit2
 {
 
@@ -50,7 +52,12 @@ QGitOId QGitCommit::oid() const
 
 QString QGitCommit::message() const
 {
-    return QString::fromUtf8(git_commit_message(data()));
+    QTextCodec *codec = QTextCodec::codecForName( git_commit_message_encoding(data()) );
+
+    if (codec != 0)
+        return codec->toUnicode( git_commit_message(data()) );
+
+    return QString( git_commit_message(data()) );
 }
 
 QString QGitCommit::shortMessage(int maxLen) const
