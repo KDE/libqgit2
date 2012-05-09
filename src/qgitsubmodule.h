@@ -23,6 +23,7 @@
 #include <git2/submodule.h>
 
 #include <QtCore/QList>
+#include <QtCore/QSharedPointer>
 
 class QString;
 class QUrl;
@@ -43,10 +44,12 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class QGitSubmodule : private git_submodule
+    class QGitSubmodule
     {
     public:
-        explicit QGitSubmodule();
+        explicit QGitSubmodule(git_submodule *submodule = 0);
+        QGitSubmodule(const QGitSubmodule &other);
+        virtual ~QGitSubmodule();
 
         /**
           * @return the name of the submodule (usually the same as path)
@@ -68,8 +71,17 @@ namespace LibQGit2
           */
         QGitOId getOid() const;
 
+        /**
+          * @return the update enum
+          */
+        git_submodule_update_t getUpdate() const;
+
         bool getFetchRecurseSubmodules() const;
         git_submodule_ignore_t getIgnore() const;
+
+    private:
+        QSharedPointer<git_submodule>     d;
+
     };
 
     /**@}*/

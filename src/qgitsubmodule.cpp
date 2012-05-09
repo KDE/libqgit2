@@ -27,18 +27,34 @@
 namespace LibQGit2
 {
 
-QGitSubmodule::QGitSubmodule()
+QGitSubmodule::QGitSubmodule(git_submodule *submodule)
+    : d(submodule, free)
+{
+}
+
+QGitSubmodule::QGitSubmodule(const QGitSubmodule &other)
+    : d(other.d)
+{
+}
+
+QGitSubmodule::~QGitSubmodule()
 {
 }
 
 QString QGitSubmodule::getName() const
 {
-    return QString::fromUtf8(name);
+    if (d.isNull())
+        return QString();
+
+    return QString::fromUtf8(d->name);
 }
 
 QString QGitSubmodule::getPath() const
 {
-    QString tmpPath = QString::fromUtf8(path);
+    if (d.isNull())
+        return QString();
+
+    QString tmpPath = QString::fromUtf8(d->path);
     if (tmpPath.isEmpty())
         return getName();
 
@@ -47,23 +63,43 @@ QString QGitSubmodule::getPath() const
 
 QUrl QGitSubmodule::getUrl() const
 {
-    return QUrl::fromEncoded(url);
+    if (d.isNull())
+        return QUrl();
+
+    return QUrl::fromEncoded(d->url);
 }
 
 QGitOId QGitSubmodule::getOid() const
 {
-    return QGitOId(&oid);
+    if (d.isNull())
+        return QGitOId();
+
+    return QGitOId(&d->oid);
+}
+
+git_submodule_update_t QGitSubmodule::getUpdate() const
+{
+    if (d.isNull())
+        return GIT_SUBMODULE_UPDATE_CHECKOUT;
+
+    return d->update;
 }
 
 bool QGitSubmodule::getFetchRecurseSubmodules() const
 {
+    if (d.isNull())
+        return false;
+
     //! @todo fetch_recurse is originally an int
-    return fetch_recurse;
+    return d->fetch_recurse;
 }
 
 git_submodule_ignore_t QGitSubmodule::getIgnore() const
 {
-    return ignore;
+    if (d.isNull())
+        return GIT_SUBMODULE_IGNORE_NONE;
+
+    return d->ignore;
 }
 
 } // namespace LibQGit2

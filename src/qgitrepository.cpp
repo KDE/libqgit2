@@ -327,11 +327,11 @@ int QGitRepository::addToSubmoduleList(const char *name, void *payload)
     QGitPrivateSubmoduleLookupInfo * submoduleInfo = static_cast<QGitPrivateSubmoduleLookupInfo *>(payload);
 
     git_submodule *submodule;
-    if ( git_submodule_lookup(&submodule, submoduleInfo->repo, name) == GIT_SUCCESS)
-    {
-        QGitSubmodule * newModule = reinterpret_cast<QGitSubmodule *>(submodule);
-        submoduleInfo->submodules.append(*newModule);
-    }
+    int err = git_submodule_lookup(&submodule, submoduleInfo->repo, name);
+    if ( err == GIT_SUCCESS)
+        submoduleInfo->submodules.append(QGitSubmodule(submodule));
+
+    return err;
 }
 
 } // namespace LibQGit2
