@@ -24,12 +24,9 @@
 namespace LibQGit2
 {
 
-QGitException::QGitException(int error)
+QGitException::QGitException(const QByteArray &message)
+    : m(message)
 {
-    if (git_lasterror())
-        m = git_lasterror();
-    else
-        m = git_strerror(error);
 }
 
 QGitException::~QGitException() throw()
@@ -48,8 +45,8 @@ QByteArray QGitException::message() const throw()
 
 int qGitThrow(int ret)
 {
-    if (ret < 0) {
-        throw QGitException(ret);
+    if ( (ret < 0) && (giterr_last() != 0) ) {
+        throw QGitException(giterr_last()->message);
     }
     return ret;
 }

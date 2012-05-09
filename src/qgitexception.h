@@ -33,7 +33,7 @@ namespace LibQGit2
     class LIBQGIT2_EXPORT QGitException : public std::exception
     {
         public:
-            QGitException(int error);
+            QGitException(const QByteArray &message);
 
             ~QGitException() throw();
 

@@ -2,6 +2,7 @@ SOURCES += \
     attr.c \
     attr_file.c \
     blob.c \
+    branch.c \
     buffer.c \
     cache.c \
     commit.c \
@@ -19,11 +20,11 @@ SOURCES += \
     filter.c \
     global.c \
     hash.c \
-    hashtable.c \
     ignore.c \
     index.c \
     indexer.c \
     iterator.c \
+    message.c \
     mwindow.c \
     netops.c \
     notes.c \
@@ -35,6 +36,7 @@ SOURCES += \
     pack.c \
     path.c \
     pkt.c \
+    pool.c \
     posix.c \
     pqueue.c \
     protocol.c \
