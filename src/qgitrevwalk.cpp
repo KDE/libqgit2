@@ -60,9 +60,9 @@ int QGitRevWalk::hide(const QGitOId& oid) const
 
 QGitOId QGitRevWalk::next() const
 {
-    QGitOId oid;
-    git_revwalk_next(oid.data(), m_revWalk);
-    return oid;
+    git_oid *oid;
+    git_revwalk_next(oid, m_revWalk);
+    return QGitOId(oid);
 }
 
 bool QGitRevWalk::next(QGitCommit & commit)
