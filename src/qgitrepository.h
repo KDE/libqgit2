@@ -399,14 +399,17 @@ namespace LibQGit2
         private:
             struct QGitPrivateSubmoduleLookupInfo
             {
-                git_repository *                    repo;
-                QGitSubmoduleList                   submodules;
+                git_repository *                    repo;       //!< the master repository to lookup submodules
+                QGitSubmoduleList                   submodules; //!< the resulting list of submodules
 
-                QGitPrivateSubmoduleLookupInfo(git_repository *owner) : repo(owner) {}
+                QGitPrivateSubmoduleLookupInfo(git_repository *owner) : repo(owner)
+                {
+                    Q_ASSERT(owner != 0);
+                }
             };
 
             /**
-              * Used as callback function for git_submodule_foreach.
+              * Internal callback for git_submodule_foreach to retreive a list of submodules.
               */
             static int addToSubmoduleList(const char *name, void *payload);
 

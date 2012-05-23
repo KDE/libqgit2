@@ -41,9 +41,15 @@
 #include <QtCore/QVector>
 #include <QtCore/QStringList>
 
-namespace {
-void do_not_free(git_repository*) {}
+namespace
+{
+
+void do_not_free(git_repository*)
+{
 }
+
+} // internal namespace
+
 
 namespace LibQGit2
 {
