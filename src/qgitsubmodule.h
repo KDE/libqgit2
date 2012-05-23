@@ -20,10 +20,13 @@
 #ifndef QGITSUBMODULE_H
 #define QGITSUBMODULE_H
 
+#include <libqgit2_export.h>
+
 #include <git2/submodule.h>
 
 #include <QtCore/QList>
 #include <QtCore/QSharedPointer>
+
 
 class QString;
 class QUrl;
@@ -31,9 +34,6 @@ class QUrl;
 
 namespace LibQGit2
 {
-    class QGitSubmodule;
-    typedef QList<QGitSubmodule> QGitSubmoduleList; //!< Defines a List of submodules
-
     class QGitOId;
     class QGitRepository;
 
@@ -44,45 +44,54 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class QGitSubmodule
+    class LIBQGIT2_EXPORT QGitSubmodule
     {
     public:
         explicit QGitSubmodule(git_submodule *submodule = 0);
         QGitSubmodule(const QGitSubmodule &other);
-        virtual ~QGitSubmodule();
+        ~QGitSubmodule();
+
+        /**
+          * Checks the pointer to the assigned submodule.
+          * @return true, when the submodule is 0, false otherwise
+          */
+        bool isNull() const;
 
         /**
           * @return the name of the submodule (usually the same as path)
           */
-        QString getName() const;
+        QString name() const;
 
         /**
           * @return the relative path to the submodule's working directory (usually the same as name)
           */
-        QString getPath() const;
+        QString path() const;
 
         /**
           * @return the url to the linked repository
           */
-        QUrl getUrl() const;
+        QUrl url() const;
 
         /**
           * @return the oid to the currently checked out commit
           */
-        QGitOId getOid() const;
+        QGitOId oid() const;
 
         /**
           * @return the update enum
           */
-        git_submodule_update_t getUpdate() const;
+        git_submodule_update_t update() const;
 
-        bool getFetchRecurseSubmodules() const;
-        git_submodule_ignore_t getIgnore() const;
+        bool fetchRecurseSubmodules() const;
+        git_submodule_ignore_t ignore() const;
 
     private:
-        QSharedPointer<git_submodule>     d;
+        git_submodule *     d;
+
 
     };
+
+    typedef QList<QGitSubmodule> QGitSubmoduleList; //!< Synonym for QList<QGitSubmodule>
 
     /**@}*/
 }
