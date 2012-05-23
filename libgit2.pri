@@ -65,7 +65,6 @@ unix:SOURCES += \
 
 win32:SOURCES += \
     win32/dir.c \
-    win32/fnmatch.c \
     win32/map.c \
     win32/posix_w32.c \
     win32/pthread.c \

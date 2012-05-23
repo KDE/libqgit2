@@ -280,7 +280,7 @@ QStringList QGitRepository::listReferences() const
 {
     QStringList list;
     git_strarray refs;
-    qGitThrow(git_reference_listall( &refs, data(), GIT_REF_LISTALL));
+    qGitThrow(git_reference_list( &refs, data(), GIT_REF_LISTALL));
     for (size_t i = 0; i < refs.count; ++i)
     {
         list << QString(refs.strings[i]);
@@ -328,7 +328,7 @@ int QGitRepository::addToSubmoduleList(const char *name, void *payload)
 
     git_submodule *submodule;
     int err = git_submodule_lookup(&submodule, submoduleInfo->repo, name);
-    if ( err == GIT_SUCCESS)
+    if ( err == GIT_OK )
         submoduleInfo->submodules.append(QGitSubmodule(submodule));
 
     return err;

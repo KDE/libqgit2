@@ -17,38 +17,33 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "qgitexception.h"
+#ifndef QGITERROR_H
+#define QGITERROR_H
 
-#include <src/qgiterror.h>
+#include <libqgit2_export.h>
+
+#include <git2/errors.h>
+
+
+class QByteArray;
 
 namespace LibQGit2
 {
 
-QGitException::QGitException(const QByteArray &message)
-    : m(message)
-{
+    /**
+     * @brief Error class to handle libgit2 errors.
+     *
+     * @ingroup LibQGit2
+     * @{
+     */
+    class QGitError
+    {
+    public:
+        static const git_error *last();
+        static QByteArray message(const git_error *err);
+    };
+
+    /**@}*/
 }
 
-QGitException::~QGitException() throw()
-{
-}
-
-const char *QGitException::what() const throw()
-{
-    return m;
-}
-
-QByteArray QGitException::message() const throw()
-{
-    return m;
-}
-
-int qGitThrow(int ret)
-{
-    if ( ret < 0 )
-        throw QGitException( QGitError::message(QGitError::last()) );
-
-    return ret;
-}
-
-}
+#endif // QGITERROR_H

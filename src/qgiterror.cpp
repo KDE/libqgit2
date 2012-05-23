@@ -17,38 +17,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "qgitexception.h"
+#include "qgiterror.h"
 
-#include <src/qgiterror.h>
+#include <QtCore/QByteArray>
 
 namespace LibQGit2
 {
 
-QGitException::QGitException(const QByteArray &message)
-    : m(message)
+const git_error *QGitError::last()
 {
+    return giterr_last();
 }
 
-QGitException::~QGitException() throw()
+QByteArray LibQGit2::QGitError::message(const git_error *err)
 {
-}
+    if (err == NULL)
+        return QByteArray();
 
-const char *QGitException::what() const throw()
-{
-    return m;
-}
-
-QByteArray QGitException::message() const throw()
-{
-    return m;
-}
-
-int qGitThrow(int ret)
-{
-    if ( ret < 0 )
-        throw QGitException( QGitError::message(QGitError::last()) );
-
-    return ret;
+    return QByteArray(err->message);
 }
 
 }
