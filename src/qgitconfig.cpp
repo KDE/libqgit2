@@ -51,7 +51,7 @@ QGitConfig::~QGitConfig()
 QGitConfig QGitConfig::fromGlobalConfig()
 {
     git_config *    cfg;
-    if ( git_config_open_global(&cfg) == GIT_SUCCESS )
+    if ( git_config_open_global(&cfg) == GIT_OK )
         return QGitConfig(cfg);
 
     return QGitConfig();
@@ -59,29 +59,29 @@ QGitConfig QGitConfig::fromGlobalConfig()
 
 QString QGitConfig::findGlobal()
 {
-    char buffer[GIT_PATH_MAX];
-    qGitThrow( git_config_find_global(buffer) );
+    char * buffer = 0;
+    qGitThrow( git_config_find_global(buffer, GIT_PATH_MAX) );
 
     return QFile::decodeName(buffer);
 }
 
 QString QGitConfig::findSystem()
 {
-    char buffer[GIT_PATH_MAX];
-    qGitThrow( git_config_find_system(buffer) );
+    char * buffer = 0;
+    qGitThrow( git_config_find_system(buffer, GIT_PATH_MAX) );
 
     return QFile::decodeName(buffer);
 }
 
 bool QGitConfig::append(const QString &path, int priority)
 {
-    return GIT_SUCCESS == git_config_add_file_ondisk(d, QFile::encodeName(path).constData(), priority);
+    return GIT_OK == git_config_add_file_ondisk(d, QFile::encodeName(path).constData(), priority);
 }
 
 QVariant QGitConfig::value(const QString &key, const QVariant &defaultValue) const
 {
     const char * result = 0;
-    if (git_config_get_string(d, key.toUtf8().constData(), &result) == 0)
+    if (git_config_get_string(&result, d, key.toUtf8().constData()) == GIT_OK)
         return QString::fromUtf8(result);
 
     return defaultValue;
