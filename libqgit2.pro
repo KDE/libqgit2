@@ -6,8 +6,12 @@ TEMPLATE = lib
 TARGET = qgit2
 
 DEPENDPATH += . src \
-    libgit2/src libgit2/include libgit2/include/git2
-INCLUDEPATH += . src libgit2/include libgit2/src
+    libgit2/src libgit2/include libgit2/include/git2 \
+    libgit2/deps/http-parser
+
+INCLUDEPATH += . src \
+    libgit2/include libgit2/src \
+    libgit2/deps/http-parser
 
 CONFIG += staticlib
 
@@ -20,6 +24,7 @@ HEADERS += \
     qgitdatabasebackend.h \
     qgitindex.h \
     qgitindexentry.h \
+    qgitindexmodel.h \
     qgitobject.h \
     qgitoid.h \
     qgitref.h \
@@ -29,50 +34,9 @@ HEADERS += \
     qgittag.h \
     qgittree.h \
     qgittreeentry.h \
+    qgitexception.h \
     qgit2.h \
-    \
-    git2.h \
-    git2/types.h \
-    git2/tree.h \
-    git2/thread-utils.h \
-    git2/tag.h \
-    git2/signature.h \
-    git2/revwalk.h \
-    git2/repository.h \
-    git2/refs.h \
-    git2/oid.h \
-    git2/odb.h \
-    git2/odb_backend.h \
-    git2/object.h \
-    git2/index.h \
-    git2/errors.h \
-    git2/common.h \
-    git2/commit.h \
-    git2/blob.h \
-    util.h \
-    tree.h \
-    thread-utils.h \
-    tag.h \
-    t03-data.h \
-    signature.h \
-    revwalk.h \
-    repository.h \
-    refs.h \
-    odb.h \
-    msvc-compat.h \
-    mingw-compat.h \
-    index.h \
-    hashtable.h \
-    hash.h \
-    fileops.h \
-    filebuf.h \
-    dir.h \
-    delta-apply.h \
-    common.h \
-    commit.h \
-    bswap.h \
-    blob.h \
-    block-sha1/sha1.h
+    src/qgitconfig.h
 
 SOURCES += \
     qgitblob.cpp \
@@ -81,6 +45,7 @@ SOURCES += \
     qgitdatabasebackend.cpp \
     qgitindex.cpp \
     qgitindexentry.cpp \
+    qgitindexmodel.cpp \
     qgitobject.cpp \
     qgitoid.cpp \
     qgitref.cpp \
@@ -90,57 +55,15 @@ SOURCES += \
     qgittag.cpp \
     qgittree.cpp \
     qgittreeentry.cpp \
-    \
-    buffer.c \
-    vector.c \
-    util.c \
-    cache.c \
-    config.c \
-    config_file.c \
-    tree.c \
-    tree-cache.c \
-    thread-utils.c \
-    tag.c \
-    signature.c \
-    revwalk.c \
-    repository.c \
-    refs.c \
-    oid.c \
-    odb.c \
-    odb_pack.c \
-    odb_loose.c \
-    object.c \
-    index.c \
-    hashtable.c \
-    hash.c \
-    fileops.c \
-    filebuf.c \
-    errors.c \
-    delta-apply.c \
-    commit.c \
-    blob.c \
-    mwindow.c \
-    pack.c \
-    path.c \
-    posix.c \
-    sha1.c \
-    sha1_lookup.c \
-    tsort.c \
-    unix/map.c \
+    qgitexception.cpp \
+    src/qgitconfig.cpp
 
+include(libgit2.pri)
+include(http-parser.pri)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#win32: {
+    DEFINES += STDC
+    INCLUDEPATH += libgit2/deps/zlib
+    DEPENDPATH += libgit2/deps/zlib
+    include(zlib.pri)
+#}

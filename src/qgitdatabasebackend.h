@@ -28,6 +28,13 @@ struct git_odb_backend;
 
 namespace LibQGit2
 {
+    /**
+     * @brief Wrapper class for git_odb_backend.
+     * Represents a Git object database backend.
+     *
+     * @ingroup LibQGit2
+     * @{
+     */
     class LIBQGIT2_DATABASEBACKEND_EXPORT QGitDatabaseBackend
     {
         public:
@@ -48,6 +55,8 @@ namespace LibQGit2
         private:
             git_odb_backend *m_databaseBackend;
     };
+
+    /**@}*/
 }
 
 #endif // LIBQGIT2_DATABASEBACKEND_H

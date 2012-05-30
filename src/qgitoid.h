@@ -29,6 +29,13 @@ typedef struct _git_oid git_oid;
 
 namespace LibQGit2
 {
+    /**
+     * @brief Wrapper class for git_oid.
+     * Represents a Git sha1 object id.
+     *
+     * @ingroup LibQGit2
+     * @{
+     */
     class LIBQGIT2_OID_EXPORT QGitOId
     {
         public:
@@ -56,6 +63,7 @@ namespace LibQGit2
              * at least 4 bytes.
              *
              * @return OId; null OId on failure.
+             * @throws QGitException
              */
             static QGitOId fromString(const QByteArray& string);
 
@@ -85,9 +93,14 @@ namespace LibQGit2
             QByteArray pathFormat() const;
 
             git_oid* data();
-            const git_oid* data() const;
             const git_oid* constData() const;
 
+            /**
+             * Returns the length of the OId as a number of hexadecimal characters.
+             *
+             * The full length of a OId is 40, but the OId represented by this class may be smaller,
+             * if it represents a prefix created with fromString().
+             */
             int length() const;
 
         private:
@@ -95,9 +108,15 @@ namespace LibQGit2
     };
 
     /**
-     * Compare two oid objects
+     * Compare two QGitOIds.
      */
-    bool operator==(const QGitOId& oid1, const QGitOId& oid2);
+    bool operator ==(const QGitOId &oid1, const QGitOId &oid2);
+    /**
+     * Compare two QGitOIds.
+     */
+    bool operator !=(const QGitOId &oid1, const QGitOId &oid2);
+
+    /**@}*/
 }
 
 #endif // LIBQGIT2_OID_H

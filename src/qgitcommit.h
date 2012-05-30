@@ -30,10 +30,16 @@ namespace LibQGit2
 {
     class QGitOId;
     class QGitSignature;
-    class QGitSignatureRef;
     class QGitTree;
     class QGitRepository;
 
+    /**
+     * @brief Wrapper class for git_commit.
+     * Represents a Git commit object.
+     *
+     * @ingroup LibQGit2
+     * @{
+     */
     class LIBQGIT2_COMMIT_EXPORT QGitCommit : public QGitObject
     {
         public:
@@ -69,6 +75,14 @@ namespace LibQGit2
             QString message() const;
 
             /**
+             * Get the first part of the commit message (similar to git log --oneline).
+             * The string is further cut when a linebreak is found.
+             * @param maxLen maximal length of the resulting string. Default is 80 characters.
+             * @return the short message
+             */
+            QString shortMessage(int maxLen = 80) const;
+
+            /**
              * Get the commit time (i.e. committer time) of a commit.
              * @return the time of a commit
              */
@@ -85,18 +99,19 @@ namespace LibQGit2
             * Get the committer of a commit.
             * @return the committer of a commit
             */
-            QGitSignatureRef committer() const;
+            QGitSignature committer() const;
 
 
             /**
             * Get the committer of a commit.
             * @return the committer of a commit
             */
-            QGitSignatureRef author() const;
+            QGitSignature author() const;
 
             /**
              * Get the tree pointed to by a commit.
              * @return the tree of a commit
+             * @throws QGitException
              */
             QGitTree tree() const;
 
@@ -110,13 +125,23 @@ namespace LibQGit2
             /**
              * Get the specified parent of the commit.
              * @param n the position of the entry
-             * @return a pointer to the commit; NULL if out of bounds
+             * @return the parent commit or an empty commit, when there is no parent
+             * @throws QGitException
              */
             QGitCommit parent(unsigned n) const;
+
+            /**
+             * Get the object id of the specified parent of the commit.
+             * @param n the position of the entry
+             * @return the parent's object id or an empty id, when there is no parent
+             */
+            QGitOId parentId(unsigned n) const;
 
             git_commit* data() const;
             const git_commit* constData() const;
     };
+
+    /**@}*/
 }
 
 #endif // LIBQGIT2_HASHTABLE_H

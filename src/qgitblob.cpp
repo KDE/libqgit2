@@ -25,7 +25,8 @@
 
 #include <git2/blob.h>
 
-using namespace LibQGit2;
+namespace LibQGit2
+{
 
 QGitBlob::QGitBlob(git_blob *blob)
     : QGitObject(reinterpret_cast<git_object*>(blob))
@@ -46,6 +47,11 @@ const void* QGitBlob::rawContent() const
     return git_blob_rawcontent(data());
 }
 
+QByteArray QGitBlob::content() const
+{
+    return QByteArray::fromRawData( static_cast<const char *>(rawContent()), rawSize() );
+}
+
 int QGitBlob::rawSize() const
 {
     return git_blob_rawsize(data());
@@ -61,3 +67,4 @@ const git_blob* QGitBlob::constData() const
     return reinterpret_cast<git_blob*>(QGitObject::data());
 }
 
+} // namespace LibQGit2

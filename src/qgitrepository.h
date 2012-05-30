@@ -28,17 +28,26 @@
 #include "qgitindex.h"
 
 #include <QtCore/QSharedPointer>
+#include <QtCore/QStringList>
 
 struct git_repository;
 
 namespace LibQGit2
 {
     class QGitCommit;
+    class QGitConfig;
     class QGitTag;
     class QGitTree;
     class QGitBlob;
-    class QGitSignatureRef;
+    class QGitSignature;
 
+    /**
+     * @brief Wrapper class for git_repository.
+     * Represents a Git repository.
+     *
+     * @ingroup LibQGit2
+     * @{
+     */
     class LIBQGIT2_REPOSITORY_EXPORT QGitRepository
     {
         public:
@@ -65,6 +74,37 @@ namespace LibQGit2
             ~QGitRepository();
 
             /**
+             * Look for a git repository and return its path. The lookup start from startPath and
+             * walk across parent directories if nothing has been found. The lookup ends when the
+             * first repository is found, or when reaching a directory that is referenced in
+             * ceilingDirs, or when the filesystem changes (unless acrossFs is true).
+             *
+             * The method will automatically detect if the repository is bare (if there is a
+             * repository).
+             *
+             * The function will only return successfully if a repository was found, otherwise an
+             * exception is thrown, providing an error message.
+             *
+             * @param startPath
+             * The base path where the lookup starts.
+             *
+             * @param acrossFs
+             * If true, then the lookup will not stop when a filesystem device change is detected
+             * while exploring parent directories.
+             *
+             * @param ceilingDirs
+             * A list of absolute symbolic link free paths. The lookup will stop if any of these
+             * paths are reached. Note that the lookup always performs on startPath no matter if
+             * startPath appears in ceilingDirs.
+             *
+             * @return The path of the found repository
+             * @throws QGitException
+             */
+            static QString discover(const QString& startPath,
+                                    bool acrossFs = false,
+                                    const QStringList& ceilingDirs = QStringList());
+
+            /**
              * Constructs a new Git repository in the given folder.
              *
              * @param path the path to the repository
@@ -72,9 +112,9 @@ namespace LibQGit2
              * at the pointed path. If false, provided path will be considered as the working
              * directory into which the .git directory will be created.
              *
-             * @return 0 on success; error code otherwise
+             * @throws QGitException
              */
-            int init(const QString& path, bool isBare);
+            void init(const QString& path, bool isBare);
 
             /**
              * Open a git repository.
@@ -96,73 +136,25 @@ namespace LibQGit2
              * or bare repository or fail is 'path' is neither.
              *
              * @param path the path to the repository
-             * @return 0 on success; error code otherwise
+             * @throws QGitException
              */
-            int open(const QString& path);
+            void open(const QString& path);
 
             /**
-             * Open a git repository by manually specifying all its paths
+             * Convenience function for finding and opening a git repository.
              *
-             * @param gitDir The full path to the repository folder
-             * e.g. a '.git' folder for live repos, any folder for bare
-             * Equivalent to $GIT_DIR.
-             * Cannot be NULL.
+             * Calls discover() with the given arguments, and passes the result to open().
              *
-             * @param gitObjectDirectory The full path to the ODB folder.
-             * the folder where all the loose and packed objects are stored
-             * Equivalent to $GIT_OBJECT_DIRECTORY.
-             * If NULL, "$GIT_DIR/objects/" is assumed.
-             *
-             * @param gitIndexFile The full path to the index (dircache) file
-             * Equivalent to $GIT_INDEX_FILE.
-             * If NULL, "$GIT_DIR/index" is assumed.
-             *
-             * @param gitWorkTree The full path to the working tree of the repository,
-             * if the repository is not bare.
-             * Equivalent to $GIT_WORK_TREE.
-             * If NULL, the repository is assumed to be bare.
-             *
-             * @return 0 on success; error code otherwise
+             * @throws QGitException
              */
-            int open(const QString& gitDir,
-                     const QString& gitObjectDirectory,
-                     const QString& gitIndexFile,
-                     const QString& gitWorkTree);
-
-
-            /**
-             * Open a git repository by manually specifying its paths and
-             * the object database it will use.
-             *
-             * @param gitDir The full path to the repository folder
-             * e.g. a '.git' folder for live repos, any folder for bare
-             * Equivalent to $GIT_DIR.
-             * Cannot be NULL.
-             *
-             * @param objectDatabase A pointer to a git_odb created & initialized
-             * by the user (e.g. with custom backends). This object database
-             * will be owned by the repository and will be automatically free'd.
-             * It should not be manually free'd by the user, or this
-             * git_repository object will become invalid.
-             *
-             * @param gitIndexFile The full path to the index (dircache) file
-             * Equivalent to $GIT_INDEX_FILE.
-             * If NULL, "$GIT_DIR/index" is assumed.
-             *
-             * @param gitWorkTree The full path to the working tree of the repository,
-             * if the repository is not bare.
-             * Equivalent to $GIT_WORK_TREE.
-             * If NULL, the repository is assumed to be bare.
-             *
-             * @return 0 on success; error code otherwise
-             */
-            int open(const QString& gitDir,
-                     QGitDatabase *objectDatabase,
-                     const QString& gitIndexFile,
-                     const QString& gitWorkTree);
+            void discoverAndOpen(const QString &startPath,
+                                 bool acrossFs = false,
+                                 const QStringList &ceilingDirs = QStringList());
 
             /**
              * Retrieve and resolve the reference pointed at by HEAD.
+             *
+             * @throws QGitException
              */
             QGitRef head() const;
 
@@ -171,6 +163,8 @@ namespace LibQGit2
              *
              * A repository's HEAD is detached when it points directly to a commit
              * instead of a branch.
+             *
+             * @throws QGitException
              */
             bool isHeadDetached() const;
 
@@ -179,6 +173,8 @@ namespace LibQGit2
              *
              * An orphan branch is one named from HEAD but which doesn't exist in
              * the refs namespace, because it doesn't have any commit to point to.
+             *
+             * @throws QGitException
              */
             bool isHeadOrphan() const;
 
@@ -187,13 +183,23 @@ namespace LibQGit2
              *
              * An empty repository has just been initialized and contains
              * no commits.
+             *
+             * @throws QGitException
              */
             bool isEmpty() const;
 
             /**
              * Check if a repository is bare
+             *
+             * @throws QGitException
              */
             bool isBare() const;
+
+            /**
+             * The name equals the repositories working directory name.
+             * In case of a bare repository, the name equals the repositorie's directory.
+             */
+            QString name() const;
 
             /**
              * Get the path to the repository
@@ -201,47 +207,54 @@ namespace LibQGit2
             QString path() const;
 
             /**
-             * Get the path to the index
-             */
-            QString indexPath() const;
-
-            /**
-             * Get the path to the ODB
-             */
-            QString databasePath() const;
-
-            /**
              * Get the path to the working directory
              */
             QString workDirPath() const;
 
             /**
+             * The repositories configuration file. Includes the global git configuration file.
+             */
+            QGitConfig configuration() const;
+
+            /**
              * Lookup a reference by its name in a repository.
+             *
+             * @throws QGitException
              */
             QGitRef lookupRef(const QString& name) const;
 
             /**
              * Lookup a commit object from a repository.
+             *
+             * @throws QGitException
              */
             QGitCommit lookupCommit(const QGitOId& oid) const;
 
             /**
              * Lookup a tag object from the repository.
+             *
+             * @throws QGitException
              */
             QGitTag lookupTag(const QGitOId& oid) const;
 
             /**
              * Lookup a tree object from the repository.
+             *
+             * @throws QGitException
              */
             QGitTree lookupTree(const QGitOId& oid) const;
 
             /**
              * Lookup a blob object from a repository.
+             *
+             * @throws QGitException
              */
             QGitBlob lookupBlob(const QGitOId& oid) const;
 
             /**
              * Lookup a reference to one of the objects in a repostory.
+             *
+             * @throws QGitException
              */
             QGitObject lookupAny(const QGitOId& oid) const;
 
@@ -253,6 +266,8 @@ namespace LibQGit2
              *
              * If `overwrite` is true and there already exists a reference
              * with the same name, it will be overwritten.
+             *
+             * @throws QGitException
              */
             QGitRef createRef(const QString& name, const QGitOId& oid, bool overwrite = true);
 
@@ -264,18 +279,35 @@ namespace LibQGit2
              *
              * If `overwrite` is true and there already exists a reference
              * with the same name, it will be overwritten.
+             *
+             * @throws QGitException
              */
             QGitRef createSymbolicRef(const QString& name, const QString& target, bool overwrite = true);
 
             /**
              * Create a new commit in the repository
+             *
+             * @throws QGitException
              */
             QGitOId createCommit(const QString& ref,
-                                 const QGitSignatureRef& author,
-                                 const QGitSignatureRef& committer,
+                                 const QGitSignature& author,
+                                 const QGitSignature& committer,
                                  const QString& message,
                                  const QGitTree& tree,
                                  const QList<QGitCommit>& parents);
+
+            /**
+             * Create a new lightweight tag pointing at a target object
+             *
+             * A new direct reference will be created pointing to
+             * this target object. If `force` is true and a reference
+             * already exists with the given name, it'll be replaced.
+             *
+             * @throws QGitException
+             */
+            QGitOId createTag(const QString& name,
+                              const QGitObject& target,
+                              bool overwrite = true);
 
             /**
              * Create a new tag in the repository from an object
@@ -283,36 +315,71 @@ namespace LibQGit2
              * A new reference will also be created pointing to
              * this tag object. If `overwrite` is true and a reference
              * already exists with the given name, it'll be replaced.
+             *
+             * @throws QGitException
              */
             QGitOId createTag(const QString& name,
                               const QGitObject& target,
-                              const QGitSignatureRef& tagger,
+                              const QGitSignature& tagger,
                               const QString& message,
                               bool overwrite = true);
 
             /**
+             * Delete an existing tag reference.
+             *
+             * @throws QGitException
+             */
+            void deleteTag(const QString& name);
+
+            /**
              * Read a file from the working folder of a repository
              * and write it to the Object Database as a loose blob
+             *
+             * @throws QGitException
              */
             QGitOId createBlobFromFile(const QString& path);
 
             /**
              * Write an in-memory buffer to the ODB as a blob
+             *
+             * @throws QGitException
              */
             QGitOId createBlobFromBuffer(const QByteArray& buffer);
+
+            /**
+             * Create a list with all the tags in the Repository
+             * which name match a defined pattern
+             *
+             * If an empty pattern is provided, all the tags
+             * will be returned.
+             *
+             * @param pattern Standard fnmatch pattern
+             * @throws QGitException
+             */
+            QStringList listTags(const QString& pattern = QString()) const;
+
+            /**
+             * Create a list with all references in the Repository.
+             *
+             * @param pattern Standard fnmatch pattern
+             * @throws QGitException
+             */
+            QStringList listReferences() const;
 
             /**
              * Get the object database behind a Git repository
              *
              * @return a pointer to the object db
              */
-            QGitDatabase* database() const;
+            LibQGit2::QGitDatabase database() const;
 
             /**
              * Get the Index file of a Git repository
              *
              * This is a cheap operation; the index is only opened on the first call,
              * and subsequent calls only retrieve the previous pointer.
+             *
+             * @throws QGitException
              */
             QGitIndex index() const;
 
@@ -323,6 +390,8 @@ namespace LibQGit2
             typedef QSharedPointer<git_repository> ptr_type;
             ptr_type d;
     };
+
+    /**@}*/
 }
 
 #endif // LIBQGIT2_REPOSITORY_H

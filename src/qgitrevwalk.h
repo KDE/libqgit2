@@ -28,16 +28,34 @@ namespace LibQGit2
 {
     class QGitRepository;
     class QGitOId;
+    class QGitCommit;
 
+    /**
+      * @brief Wrapper class for git_revwalk.
+      * The revision walker can be used to traverse Git commit history. It features sorting abilities and more.
+      *
+      * @ingroup LibQGit2
+      * @{
+      */
     class LIBQGIT2_REVWALK_EXPORT QGitRevWalk
     {
         public:
             /**
+             * Defines the sortmode when walking revisions.
+             */
+            enum SortMode
+            {
+                None            = 0x0   //!< GIT_SORT_NONE
+                , Time          = 0x1   //!< GIT_SORT_TIME
+                , Topological   = 0x2   //!< GIT_SORT_TOPOLOGICAL
+                , Reverse       = 0x4   //!< GIT_SORT_REVERSE
+            };
+            Q_DECLARE_FLAGS(SortModes, SortMode) //!< Combination of SortMode
+
+            /**
              * Allocate a new revision walker to iterate through a repo.
              *
-             * @param walker pointer to the new revision walker
              * @param repo the repo to walk through
-             * @return 0 on success; error code otherwise
              */
             explicit QGitRevWalk(const QGitRepository& repository);
 
@@ -52,7 +70,6 @@ namespace LibQGit2
 
             /**
              * Reset the walking machinery for reuse.
-             * @param walker handle to reset.
              */
             void reset() const;
 
@@ -62,7 +79,7 @@ namespace LibQGit2
              *
              * @param commit the commit to start from.
              */
-            int push(const QGitOId& commit) const;
+            int push(const QGitCommit& commit) const;
 
             /**
              * Mark a commit (and its ancestors) uninteresting for the output.
@@ -71,21 +88,25 @@ namespace LibQGit2
             int hide(const QGitOId& commit) const;
 
             /**
-             * Get the next commit from the revision traversal.
-             *
-             * @param commit Pointer where to store the next commit
-             * @return GIT_SUCCESS if the next commit was found;
-             * GIT_EREVWALKOVER if there are no commits left to iterate
+             * Get the oid of the next commit from the revision traversal.
              */
-            QGitOId next();
+            LibQGit2::QGitOId next() const;
+
+            /**
+             * Get the next commit from the revision traversal and look it up in the owner repository.
+             * @param commit The next commit within the set repository, when it was found;
+             * Otherwise an empty QGitCommit will be set.
+             * @return True when the commit was found.
+             */
+            bool next(QGitCommit & commit);
 
             /**
              * Change the sorting mode when iterating through the
              * repository's contents.
              * Changing the sorting mode resets the walker.
-             * @param sortMode combination of GIT_RPSORT_XXX flags
+             * @param sortMode The sorting mode @see SortModes.
              */
-            void sorting(unsigned int sortMode);
+            void setSorting(SortModes sortMode);
 
             /**
              * Return the repository on which this walker
@@ -101,6 +122,10 @@ namespace LibQGit2
         private:
             git_revwalk *m_revWalk;
     };
+
+    Q_DECLARE_OPERATORS_FOR_FLAGS(QGitRevWalk::SortModes)
+
+    /**@}*/
 }
 
 #endif // LIBQGIT2_REVWALK_H

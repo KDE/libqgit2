@@ -21,12 +21,14 @@
 
 #include "qgitoid.h"
 #include "qgitrepository.h"
+#include "qgitexception.h"
 
 #include <QtCore/QFile>
 
 #include <git2/refs.h>
 
-using namespace LibQGit2;
+namespace LibQGit2
+{
 
 QGitRef::QGitRef(git_reference *ref)
     : m_reference(ref)
@@ -70,23 +72,28 @@ QString QGitRef::name() const
 QGitRef QGitRef::resolve() const
 {
     git_reference *ref;
-    git_reference_resolve(&ref, m_reference);
+    qGitThrow(git_reference_resolve(&ref, m_reference));
     return QGitRef(ref);
 }
 
-QGitRepository QGitRef::owner()
+QGitRepository QGitRef::owner() const
 {
     return QGitRepository(git_reference_owner(m_reference));
 }
 
-int QGitRef::setTarget(const QString& target)
+void QGitRef::setTarget(const QString& target)
 {
-    return git_reference_set_target(m_reference, QFile::encodeName(target));
+    qGitThrow(git_reference_set_target(m_reference, QFile::encodeName(target)));
 }
 
 void QGitRef::setOId(const QGitOId& oid)
 {
-    git_reference_set_oid(m_reference, oid.data());
+    qGitThrow(git_reference_set_oid(m_reference, oid.constData()));
+}
+
+bool QGitRef::isNull() const
+{
+    return data() == 0;
 }
 
 git_reference* QGitRef::data() const
@@ -99,3 +106,4 @@ const git_reference* QGitRef::constData() const
     return m_reference;
 }
 
+} // namespace LibQGit2

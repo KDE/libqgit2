@@ -74,10 +74,16 @@ IF (NOT CMAKE_BUILD_TYPE)
     SET(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel." FORCE)
 ENDIF ()
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${QT_INCLUDES})
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GIT2 REQUIRED libgit2)
+
+include_directories(src ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${GIT2_INCLUDEDIR} ${QT_INCLUDES})
 
 # Collect sourcefiles
 FILE(GLOB SRC src/*.cpp)
+
+# MOC
+QT4_WRAP_CPP(MOC_SRC src/qgitindexmodel.h)
 
 message(STATUS)
 message(STATUS "========== LIBQGIT2 Build Information ==========")
@@ -90,8 +96,8 @@ message(STATUS "To build and install LIBQGIT2, run \"make\" and \"make install\"
 message(STATUS)
 
 # Compile and link libqgit2
-ADD_LIBRARY(qgit2 ${SRC})
-TARGET_LINK_LIBRARIES(qgit2 ${QT_QTCORE_LIBRARY})
+ADD_LIBRARY(qgit2 ${SRC} ${MOC_SRC})
+TARGET_LINK_LIBRARIES(qgit2 ${GIT2_LIBRARIES} ${QT_QTCORE_LIBRARY})
 SET_TARGET_PROPERTIES(qgit2 PROPERTIES VERSION ${LIBQGIT2_VERSION_STRING})
 SET_TARGET_PROPERTIES(qgit2 PROPERTIES SOVERSION ${LIBQGIT2_VERSION_MAJOR})
 

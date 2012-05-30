@@ -17,48 +17,41 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "qgitindexentry.h"
-#include "qgitoid.h"
+#include "qgitexception.h"
 
-#include <QtCore/QFile>
-
-#include <git2/index.h>
+#include <git2/errors.h>
 
 namespace LibQGit2
 {
 
-QGitIndexEntry::QGitIndexEntry(git_index_entry *data)
-    : d(data)
+QGitException::QGitException(int error)
+{
+    if (git_lasterror())
+        m = git_lasterror();
+    else
+        m = git_strerror(error);
+}
+
+QGitException::~QGitException() throw()
 {
 }
 
-QGitIndexEntry::QGitIndexEntry(const QGitIndexEntry& other)
-    : d(other.d)
+const char *QGitException::what() const throw()
 {
+    return m;
 }
 
-QGitIndexEntry::~QGitIndexEntry()
+QByteArray QGitException::message() const throw()
 {
+    return m;
 }
 
-QGitOId QGitIndexEntry::id() const
+int qGitThrow(int ret)
 {
-    return QGitOId(&d->oid);
+    if (ret < 0) {
+        throw QGitException(ret);
+    }
+    return ret;
 }
 
-QString QGitIndexEntry::path() const
-{
-    return QFile::decodeName(d->path);
 }
-
-qint64 QGitIndexEntry::fileSize() const
-{
-    return d->file_size;
-}
-
-const git_index_entry *QGitIndexEntry::data() const
-{
-    return d;
-}
-
-} // namespace LibQGit2

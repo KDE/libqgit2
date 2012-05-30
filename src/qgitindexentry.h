@@ -28,6 +28,13 @@ namespace LibQGit2
 {
     class QGitOId;
 
+    /**
+     * @brief Wrapper class for git_index_entry.
+     * Represents a Git index/stage entry.
+     *
+     * @ingroup LibQGit2
+     * @{
+     */
     class LIBQGIT2_INDEX_EXPORT QGitIndexEntry
     {
         public:
@@ -66,6 +73,8 @@ namespace LibQGit2
         private:
             git_index_entry *d;
     };
+
+    /**@}*/
 }
 
 #endif // LIBQGIT2_INDEX_ENTRY_H

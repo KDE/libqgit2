@@ -18,22 +18,23 @@
  */
 
 #include "qgittreeentry.h"
-
 #include "qgitrepository.h"
+#include "qgitexception.h"
 
 #include <QtCore/QFile>
 
 #include <git2/tree.h>
 
-using namespace LibQGit2;
+namespace LibQGit2
+{
 
 QGitTreeEntry::QGitTreeEntry(const git_tree_entry *treeEntry)
-    : m_treeEntry(treeEntry)
+    : d(treeEntry)
 {
 }
 
 QGitTreeEntry::QGitTreeEntry(const QGitTreeEntry& other)
-    : m_treeEntry(other.m_treeEntry)
+    : d(other.d)
 {
 }
 
@@ -41,35 +42,36 @@ QGitTreeEntry::~QGitTreeEntry()
 {
 }
 
+bool QGitTreeEntry::isNull() const
+{
+    return constData() == 0;
+}
+
 unsigned int QGitTreeEntry::attributes() const
 {
-    return git_tree_entry_attributes(m_treeEntry);
+    return git_tree_entry_attributes(d);
 }
 
 const QString QGitTreeEntry::name() const
 {
-    return QString::fromUtf8(git_tree_entry_name(m_treeEntry));
+    return QFile::decodeName( git_tree_entry_name(d) );
 }
 
-QGitOId QGitTreeEntry::id() const
+QGitOId QGitTreeEntry::oid() const
 {
-    return QGitOId(git_tree_entry_id(m_treeEntry));
+    return QGitOId( git_tree_entry_id(d) );
 }
 
 QGitObject QGitTreeEntry::toObject(const QGitRepository& repo)
 {
     git_object *obj;
-    git_tree_entry_2object(&obj, repo.data(), m_treeEntry);
+    qGitThrow(git_tree_entry_2object(&obj, repo.data(), d));
     return QGitObject(obj);
-}
-
-const git_tree_entry* QGitTreeEntry::data() const
-{
-    return m_treeEntry;
 }
 
 const git_tree_entry* QGitTreeEntry::constData() const
 {
-    return m_treeEntry;
+    return d;
 }
 
+} // namespace LibQGit2

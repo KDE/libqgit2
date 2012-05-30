@@ -37,6 +37,12 @@ namespace LibQGit2
     class QGitTree;
     class QGitBlob;
 
+    /**
+     * @brief Wrapper class for git_object.
+     * This is the base class for every repository object, that is identified with it's LibQGit2::QGitOid.
+     * @ingroup LibQGit2
+     * @{
+     */
     class LIBQGIT2_OBJECT_EXPORT QGitObject
     {
         public:
@@ -145,6 +151,17 @@ namespace LibQGit2
         private:
             QSharedPointer<git_object> d;
     };
+
+    /**
+     * Compares two QGitObjects. Objects are equal when their oid is.
+     */
+    bool operator ==(const QGitObject &o1, const QGitObject &o2);
+    /**
+     * Compares two QGitObjects. Objects are equal when their oid is.
+     */
+    bool operator !=(const QGitObject &o1, const QGitObject &o2);
+
+    /**@}*/
 }
 
 #endif // LIBQGIT2_OBJECT_H

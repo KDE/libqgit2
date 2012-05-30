@@ -18,10 +18,12 @@
  */
 
 #include "qgitoid.h"
+#include "qgitexception.h"
 
 #include <git2/oid.h>
 
-using namespace LibQGit2;
+namespace LibQGit2
+{
 
 QGitOId::QGitOId(const git_oid *oid)
     : d(GIT_OID_RAWSZ, 0)
@@ -40,17 +42,20 @@ QGitOId::~QGitOId()
 {
 }
 
-bool LibQGit2::QGitOId::isValid() const
+bool QGitOId::isValid() const
 {
-    return ( !d.isEmpty() && (d != QByteArray(GIT_OID_RAWSZ, '\0')) );
+    return ( !d.isEmpty() &&
+             (d.length() <= GIT_OID_RAWSZ) &&
+             (d != QByteArray(GIT_OID_RAWSZ, 0))
+             );
 }
 
 QGitOId QGitOId::fromString(const QByteArray& string)
 {
     int len = qMin(string.length(), GIT_OID_HEXSZ);
     QGitOId oid;
-    oid.d.resize(len);
-    git_oid_fromstrn(oid.data(), string.constData(), len);
+    qGitThrow(git_oid_fromstrn(oid.data(), string.constData(), len));
+    oid.d.resize(len / 2);
     return oid;
 }
 
@@ -64,14 +69,14 @@ QGitOId QGitOId::fromRawData(const QByteArray& raw)
 QByteArray QGitOId::format() const
 {
     QByteArray ba(GIT_OID_HEXSZ, Qt::Uninitialized);
-    git_oid_fmt(ba.data(), data());
+    git_oid_fmt(ba.data(), constData());
     return ba;
 }
 
 QByteArray QGitOId::pathFormat() const
 {
     QByteArray ba(GIT_OID_HEXSZ+1, Qt::Uninitialized);
-    git_oid_pathfmt(ba.data(), data());
+    git_oid_pathfmt(ba.data(), constData());
     return ba;
 }
 
@@ -80,22 +85,24 @@ git_oid* QGitOId::data()
     return reinterpret_cast<git_oid*>(d.data());
 }
 
-const git_oid* QGitOId::data() const
-{
-    return reinterpret_cast<const git_oid*>(d.constData());
-}
-
 const git_oid* QGitOId::constData() const
 {
     return reinterpret_cast<const git_oid*>(d.constData());
 }
 
-bool operator==(const QGitOId& oid1, const QGitOId& oid2)
+bool operator ==(const QGitOId &oid1, const QGitOId &oid2)
 {
-    return git_oid_cmp(oid1.data(), oid2.data()) == 0;
+    return git_oid_cmp(oid1.constData(), oid2.constData()) == 0;
+}
+
+bool operator !=(const QGitOId &oid1, const QGitOId &oid2)
+{
+    return !(operator ==(oid1, oid2));
 }
 
 int QGitOId::length() const
 {
-    return d.length();
+    return d.length() * 2;
 }
+
+} // LibQGit2

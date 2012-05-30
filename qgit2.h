@@ -25,20 +25,20 @@
 #define LIBQGIT2_VER_MINOR 1
 #define LIBQGIT2_VER_REVISION 0
 
-#include "src/oid.h"
-#include "src/signature.h"
-#include "src/database.h"
+#include "src/qgitoid.h"
+#include "src/qgitsignature.h"
+#include "src/qgitdatabase.h"
 
-#include "src/repository.h"
-#include "src/revwalk.h"
-#include "src/refs.h"
+#include "src/qgitrepository.h"
+#include "src/qgitrevwalk.h"
+#include "src/qgitrefs.h"
 
-#include "src/object.h"
-#include "src/blob.h"
-#include "src/commit.h"
-#include "src/tag.h"
-#include "src/tree.h"
+#include "src/qgitobject.h"
+#include "src/qgitblob.h"
+#include "src/qgitcommit.h"
+#include "src/qgittag.h"
+#include "src/qgittree.h"
 
-#include "src/index.h"
+#include "src/qgitindex.h"
 
 #endif

@@ -27,8 +27,15 @@ struct git_tag;
 namespace LibQGit2
 {
     class QGitOId;
-    class QGitSignatureRef;
+    class QGitSignature;
 
+    /**
+     * @brief Wrapper class for git_tag.
+     * Represents a Git tag object.
+     *
+     * @ingroup LibQGit2
+     * @{
+     */
     class LIBQGIT2_TAG_EXPORT QGitTag : public QGitObject
     {
         public:
@@ -59,6 +66,8 @@ namespace LibQGit2
 
             /**
              * Get the tagged object of a tag
+             *
+             * @throws QGitException
              */
             QGitObject target() const;
 
@@ -72,7 +81,7 @@ namespace LibQGit2
              * Get the tagger (author) of a tag
              * @return reference to the tag's author
              */
-            QGitSignatureRef tagger() const;
+            QGitSignature tagger() const;
 
             /**
              * Get the message of a tag
@@ -83,6 +92,8 @@ namespace LibQGit2
             git_tag* data() const;
             const git_tag* constData() const;
     };
+
+    /**@}*/
 }
 
 #endif // LIBQGIT2_TAG_H

@@ -17,12 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "qgitrepository.h"
-#include "qgitcommit.h"
-#include "qgittag.h"
-#include "qgittree.h"
-#include "qgitblob.h"
-#include "qgitsignature.h"
+#include <qgitrepository.h>
+#include <qgitcommit.h>
+#include <qgitconfig.h>
+#include <qgittag.h>
+#include <qgittree.h>
+#include <qgitblob.h>
+#include <qgitsignature.h>
+#include <qgitexception.h>
 
 #include <git2/errors.h>
 #include <git2/repository.h>
@@ -32,14 +34,18 @@
 #include <git2/tree.h>
 #include <git2/blob.h>
 
+#include <QtCore/QDir>
 #include <QtCore/QFile>
+#include <QtCore/QFileInfo>
 #include <QtCore/QVector>
-
-using namespace LibQGit2;
+#include <QtCore/QStringList>
 
 namespace {
 void do_not_free(git_repository*) {}
 }
+
+namespace LibQGit2
+{
 
 QGitRepository::QGitRepository(git_repository *repository, bool own)
     : d(repository, own ? git_repository_free : do_not_free)
@@ -55,169 +61,151 @@ QGitRepository::~QGitRepository()
 {
 }
 
-int QGitRepository::init(const QString& path, bool isBare)
+QString QGitRepository::discover(const QString& startPath, bool acrossFs, const QStringList& ceilingDirs)
 {
-    d.clear();
-    git_repository *repo = 0;
-    int ret = git_repository_init(&repo, QFile::encodeName(path), isBare);
-    if (ret == GIT_SUCCESS)
-        d = ptr_type(repo, git_repository_free);
-    return ret;
+    QByteArray repoPath(GIT_PATH_MAX, Qt::Uninitialized);
+    QByteArray joinedCeilingDirs = QFile::encodeName(ceilingDirs.join(QChar(GIT_PATH_LIST_SEPARATOR)));
+    qGitThrow(git_repository_discover(repoPath.data(), repoPath.length(),
+                                      QFile::encodeName(startPath),
+                                      acrossFs, joinedCeilingDirs));
+    return QFile::decodeName(repoPath);
 }
 
-int QGitRepository::open(const QString& path)
+void QGitRepository::init(const QString& path, bool isBare)
 {
     d.clear();
     git_repository *repo = 0;
-    int ret = git_repository_open(&repo, QFile::encodeName(path));
-    if (ret == GIT_SUCCESS)
-        d = ptr_type(repo, git_repository_free);
-
-    return ret;
+    qGitThrow(git_repository_init(&repo, QFile::encodeName(path), isBare));
+    d = ptr_type(repo, git_repository_free);
 }
 
-int QGitRepository::open(const QString& gitDir,
-                         const QString& gitObjectDirectory,
-                         const QString& gitIndexFile,
-                         const QString& gitWorkTree)
+void QGitRepository::open(const QString& path)
 {
     d.clear();
     git_repository *repo = 0;
-    int ret = git_repository_open2(&repo,
-                                   QFile::encodeName(gitDir),
-                                   QFile::encodeName(gitObjectDirectory),
-                                   QFile::encodeName(gitIndexFile),
-                                   QFile::encodeName(gitWorkTree));
-    if (ret == GIT_SUCCESS)
-        d = ptr_type(repo, git_repository_free);
-
-    return ret;
+    qGitThrow(git_repository_open(&repo, QFile::encodeName(path)));
+    d = ptr_type(repo, git_repository_free);
 }
 
-int QGitRepository::open(const QString& gitDir,
-                         QGitDatabase *objectDatabase,
-                         const QString& gitIndexFile,
-                         const QString& gitWorkTree)
+void QGitRepository::discoverAndOpen(const QString &startPath,
+                                     bool acrossFs,
+                                     const QStringList &ceilingDirs)
 {
-    d.clear();
-    git_repository *repo = 0;
-    int ret = git_repository_open3(&repo,
-                                   QFile::encodeName(gitDir),
-                                   objectDatabase->data(),
-                                   QFile::encodeName(gitIndexFile),
-                                   QFile::encodeName(gitWorkTree));
-    if (ret == GIT_SUCCESS)
-        d = ptr_type(repo, git_repository_free);
-
-    return ret;
+    open(discover(startPath, acrossFs, ceilingDirs));
 }
 
 QGitRef QGitRepository::head() const
 {
     git_reference *ref = 0;
-    git_repository_head(&ref, data());
+    qGitThrow(git_repository_head(&ref, data()));
     return QGitRef(ref);
 }
 
 bool QGitRepository::isHeadDetached() const
 {
-    return git_repository_head_detached(data()) == 1;
+    return qGitThrow(git_repository_head_detached(data())) == 1;
 }
 
 bool QGitRepository::isHeadOrphan() const
 {
-    return git_repository_head_orphan(data()) == 1;
+    return qGitThrow(git_repository_head_orphan(data())) == 1;
 }
 
 bool QGitRepository::isEmpty() const
 {
-    return git_repository_is_empty(data()) == 1;
+    return qGitThrow(git_repository_is_empty(data())) == 1;
 }
 
 bool QGitRepository::isBare() const
 {
-    return git_repository_is_bare(data()) == 1;
+    return qGitThrow(git_repository_is_bare(data())) == 1;
+}
+
+QString QGitRepository::name() const
+{
+    QString repoPath = QDir::cleanPath( workDirPath() );
+    if (isBare())
+        repoPath = QDir::cleanPath( path() );
+
+    return QFileInfo(repoPath).fileName();
 }
 
 QString QGitRepository::path() const
 {
-    return QFile::decodeName(git_repository_path(data(), GIT_REPO_PATH));
-}
-
-QString QGitRepository::indexPath() const
-{
-    return QFile::decodeName(git_repository_path(data(), GIT_REPO_PATH_INDEX));
-}
-
-QString QGitRepository::databasePath() const
-{
-    return QFile::decodeName(git_repository_path(data(), GIT_REPO_PATH_ODB));
+    return QFile::decodeName(git_repository_path(data()));
 }
 
 QString QGitRepository::workDirPath() const
 {
-    return QFile::decodeName(git_repository_path(data(), GIT_REPO_PATH_WORKDIR));
+    return QFile::decodeName(git_repository_workdir(data()));
+}
+
+QGitConfig QGitRepository::configuration() const
+{
+    git_config *cfg;
+    qGitThrow( git_repository_config(&cfg, data()) );
+    return QGitConfig(cfg);
 }
 
 QGitRef QGitRepository::lookupRef(const QString& name) const
 {
     git_reference *ref = 0;
-    git_reference_lookup(&ref, data(), QFile::encodeName(name));
+    qGitThrow(git_reference_lookup(&ref, data(), QFile::encodeName(name)));
     return QGitRef(ref);
 }
 
 QGitCommit QGitRepository::lookupCommit(const QGitOId& oid) const
 {
     git_commit *commit = 0;
-    git_commit_lookup_prefix(&commit, data(), oid.data(), oid.length());
+    qGitThrow(git_commit_lookup_prefix(&commit, data(), oid.constData(), oid.length()));
     return QGitCommit(commit);
 }
 
 QGitTag QGitRepository::lookupTag(const QGitOId& oid) const
 {
     git_tag *tag = 0;
-    git_tag_lookup_prefix(&tag, data(), oid.data(), oid.length());
+    qGitThrow(git_tag_lookup_prefix(&tag, data(), oid.constData(), oid.length()));
     return QGitTag(tag);
 }
 
 QGitTree QGitRepository::lookupTree(const QGitOId& oid) const
 {
     git_tree *tree = 0;
-    git_tree_lookup_prefix(&tree, data(), oid.data(), oid.length());
+    qGitThrow(git_tree_lookup_prefix(&tree, data(), oid.constData(), oid.length()));
     return QGitTree(tree);
 }
 
 QGitBlob QGitRepository::lookupBlob(const QGitOId& oid) const
 {
     git_blob *blob = 0;
-    git_blob_lookup_prefix(&blob, data(), oid.data(), oid.length());
+    qGitThrow(git_blob_lookup_prefix(&blob, data(), oid.constData(), oid.length()));
     return QGitBlob(blob);
 }
 
 QGitObject QGitRepository::lookupAny(const QGitOId &oid) const
 {
     git_object *object = 0;
-    git_object_lookup_prefix(&object, data(), oid.data(), oid.length(), GIT_OBJ_ANY);
+    qGitThrow(git_object_lookup_prefix(&object, data(), oid.constData(), oid.length(), GIT_OBJ_ANY));
     return QGitObject(object);
 }
 
 QGitRef QGitRepository::createRef(const QString& name, const QGitOId& oid, bool overwrite)
 {
     git_reference *ref = 0;
-    git_reference_create_oid(&ref, data(), QFile::encodeName(name), oid.data(), overwrite);
+    qGitThrow(git_reference_create_oid(&ref, data(), QFile::encodeName(name), oid.constData(), overwrite));
     return QGitRef(ref);
 }
 
 QGitRef QGitRepository::createSymbolicRef(const QString& name, const QString& target, bool overwrite)
 {
     git_reference *ref = 0;
-    git_reference_create_symbolic(&ref, data(), QFile::encodeName(name), QFile::encodeName(target), overwrite);
+    qGitThrow(git_reference_create_symbolic(&ref, data(), QFile::encodeName(name), QFile::encodeName(target), overwrite));
     return QGitRef(ref);
 }
 
 QGitOId QGitRepository::createCommit(const QString& ref,
-                                     const QGitSignatureRef& author,
-                                     const QGitSignatureRef& committer,
+                                     const QGitSignature& author,
+                                     const QGitSignature& committer,
                                      const QString& message,
                                      const QGitTree& tree,
                                      const QList<QGitCommit>& parents)
@@ -228,47 +216,89 @@ QGitOId QGitRepository::createCommit(const QString& ref,
     }
 
     QGitOId oid;
-    git_commit_create(oid.data(), data(), QFile::encodeName(ref), author.data(), committer.data(),
-                      NULL, message.toUtf8(), tree.data(), p.size(), p.data());
+    qGitThrow(git_commit_create(oid.data(), data(), QFile::encodeName(ref), author.data(), committer.data(),
+                                NULL, message.toUtf8(), tree.data(), p.size(), p.data()));
     return oid;
 }
 
 QGitOId QGitRepository::createTag(const QString& name,
                                   const QGitObject& target,
-                                  const QGitSignatureRef& tagger,
+                                  bool overwrite)
+{
+    QGitOId oid;
+    qGitThrow(git_tag_create_lightweight(oid.data(), data(), QFile::encodeName(name),
+                                         target.data(), overwrite));
+    return oid;
+}
+
+QGitOId QGitRepository::createTag(const QString& name,
+                                  const QGitObject& target,
+                                  const QGitSignature& tagger,
                                   const QString& message,
                                   bool overwrite)
 {
     QGitOId oid;
-    git_tag_create(oid.data(), data(), QFile::encodeName(name), target.data(),
-                   tagger.data(), message.toUtf8(), overwrite);
+    qGitThrow(git_tag_create(oid.data(), data(), QFile::encodeName(name), target.data(),
+                             tagger.data(), message.toUtf8(), overwrite));
     return oid;
+}
+
+void QGitRepository::deleteTag(const QString& name)
+{
+    qGitThrow(git_tag_delete(data(), QFile::encodeName(name)));
 }
 
 QGitOId QGitRepository::createBlobFromFile(const QString& path)
 {
     QGitOId oid;
-    git_blob_create_fromfile(oid.data(), data(), QFile::encodeName(path));
+    qGitThrow(git_blob_create_fromfile(oid.data(), data(), QFile::encodeName(path)));
     return oid;
 }
 
 QGitOId QGitRepository::createBlobFromBuffer(const QByteArray& buffer)
 {
     QGitOId oid;
-    git_blob_create_frombuffer(oid.data(), data(), buffer.data(), buffer.size());
+    qGitThrow(git_blob_create_frombuffer(oid.data(), data(), buffer.data(), buffer.size()));
     return oid;
 }
 
-QGitDatabase* QGitRepository::database() const
+QStringList QGitRepository::listTags(const QString& pattern) const
 {
-    QGitDatabase *database = new QGitDatabase(git_repository_database(data()));
-    return database;
+    QStringList list;
+    git_strarray tags;
+    qGitThrow(git_tag_list_match(&tags, qPrintable(pattern), data()));
+    for (size_t i = 0; i < tags.count; ++i)
+    {
+        list << QString(tags.strings[i]);
+    }
+    git_strarray_free(&tags);
+    return list;
+}
+
+QStringList QGitRepository::listReferences() const
+{
+    QStringList list;
+    git_strarray refs;
+    qGitThrow(git_reference_listall( &refs, data(), GIT_REF_LISTALL));
+    for (size_t i = 0; i < refs.count; ++i)
+    {
+        list << QString(refs.strings[i]);
+    }
+    git_strarray_free(&refs);
+    return list;
+}
+
+QGitDatabase QGitRepository::database() const
+{
+    git_odb *odb;
+    qGitThrow( git_repository_odb(&odb, data()) );
+    return QGitDatabase(odb);
 }
 
 QGitIndex QGitRepository::index() const
 {
     git_index *idx;
-    git_repository_index(&idx, data());
+    qGitThrow(git_repository_index(&idx, data()));
     return QGitIndex(idx);
 }
 
@@ -282,3 +312,4 @@ const git_repository* QGitRepository::constData() const
     return d.data();
 }
 
+} // namespace LibQGit2

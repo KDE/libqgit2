@@ -17,48 +17,46 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "qgitindexentry.h"
-#include "qgitoid.h"
+#include "qgitindexmodel.h"
 
-#include <QtCore/QFile>
-
-#include <git2/index.h>
+#include <qgitindexentry.h>
 
 namespace LibQGit2
 {
 
-QGitIndexEntry::QGitIndexEntry(git_index_entry *data)
-    : d(data)
+QGitIndexModel::QGitIndexModel(const QGitIndex& index, QObject *parent)
+    : QAbstractListModel(parent)
+    , m_index(index)
 {
 }
 
-QGitIndexEntry::QGitIndexEntry(const QGitIndexEntry& other)
-    : d(other.d)
+QGitIndexModel::~QGitIndexModel()
 {
 }
 
-QGitIndexEntry::~QGitIndexEntry()
+int QGitIndexModel::rowCount(const QModelIndex& parent) const
 {
+    if (parent.isValid()) {
+        return 0;
+    } else {
+        return m_index.entryCount();
+    }
 }
 
-QGitOId QGitIndexEntry::id() const
+QVariant QGitIndexModel::data(const QModelIndex& index, int role) const
 {
-    return QGitOId(&d->oid);
+    if (index.parent().isValid())
+        return QVariant();
+
+    if (index.column() != 0)
+        return QVariant();
+
+    if (role == Qt::DisplayRole || role == Qt::EditRole) {
+        QGitIndexEntry entry = m_index.get(index.row());
+        return entry.path();
+    } else {
+        return QVariant();
+    }
 }
 
-QString QGitIndexEntry::path() const
-{
-    return QFile::decodeName(d->path);
 }
-
-qint64 QGitIndexEntry::fileSize() const
-{
-    return d->file_size;
-}
-
-const git_index_entry *QGitIndexEntry::data() const
-{
-    return d;
-}
-
-} // namespace LibQGit2

@@ -31,6 +31,13 @@ struct git_odb;
 
 namespace LibQGit2
 {
+    /**
+     * @brief Wrapper class for git_odb.
+     * Represents a Git object database containing unique sha1 object ids.
+     *
+     * @ingroup LibQGit2
+     * @{
+     */
     class LIBQGIT2_DATABASE_EXPORT QGitDatabase
     {
         public:
@@ -75,7 +82,7 @@ namespace LibQGit2
              *
              * Read <odb_backends.h> for more information.
              *
-             * @paramm backend pointer to a databaseBackend instance
+             * @param backend pointer to a databaseBackend instance
              * @return 0 on sucess; error code otherwise
              */
             int addBackend(QGitDatabaseBackend *backend, int priority);
@@ -91,7 +98,7 @@ namespace LibQGit2
             *
             * Read <odb_backends.h> for more information.
             *
-            * @paramm backend pointer to a databaseBackend instance
+            * @param backend pointer to a databaseBackend instance
             * @return 0 on sucess; error code otherwise
             */
             int addAlternate(QGitDatabaseBackend *backend, int priority);
@@ -113,6 +120,8 @@ namespace LibQGit2
         private:
             git_odb *m_database;
     };
+
+    /**@}*/
 }
 
 #endif // LIBQGIT2_DATABASE_H

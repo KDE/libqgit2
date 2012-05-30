@@ -17,48 +17,32 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "qgitindexentry.h"
-#include "qgitoid.h"
+#ifndef LIBQGIT2_INDEX_MODEL_H
+#define LIBQGIT2_INDEX_MODEL_H
 
-#include <QtCore/QFile>
+#include "qgitindex.h"
 
-#include <git2/index.h>
+#include <QAbstractListModel>
 
 namespace LibQGit2
 {
 
-QGitIndexEntry::QGitIndexEntry(git_index_entry *data)
-    : d(data)
+class LIBQGIT2_INDEX_EXPORT QGitIndexModel : public QAbstractListModel
 {
+    Q_OBJECT
+
+public:
+    explicit QGitIndexModel(const QGitIndex& index, QObject *parent = 0);
+    ~QGitIndexModel();
+
+    int rowCount(const QModelIndex& parent) const;
+
+    QVariant data(const QModelIndex& index, int role) const;
+
+private:
+    QGitIndex m_index;
+};
+
 }
 
-QGitIndexEntry::QGitIndexEntry(const QGitIndexEntry& other)
-    : d(other.d)
-{
-}
-
-QGitIndexEntry::~QGitIndexEntry()
-{
-}
-
-QGitOId QGitIndexEntry::id() const
-{
-    return QGitOId(&d->oid);
-}
-
-QString QGitIndexEntry::path() const
-{
-    return QFile::decodeName(d->path);
-}
-
-qint64 QGitIndexEntry::fileSize() const
-{
-    return d->file_size;
-}
-
-const git_index_entry *QGitIndexEntry::data() const
-{
-    return d;
-}
-
-} // namespace LibQGit2
+#endif // LIBQGIT2_INDEX_MODEL_H

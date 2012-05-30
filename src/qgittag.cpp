@@ -20,10 +20,12 @@
 #include "qgittag.h"
 #include "qgitoid.h"
 #include "qgitsignature.h"
+#include "qgitexception.h"
 
 #include <git2/tag.h>
 
-using namespace LibQGit2;
+namespace LibQGit2
+{
 
 QGitTag::QGitTag(git_tag *tag)
     : QGitObject(reinterpret_cast<git_object*>(tag))
@@ -47,7 +49,7 @@ QGitOId QGitTag::oid() const
 QGitObject QGitTag::target() const
 {
     git_object *obj;
-    git_tag_target(&obj, data());
+    qGitThrow(git_tag_target(&obj, data()));
     return QGitObject(obj);
 }
 
@@ -56,9 +58,9 @@ const QString QGitTag::name() const
     return git_tag_name(data());
 }
 
-QGitSignatureRef QGitTag::tagger() const
+QGitSignature QGitTag::tagger() const
 {
-    return QGitSignatureRef(git_tag_tagger(data()));
+    return QGitSignature(git_tag_tagger(data()));
 }
 
 const QString QGitTag::message()
@@ -76,3 +78,4 @@ const git_tag* QGitTag::constData() const
     return reinterpret_cast<git_tag*>(QGitObject::data());
 }
 
+} // namespace LibQGit2

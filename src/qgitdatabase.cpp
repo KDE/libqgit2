@@ -23,7 +23,8 @@
 
 #include <git2/odb.h>
 
-using namespace LibQGit2;
+namespace LibQGit2
+{
 
 QGitDatabase::QGitDatabase(git_odb *odb)
     : m_database(odb)
@@ -46,7 +47,7 @@ int QGitDatabase::open(const QString& objectsDir)
 
 void QGitDatabase::close()
 {
-    return git_odb_close(m_database);
+    return git_odb_free(m_database);
 }
 
 int QGitDatabase::addBackend(QGitDatabaseBackend *backend, int priority)
@@ -61,7 +62,7 @@ int QGitDatabase::addAlternate(QGitDatabaseBackend *backend, int priority)
 
 int QGitDatabase::exists(QGitDatabase *db, const QGitOId& id)
 {
-    return git_odb_exists(db->data(), id.data());
+    return git_odb_exists(db->data(), id.constData());
 }
 
 git_odb* QGitDatabase::data() const
@@ -73,3 +74,5 @@ const git_odb* QGitDatabase::constData() const
 {
     return m_database;
 }
+
+} // namespace LibQGit2

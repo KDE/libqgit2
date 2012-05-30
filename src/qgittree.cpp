@@ -27,7 +27,8 @@
 
 #include <git2/tree.h>
 
-using namespace LibQGit2;
+namespace LibQGit2
+{
 
 QGitTree::QGitTree(git_tree *tree)
     : QGitObject(reinterpret_cast<git_object*>(tree))
@@ -53,12 +54,12 @@ size_t QGitTree::entryCount()
     return git_tree_entrycount(data());
 }
 
-QGitTreeEntry QGitTree::entryByName(const QString& fileName)
+QGitTreeEntry QGitTree::entryByName(const QString& fileName) const
 {
     return QGitTreeEntry(git_tree_entry_byname(data(), QFile::encodeName(fileName)));
 }
 
-QGitTreeEntry QGitTree::entryByIndex(int idx)
+QGitTreeEntry QGitTree::entryByIndex(int idx) const
 {
     return QGitTreeEntry(git_tree_entry_byindex(data(), idx));
 }
@@ -72,3 +73,5 @@ const git_tree* QGitTree::constData() const
 {
     return reinterpret_cast<git_tree*>(QGitObject::data());
 }
+
+} // namespace LibQGit2

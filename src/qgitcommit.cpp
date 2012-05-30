@@ -22,10 +22,12 @@
 #include "qgitrepository.h"
 #include "qgitsignature.h"
 #include "qgittree.h"
+#include "qgitexception.h"
 
 #include <git2/commit.h>
 
-using namespace LibQGit2;
+namespace LibQGit2
+{
 
 QGitCommit::QGitCommit(git_commit *commit)
     : QGitObject(reinterpret_cast<git_object*>(commit))
@@ -51,6 +53,11 @@ QString QGitCommit::message() const
     return QString::fromUtf8(git_commit_message(data()));
 }
 
+QString QGitCommit::shortMessage(int maxLen) const
+{
+    return message().left(maxLen).split(QRegExp("(\\r|\\n)")).first();
+}
+
 QDateTime QGitCommit::dateTime() const
 {
     QDateTime dateTime;
@@ -63,20 +70,20 @@ int QGitCommit::timeOffset() const
     return git_commit_time_offset(data());
 }
 
-QGitSignatureRef QGitCommit::committer() const
+QGitSignature QGitCommit::committer() const
 {
-    return QGitSignatureRef(git_commit_committer(data()));
+    return QGitSignature(git_commit_committer(data()));
 }
 
-QGitSignatureRef QGitCommit::author() const
+QGitSignature QGitCommit::author() const
 {
-    return QGitSignatureRef(git_commit_author(data()));
+    return QGitSignature(git_commit_author(data()));
 }
 
 QGitTree QGitCommit::tree() const
 {
     git_tree *tree;
-    git_commit_tree(&tree, data());
+    qGitThrow(git_commit_tree(&tree, data()));
     return QGitTree(tree);
 }
 
@@ -88,8 +95,15 @@ unsigned int QGitCommit::parentCount() const
 QGitCommit QGitCommit::parent(unsigned n) const
 {
     git_commit *parent;
-    git_commit_parent(&parent, data(), n);
+    qGitThrow(git_commit_parent(&parent, data(), n));
     return QGitCommit(parent);
+}
+
+QGitOId QGitCommit::parentId(unsigned n) const
+{
+    git_oid *parentId;
+    git_commit_parent_oid(data(), n);
+    return QGitOId(parentId);
 }
 
 git_commit* QGitCommit::data() const
@@ -101,3 +115,5 @@ const git_commit* QGitCommit::constData() const
 {
     return reinterpret_cast<git_commit*>(QGitObject::data());
 }
+
+} // namespace LibQGit2

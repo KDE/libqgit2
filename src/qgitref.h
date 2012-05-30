@@ -30,6 +30,14 @@ namespace LibQGit2
 {
     class QGitRepository;
     class QGitOId;
+
+    /**
+     * @brief Wrapper class for git_refs.
+     * Represents a Git reference. Reference objects are branches, tags, etc.
+     *
+     * @ingroup LibQGit2
+     * @{
+     */
     class LIBQGIT2_REFS_EXPORT QGitRef
     {
         public:
@@ -97,6 +105,7 @@ namespace LibQGit2
              *
              * @param resolvedRef Pointer to the peeled reference
              * @return 0 on success; error code otherwise
+             * @throws QGitException
              */
             QGitRef resolve() const;
 
@@ -120,7 +129,7 @@ namespace LibQGit2
              *
              * @return a pointer to the repository
              */
-            QGitRepository owner();
+            QGitRepository owner() const;
 
             /**
              * Set the name of a reference.
@@ -144,8 +153,9 @@ namespace LibQGit2
              * to disk.
              *
              * @param target The new target for the reference
+             * @throws QGitException
              */
-            int setTarget(const QString& target);
+            void setTarget(const QString& target);
 
             /**
              * Set the OID target of a reference.
@@ -158,12 +168,11 @@ namespace LibQGit2
              * to disk.
              *
              * @param target The new target OID for the reference
+             * @throws QGitException
              */
             void setOId(const QGitOId& oid);
 
-            bool isNull() const {
-                return data() == 0;
-            }
+            bool isNull() const;
 
             git_reference* data() const;
             const git_reference* constData() const;
@@ -171,6 +180,8 @@ namespace LibQGit2
         private:
             git_reference *m_reference;
     };
+
+    /**@}*/
 }
 
 #endif // LIBQGIT2_REF_H

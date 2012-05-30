@@ -17,48 +17,37 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "qgitindexentry.h"
-#include "qgitoid.h"
+#ifndef LIBQGIT2_EXCEPTION_H
+#define LIBQGIT2_EXCEPTION_H
 
-#include <QtCore/QFile>
-
-#include <git2/index.h>
+#include "libqgit2_export.h"
 
 namespace LibQGit2
 {
+    /**
+     * @brief Exception class to throw Git exceptions.
+     *
+     * @ingroup LibQGit2
+     * @{
+     */
+    class LIBQGIT2_EXPORT QGitException : public std::exception
+    {
+        public:
+            QGitException(int error);
 
-QGitIndexEntry::QGitIndexEntry(git_index_entry *data)
-    : d(data)
-{
+            ~QGitException() throw();
+
+            const char *what() const throw();
+
+            QByteArray message() const throw();
+
+        private:
+            QByteArray m;
+    };
+
+    int qGitThrow(int ret);
+
+    /**@}*/
 }
 
-QGitIndexEntry::QGitIndexEntry(const QGitIndexEntry& other)
-    : d(other.d)
-{
-}
-
-QGitIndexEntry::~QGitIndexEntry()
-{
-}
-
-QGitOId QGitIndexEntry::id() const
-{
-    return QGitOId(&d->oid);
-}
-
-QString QGitIndexEntry::path() const
-{
-    return QFile::decodeName(d->path);
-}
-
-qint64 QGitIndexEntry::fileSize() const
-{
-    return d->file_size;
-}
-
-const git_index_entry *QGitIndexEntry::data() const
-{
-    return d;
-}
-
-} // namespace LibQGit2
+#endif // LIBQGIT2_EXCEPTION_H

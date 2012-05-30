@@ -30,6 +30,13 @@ namespace LibQGit2
     class QGitObject;
     class QGitRepository;
 
+    /**
+     * @brief Wrapper class for git_tree_entry.
+     * Represents a Git child tree entry, that can either point to another tree object or a blob.
+     *
+     * @ingroup LibQGit2
+     * @{
+     */
     class LIBQGIT2_TREEENTRY_EXPORT QGitTreeEntry
     {
         public:
@@ -38,6 +45,11 @@ namespace LibQGit2
             ~QGitTreeEntry();
 
         public:
+            /**
+              * @return true when internal pointer is 0; otherwise false
+              */
+            bool isNull() const;
+
             /**
              * Get the UNIX file attributes of a tree entry
              * @return attributes as an integer
@@ -50,27 +62,28 @@ namespace LibQGit2
              */
             const QString name() const;
 
-
             /**
              * Get the id of the object pointed by the entry
              * @return the oid of the object
              */
-            QGitOId id() const;
+            QGitOId oid() const;
 
             /**
              * Convert a tree entry to the Object it points too.
              *
              * @param object pointer to the converted object
              * @return a reference to the pointed object in the repository
+             * @throws QGitException
              */
             QGitObject toObject(const QGitRepository& repo);
 
-            const git_tree_entry* data() const;
             const git_tree_entry* constData() const;
 
         private:
-            const git_tree_entry *m_treeEntry;
+            const git_tree_entry *d;
     };
+
+    /**@}*/
 }
 
 #endif // LIBQGIT2_TREEENTRY_H

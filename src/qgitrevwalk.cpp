@@ -23,8 +23,10 @@
 #include "qgitrepository.h"
 
 #include <git2/revwalk.h>
+#include <git2/errors.h>
 
-using namespace LibQGit2;
+namespace LibQGit2
+{
 
 QGitRevWalk::QGitRevWalk(const QGitRepository& repository)
 {
@@ -46,26 +48,48 @@ void QGitRevWalk::reset() const
     return git_revwalk_reset(m_revWalk);
 }
 
-int QGitRevWalk::push(const QGitOId& oid) const
+int QGitRevWalk::push(const QGitCommit& commit) const
 {
-    return git_revwalk_push(m_revWalk, oid.data());
+    return git_revwalk_push(m_revWalk, commit.oid().data());
 }
 
 int QGitRevWalk::hide(const QGitOId& oid) const
 {
-    return git_revwalk_hide(m_revWalk, oid.data());
+    return git_revwalk_hide(m_revWalk, oid.constData());
 }
 
-QGitOId QGitRevWalk::next()
+QGitOId QGitRevWalk::next() const
 {
     QGitOId oid;
     git_revwalk_next(oid.data(), m_revWalk);
     return oid;
 }
 
-void QGitRevWalk::sorting(unsigned int sortMode)
+bool QGitRevWalk::next(QGitCommit & commit)
 {
-    git_revwalk_sorting(m_revWalk, sortMode);
+    QGitOId oid;
+    int err = git_revwalk_next(oid.data(), m_revWalk);
+
+    if ( (err != GIT_SUCCESS) || !oid.isValid() )
+        commit = QGitCommit();
+    else
+        commit = (repository().lookupCommit(oid));
+
+    return !commit.isNull();
+}
+
+void QGitRevWalk::setSorting(SortModes sortMode)
+{
+    // wrap c defines
+    unsigned int sort = GIT_SORT_NONE;
+    if ( sortMode.testFlag(Time) )
+        sort |= GIT_SORT_TIME;
+    if ( sortMode.testFlag(Topological) )
+        sort |= GIT_SORT_TOPOLOGICAL;
+    if ( sortMode.testFlag(Reverse) )
+        sort |= GIT_SORT_REVERSE;
+
+    git_revwalk_sorting(m_revWalk, sort);
 }
 
 QGitRepository QGitRevWalk::repository()
@@ -83,3 +107,4 @@ const git_revwalk* QGitRevWalk::constData() const
     return m_revWalk;
 }
 
+} // namespace LibQGit2
