@@ -23,21 +23,51 @@
 #include <QtCore/QUrl>
 
 #include <qgitoid.h>
+#include <qgitexception.h>
+#include <qgiterror.h>
+
+namespace
+{
+
+/**
+  * Private struct to lookup submodule information.
+  */
+struct QGitPrivateSubmoduleLookupInfo
+{
+    const LibQGit2::QGitRepository &    repo;       //!< the owner repository to lookup submodules; must be open
+    LibQGit2::QGitSubmoduleList         submodules; //!< the resulting list of submodules
+
+    QGitPrivateSubmoduleLookupInfo(const LibQGit2::QGitRepository &owner) : repo(owner)
+    {
+    }
+};
+
+/**
+  * Internal callback for git_submodule_foreach to retreive a list of submodules.
+  */
+int addToSubmoduleList(const char *name, void *payload)
+{
+    Q_ASSERT(payload != 0);
+
+    QGitPrivateSubmoduleLookupInfo * submoduleInfo = static_cast<QGitPrivateSubmoduleLookupInfo *>(payload);
+
+    git_submodule *submodule;
+    int err = git_submodule_lookup(&submodule, submoduleInfo->repo.data(), name);
+    if ( err == GIT_OK )
+        submoduleInfo->submodules.append(LibQGit2::QGitSubmodule(submoduleInfo->repo, submodule));
+
+    return err;
+}
+
+} // internal namespace
+
 
 namespace LibQGit2
 {
 
-QGitSubmodule::QGitSubmodule(git_submodule *submodule)
+QGitSubmodule::QGitSubmodule(const QGitRepository &owner, git_submodule *submodule)
     : d(submodule)
-{
-}
-
-QGitSubmodule::QGitSubmodule(const QGitSubmodule &other)
-    : d(other.d)
-{
-}
-
-QGitSubmodule::~QGitSubmodule()
+    , _owner(owner)
 {
 }
 
@@ -83,6 +113,13 @@ bool QGitSubmodule::fetchRecurseSubmodules() const
 git_submodule_ignore_t QGitSubmodule::ignore() const
 {
     return d->ignore;
+}
+
+QGitSubmoduleList QGitSubmodule::list(const QGitRepository &repo)
+{
+    QGitPrivateSubmoduleLookupInfo submoduleInfo( repo );
+    git_submodule_foreach(repo.data(), &addToSubmoduleList, &submoduleInfo);
+    return submoduleInfo.submodules;
 }
 
 } // namespace LibQGit2

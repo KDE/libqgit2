@@ -26,7 +26,6 @@
 #include "qgitobject.h"
 #include "qgitref.h"
 #include "qgitindex.h"
-#include "qgitsubmodule.h"
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStringList>
@@ -368,11 +367,6 @@ namespace LibQGit2
             QStringList listReferences() const;
 
             /**
-              * Creates a list with all submodules in a repository.
-              */
-            LibQGit2::QGitSubmoduleList listSubmodules() const;
-
-            /**
              * Get the object database behind a Git repository
              *
              * @return a pointer to the object db
@@ -395,23 +389,6 @@ namespace LibQGit2
         private:
             typedef QSharedPointer<git_repository> ptr_type;
             ptr_type d;
-
-        private:
-            struct QGitPrivateSubmoduleLookupInfo
-            {
-                git_repository *                    repo;       //!< the master repository to lookup submodules
-                QGitSubmoduleList                   submodules; //!< the resulting list of submodules
-
-                QGitPrivateSubmoduleLookupInfo(git_repository *owner) : repo(owner)
-                {
-                    Q_ASSERT(owner != 0);
-                }
-            };
-
-            /**
-              * Internal callback for git_submodule_foreach to retreive a list of submodules.
-              */
-            static int addToSubmoduleList(const char *name, void *payload);
 
     };
 

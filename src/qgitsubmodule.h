@@ -22,6 +22,8 @@
 
 #include <libqgit2_export.h>
 
+#include <src/qgitrepository.h>
+
 #include <git2/submodule.h>
 
 #include <QtCore/QList>
@@ -37,6 +39,9 @@ namespace LibQGit2
     class QGitOId;
     class QGitRepository;
 
+    class QGitSubmodule;
+    typedef QList<QGitSubmodule> QGitSubmoduleList; //!< Synonym for QList<QGitSubmodule>
+
     /**
      * @brief Wrapper class for git_submodule.
      * Represents a Git submodule object.
@@ -47,9 +52,7 @@ namespace LibQGit2
     class LIBQGIT2_EXPORT QGitSubmodule
     {
     public:
-        explicit QGitSubmodule(git_submodule *submodule = 0);
-        QGitSubmodule(const QGitSubmodule &other);
-        ~QGitSubmodule();
+        explicit QGitSubmodule(const QGitRepository &owner = QGitRepository(), git_submodule *submodule = 0);
 
         /**
           * Checks the pointer to the assigned submodule.
@@ -85,13 +88,17 @@ namespace LibQGit2
         bool fetchRecurseSubmodules() const;
         git_submodule_ignore_t ignore() const;
 
+    public:
+        /**
+          * Creates a list with all submodules in a repository.
+          */
+        static QGitSubmoduleList list(const QGitRepository &repo);
+
     private:
         git_submodule *     d;
 
 
     };
-
-    typedef QList<QGitSubmodule> QGitSubmoduleList; //!< Synonym for QList<QGitSubmodule>
 
     /**@}*/
 }

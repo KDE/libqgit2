@@ -295,13 +295,6 @@ QStringList QGitRepository::listReferences() const
     return list;
 }
 
-QGitSubmoduleList QGitRepository::listSubmodules() const
-{
-    QGitPrivateSubmoduleLookupInfo submoduleInfo( data() );
-    git_submodule_foreach(data(), &addToSubmoduleList, &submoduleInfo);
-    return submoduleInfo.submodules;
-}
-
 QGitDatabase QGitRepository::database() const
 {
     git_odb *odb;
@@ -324,20 +317,6 @@ git_repository* QGitRepository::data() const
 const git_repository* QGitRepository::constData() const
 {
     return d.data();
-}
-
-int QGitRepository::addToSubmoduleList(const char *name, void *payload)
-{
-    Q_ASSERT(payload != 0);
-
-    QGitPrivateSubmoduleLookupInfo * submoduleInfo = static_cast<QGitPrivateSubmoduleLookupInfo *>(payload);
-
-    git_submodule *submodule;
-    int err = git_submodule_lookup(&submodule, submoduleInfo->repo, name);
-    if ( err == GIT_OK )
-        submoduleInfo->submodules.append(QGitSubmodule(submodule));
-
-    return err;
 }
 
 } // namespace LibQGit2
