@@ -27,12 +27,9 @@
 #include <git2/submodule.h>
 
 #include <QtCore/QList>
-#include <QtCore/QSharedPointer>
-
 
 class QString;
 class QUrl;
-
 
 namespace LibQGit2
 {

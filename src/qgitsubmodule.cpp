@@ -117,7 +117,7 @@ git_submodule_update_t QGitSubmodule::update() const
 
 bool QGitSubmodule::fetchRecurseSubmodules() const
 {
-    return d->fetch_recurse;
+    return d->fetch_recurse == 1;
 }
 
 git_submodule_ignore_t QGitSubmodule::ignore() const
