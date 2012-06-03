@@ -81,6 +81,23 @@ namespace LibQGit2
         QGitOId oid() const;
 
         /**
+          * Opens the local repository, if it exists.
+          *
+          * @return true on success; false on failure
+          */
+        bool open();
+
+        /**
+          * @return the submodule's owner repository
+          */
+        const QGitRepository & owner() const;
+
+        /**
+          * @return the submodule's local repository; may be empty, when submodule not initialized
+          */
+        const QGitRepository & repository() const;
+
+        /**
           * @return the update enum
           */
         git_submodule_update_t update() const;
@@ -97,6 +114,8 @@ namespace LibQGit2
     private:
         git_submodule *     d;
 
+        QGitRepository      _owner; //!< the submodules owner repository
+        QGitRepository      _repo;  //!< the submodules repository
 
     };
 

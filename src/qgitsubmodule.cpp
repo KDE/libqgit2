@@ -100,6 +100,16 @@ QGitOId QGitSubmodule::oid() const
     return QGitOId(&d->oid);
 }
 
+const QGitRepository &QGitSubmodule::owner() const
+{
+    return _owner;
+}
+
+const QGitRepository &QGitSubmodule::repository() const
+{
+    return _repo;
+}
+
 git_submodule_update_t QGitSubmodule::update() const
 {
     return d->update;
@@ -120,6 +130,25 @@ QGitSubmoduleList QGitSubmodule::list(const QGitRepository &repo)
     QGitPrivateSubmoduleLookupInfo submoduleInfo( repo );
     git_submodule_foreach(repo.data(), &addToSubmoduleList, &submoduleInfo);
     return submoduleInfo.submodules;
+}
+
+bool QGitSubmodule::open()
+{
+    if ( _owner.isBare() || _owner.isEmpty() )
+        return false;
+
+    bool result = true;
+    try
+    {
+        const QString absPath = QString("%1/%2").arg(_owner.workDirPath()).arg(path());
+        _repo.discoverAndOpen(absPath, false, QStringList() << absPath);
+    }
+    catch (QGitException &)
+    {
+        result = false;
+    }
+
+    return result;
 }
 
 } // namespace LibQGit2
