@@ -196,6 +196,13 @@ namespace LibQGit2
             bool isBare() const;
 
             /**
+              * Checks the pointer to the underlying git_repository.
+              *
+              * @return true when 0; false otherwise
+              */
+            bool isNull() const;
+
+            /**
              * The name equals the repositories working directory name.
              * In case of a bare repository, the name equals the repositorie's directory.
              */

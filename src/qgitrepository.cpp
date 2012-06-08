@@ -128,6 +128,11 @@ bool QGitRepository::isBare() const
     return qGitThrow(git_repository_is_bare(data())) == 1;
 }
 
+bool QGitRepository::isNull() const
+{
+    return d.isNull();
+}
+
 QString QGitRepository::name() const
 {
     QString repoPath = QDir::cleanPath( workDirPath() );
