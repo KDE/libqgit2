@@ -74,18 +74,89 @@ namespace LibQGit2
             void reset() const;
 
             /**
-             * Mark a commit to start traversal from.
+             * Push a commit to start traversal from.
              * The commit object must belong to the repo which is being walked through.
              *
              * @param commit the commit to start from.
+             *
+             * @return the libgit2 error code
+             *
+             * @see git_revwalk_push
              */
             int push(const QGitCommit& commit) const;
 
             /**
+              * Pushes all commit id's matched by the glob pattern for traversal.
+              * The glob pattern is assumed to start with "refs/".
+              *
+              * @param The glob pattern according to @see git_revwalk_push_glob
+              *
+              * @return the libgit2 error code
+              *
+              * @see git_revwalk_push_glob
+              */
+            int pushGlob(const QString &glob) const;
+
+            /**
+              * Pushes the repository's head commit id for traversal.
+              *
+              * @return the libgit2 error code
+              *
+              * @see git_revwalk_push_head
+              */
+            int pushHead() const;
+
+            /**
+              * Pushes the commit id of the matched reference for traversal.
+              *
+              * @param the reference name
+              *
+              * @return the libgit2 error code
+              *
+              * @see git_revwalk_push_ref
+              */
+            int pushRef(const QString &ref) const;
+
+            /**
              * Mark a commit (and its ancestors) uninteresting for the output.
+             *
              * @param commit the commit that will be ignored during the traversal
+             *
+             * @return the libgit2 error code
              */
             int hide(const QGitOId& commit) const;
+
+            /**
+              * Hides all commit id's and their parents matched by the glob pattern during traversal.
+              * The glob pattern is assumed to start with "refs/".
+              *
+              * @param The glob pattern according to @see git_revwalk_hide_glob
+              *
+              * @return the libgit2 error code
+              *
+              * @see git_revwalk_hide_glob
+              */
+            int hideGlob(const QString &glob) const;
+
+            /**
+              * Hides the repository's head commit and its parents during traversal.
+              *
+              * @return the libgit2 error code
+              *
+              * @see git_revwalk_hide_head
+              */
+            int hideHead() const;
+
+            /**
+              * Hides the commit and its parents of the matched reference during traversal.
+              *
+              * @param the reference name
+              *
+              * @return the libgit2 error code
+              *
+              * @see git_revwalk_hide_ref
+              */
+            int hideRef(const QString &ref) const;
 
             /**
              * Get the oid of the next commit from the revision traversal.

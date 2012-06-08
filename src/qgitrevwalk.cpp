@@ -53,9 +53,39 @@ int QGitRevWalk::push(const QGitCommit& commit) const
     return git_revwalk_push(m_revWalk, commit.oid().data());
 }
 
+int QGitRevWalk::pushGlob(const QString &glob) const
+{
+    return git_revwalk_push_glob(m_revWalk, glob.toUtf8().constData());
+}
+
+int QGitRevWalk::pushHead() const
+{
+    return git_revwalk_push_head(m_revWalk);
+}
+
+int QGitRevWalk::pushRef(const QString &ref) const
+{
+    return git_revwalk_push_ref(m_revWalk, ref.toUtf8().constData());
+}
+
 int QGitRevWalk::hide(const QGitOId& oid) const
 {
     return git_revwalk_hide(m_revWalk, oid.constData());
+}
+
+int QGitRevWalk::hideGlob(const QString &glob) const
+{
+    return git_revwalk_hide_glob(m_revWalk, glob.toUtf8().constData());
+}
+
+int QGitRevWalk::hideHead() const
+{
+    return git_revwalk_hide_head(m_revWalk);
+}
+
+int QGitRevWalk::hideRef(const QString &ref) const
+{
+    return git_revwalk_hide_ref(m_revWalk, ref.toUtf8().constData());
 }
 
 QGitOId QGitRevWalk::next() const
