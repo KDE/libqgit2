@@ -82,9 +82,6 @@ include_directories(src ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} 
 # Collect sourcefiles
 FILE(GLOB SRC src/*.cpp)
 
-# MOC
-QT4_WRAP_CPP(MOC_SRC src/qgitindexmodel.h)
-
 message(STATUS)
 message(STATUS "========== LIBQGIT2 Build Information ==========")
 message(STATUS "Build Version: ${LIBQGIT2_VERSION_STRING} (${LIBQGIT2_VERSION_NAME})")
@@ -96,7 +93,7 @@ message(STATUS "To build and install LIBQGIT2, run \"make\" and \"make install\"
 message(STATUS)
 
 # Compile and link libqgit2
-ADD_LIBRARY(qgit2 ${SRC} ${MOC_SRC})
+ADD_LIBRARY(qgit2 ${SRC})
 TARGET_LINK_LIBRARIES(qgit2 ${GIT2_LIBRARIES} ${QT_QTCORE_LIBRARY})
 SET_TARGET_PROPERTIES(qgit2 PROPERTIES VERSION ${LIBQGIT2_VERSION_STRING})
 SET_TARGET_PROPERTIES(qgit2 PROPERTIES SOVERSION ${LIBQGIT2_VERSION_MAJOR})
