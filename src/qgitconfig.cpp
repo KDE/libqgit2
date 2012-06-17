@@ -25,8 +25,8 @@
 #include <git2/errors.h>
 #include <git2/config.h>
 
-#include <src/qgitexception.h>
-#include <src/qgitrepository.h>
+#include <qgitexception.h>
+#include <qgitrepository.h>
 
 namespace LibQGit2
 {
