@@ -1,0 +1,1 @@
+#include "../../src/qgitconfig.h"

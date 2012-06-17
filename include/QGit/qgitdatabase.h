@@ -1,0 +1,1 @@
+#include "../../src/qgitdatabase.h"
