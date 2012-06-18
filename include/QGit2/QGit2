@@ -1,0 +1,24 @@
+#ifndef QGIT2_H
+#define QGIT2_H
+
+#include "qgitblob.h"
+#include "qgitcommit.h"
+#include "qgitconfig.h"
+#include "qgitdatabase.h"
+#include "qgitdatabasebackend.h"
+#include "qgiterror.h"
+#include "qgitexception.h"
+#include "qgitindex.h"
+#include "qgitindexentry.h"
+#include "qgitobject.h"
+#include "qgitoid.h"
+#include "qgitref.h"
+#include "qgitrepository.h"
+#include "qgitrevwalk.h"
+#include "qgitsignature.h"
+#include "qgitsubmodule.h"
+#include "qgittag.h"
+#include "qgittree.h"
+#include "qgittreeentry.h"
+
+#endif

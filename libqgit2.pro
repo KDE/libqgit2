@@ -5,11 +5,11 @@
 TEMPLATE = lib
 TARGET = qgit2
 
-DEPENDPATH += . src \
+DEPENDPATH += src \
     libgit2/src libgit2/include libgit2/include/git2 \
     libgit2/deps/http-parser
 
-INCLUDEPATH += . src \
+INCLUDEPATH += . src include \
     libgit2/include libgit2/src \
     libgit2/deps/http-parser
 
@@ -18,26 +18,26 @@ CONFIG += staticlib
 # Input
 HEADERS += \
     libqgit2_export.h \
-    qgitblob.h \
-    qgitcommit.h \
-    qgitdatabase.h \
-    qgitdatabasebackend.h \
-    qgitindex.h \
-    qgitindexentry.h \
-    qgitobject.h \
-    qgitoid.h \
-    qgitref.h \
-    qgitrepository.h \
-    qgitrevwalk.h \
-    qgitsignature.h \
-    qgittag.h \
-    qgittree.h \
-    qgittreeentry.h \
-    qgitexception.h \
-    qgit2.h \
-    qgitconfig.h \
-    qgitsubmodule.h \
-    qgiterror.h
+    qgit2/qgitblob.h \
+    qgit2/qgitcommit.h \
+    qgit2/qgitdatabase.h \
+    qgit2/qgitdatabasebackend.h \
+    qgit2/qgitindex.h \
+    qgit2/qgitindexentry.h \
+    qgit2/qgitobject.h \
+    qgit2/qgitoid.h \
+    qgit2/qgitref.h \
+    qgit2/qgitrepository.h \
+    qgit2/qgitrevwalk.h \
+    qgit2/qgitsignature.h \
+    qgit2/qgittag.h \
+    qgit2/qgittree.h \
+    qgit2/qgittreeentry.h \
+    qgit2/qgitexception.h \
+    qgit2/qgit2.h \
+    qgit2/qgitconfig.h \
+    qgit2/qgitsubmodule.h \
+    qgit2/qgiterror.h
 
 SOURCES += \
     qgitblob.cpp \

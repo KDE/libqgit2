@@ -17,28 +17,37 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef INCLUDE_QGIT2_H
-#define INCLUDE_QGIT2_H
+#ifndef LIBQGIT2_EXCEPTION_H
+#define LIBQGIT2_EXCEPTION_H
 
-#define LIBQGIT2_VERSION "0.1.0"
-#define LIBQGIT2_VER_MAJOR 0
-#define LIBQGIT2_VER_MINOR 1
-#define LIBQGIT2_VER_REVISION 0
+#include "libqgit2_export.h"
 
-#include "src/qgitoid.h"
-#include "src/qgitsignature.h"
-#include "src/qgitdatabase.h"
+namespace LibQGit2
+{
+    /**
+     * @brief Exception class to throw Git exceptions.
+     *
+     * @ingroup LibQGit2
+     * @{
+     */
+    class LIBQGIT2_EXPORT QGitException : public std::exception
+    {
+        public:
+            QGitException(const QByteArray &message);
 
-#include "src/qgitrepository.h"
-#include "src/qgitrevwalk.h"
-#include "src/qgitrefs.h"
+            ~QGitException() throw();
 
-#include "src/qgitobject.h"
-#include "src/qgitblob.h"
-#include "src/qgitcommit.h"
-#include "src/qgittag.h"
-#include "src/qgittree.h"
+            const char *what() const throw();
 
-#include "src/qgitindex.h"
+            QByteArray message() const throw();
 
-#endif
+        private:
+            QByteArray m;
+    };
+
+    int qGitThrow(int ret);
+
+    /**@}*/
+}
+
+#endif // LIBQGIT2_EXCEPTION_H
