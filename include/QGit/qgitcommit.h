@@ -1,1 +1,0 @@
-#include "../../src/qgitcommit.h"
