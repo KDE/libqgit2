@@ -69,6 +69,8 @@ QGitSubmodule::QGitSubmodule(const QGitRepository &owner, git_submodule *submodu
     : d(submodule)
     , _owner(owner)
 {
+    if ( !isNull() )
+        open();
 }
 
 bool QGitSubmodule::isNull() const
