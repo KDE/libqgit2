@@ -41,6 +41,7 @@ namespace LibQGit2
     public:
         static const git_error *last();
         static QByteArray message(const git_error *err);
+        static QString lastMessage();
     };
 
     /**@}*/

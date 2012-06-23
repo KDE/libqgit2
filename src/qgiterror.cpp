@@ -37,4 +37,9 @@ QByteArray LibQGit2::QGitError::message(const git_error *err)
     return QByteArray(err->message);
 }
 
+QString QGitError::lastMessage()
+{
+    return message(last());
+}
+
 }
