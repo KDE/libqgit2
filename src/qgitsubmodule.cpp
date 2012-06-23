@@ -137,18 +137,12 @@ bool QGitSubmodule::open()
     if ( _owner.isBare() || _owner.isEmpty() )
         return false;
 
-    bool result = true;
-    try
-    {
-        const QString absPath = QString("%1/%2").arg(_owner.workDirPath()).arg(path());
-        _repo.discoverAndOpen(absPath, false, QStringList() << absPath);
-    }
-    catch (QGitException &)
-    {
-        result = false;
-    }
+    // already open?
+    if (!_repo.isNull())
+        return true;
 
-    return result;
+    const QString absPath = QString("%1/%2").arg(_owner.workDirPath()).arg(path());
+    return _repo.discoverAndOpen(absPath, false, QStringList() << absPath);
 }
 
 } // namespace LibQGit2

@@ -72,33 +72,42 @@ QString QGitRepository::discover(const QString& startPath, bool acrossFs, const 
 {
     QByteArray repoPath(GIT_PATH_MAX, Qt::Uninitialized);
     QByteArray joinedCeilingDirs = QFile::encodeName(ceilingDirs.join(QChar(GIT_PATH_LIST_SEPARATOR)));
-    qGitThrow(git_repository_discover(repoPath.data(), repoPath.length(),
-                                      QFile::encodeName(startPath),
-                                      acrossFs, joinedCeilingDirs));
+
+    git_repository_discover(repoPath.data(), repoPath.length(), QFile::encodeName(startPath), acrossFs, joinedCeilingDirs);
+
     return QFile::decodeName(repoPath);
 }
 
-void QGitRepository::init(const QString& path, bool isBare)
+bool QGitRepository::init(const QString& path, bool isBare)
 {
     d.clear();
     git_repository *repo = 0;
-    qGitThrow(git_repository_init(&repo, QFile::encodeName(path), isBare));
+    int err = git_repository_init(&repo, QFile::encodeName(path), isBare);
     d = ptr_type(repo, git_repository_free);
+
+    return err == GIT_OK;
 }
 
-void QGitRepository::open(const QString& path)
+bool QGitRepository::open(const QString& path)
 {
     d.clear();
+
     git_repository *repo = 0;
-    qGitThrow(git_repository_open(&repo, QFile::encodeName(path)));
+    int ret = git_repository_open(&repo, QFile::encodeName(path));
     d = ptr_type(repo, git_repository_free);
+
+    return ret == GIT_OK;
 }
 
-void QGitRepository::discoverAndOpen(const QString &startPath,
+bool QGitRepository::discoverAndOpen(const QString &startPath,
                                      bool acrossFs,
                                      const QStringList &ceilingDirs)
 {
-    open(discover(startPath, acrossFs, ceilingDirs));
+    QString path( discover(startPath, acrossFs, ceilingDirs) );
+    if (path.isEmpty())
+        return false;
+
+    return open(path);
 }
 
 QGitRef QGitRepository::head() const

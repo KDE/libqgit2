@@ -87,12 +87,12 @@ namespace LibQGit2
         /**
           * @return the submodule's owner repository
           */
-        const QGitRepository & owner() const;
+        const QGitRepository &owner() const;
 
         /**
           * @return the submodule's local repository; may be empty, when submodule not initialized
           */
-        const QGitRepository & repository() const;
+        const QGitRepository &repository() const;
 
         /**
           * @return the update enum

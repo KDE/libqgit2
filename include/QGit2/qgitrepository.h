@@ -97,8 +97,7 @@ namespace LibQGit2
              * paths are reached. Note that the lookup always performs on startPath no matter if
              * startPath appears in ceilingDirs.
              *
-             * @return The path of the found repository
-             * @throws QGitException
+             * @return the path of the found repository or an empty QString
              */
             static QString discover(const QString& startPath,
                                     bool acrossFs = false,
@@ -112,9 +111,9 @@ namespace LibQGit2
              * at the pointed path. If false, provided path will be considered as the working
              * directory into which the .git directory will be created.
              *
-             * @throws QGitException
+             * @return true on success; false otherwise
              */
-            void init(const QString& path, bool isBare);
+            bool init(const QString& path, bool isBare);
 
             /**
              * Open a git repository.
@@ -136,18 +135,18 @@ namespace LibQGit2
              * or bare repository or fail is 'path' is neither.
              *
              * @param path the path to the repository
-             * @throws QGitException
+             * @return true on success; false otherwise
              */
-            void open(const QString& path);
+            bool open(const QString& path);
 
             /**
              * Convenience function for finding and opening a git repository.
              *
              * Calls discover() with the given arguments, and passes the result to open().
              *
-             * @throws QGitException
+             * @return true on success; false otherwise
              */
-            void discoverAndOpen(const QString &startPath,
+            bool discoverAndOpen(const QString &startPath,
                                  bool acrossFs = false,
                                  const QStringList &ceilingDirs = QStringList());
 
