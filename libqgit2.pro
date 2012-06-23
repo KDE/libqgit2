@@ -18,26 +18,26 @@ CONFIG += staticlib
 # Input
 HEADERS += \
     libqgit2_export.h \
-    qgit2/qgitblob.h \
-    qgit2/qgitcommit.h \
-    qgit2/qgitdatabase.h \
-    qgit2/qgitdatabasebackend.h \
-    qgit2/qgitindex.h \
-    qgit2/qgitindexentry.h \
-    qgit2/qgitobject.h \
-    qgit2/qgitoid.h \
-    qgit2/qgitref.h \
-    qgit2/qgitrepository.h \
-    qgit2/qgitrevwalk.h \
-    qgit2/qgitsignature.h \
-    qgit2/qgittag.h \
-    qgit2/qgittree.h \
-    qgit2/qgittreeentry.h \
-    qgit2/qgitexception.h \
-    qgit2/qgit2.h \
-    qgit2/qgitconfig.h \
-    qgit2/qgitsubmodule.h \
-    qgit2/qgiterror.h
+    QGit2/QGit2 \
+    QGit2/qgitblob.h \
+    QGit2/qgitcommit.h \
+    QGit2/qgitdatabase.h \
+    QGit2/qgitdatabasebackend.h \
+    QGit2/qgitindex.h \
+    QGit2/qgitindexentry.h \
+    QGit2/qgitobject.h \
+    QGit2/qgitoid.h \
+    QGit2/qgitref.h \
+    QGit2/qgitrepository.h \
+    QGit2/qgitrevwalk.h \
+    QGit2/qgitsignature.h \
+    QGit2/qgittag.h \
+    QGit2/qgittree.h \
+    QGit2/qgittreeentry.h \
+    QGit2/qgitexception.h \
+    QGit2/qgitconfig.h \
+    QGit2/qgitsubmodule.h \
+    QGit2/qgiterror.h
 
 SOURCES += \
     qgitblob.cpp \
