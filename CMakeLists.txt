@@ -75,7 +75,9 @@ IF (NOT CMAKE_BUILD_TYPE)
 ENDIF ()
 
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(GIT2 REQUIRED libgit2)
+add_subdirectory(libgit2)
+
+set(GIT2_INCLUDEDIR libgit2/include)
 
 include_directories(src ${PROJECT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${GIT2_INCLUDEDIR} ${QT_INCLUDES})
 
