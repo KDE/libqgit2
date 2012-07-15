@@ -36,7 +36,7 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_OID_EXPORT QGitOId
+    class LIBQGIT2_EXPORT QGitOId
     {
         public:
 

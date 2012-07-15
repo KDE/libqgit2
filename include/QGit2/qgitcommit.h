@@ -40,7 +40,7 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_COMMIT_EXPORT QGitCommit : public QGitObject
+    class LIBQGIT2_EXPORT QGitCommit : public QGitObject
     {
         public:
 

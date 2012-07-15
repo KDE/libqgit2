@@ -37,7 +37,7 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_TREEENTRY_EXPORT QGitTreeEntry
+    class LIBQGIT2_EXPORT QGitTreeEntry
     {
         public:
             explicit QGitTreeEntry(const git_tree_entry *treeEntry = 0);

@@ -41,7 +41,7 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_SIGNATURE_EXPORT QGitSignatureBuilder
+    class LIBQGIT2_EXPORT QGitSignatureBuilder
     {
         public:
 
@@ -113,7 +113,7 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_SIGNATURE_EXPORT QGitSignature
+    class LIBQGIT2_EXPORT QGitSignature
     {
         public:
 

@@ -74,12 +74,12 @@ IF (NOT CMAKE_BUILD_TYPE)
     SET(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel." FORCE)
 ENDIF ()
 
-find_package(PkgConfig REQUIRED)
 add_subdirectory(libgit2)
 
 set(GIT2_INCLUDEDIR libgit2/include)
+set(QGIT2_INCLUDEDIR include)
 
-include_directories(src ${PROJECT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${GIT2_INCLUDEDIR} ${QT_INCLUDES})
+include_directories(src ${CMAKE_CURRENT_SOURCE_DIR} ${QGIT2_INCLUDEDIR} ${GIT2_INCLUDEDIR} ${QT_INCLUDES})
 
 # Collect sourcefiles
 FILE(GLOB SRC src/*.cpp)
@@ -96,7 +96,7 @@ message(STATUS)
 
 # Compile and link libqgit2
 ADD_LIBRARY(qgit2 ${SRC})
-TARGET_LINK_LIBRARIES(qgit2 ${GIT2_LIBRARIES} ${QT_QTCORE_LIBRARY})
+TARGET_LINK_LIBRARIES(qgit2 git2 ${QT_QTCORE_LIBRARY})
 SET_TARGET_PROPERTIES(qgit2 PROPERTIES VERSION ${LIBQGIT2_VERSION_STRING})
 SET_TARGET_PROPERTIES(qgit2 PROPERTIES SOVERSION ${LIBQGIT2_VERSION_MAJOR})
 

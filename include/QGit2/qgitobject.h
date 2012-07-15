@@ -20,7 +20,7 @@
 #ifndef LIBQGIT2_OBJECT_H
 #define LIBQGIT2_OBJECT_H
 
-#include "libqgit2_export.h"
+#include <libqgit2_export.h>
 
 #include <QtCore/QString>
 #include <QtCore/QDateTime>
@@ -43,7 +43,7 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_OBJECT_EXPORT QGitObject
+    class LIBQGIT2_EXPORT QGitObject
     {
         public:
 

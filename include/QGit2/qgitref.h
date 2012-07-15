@@ -38,7 +38,7 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_REFS_EXPORT QGitRef
+    class LIBQGIT2_EXPORT QGitRef
     {
         public:
 

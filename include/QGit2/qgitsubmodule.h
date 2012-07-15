@@ -22,7 +22,7 @@
 
 #include <libqgit2_export.h>
 
-#include <src/qgitrepository.h>
+#include <QGit2/QGitRepository>
 
 #include <git2/submodule.h>
 

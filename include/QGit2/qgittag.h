@@ -36,7 +36,7 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_TAG_EXPORT QGitTag : public QGitObject
+    class LIBQGIT2_EXPORT QGitTag : public QGitObject
     {
         public:
 

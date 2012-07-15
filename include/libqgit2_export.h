@@ -1,6 +1,6 @@
 /******************************************************************************
  * This file is part of the Gluon Development Platform
- * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2011 Laszlo Papp <djszapi@archlinux.us>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,34 +17,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef QGITERROR_H
-#define QGITERROR_H
+#ifndef LIBQGIT2_EXPORT_H
+#define LIBQGIT2_EXPORT_H
 
-#include <libqgit2_export.h>
+#include <QtCore/qglobal.h>
+#include <QtCore/QObject>
 
-#include <git2/errors.h>
+/** @defgroup LibQGit2 The Qt Library for Git revision control featuring libgit2
+ * Qt wrapper classes for the LibGit2 library.
+ */
 
+#ifndef LIBQGIT2_EXPORT
+#if defined(MAKE_LIBQGIT2_LIB)
+#define LIBQGIT2_EXPORT Q_DECL_EXPORT
+#else
+#define LIBQGIT2_EXPORT Q_DECL_IMPORT
+#endif
+#endif // LIBQGIT2_EXPORT
 
-class QByteArray;
+#ifndef LIBQGIT2_EXPORT_DEPRECATED
+#define LIBQGIT2_EXPORT_DEPRECATED Q_DECL_DEPRECATED LIBQGIT2_EXPORT
+#endif
 
-namespace LibQGit2
-{
-
-    /**
-     * @brief Error class to handle libgit2 errors.
-     *
-     * @ingroup LibQGit2
-     * @{
-     */
-    class LIBQGIT2_EXPORT QGitError
-    {
-    public:
-        static const git_error *last();
-        static QByteArray message(const git_error *err);
-        static QString lastMessage();
-    };
-
-    /**@}*/
-}
-
-#endif // QGITERROR_H
+#endif // LIBQGIT2_EXPORT_H

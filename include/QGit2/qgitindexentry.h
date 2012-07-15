@@ -35,7 +35,7 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_INDEX_EXPORT QGitIndexEntry
+    class LIBQGIT2_EXPORT QGitIndexEntry
     {
         public:
             /**

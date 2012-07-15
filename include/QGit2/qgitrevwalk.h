@@ -37,7 +37,7 @@ namespace LibQGit2
       * @ingroup LibQGit2
       * @{
       */
-    class LIBQGIT2_REVWALK_EXPORT QGitRevWalk
+    class LIBQGIT2_EXPORT QGitRevWalk
     {
         public:
             /**
