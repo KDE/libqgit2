@@ -110,11 +110,12 @@ namespace LibQGit2
     /**
      * Compare two QGitOIds.
      */
-    bool operator ==(const QGitOId &oid1, const QGitOId &oid2);
+    LIBQGIT2_EXPORT bool operator ==(const QGitOId &oid1, const QGitOId &oid2);
+
     /**
      * Compare two QGitOIds.
      */
-    bool operator !=(const QGitOId &oid1, const QGitOId &oid2);
+    LIBQGIT2_EXPORT bool operator !=(const QGitOId &oid1, const QGitOId &oid2);
 
     /**@}*/
 }
