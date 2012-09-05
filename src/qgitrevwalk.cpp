@@ -90,7 +90,7 @@ int QGitRevWalk::hideRef(const QString &ref) const
 
 QGitOId QGitRevWalk::next() const
 {
-    git_oid *oid;
+    git_oid *oid = NULL;
     git_revwalk_next(oid, m_revWalk);
     return QGitOId(oid);
 }
