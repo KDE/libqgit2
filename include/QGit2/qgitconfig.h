@@ -50,8 +50,8 @@ namespace LibQGit2
         virtual ~QGitConfig();
 
         /**
-          * Creates a new configuration object and adds the global Git configuration when found.
-          * Otherwise an empty configuration object is created.
+          * Creates a new configuration object, that is initialized with
+          * the global and system Git configuration files.
           *
           * @return the new instance
           */

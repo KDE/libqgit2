@@ -45,7 +45,7 @@ struct QGitPrivateSubmoduleLookupInfo
 /**
   * Internal callback for git_submodule_foreach to retreive a list of submodules.
   */
-int addToSubmoduleList(const char *name, void *payload)
+int addToSubmoduleList(git_submodule *sm, const char *name, void *payload)
 {
     Q_ASSERT(payload != 0);
 
@@ -54,7 +54,7 @@ int addToSubmoduleList(const char *name, void *payload)
     git_submodule *submodule;
     int err = git_submodule_lookup(&submodule, submoduleInfo->repo.data(), name);
     if ( err == GIT_OK )
-        submoduleInfo->submodules.append(LibQGit2::QGitSubmodule(submoduleInfo->repo, submodule));
+        submoduleInfo->submodules.append(LibQGit2::QGitSubmodule(submodule));
 
     return err;
 }
@@ -65,9 +65,8 @@ int addToSubmoduleList(const char *name, void *payload)
 namespace LibQGit2
 {
 
-QGitSubmodule::QGitSubmodule(const QGitRepository &owner, git_submodule *submodule)
+QGitSubmodule::QGitSubmodule(git_submodule *submodule)
     : d(submodule)
-    , _owner(owner)
 {
     if ( !isNull() )
         open();
@@ -80,31 +79,27 @@ bool QGitSubmodule::isNull() const
 
 QString QGitSubmodule::name() const
 {
-    return QString::fromUtf8(d->name);
+    return QString::fromUtf8( git_submodule_name(d) );
 }
 
 QString QGitSubmodule::path() const
 {
-    QString tmpPath = QString::fromUtf8(d->path);
-    if (tmpPath.isEmpty())
-        return name();
-
-    return tmpPath;
+    return QString::fromUtf8( git_submodule_path(d) );
 }
 
 QUrl QGitSubmodule::url() const
 {
-    return QUrl::fromEncoded(d->url);
+    return QUrl::fromEncoded( git_submodule_url(d) );
 }
 
 QGitOId QGitSubmodule::oid() const
 {
-    return QGitOId(&d->oid);
+    return QGitOId( git_submodule_head_oid(d) );
 }
 
-const QGitRepository &QGitSubmodule::owner() const
+QGitRepository QGitSubmodule::owner() const
 {
-    return _owner;
+    return QGitRepository( git_submodule_owner(d) );
 }
 
 const QGitRepository &QGitSubmodule::repository() const
@@ -112,19 +107,34 @@ const QGitRepository &QGitSubmodule::repository() const
     return _repo;
 }
 
-git_submodule_update_t QGitSubmodule::update() const
-{
-    return d->update;
-}
-
 bool QGitSubmodule::fetchRecurseSubmodules() const
 {
-    return d->fetch_recurse == 1;
+    return git_submodule_fetch_recurse_submodules(d);
+}
+
+void QGitSubmodule::setFetchRecurseSubmodules(bool yes)
+{
+    git_submodule_set_fetch_recurse_submodules(d, yes);
+}
+
+git_submodule_update_t QGitSubmodule::update() const
+{
+    return git_submodule_update(d);
+}
+
+git_submodule_update_t QGitSubmodule::setUpdate(git_submodule_update_t updateStrategy)
+{
+    return git_submodule_set_update(d, updateStrategy);
 }
 
 git_submodule_ignore_t QGitSubmodule::ignore() const
 {
-    return d->ignore;
+    return git_submodule_ignore(d);
+}
+
+git_submodule_ignore_t QGitSubmodule::setIgnore(git_submodule_ignore_t ignoreStrategy)
+{
+    return git_submodule_set_ignore(d, ignoreStrategy);
 }
 
 QGitSubmoduleList QGitSubmodule::list(const QGitRepository &repo)
@@ -136,15 +146,17 @@ QGitSubmoduleList QGitSubmodule::list(const QGitRepository &repo)
 
 bool QGitSubmodule::open()
 {
-    if ( _owner.isBare() || _owner.isEmpty() )
-        return false;
-
     // already open?
     if (!_repo.isNull())
         return true;
 
-    const QString absPath = QString("%1/%2").arg(_owner.workDirPath()).arg(path());
-    return _repo.discoverAndOpen(absPath, false, QStringList() << absPath);
+    git_repository *submodule_repo = 0;
+    int ret = git_submodule_open(&submodule_repo, d);
+    if (ret != GIT_OK)
+        return false;
+
+    _repo = QGitRepository(submodule_repo, true);
+    return true;
 }
 
 } // namespace LibQGit2

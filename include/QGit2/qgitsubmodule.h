@@ -24,9 +24,9 @@
 
 #include <QGit2/QGitRepository>
 
-#include <git2/submodule.h>
-
 #include <QtCore/QList>
+
+#include <git2/submodule.h>
 
 class QString;
 class QUrl;
@@ -49,7 +49,7 @@ namespace LibQGit2
     class LIBQGIT2_EXPORT QGitSubmodule
     {
     public:
-        explicit QGitSubmodule(const QGitRepository &owner = QGitRepository(), git_submodule *submodule = 0);
+        explicit QGitSubmodule(git_submodule *submodule = 0);
 
         /**
           * Checks the pointer to the assigned submodule.
@@ -78,7 +78,7 @@ namespace LibQGit2
         QGitOId oid() const;
 
         /**
-          * Opens the local repository, if it exists.
+          * @brief Opens the local repository, if it exists.
           *
           * @return true on success; false on failure
           */
@@ -87,7 +87,7 @@ namespace LibQGit2
         /**
           * @return the submodule's owner repository
           */
-        const QGitRepository &owner() const;
+        QGitRepository owner() const;
 
         /**
           * @return the submodule's local repository; may be empty, when submodule not initialized
@@ -95,19 +95,38 @@ namespace LibQGit2
         const QGitRepository &repository() const;
 
         /**
+         * @brief The submodule will recurse into nested submodules, when set to true.
+         * @return true = recurse into submodules on fetch
+         */
+        bool fetchRecurseSubmodules() const;
+
+        /**
+         * @brief The submodule will recurse into nested submodules, when set to true.
+         * @param true = recurse into submodules on fetch
+         */
+        void setFetchRecurseSubmodules(bool yes);
+
+        /**
           * @return the update enum
           */
         git_submodule_update_t update() const;
 
         /**
-          * @return fetch submodules recursively
-          */
-        bool fetchRecurseSubmodules() const;
+         * @brief setUpdate
+         * @param updateStrategy
+         */
+        git_submodule_update_t setUpdate(git_submodule_update_t updateStrategy);
 
         /**
           * @return the ignore flags
           */
         git_submodule_ignore_t ignore() const;
+
+        /**
+         * @brief Sets the ignore strategy.
+         * @param ignoreStrategy
+         */
+        git_submodule_ignore_t setIgnore(git_submodule_ignore_t ignoreStrategy);
 
     public:
         /**
@@ -118,7 +137,6 @@ namespace LibQGit2
     private:
         git_submodule *     d;
 
-        QGitRepository      _owner; //!< the submodules owner repository
         QGitRepository      _repo;  //!< the submodules repository
 
     };

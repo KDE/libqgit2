@@ -22,7 +22,7 @@
 
 #include "libqgit2_export.h"
 
-struct git_tree_entry;
+#include <git2/tree.h>
 
 namespace LibQGit2
 {
@@ -54,7 +54,7 @@ namespace LibQGit2
              * Get the UNIX file attributes of a tree entry
              * @return attributes as an integer
              */
-            unsigned int attributes() const;
+            git_filemode_t attributes() const;
 
             /**
              * Get the filename of a tree entry

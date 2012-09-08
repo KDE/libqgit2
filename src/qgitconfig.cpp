@@ -51,7 +51,7 @@ QGitConfig::~QGitConfig()
 QGitConfig QGitConfig::fromGlobalConfig()
 {
     git_config *    cfg;
-    if ( git_config_open_global(&cfg) == GIT_OK )
+    if ( GIT_OK == git_config_open_default(&cfg) )
         return QGitConfig(cfg);
 
     return QGitConfig();

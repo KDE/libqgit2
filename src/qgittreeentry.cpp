@@ -23,8 +23,6 @@
 
 #include <QtCore/QFile>
 
-#include <git2/tree.h>
-
 namespace LibQGit2
 {
 
@@ -47,9 +45,9 @@ bool QGitTreeEntry::isNull() const
     return constData() == 0;
 }
 
-unsigned int QGitTreeEntry::attributes() const
+git_filemode_t QGitTreeEntry::attributes() const
 {
-    return git_tree_entry_attributes(d);
+    return git_tree_entry_filemode(d);
 }
 
 const QString QGitTreeEntry::name() const
