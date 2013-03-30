@@ -65,7 +65,7 @@ QGitOId QGitTreeEntry::oid() const
 QGitObject QGitTreeEntry::toObject(const QGitRepository& repo)
 {
     git_object *obj;
-    qGitThrow(git_tree_entry_2object(&obj, repo.data(), d));
+    qGitThrow(git_tree_entry_to_object(&obj, repo.data(), d));
     return QGitObject(obj);
 }
 

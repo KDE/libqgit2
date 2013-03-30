@@ -279,7 +279,7 @@ QStringList QGitRepository::listReferences() const
 {
     QStringList list;
     git_strarray refs;
-    qGitThrow(git_reference_listall( &refs, data(), GIT_REF_LISTALL));
+    qGitThrow(git_reference_list( &refs, data(), GIT_REF_LISTALL));
     for (size_t i = 0; i < refs.count; ++i)
     {
         list << QString(refs.strings[i]);

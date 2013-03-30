@@ -70,7 +70,7 @@ bool QGitRevWalk::next(QGitCommit & commit)
     QGitOId oid;
     int err = git_revwalk_next(oid.data(), m_revWalk);
 
-    if ( (err != GIT_SUCCESS) || !oid.isValid() )
+    if ( (err != GIT_OK) || !oid.isValid() )
         commit = QGitCommit();
     else
         commit = (repository().lookupCommit(oid));
