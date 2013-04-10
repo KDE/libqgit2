@@ -24,3 +24,6 @@ moc_*.cpp
 
 #Mac
 .DS_Store
+
+#Qt Creator
+/*.pro.user
