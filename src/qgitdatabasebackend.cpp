@@ -30,7 +30,7 @@ QGitDatabaseBackend::QGitDatabaseBackend()
 {
 }
 
-QGitDatabaseBackend::QGitDatabaseBackend( const QGitDatabaseBackend& other )
+QGitDatabaseBackend::QGitDatabaseBackend(const QGitDatabaseBackend&)
 {
 }
 

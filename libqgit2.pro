@@ -61,9 +61,7 @@ SOURCES += \
 include(libgit2.pri)
 include(http-parser.pri)
 
-#win32: {
-    DEFINES += STDC
-    INCLUDEPATH += libgit2/deps/zlib
-    DEPENDPATH += libgit2/deps/zlib
-    include(zlib.pri)
-#}
+DEFINES += STDC _GNU_SOURCE
+INCLUDEPATH += libgit2/deps/zlib
+DEPENDPATH += libgit2/deps/zlib
+include(zlib.pri)
