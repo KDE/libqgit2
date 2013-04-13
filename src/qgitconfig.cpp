@@ -81,7 +81,7 @@ bool QGitConfig::append(const QString &path, int priority)
 QVariant QGitConfig::value(const QString &key, const QVariant &defaultValue) const
 {
     const char * result = 0;
-    if (git_config_get_string(&result == 0, d, key.toUtf8().constData()))
+    if (git_config_get_string(&result, d, key.toUtf8().constData()) == GIT_OK)
         return QString::fromUtf8(result);
 
     return defaultValue;

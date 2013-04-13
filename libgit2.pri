@@ -14,7 +14,6 @@ SOURCES += \
     fileops.c \
     global.c \
     hash.c \
-    hashtable.c \
     ignore.c \
     index.c \
     indexer.c \
