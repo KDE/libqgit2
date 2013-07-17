@@ -27,8 +27,6 @@
 
 #include <QtCore/QString>
 
-struct git_odb;
-
 namespace LibQGit2
 {
     /**

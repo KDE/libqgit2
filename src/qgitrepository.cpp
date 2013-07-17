@@ -26,14 +26,6 @@
 #include <qgitsignature.h>
 #include <qgitexception.h>
 
-#include <git2/errors.h>
-#include <git2/repository.h>
-#include <git2/refs.h>
-#include <git2/commit.h>
-#include <git2/tag.h>
-#include <git2/tree.h>
-#include <git2/blob.h>
-
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>

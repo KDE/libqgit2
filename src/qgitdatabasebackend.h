@@ -20,11 +20,11 @@
 #ifndef LIBQGIT2_DATABASEBACKEND_H
 #define LIBQGIT2_DATABASEBACKEND_H
 
-#include "libqgit2_export.h"
-
 #include <QtCore/QString>
 
-struct git_odb_backend;
+#include "git2.h"
+
+#include "libqgit2_export.h"
 
 namespace LibQGit2
 {
@@ -45,9 +45,9 @@ namespace LibQGit2
             ~QGitDatabaseBackend();
 
         public:
-            int pack(const QString& objectsDir);
-
-            int loose(const QString& objectsDir);
+//             int pack(const QString& objectsDir);
+// 
+//             int loose(const QString& objectsDir);
 
             git_odb_backend* data() const;
             const git_odb_backend* constData() const;

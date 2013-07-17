@@ -20,12 +20,11 @@
 #ifndef QGITCONFIG_H
 #define QGITCONFIG_H
 
-#include <git2/config.h>
-#include <libqgit2_export.h>
-
 #include <QtCore/QVariant>
 
-struct git_config;
+#include "git2.h"
+
+#include <libqgit2_export.h>
 
 namespace LibQGit2
 {

@@ -24,8 +24,6 @@
 
 #include <QtCore/QString>
 
-struct git_tree;
-
 namespace LibQGit2
 {
     class QGitRepository;

@@ -20,13 +20,13 @@
 #ifndef LIBQGIT2_OBJECT_H
 #define LIBQGIT2_OBJECT_H
 
-#include "libqgit2_export.h"
-
 #include <QtCore/QString>
 #include <QtCore/QDateTime>
 #include <QtCore/QSharedPointer>
 
-#include <git2/types.h>
+#include "libqgit2_export.h"
+
+#include "git2.h"
 
 namespace LibQGit2
 {

@@ -30,8 +30,6 @@
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStringList>
 
-struct git_repository;
-
 namespace LibQGit2
 {
     class QGitCommit;

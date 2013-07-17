@@ -24,8 +24,6 @@
 
 #include <QtCore/QDateTime>
 
-struct git_commit;
-
 namespace LibQGit2
 {
     class QGitOId;

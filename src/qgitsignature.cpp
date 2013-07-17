@@ -20,8 +20,6 @@
 #include "qgitsignature.h"
 #include "qgitexception.h"
 
-#include <git2/signature.h>
-
 namespace LibQGit2
 {
 

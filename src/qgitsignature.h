@@ -20,12 +20,12 @@
 #ifndef LIBQGIT2_SIGNATURE_H
 #define LIBQGIT2_SIGNATURE_H
 
-#include "libqgit2_export.h"
-
 #include <QtCore/QString>
 #include <QtCore/QDateTime>
 
-struct git_signature;
+#include "git2.h"
+
+#include "libqgit2_export.h"
 
 namespace LibQGit2
 {
