@@ -20,11 +20,11 @@
 #ifndef LIBQGIT2_REF_H
 #define LIBQGIT2_REF_H
 
-#include "libqgit2_export.h"
-
 #include <QtCore/QString>
 
-struct git_reference;
+#include "git2.h"
+
+#include "libqgit2_export.h"
 
 namespace LibQGit2
 {

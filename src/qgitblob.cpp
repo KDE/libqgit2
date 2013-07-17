@@ -23,8 +23,6 @@
 
 #include <QtCore/QFile>
 
-#include <git2/blob.h>
-
 namespace LibQGit2
 {
 

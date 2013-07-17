@@ -22,9 +22,6 @@
 #include "qgitcommit.h"
 #include "qgitrepository.h"
 
-#include <git2/revwalk.h>
-#include <git2/errors.h>
-
 namespace LibQGit2
 {
 

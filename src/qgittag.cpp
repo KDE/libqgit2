@@ -22,8 +22,6 @@
 #include "qgitsignature.h"
 #include "qgitexception.h"
 
-#include <git2/tag.h>
-
 namespace LibQGit2
 {
 

@@ -20,12 +20,12 @@
 #ifndef LIBQGIT2_OID_H
 #define LIBQGIT2_OID_H
 
-#include "libqgit2_export.h"
-
 #include <QtCore/QString>
 #include <QtCore/QDateTime>
 
-typedef struct _git_oid git_oid;
+#include "git2.h"
+
+#include "libqgit2_export.h"
 
 namespace LibQGit2
 {

@@ -26,8 +26,6 @@
 #include "qgittree.h"
 #include "qgitblob.h"
 
-#include <git2/object.h>
-
 namespace LibQGit2
 {
 

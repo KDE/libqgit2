@@ -20,8 +20,6 @@
 #include "qgitoid.h"
 #include "qgitexception.h"
 
-#include <git2/oid.h>
-
 namespace LibQGit2
 {
 

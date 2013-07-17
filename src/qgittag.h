@@ -22,8 +22,6 @@
 
 #include "qgitobject.h"
 
-struct git_tag;
-
 namespace LibQGit2
 {
     class QGitOId;

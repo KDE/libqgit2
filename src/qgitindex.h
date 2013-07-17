@@ -20,11 +20,12 @@
 #ifndef LIBQGIT2_INDEX_H
 #define LIBQGIT2_INDEX_H
 
-#include "libqgit2_export.h"
 
 #include <QtCore/QSharedPointer>
 
-struct git_index;
+#include "git2.h"
+
+#include "libqgit2_export.h"
 
 namespace LibQGit2
 {

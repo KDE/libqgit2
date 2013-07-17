@@ -22,8 +22,6 @@
 
 #include <QtCore/QFile>
 
-#include <git2/index.h>
-
 namespace LibQGit2
 {
 

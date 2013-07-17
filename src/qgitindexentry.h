@@ -20,9 +20,9 @@
 #ifndef LIBQGIT2_INDEX_ENTRY_H
 #define LIBQGIT2_INDEX_ENTRY_H
 
-#include "libqgit2_export.h"
+#include "git2.h"
 
-struct git_index_entry;
+#include "libqgit2_export.h"
 
 namespace LibQGit2
 {

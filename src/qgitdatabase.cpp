@@ -21,8 +21,6 @@
 
 #include <QtCore/QFile>
 
-#include <git2/odb.h>
-
 namespace LibQGit2
 {
 

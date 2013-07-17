@@ -24,8 +24,6 @@
 #include "qgittree.h"
 #include "qgitexception.h"
 
-#include <git2/commit.h>
-
 namespace LibQGit2
 {
 

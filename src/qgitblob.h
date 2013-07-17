@@ -22,8 +22,6 @@
 
 #include "qgitobject.h"
 
-struct git_blob;
-
 namespace LibQGit2
 {
     /**
