@@ -74,21 +74,22 @@ IF (NOT CMAKE_BUILD_TYPE)
     SET(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel." FORCE)
 ENDIF ()
 
-set(GIT2_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/libgit2/include ${CMAKE_SOURCE_DIR}/libgit2/src )
-message("CMAKE_SOURCE_DIR = ${CMAKE_SOURCE_DIR}")
-message("GIT2_INCLUDE_DIR = ${GIT2_INCLUDE_DIR}")
+option(USE_LOCAL_LIBGIT2 "Use libgit2 compiled in ${CMAKE_SOURCE_DIR}/libgit2" OFF)
 
-include_directories(src ${CMAKE_CURRENT_SOURCE_DIR}
-  ${CMAKE_CURRENT_BINARY_DIR}
-  ${GIT2_INCLUDEDIR}
-  ${GIT2_INCLUDE_DIR}
-  ${QT_INCLUDES}
-)
-
-#find_package(PkgConfig REQUIRED)
-#pkg_check_modules(GIT2 REQUIRED libgit2)
-
-#include_directories(src ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${GIT2_INCLUDEDIR} ${QT_INCLUDES})
+if(USE_LOCAL_LIBGIT2)
+    set(GIT2_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/libgit2/include ${CMAKE_SOURCE_DIR}/libgit2/src )
+    message("Using local libgit2 in ${CMAKE_SOURCE_DIR}/libgit2")
+    include_directories(src ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_CURRENT_BINARY_DIR}
+        ${GIT2_INCLUDEDIR}
+        ${GIT2_INCLUDE_DIR}
+        ${QT_INCLUDES}
+    )
+else()
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(GIT2 REQUIRED libgit2)
+    include_directories(src ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${GIT2_INCLUDEDIR} ${QT_INCLUDES})
+endif()
 
 # Collect sourcefiles
 FILE(GLOB SRC src/*.cpp)
