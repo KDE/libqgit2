@@ -149,3 +149,5 @@ set(CPACK_PACKAGE_CONTACT "Laszlo Papp <djszapi@archlinux.us>")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "libgit2 bindings for Qt")
 include(InstallRequiredSystemLibraries)
 include(CPack)
+
+add_subdirectory(tests)
