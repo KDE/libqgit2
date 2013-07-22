@@ -44,166 +44,28 @@ QGitStatusOptions::~QGitStatusOptions()
 {
 }
 
-bool QGitStatusOptions::showsIndexAndWorkdir() const
+QGitStatusOptions::ShowFlags QGitStatusOptions::showFlags() const
 {
-    return d.show & GIT_STATUS_SHOW_INDEX_AND_WORKDIR;
+    return show_flags;
 }
 
-bool QGitStatusOptions::showsOnlyIndex() const
+void QGitStatusOptions::setShowFlags(QGitStatusOptions::ShowFlags sf)
 {
-    return d.show & GIT_STATUS_SHOW_INDEX_ONLY;
+    show_flags = sf;
+    int i = show_flags;
+    d.show = (git_status_show_t)i;
+
 }
 
-bool QGitStatusOptions::showsOnlyWorkdir() const
+QGitStatusOptions::StatusFlags QGitStatusOptions::statusFlags() const
 {
-    return d.show & GIT_STATUS_SHOW_WORKDIR_ONLY;
+    return status_flags;
 }
 
-void QGitStatusOptions::setShowIndexAndWorkdir()
+void QGitStatusOptions::setStatusFlags(QGitStatusOptions::StatusFlags sf)
 {
-    d.show = GIT_STATUS_SHOW_INDEX_AND_WORKDIR;
-}
-
-void QGitStatusOptions::setShowOnlyIndex()
-{
-    d.show = GIT_STATUS_SHOW_INDEX_ONLY;
-}
-
-void QGitStatusOptions::setShowOnlyWorkdir()
-{
-    d.show = GIT_STATUS_SHOW_WORKDIR_ONLY;
-}
-
-bool QGitStatusOptions::untrackedIncluded() const
-{
-    return d.flags & GIT_STATUS_OPT_INCLUDE_UNTRACKED;
-}
-
-void QGitStatusOptions::setUntrackedIncluded(bool value)
-{
-    if (value) {
-        d.flags |= GIT_STATUS_OPT_INCLUDE_UNTRACKED;
-    }
-}
-
-bool QGitStatusOptions::ignoredIncluded() const
-{
-    return d.flags & GIT_STATUS_OPT_INCLUDE_IGNORED;
-}
-
-void QGitStatusOptions::setIgnoredIncluded(bool value)
-{
-    if (value) {
-        d.flags |= GIT_STATUS_OPT_INCLUDE_IGNORED;
-    }
-}
-
-bool QGitStatusOptions::unmodifiedIncluded() const
-{
-    return d.flags & GIT_STATUS_OPT_INCLUDE_UNMODIFIED;
-}
-
-void QGitStatusOptions::setUnmodifiedIncluded(bool value)
-{
-    if (value) {
-        d.flags |= GIT_STATUS_OPT_INCLUDE_UNMODIFIED;
-    }
-}
-
-bool QGitStatusOptions::submodulesExcluded() const
-{
-    return d.flags & GIT_STATUS_OPT_EXCLUDE_SUBMODULES;
-}
-
-void QGitStatusOptions::setSubmodulesExcluded(bool value)
-{
-    if (value) {
-        d.flags |= GIT_STATUS_OPT_EXCLUDE_SUBMODULES;
-    }
-}
-
-bool QGitStatusOptions::untrackedDirsRecursed() const
-{
-    return d.flags & GIT_STATUS_OPT_RECURSE_UNTRACKED_DIRS;
-}
-
-void QGitStatusOptions::setUntrackedDirsRecursed(bool value)
-{
-    if (value) {
-        d.flags |= GIT_STATUS_OPT_RECURSE_UNTRACKED_DIRS;
-    }
-}
-
-bool QGitStatusOptions::isPathspecMatchDisabled() const
-{
-    return d.flags & GIT_STATUS_OPT_DISABLE_PATHSPEC_MATCH;
-}
-
-void QGitStatusOptions::setPathspecMatchDisabled(bool value)
-{
-    if (value) {
-        d.flags |= GIT_STATUS_OPT_DISABLE_PATHSPEC_MATCH;
-    }
-}
-
-bool QGitStatusOptions::ignoredDirsRecursed() const
-{
-    return d.flags & GIT_STATUS_OPT_RECURSE_IGNORED_DIRS;
-}
-
-void QGitStatusOptions::setIgnoredDirsRecursed(bool value)
-{
-    if (value) {
-        d.flags |= GIT_STATUS_OPT_RECURSE_IGNORED_DIRS;
-    }
-}
-
-bool QGitStatusOptions::headToIndexRenames() const
-{
-    return d.flags & GIT_STATUS_OPT_RENAMES_HEAD_TO_INDEX;
-}
-
-void QGitStatusOptions::setHeadtoIndexRenames(bool value)
-{
-    if (value) {
-        d.flags |= GIT_STATUS_OPT_RENAMES_HEAD_TO_INDEX;
-    }
-}
-
-bool QGitStatusOptions::indexToWorkdirRenames() const
-{
-    return d.flags & GIT_STATUS_OPT_RENAMES_INDEX_TO_WORKDIR;
-}
-
-void QGitStatusOptions::setIndexToWorkdirRenames(bool value)
-{
-    if (value) {
-        d.flags |= GIT_STATUS_OPT_RENAMES_INDEX_TO_WORKDIR;
-    }
-}
-
-bool QGitStatusOptions::isSortCaseSensitively() const
-{
-    return d.flags & GIT_STATUS_OPT_SORT_CASE_SENSITIVELY;
-}
-
-void QGitStatusOptions::setSortCaseSensitively(bool value)
-{
-    if (value) {
-        d.flags |= GIT_STATUS_OPT_SORT_CASE_SENSITIVELY;
-    }
-}
-
-bool QGitStatusOptions::isSortCaseInsensitively() const
-{
-    return d.flags & GIT_STATUS_OPT_SORT_CASE_INSENSITIVELY;
-}
-
-void QGitStatusOptions::setSortCaseInsensitively(bool value)
-{
-    if (value) {
-        d.flags |= GIT_STATUS_OPT_SORT_CASE_INSENSITIVELY;
-    }
+    status_flags = sf;
+    d.flags = status_flags;
 }
 
 git_status_options QGitStatusOptions::data() const
