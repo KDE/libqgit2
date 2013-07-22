@@ -25,6 +25,7 @@
 #include <qgitblob.h>
 #include <qgitsignature.h>
 #include <qgitexception.h>
+#include <qgitstatus.h>
 
 #include <QtCore/QDir>
 #include <QtCore/QFile>
@@ -292,6 +293,14 @@ QGitIndex QGitRepository::index() const
     git_index *idx;
     qGitThrow(git_repository_index(&idx, data()));
     return QGitIndex(idx);
+}
+
+QGitStatusList QGitRepository::status(const QGitStatusOptions *options) const
+{
+    const git_status_options opt = options->constData();
+    git_status_list *status_list;
+    qGitThrow(git_status_list_new(&status_list, data(), &opt));
+    return QGitStatusList(status_list);
 }
 
 git_repository* QGitRepository::data() const
