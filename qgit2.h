@@ -20,25 +20,32 @@
 #ifndef INCLUDE_QGIT2_H
 #define INCLUDE_QGIT2_H
 
-#define LIBQGIT2_VERSION "0.1.0"
+#define LIBQGIT2_VERSION "0.2.0"
 #define LIBQGIT2_VER_MAJOR 0
-#define LIBQGIT2_VER_MINOR 1
+#define LIBQGIT2_VER_MINOR 2
 #define LIBQGIT2_VER_REVISION 0
 
-#include "src/qgitoid.h"
-#include "src/qgitsignature.h"
-#include "src/qgitdatabase.h"
-
-#include "src/qgitrepository.h"
-#include "src/qgitrevwalk.h"
-#include "src/qgitrefs.h"
-
-#include "src/qgitobject.h"
 #include "src/qgitblob.h"
 #include "src/qgitcommit.h"
+#include "src/qgitconfig.h"
+#include "src/qgitdatabase.h"
+#include "src/qgitdatabasebackend.h"
+#include "src/qgitexception.h"
+#include "src/qgitindex.h"
+#include "src/qgitindexentry.h"
+#include "src/qgitindexmodel.h"
+#include "src/qgitobject.h"
+#include "src/qgitoid.h"
+#include "src/qgitref.h"
+#include "src/qgitrepository.h"
+#include "src/qgitrevwalk.h"
+#include "src/qgitsignature.h"
+#include "src/qgitstatus.h"
+#include "src/qgitstatusentry.h"
+#include "src/qgitstatuslist.h"
+#include "src/qgitstatusoptions.h"
 #include "src/qgittag.h"
 #include "src/qgittree.h"
-
-#include "src/qgitindex.h"
+#include "src/qgittreeentry.h"
 
 #endif
