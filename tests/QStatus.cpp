@@ -25,11 +25,10 @@ QStatus::QStatus()
     repo->open(QString("/home/leo/projects/libqgit2"));
     
     QGitStatusOptions *opt = new QGitStatusOptions;
-    opt->setShowIndexAndWorkdir();
-    opt->setUnmodifiedIncluded(true);
-    opt->setUntrackedIncluded(true);
-    opt->setHeadtoIndexRenames(true);
-    opt->setIndexToWorkdirRenames(true);
+    opt->setShowFlags(QGitStatusOptions::ShowIndexAndWorkdir);
+    opt->setStatusFlags(QGitStatusOptions::IncludeUnmodified | QGitStatusOptions::IncludeUntracked |
+        QGitStatusOptions::RenamesHeadToIndex | QGitStatusOptions::RenamesIdexToWorkdir
+    );
             
     // Get the list of status entries
     QGitStatusList status_list = repo->status(opt);

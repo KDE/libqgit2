@@ -23,12 +23,14 @@
 #include "git2.h"
 
 #include "libqgit2_export.h"
+#include <my_libgit2/include/git2/status.h>
 
 namespace LibQGit2
 {
+
 /**
  * @brief Wrapper class for status options.
- * 
+ *
  * You will find a complete description of status flags and options in git2/status.h
  * in the libgit2 code tree. This object avoid the coder to use the libgit2 defines to
  * get and set states and show modes.
@@ -39,6 +41,31 @@ namespace LibQGit2
 class LIBQGIT2_STATUS_EXPORT QGitStatusOptions
 {
 public:
+
+    enum ShowFlag {
+        ShowIndexAndWorkdir = GIT_STATUS_SHOW_INDEX_AND_WORKDIR,
+        ShowOnlyIndex = GIT_STATUS_SHOW_INDEX_ONLY,
+        ShowOnlyWorkdir = GIT_STATUS_SHOW_WORKDIR_ONLY
+    };
+
+    Q_DECLARE_FLAGS(ShowFlags, ShowFlag)
+
+    enum StatusFlag {
+        IncludeUntracked = GIT_STATUS_OPT_INCLUDE_UNTRACKED,
+        IncludeIgnored = GIT_STATUS_OPT_INCLUDE_IGNORED,
+        IncludeUnmodified = GIT_STATUS_OPT_INCLUDE_UNMODIFIED,
+        ExcludeSubmodules = GIT_STATUS_OPT_EXCLUDE_SUBMODULES,
+        RecurseUntrackedDirs = GIT_STATUS_OPT_RECURSE_UNTRACKED_DIRS,
+        DisablePathspecMatch = GIT_STATUS_OPT_DISABLE_PATHSPEC_MATCH,
+        RecurseIgnoredDirs = GIT_STATUS_OPT_RECURSE_IGNORED_DIRS,
+        RenamesHeadToIndex = GIT_STATUS_OPT_RENAMES_HEAD_TO_INDEX,
+        RenamesIdexToWorkdir = GIT_STATUS_OPT_RENAMES_INDEX_TO_WORKDIR,
+        SortCaseSensitively = GIT_STATUS_OPT_SORT_CASE_SENSITIVELY,
+        SortCaseInsensitively = GIT_STATUS_OPT_SORT_CASE_INSENSITIVELY
+    };
+
+    Q_DECLARE_FLAGS(StatusFlags, StatusFlag)
+    
     explicit QGitStatusOptions();
 
     explicit QGitStatusOptions(git_status_options status_options);
@@ -47,152 +74,26 @@ public:
 
     ~QGitStatusOptions();
 
-    /**
-     * True if show option is GIT_STATUS_SHOW_INDEX_AND_WORKDIR
-     */
-    bool showsIndexAndWorkdir() const;
-
-    /**
-     * True if show option is GIT_STATUS_SHOW_INDEX_ONLY
-     */
-    bool showsOnlyIndex() const;
-
-    /**
-     * True if show option is GIT_STATUS_SHOW_WORKDIR_ONLY
-     */
-    bool showsOnlyWorkdir() const;
-
-    /**
-     * Set the show option to GIT_STATUS_SHOW_INDEX_AND_WORKDIR
-     */
-    void setShowIndexAndWorkdir();
-
-    /**
-     * Set the show option to GIT_STATUS_SHOW_INDEX_ONLY
-     */
-    void setShowOnlyIndex();
-
-    /**
-     * Set the show option to GIT_STATUS_SHOW_WORKDIR_ONLY
-     */
-    void setShowOnlyWorkdir();
+    ShowFlags showFlags() const;
     
-    /**
-     * Get the GIT_STATUS_OPT_INCLUDE_UNTRACKED option
-     */
-    bool untrackedIncluded() const;
-
-    /**
-     * Set the GIT_STATUS_OPT_INCLUDE_UNTRACKED option
-     */
-    void setUntrackedIncluded(bool value);
-
-    /**
-     * Get the GIT_STATUS_OPT_INCLUDE_IGNORED option
-     */
-    bool ignoredIncluded() const;
-
-    /**
-     * Set the GIT_STATUS_OPT_INCLUDE_IGNORED option
-     */
-    void setIgnoredIncluded(bool value);
-
-    /**
-     * Get the GIT_STATUS_OPT_INCLUDE_UNMODIFIED option
-     */
-    bool unmodifiedIncluded() const;
-
-    /**
-     * Set the GIT_STATUS_OPT_INCLUDE_UNMODIFIED option
-     */
-    void setUnmodifiedIncluded(bool value);
-
-    /**
-     * Get the GIT_EXCLUDE_SUBMODULES option
-     */
-    bool submodulesExcluded() const;
-
-    /**
-     * Set the GIT_EXCLUDE_SUBMODULES option
-     */
-    void setSubmodulesExcluded(bool value);
-
-    /**
-     * Get the GIT_STATUS_OPT_RECURSE_UNTRACKED_DIRS option
-     */
-    bool untrackedDirsRecursed() const;
-
-    /**
-     * Set the GIT_STATUS_OPT_RECURSE_UNTRACKED_DIRS option
-     */
-    void setUntrackedDirsRecursed(bool value);
-
-    /**
-     * Get the GIT_STATUS_OPT_DISABLE_PATHSPEC_MATCH option
-     */
-    bool isPathspecMatchDisabled() const;
-
-    /**
-     * Set the GIT_STATUS_OPT_DISABLE_PATHSPEC_MATCH option
-     */
-    void setPathspecMatchDisabled(bool value);
-
-    /**
-     * Get the GIT_STATUS_OPT_RECURSE_IGNORED_DIRS option
-     */
-    bool ignoredDirsRecursed() const;
-
-    /**
-     * Set the GIT_STATUS_OPT_RECURSE_IGNORED_DIRS option
-     */
-    void setIgnoredDirsRecursed(bool value);
-
-    /**
-     * Get the GIT_STATUS_OPT_RENAMES_HEAD_TO_INDEX option
-     */
-    bool headToIndexRenames() const;
-
-    /**
-     * Set the GIT_STATUS_OPT_RENAMES_HEAD_TO_INDEX option
-     */
-    void setHeadtoIndexRenames(bool value);
-
-    /**
-     * Get the GIT_STATUS_OPT_RENAMES_INDEX_TO_WORKDIR option
-     */
-    bool indexToWorkdirRenames() const;
-
-    /**
-     * Set the GIT_STATUS_OPT_RENAMES_INDEX_TO_WORKDIR option
-     */
-    void setIndexToWorkdirRenames(bool value);
-
-    /**
-     * Get the GIT_STATUS_OPT_SORT_CASE_SENSITIVELY option
-     */
-    bool isSortCaseSensitively() const;
-
-    /**
-     * Set the GIT_STATUS_OPT_SORT_CASE_SENSITIVELY option
-     */
-    void setSortCaseSensitively(bool value);
-
-    /**
-     * Get the GIT_STATUS_OPT_SORT_CASE_INSENSITIVELY option
-     */
-    bool isSortCaseInsensitively() const;
-
-    /**
-     * Set the GIT_STATUS_OPT_SORT_CASE_INSENSITIVELY option
-     */
-    void setSortCaseInsensitively(bool value);
+    void setShowFlags(QGitStatusOptions::ShowFlags sf);
+    
+    StatusFlags statusFlags() const;
+    
+    void setStatusFlags(QGitStatusOptions::StatusFlags sf);
 
     git_status_options data() const;
     const git_status_options constData() const;
-    
+
 private:
     git_status_options d;
+    
+    ShowFlags show_flags;
+    StatusFlags status_flags;
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(QGitStatusOptions::ShowFlags)
+Q_DECLARE_OPERATORS_FOR_FLAGS(QGitStatusOptions::StatusFlags)
 
 
 /**@}*/
