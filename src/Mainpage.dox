@@ -21,14 +21,26 @@ The library is still a simple wrapper of libgit2 and does not yet implement Git 
 
 I'm trying to uniform the documentation, but it can still be lacking or incomplete.
 
+Library is versioned with a MAJOR.MINOR.REV schema.
+My versioning policy is the following:
+
+- Every change in internal code, which is transparent to the user increments REV (e.g. 0.1.0 -> 0.1.1)
+- Every API addition or change increments MINOR (e.g. 0.1.0 -> 0.2.0)
+- Every time the library reaches a very big milestone MAJOR increments (e.g. 0.1.0 -> 1.0.0)
+
+This means that as soon as the library will be ready to be used in production (and libgit2 does no more break the API),
+this library will hopefully reach version 1.0.0 and remain in version 1.x.y until we will write it again from scratch.
+Feel free to disagree with this policy but please do not break it.
+If you think I'm committing a crime versioning with just MINOR and REV let me (lgiordani) know, I'm always ready to discuss my choices.
+
 @authors
 Digging in the Git repository log I find the following (in order of appearance):
-- Laszlo Papp
-- Nils Fenner
-- Robin Pedersen
-- Miquel Canes Gonzalez
-- Orgad Shaneh
-- Leonardo Giordani
+- Laszlo Papp (lpapp)
+- Nils Fenner (fenner)
+- Robin Pedersen (rpedersen)
+- Miquel Canes Gonzalez (canesgonzalez)
+- Orgad Shaneh (orgads)
+- Leonardo Giordani (lgiordani)
 
 I hope I didn't forget anyone.
 
