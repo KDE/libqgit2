@@ -20,13 +20,19 @@
 #ifndef LIBQGIT2_STATUS_H
 #define LIBQGIT2_STATUS_H
 
-#include "qgitobject.h"
+#include "git2.h"
+
+#include "libqgit2_export.h"
 
 namespace LibQGit2
 {
 /**
- * @brief Wrapper class for git_status.
- * Represents the status of a Git repository.
+ * @brief Wrapper class for status flags.
+ * 
+ * You will find a complete description of libgit status values in git2/status.h
+ * in the libgit2 code tree.
+ * Remember that Git status refers both to index and workdir, i.e. to modifications
+ * you already staged (index) and to modifications made in the local workdir and not yet staged (workdir).
  *
  * @ingroup LibQGit2
  * @{
@@ -34,16 +40,73 @@ namespace LibQGit2
 class LIBQGIT2_STATUS_EXPORT QGitStatus
 {
 public:
-
-    explicit QGitStatus();
+    explicit QGitStatus(const git_status_t status_flags);
 
     QGitStatus(const QGitStatus& other);
 
-    /**
-     * Destroys the object.
-     */
     ~QGitStatus();
+
+    /**
+     * Returns true if no changes are pending
+     */
+    bool isCurrent() const;
+
+    /**
+     * Returns true if the file is new in the index
+     */
+    bool isNewInIndex() const;
+
+    /**
+     * Returns true if the file has been modified in the index
+     */
+    bool isModifiedInIndex() const;
+
+    /**
+     * Returns true if the file has been deleted in the index
+     */
+    bool isDeletedInIndex() const;
+
+    /**
+     * Returns true if the file has been renamed in the index
+     */
+    bool isRenamedInIndex() const;
+
+    /**
+     * Returns true if the file type has been changed in the index
+     */
+    bool isTypeChangedInIndex() const;
+
+    /**
+     * Returns true if the file is new in the workdir
+     */
+    bool isNewInWorkdir() const;
+
+    /**
+     * Returns true if the file has been modified in the workdir
+     */
+    bool isModifiedInWorkdir() const;
+
+    /**
+     * Returns true if the file has been deleted in the workdir
+     */
+    bool isDeletedInWorkdir() const;
+
+    /**
+     * Returns true if the file has been renamed in the workdir
+     */
+    bool isRenamedInWorkdir() const;
+
+    /**
+     * Returns true if the file type has been changed in the workdir
+     */
+    bool isTypeChangedInWorkdir() const;
+
+    unsigned int data() const;
+    
+private:
+    git_status_t d;
 };
+
 
 /**@}*/
 }

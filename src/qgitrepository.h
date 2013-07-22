@@ -26,6 +26,8 @@
 #include "qgitobject.h"
 #include "qgitref.h"
 #include "qgitindex.h"
+#include "qgitstatuslist.h"
+#include "qgitstatusoptions.h"
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStringList>
@@ -365,22 +367,34 @@ namespace LibQGit2
             QStringList listReferences() const;
 
             /**
-             * Get the object database behind a Git repository
-             *
+             * @brief Get the object database behind a Git repository
+             * 
              * @return a pointer to the object db
              */
             LibQGit2::QGitDatabase database() const;
 
             /**
-             * Get the Index file of a Git repository
-             *
+             * @brief Get the Index file of a Git repository
+             * 
              * This is a cheap operation; the index is only opened on the first call,
              * and subsequent calls only retrieve the previous pointer.
              *
              * @throws QGitException
+             * @return The index file of the repository
              */
             QGitIndex index() const;
 
+            /**
+             * @brief Get the status information of the Git repository
+             * 
+             * This function returns the status of the repository entries, according to
+             * the given options.
+             * 
+             * @throws QGitException
+             * @return The list of status entries
+             */
+            QGitStatusList status(const QGitStatusOptions *options) const;
+            
             git_repository* data() const;
             const git_repository* constData() const;
 
