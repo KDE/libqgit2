@@ -75,18 +75,9 @@ bool QGitRevWalk::next(QGitCommit & commit)
     return !commit.isNull();
 }
 
-void QGitRevWalk::setSorting(SortModes sortMode)
+void QGitRevWalk::setSorting(SortModes sm)
 {
-    // wrap c defines
-    unsigned int sort = GIT_SORT_NONE;
-    if ( sortMode.testFlag(Time) )
-        sort |= GIT_SORT_TIME;
-    if ( sortMode.testFlag(Topological) )
-        sort |= GIT_SORT_TOPOLOGICAL;
-    if ( sortMode.testFlag(Reverse) )
-        sort |= GIT_SORT_REVERSE;
-
-    git_revwalk_sorting(m_revWalk, sort);
+    git_revwalk_sorting(m_revWalk, sm);
 }
 
 QGitRepository QGitRevWalk::repository()
