@@ -41,15 +41,16 @@ namespace LibQGit2
     {
         public:
             /**
-             * Defines the sortmode when walking revisions.
+             * Defines the sort mode when walking revisions.
              */
             enum SortMode
             {
-                None            = 0x0   //!< GIT_SORT_NONE
-                , Time          = 0x1   //!< GIT_SORT_TIME
-                , Topological   = 0x2   //!< GIT_SORT_TOPOLOGICAL
-                , Reverse       = 0x4   //!< GIT_SORT_REVERSE
+                None = GIT_SORT_NONE,
+                Time = GIT_SORT_TIME,
+                Topological = GIT_SORT_TOPOLOGICAL,
+                Reverse = GIT_SORT_REVERSE
             };
+            
             Q_DECLARE_FLAGS(SortModes, SortMode) //!< Combination of SortMode
 
             /**
@@ -65,8 +66,6 @@ namespace LibQGit2
              * Delete a revwalk previously allocated.
              */
             ~QGitRevWalk();
-
-        public:
 
             /**
              * Reset the walking machinery for reuse.
