@@ -1,0 +1,37 @@
+/** @mainpage The libqgit2 API Reference
+
+<p><b>
+Overview |
+@ref components |
+@ref development |
+@ref search
+</b></p>
+
+This is a quick description of libqgit2.
+
+Official repository is <a href="https://projects.kde.org/projects/playground/libs/libqgit2">on KDE Projects</a>.
+
+Feel free to use, hack, modify and report issues.
+You will find in the Related Pages of this documentations a Todo list.
+It is a good starting point to join =).
+
+Currently updated to libgit2 0.19.0.
+
+The library is still a simple wrapper of libgit2 and does not yet implement Git porcelain functions.
+
+I'm trying to uniform the documentation, but it can still be lacking or incomplete.
+
+@authors
+Digging in the Git repository log I find the following (in order of appearance):
+- Laszlo Papp
+- Nils Fenner
+- Robin Pedersen
+- Miquel Canes Gonzalez
+- Orgad Shaneh
+- Leonardo Giordani
+
+I hope I didn't forget anyone.
+
+Current maintainer is Laszlo Papp.
+For any question feel free to contact Leonardo Giordani, you can find contact information on the KDE Projects page
+*/
