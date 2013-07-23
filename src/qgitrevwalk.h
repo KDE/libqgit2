@@ -26,6 +26,8 @@
 
 namespace LibQGit2
 {
+
+class QGitException;
     class QGitRepository;
     class QGitOId;
     class QGitCommit;
@@ -78,13 +80,22 @@ namespace LibQGit2
              *
              * @param commit the commit to start from.
              */
-            int push(const QGitCommit& commit) const;
+            void push(const QGitCommit& commit) const;
+            
+            /**
+             * Uses HEAD to start traversing the tree.
+             * 
+             * @throws QGitException
+             */
+            void pushHead() const;
 
             /**
              * Mark a commit (and its ancestors) uninteresting for the output.
+             * 
              * @param commit the commit that will be ignored during the traversal
+             * @throws QGitException
              */
-            int hide(const QGitOId& commit) const;
+            void hide(const LibQGit2::QGitOId& oid) const;
 
             /**
              * Get the oid of the next commit from the revision traversal.
@@ -93,8 +104,8 @@ namespace LibQGit2
 
             /**
              * Get the next commit from the revision traversal and look it up in the owner repository.
-             * @param commit The next commit within the set repository, when it was found;
-             * Otherwise an empty QGitCommit will be set.
+             * 
+             * @param commit The next commit within the set repository, if it was found; otherwise an empty QGitCommit.
              * @return True when the commit was found.
              */
             bool next(QGitCommit & commit);
@@ -103,6 +114,7 @@ namespace LibQGit2
              * Change the sorting mode when iterating through the
              * repository's contents.
              * Changing the sorting mode resets the walker.
+             * 
              * @param sortMode The sorting mode @see SortModes.
              */
             void setSorting(SortModes sortMode);

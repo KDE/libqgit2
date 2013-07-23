@@ -20,7 +20,9 @@
 #include "qgitrevwalk.h"
 
 #include "qgitcommit.h"
+#include "qgitexception.h"
 #include "qgitrepository.h"
+#include <iostream>
 
 namespace LibQGit2
 {
@@ -42,23 +44,28 @@ QGitRevWalk::~QGitRevWalk()
 
 void QGitRevWalk::reset() const
 {
-    return git_revwalk_reset(m_revWalk);
+    git_revwalk_reset(m_revWalk);
 }
 
-int QGitRevWalk::push(const QGitCommit& commit) const
+void QGitRevWalk::push(const LibQGit2::QGitCommit& commit) const
 {
-    return git_revwalk_push(m_revWalk, commit.oid().data());
+    qGitThrow(git_revwalk_push(m_revWalk, commit.oid().data()));
 }
 
-int QGitRevWalk::hide(const QGitOId& oid) const
+void QGitRevWalk::pushHead() const
 {
-    return git_revwalk_hide(m_revWalk, oid.constData());
+    qGitThrow(git_revwalk_push_head(m_revWalk));
+}
+
+void QGitRevWalk::hide(const QGitOId& oid) const
+{
+    qGitThrow(git_revwalk_hide(m_revWalk, oid.constData()));
 }
 
 QGitOId QGitRevWalk::next() const
 {
     QGitOId oid;
-    git_revwalk_next(oid.data(), m_revWalk);
+    qGitThrow(git_revwalk_next(oid.data(), m_revWalk));
     return oid;
 }
 
@@ -70,7 +77,7 @@ bool QGitRevWalk::next(QGitCommit & commit)
     if ( (err != GIT_OK) || !oid.isValid() )
         commit = QGitCommit();
     else
-        commit = (repository().lookupCommit(oid));
+        commit = repository().lookupCommit(oid);
 
     return !commit.isNull();
 }
