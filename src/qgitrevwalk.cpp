@@ -17,12 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "qgitrevwalk.h"
+#include <iostream>
 
+#include "qgitrevwalk.h"
 #include "qgitcommit.h"
+#include "qgitref.h"
 #include "qgitexception.h"
 #include "qgitrepository.h"
-#include <iostream>
+
 
 namespace LibQGit2
 {
@@ -30,6 +32,7 @@ namespace LibQGit2
 QGitRevWalk::QGitRevWalk(const QGitRepository& repository)
 {
     git_revwalk_new(&m_revWalk, repository.data());
+    m_repository = &repository;
 }
 
 QGitRevWalk::QGitRevWalk( const QGitRevWalk& other )
@@ -47,9 +50,24 @@ void QGitRevWalk::reset() const
     git_revwalk_reset(m_revWalk);
 }
 
-void QGitRevWalk::push(const LibQGit2::QGitCommit& commit) const
+void QGitRevWalk::push(const QGitOId& oid) const
 {
-    qGitThrow(git_revwalk_push(m_revWalk, commit.oid().data()));
+    qGitThrow(git_revwalk_push(m_revWalk, oid.constData()));
+}
+
+void QGitRevWalk::push(const QGitCommit& commit) const
+{
+    qGitThrow(git_revwalk_push(m_revWalk, commit.oid().constData()));
+}
+
+void QGitRevWalk::push(const QGitRef& reference) const
+{
+    qGitThrow(git_revwalk_push_glob(m_revWalk, reference.name().toUtf8().constData()));
+}
+
+void QGitRevWalk::push(const QString& glob) const
+{
+    qGitThrow(git_revwalk_push_glob(m_revWalk, glob.toUtf8().constData()));
 }
 
 void QGitRevWalk::pushHead() const
@@ -57,19 +75,43 @@ void QGitRevWalk::pushHead() const
     qGitThrow(git_revwalk_push_head(m_revWalk));
 }
 
+void QGitRevWalk::pushRange(const QString& range) const
+{
+    qGitThrow(git_revwalk_push_range(m_revWalk,range.toUtf8().constData()));
+}
+
 void QGitRevWalk::hide(const QGitOId& oid) const
 {
     qGitThrow(git_revwalk_hide(m_revWalk, oid.constData()));
 }
 
-QGitOId QGitRevWalk::next() const
+void QGitRevWalk::hide(const QGitCommit& commit) const
 {
-    QGitOId oid;
-    qGitThrow(git_revwalk_next(oid.data(), m_revWalk));
-    return oid;
+    qGitThrow(git_revwalk_hide(m_revWalk, commit.oid().constData()));
 }
 
-bool QGitRevWalk::next(QGitCommit & commit)
+void QGitRevWalk::hide(const QGitRef& reference) const
+{
+    qGitThrow(git_revwalk_hide_glob(m_revWalk, reference.name().toUtf8().data()));
+}
+
+void QGitRevWalk::hide(const QString& glob) const
+{
+    qGitThrow(git_revwalk_hide_glob(m_revWalk, glob.toUtf8().data()));
+}
+
+void QGitRevWalk::hideHead() const
+{
+    qGitThrow(git_revwalk_hide_head(m_revWalk));
+}
+
+bool QGitRevWalk::next(QGitOId& oid) const
+{
+    int err = git_revwalk_next(oid.data(), m_revWalk);
+    return (err == GIT_OK);
+}
+
+bool QGitRevWalk::next(QGitCommit& commit)
 {
     QGitOId oid;
     int err = git_revwalk_next(oid.data(), m_revWalk);
@@ -77,7 +119,7 @@ bool QGitRevWalk::next(QGitCommit & commit)
     if ( (err != GIT_OK) || !oid.isValid() )
         commit = QGitCommit();
     else
-        commit = repository().lookupCommit(oid);
+        commit = constRepository()->lookupCommit(oid);
 
     return !commit.isNull();
 }
@@ -87,9 +129,15 @@ void QGitRevWalk::setSorting(SortModes sm)
     git_revwalk_sorting(m_revWalk, sm);
 }
 
-QGitRepository QGitRevWalk::repository()
+QGitRepository* QGitRevWalk::repository()
 {
-    return QGitRepository(git_revwalk_repository(m_revWalk));
+    QGitRepository* repo = new QGitRepository(git_revwalk_repository(m_revWalk));
+    return repo;
+}
+
+const QGitRepository* QGitRevWalk::constRepository()
+{
+    return m_repository;
 }
 
 git_revwalk* QGitRevWalk::data() const
