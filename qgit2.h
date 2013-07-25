@@ -20,10 +20,10 @@
 #ifndef INCLUDE_QGIT2_H
 #define INCLUDE_QGIT2_H
 
-#define LIBQGIT2_VERSION "0.2.0"
+#define LIBQGIT2_VERSION "0.2.1"
 #define LIBQGIT2_VER_MAJOR 0
 #define LIBQGIT2_VER_MINOR 2
-#define LIBQGIT2_VER_REVISION 0
+#define LIBQGIT2_VER_REVISION 1
 
 #include "src/qgitblob.h"
 #include "src/qgitcommit.h"
