@@ -10,4 +10,9 @@ qt4_automoc(${QStatus_SRCS})
 add_executable(QStatus ${QStatus_SRCS})
 target_link_libraries(QStatus qgit2 git2 ${QT_QTCORE_LIBRARY})
 
+set(QRev_SRCS QRev.cpp)
+qt4_automoc(${QRev_SRCS})
+add_executable(QRev ${QRev_SRCS})
+target_link_libraries(QRev qgit2 git2 ${QT_QTCORE_LIBRARY})
+
 install(TARGETS QStatus RUNTIME DESTINATION bin)
