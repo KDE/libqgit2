@@ -26,7 +26,7 @@
 namespace LibQGit2
 {
 
-QGitTreeEntry::QGitTreeEntry(const git_tree_entry *treeEntry)
+QGitTreeEntry::QGitTreeEntry(git_tree_entry *treeEntry)
     : d(treeEntry)
 {
 }
@@ -57,7 +57,7 @@ const QString QGitTreeEntry::name() const
 
 QGitOId QGitTreeEntry::oid() const
 {
-    return QGitOId( git_tree_entry_id(d) );
+    return QGitOId(git_tree_entry_id(constData()));
 }
 
 QGitObject QGitTreeEntry::toObject(const QGitRepository& repo)
@@ -65,6 +65,11 @@ QGitObject QGitTreeEntry::toObject(const QGitRepository& repo)
     git_object *obj;
     qGitThrow(git_tree_entry_to_object(&obj, repo.data(), d));
     return QGitObject(obj);
+}
+
+git_tree_entry* QGitTreeEntry::data() const
+{
+    return d;
 }
 
 const git_tree_entry* QGitTreeEntry::constData() const

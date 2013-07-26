@@ -40,7 +40,7 @@ namespace LibQGit2
     class LIBQGIT2_TREEENTRY_EXPORT QGitTreeEntry
     {
         public:
-            explicit QGitTreeEntry(const git_tree_entry *treeEntry = 0);
+            explicit QGitTreeEntry(git_tree_entry* treeEntry);
             QGitTreeEntry(const QGitTreeEntry& other);
             ~QGitTreeEntry();
 
@@ -77,10 +77,11 @@ namespace LibQGit2
              */
             QGitObject toObject(const QGitRepository& repo);
 
+            git_tree_entry* data() const;
             const git_tree_entry* constData() const;
 
         private:
-            const git_tree_entry *d;
+            git_tree_entry *d;
     };
 
     /**@}*/

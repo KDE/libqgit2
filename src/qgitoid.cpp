@@ -23,7 +23,7 @@
 namespace LibQGit2
 {
 
-QGitOId::QGitOId(const git_oid *oid)
+QGitOId::QGitOId(const git_oid* oid)
     : d(GIT_OID_RAWSZ, 0)
 {
     if (oid != 0) {
