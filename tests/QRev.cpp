@@ -28,7 +28,7 @@ QRev::QRev()
     
     rw->pushHead();
 
-    QGitCommit commit;
+    Commit commit;
     while(rw->next(commit)) {
         QByteArray qb = commit.oid().format();
         std::cout << qb.data() << std::endl;
