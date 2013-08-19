@@ -315,7 +315,7 @@ Index Repository::index() const
     return Index(idx);
 }
 
-StatusList Repository::status(const QGitStatusOptions *options) const
+StatusList Repository::status(const StatusOptions *options) const
 {
     const git_status_options opt = options->constData();
     git_status_list *status_list;

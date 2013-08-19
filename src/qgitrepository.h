@@ -411,7 +411,7 @@ namespace LibQGit2
              * @throws QGitException
              * @return The list of status entries
              */
-            StatusList status(const QGitStatusOptions *options) const;
+            StatusList status(const StatusOptions *options) const;
             
             git_repository* data() const;
             const git_repository* constData() const;

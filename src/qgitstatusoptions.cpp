@@ -25,31 +25,31 @@
 namespace LibQGit2
 {
 
-QGitStatusOptions::QGitStatusOptions()
+StatusOptions::StatusOptions()
     : d(GIT_STATUS_OPTIONS_INIT)
 {
 }
 
-QGitStatusOptions::QGitStatusOptions(git_status_options status_options)
+StatusOptions::QGitStatusOptions(git_status_options status_options)
     : d(status_options)
 {
 }
 
-QGitStatusOptions::QGitStatusOptions(const QGitStatusOptions &other)
+StatusOptions::StatusOptions(const StatusOptions &other)
     : d(other.d)
 {
 }
 
-QGitStatusOptions::~QGitStatusOptions()
+StatusOptions::~StatusOptions()
 {
 }
 
-QGitStatusOptions::ShowFlags QGitStatusOptions::showFlags() const
+StatusOptions::ShowFlags StatusOptions::showFlags() const
 {
     return show_flags;
 }
 
-void QGitStatusOptions::setShowFlags(QGitStatusOptions::ShowFlags sf)
+void StatusOptions::setShowFlags(StatusOptions::ShowFlags sf)
 {
     show_flags = sf;
     int i = show_flags;
@@ -57,23 +57,23 @@ void QGitStatusOptions::setShowFlags(QGitStatusOptions::ShowFlags sf)
 
 }
 
-QGitStatusOptions::StatusFlags QGitStatusOptions::statusFlags() const
+StatusOptions::StatusFlags StatusOptions::statusFlags() const
 {
     return status_flags;
 }
 
-void QGitStatusOptions::setStatusFlags(QGitStatusOptions::StatusFlags sf)
+void StatusOptions::setStatusFlags(StatusOptions::StatusFlags sf)
 {
     status_flags = sf;
     d.flags = status_flags;
 }
 
-git_status_options QGitStatusOptions::data() const
+git_status_options StatusOptions::data() const
 {
     return d;
 }
 
-const git_status_options QGitStatusOptions::constData() const
+const git_status_options StatusOptions::constData() const
 {
     return d;
 }
