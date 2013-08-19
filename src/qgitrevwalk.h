@@ -41,7 +41,7 @@ class Reference;
   * @ingroup LibQGit2
   * @{
   */
-class LIBQGIT2_REVWALK_EXPORT QGitRevWalk
+class LIBQGIT2_REVWALK_EXPORT RevWalk
 {
 public:
     /**
@@ -62,14 +62,14 @@ public:
      *
      * @param repo the repo to walk through
      */
-    explicit QGitRevWalk(const Repository& repository);
+    explicit RevWalk(const Repository& repository);
 
-    QGitRevWalk( const QGitRevWalk& other );
+    RevWalk( const RevWalk& other );
 
     /**
      * Delete a revwalk previously allocated.
      */
-    ~QGitRevWalk();
+    ~RevWalk();
 
     /**
      * Reset the walking machinery for reuse.
@@ -239,7 +239,7 @@ private:
     git_revwalk* m_revWalk;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QGitRevWalk::SortModes)
+Q_DECLARE_OPERATORS_FOR_FLAGS(RevWalk::SortModes)
 
 /**@}*/
 }
