@@ -152,7 +152,7 @@ QGitOId* QGitRepository::lookupRefOId(const QString& name) const
 {
     git_oid oid;
     qGitThrow(git_reference_name_to_id(&oid, data(), QFile::encodeName(name)));
-    QGitOId* qo = new QGitOId(oid);
+    QGitOId* qo = new QGitOId(&oid);
     return qo;
 }
 
