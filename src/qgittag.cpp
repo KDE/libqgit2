@@ -40,9 +40,9 @@ QGitTag::~QGitTag()
 {
 }
 
-QGitOId QGitTag::oid() const
+OId QGitTag::oid() const
 {
-    return QGitOId(git_tag_id(data()));
+    return OId(git_tag_id(data()));
 }
 
 Object QGitTag::target() const

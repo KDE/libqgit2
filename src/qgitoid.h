@@ -37,24 +37,24 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_OID_EXPORT QGitOId
+    class LIBQGIT2_OID_EXPORT OId
     {
         public:
 
             /**
              * Constructor
              */
-            explicit QGitOId(const git_oid *oid = 0);
+            explicit OId(const git_oid *oid = 0);
 
             /**
              * Copy constructor
              */
-            QGitOId(const QGitOId& other);
+            OId(const OId& other);
 
             /**
              * Destructor
              */
-            ~QGitOId();
+            ~OId();
 
             /**
              * Parse a hex formatted object id into a OId.
@@ -66,13 +66,13 @@ namespace LibQGit2
              * @return OId; null OId on failure.
              * @throws QGitException
              */
-            static QGitOId fromString(const QByteArray& string);
+            static OId fromString(const QByteArray& string);
 
             /**
              * Copy an already raw oid into a git_oid structure.
              * @param raw the raw input bytes to be copied.
              */
-            static QGitOId fromRawData(const QByteArray& raw);
+            static OId fromRawData(const QByteArray& raw);
 
             /**
               Checks if this is a valid Git OId. An OId is invalid if it is empty or 0x0000... (20 byte).
@@ -111,11 +111,11 @@ namespace LibQGit2
     /**
      * Compare two QGitOIds.
      */
-    bool operator ==(const QGitOId &oid1, const QGitOId &oid2);
+    bool operator ==(const OId &oid1, const OId &oid2);
     /**
      * Compare two QGitOIds.
      */
-    bool operator !=(const QGitOId &oid1, const QGitOId &oid2);
+    bool operator !=(const OId &oid1, const OId &oid2);
 
     /**@}*/
 }

@@ -27,7 +27,7 @@
 
 namespace LibQGit2
 {
-    class QGitOId;
+    class OId;
 
     /**
      * @brief Wrapper class for git_index_entry.
@@ -57,7 +57,7 @@ namespace LibQGit2
             /**
              * Get the id of an index entry.
              */
-            QGitOId id() const;
+            OId id() const;
 
             /**
              * Get the path of the index entry, represented by a string

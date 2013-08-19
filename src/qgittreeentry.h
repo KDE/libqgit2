@@ -27,7 +27,7 @@
 
 namespace LibQGit2
 {
-    class QGitOId;
+    class OId;
     class Object;
     class QGitRepository;
 
@@ -67,7 +67,7 @@ namespace LibQGit2
              * Get the id of the object pointed by the entry
              * @return the oid of the object
              */
-            QGitOId oid() const;
+            OId oid() const;
 
             /**
              * Convert a tree entry to the Object it points too.

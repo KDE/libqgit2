@@ -43,9 +43,9 @@ Reference::~Reference()
 {
 }
 
-QGitOId Reference::target() const
+OId Reference::target() const
 {
-    return QGitOId(git_reference_target(d.data()));
+    return OId(git_reference_target(d.data()));
 }
 
 QString Reference::symbolicTarget() const
@@ -87,7 +87,7 @@ void Reference::setSymbolicTarget(const QString& target)
     d = ptr_type(rp);
 }
 
-void Reference::setTarget(const QGitOId& oid)
+void Reference::setTarget(const OId& oid)
 {
     git_reference* rp;
     qGitThrow(git_reference_set_target(&rp, data(), oid.constData()));

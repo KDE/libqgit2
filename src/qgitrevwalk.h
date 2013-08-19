@@ -30,7 +30,7 @@ namespace LibQGit2
 
 class Exception;
 class QGitRepository;
-class QGitOId;
+class OId;
 class Commit;
 class Reference;
 
@@ -85,7 +85,7 @@ public:
      * @param oid the oid of the commit to start from.
      * @throws QGitException
      */
-    void push(const QGitOId& oid) const;
+    void push(const OId& oid) const;
 
     /**
      * Mark the given commit as a starting point.
@@ -147,7 +147,7 @@ public:
      * @param oid the oid of the commit to start from.
      * @throws QGitException
      */
-    void hide(const QGitOId& oid) const;
+    void hide(const OId& oid) const;
 
     /**
      * Hide the given commit and its ancestors from the walker.
@@ -197,7 +197,7 @@ public:
      * @param oid The oid of the next object in the revisions tree if it was found; otherwise it is undefined.
      * @return True if the object was found.
      */
-    bool next(QGitOId& oid) const;
+    bool next(OId& oid) const;
 
     /**
      * Get the next commit from the revision traversal and look it up in the owner repository.

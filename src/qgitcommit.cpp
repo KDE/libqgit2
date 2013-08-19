@@ -42,9 +42,9 @@ Commit::~Commit()
 {
 }
 
-QGitOId Commit::oid() const
+OId Commit::oid() const
 {
-    return QGitOId(git_commit_id(data()));
+    return OId(git_commit_id(data()));
 }
 
 QString Commit::message() const
@@ -98,9 +98,9 @@ Commit Commit::parent(unsigned n) const
     return Commit(parent);
 }
 
-QGitOId Commit::parentId(unsigned n) const
+OId Commit::parentId(unsigned n) const
 {
-    return QGitOId(git_commit_parent_id(data(), n));
+    return OId(git_commit_parent_id(data(), n));
 }
 
 git_commit* Commit::data() const

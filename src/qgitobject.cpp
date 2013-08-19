@@ -85,9 +85,9 @@ bool Object::isNull() const
     return d.isNull();
 }
 
-QGitOId Object::oid() const
+OId Object::oid() const
 {
-    return QGitOId(git_object_id(data()));
+    return OId(git_object_id(data()));
 }
 
 bool Object::isCommit() const

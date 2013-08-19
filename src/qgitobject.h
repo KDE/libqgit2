@@ -32,7 +32,7 @@
 namespace LibQGit2
 {
     class QGitRepository;
-    class QGitOId;
+    class OId;
     class Commit;
     class QGitTag;
     class QGitTree;
@@ -111,7 +111,7 @@ namespace LibQGit2
              *
              * @return the SHA1 id
              */
-            QGitOId oid() const;
+            OId oid() const;
 
             /**
              * Return true if the object represents a commit; false otherwise

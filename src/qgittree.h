@@ -28,7 +28,7 @@
 namespace LibQGit2
 {
     class QGitRepository;
-    class QGitOId;
+    class OId;
     class QGitTreeEntry;
 
     /**
@@ -64,7 +64,7 @@ namespace LibQGit2
              * * Get the id of a tree.
              * * @return object identity for the tree.
              * */
-            QGitOId oid();
+            OId oid();
 
             /**
              * Get the number of entries listed in a tree

@@ -59,7 +59,7 @@ int Database::addAlternate(DatabaseBackend *backend, int priority)
     return git_odb_add_alternate(m_database, (git_odb_backend *)backend, priority);
 }
 
-int Database::exists(Database *db, const QGitOId& id)
+int Database::exists(Database *db, const OId& id)
 {
     return git_odb_exists(db->data(), id.constData());
 }

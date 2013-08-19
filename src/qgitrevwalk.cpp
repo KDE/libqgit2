@@ -51,7 +51,7 @@ void QGitRevWalk::reset() const
     git_revwalk_reset(m_revWalk);
 }
 
-void QGitRevWalk::push(const QGitOId& oid) const
+void QGitRevWalk::push(const OId& oid) const
 {
     qGitThrow(git_revwalk_push(m_revWalk, oid.constData()));
 }
@@ -81,7 +81,7 @@ void QGitRevWalk::pushRange(const QString& range) const
     qGitThrow(git_revwalk_push_range(m_revWalk,range.toUtf8().constData()));
 }
 
-void QGitRevWalk::hide(const QGitOId& oid) const
+void QGitRevWalk::hide(const OId& oid) const
 {
     qGitThrow(git_revwalk_hide(m_revWalk, oid.constData()));
 }
@@ -106,7 +106,7 @@ void QGitRevWalk::hideHead() const
     qGitThrow(git_revwalk_hide_head(m_revWalk));
 }
 
-bool QGitRevWalk::next(QGitOId& oid) const
+bool QGitRevWalk::next(OId& oid) const
 {
     int err = git_revwalk_next(oid.data(), m_revWalk);
     return (err == GIT_OK);
@@ -114,7 +114,7 @@ bool QGitRevWalk::next(QGitOId& oid) const
 
 bool QGitRevWalk::next(Commit& commit)
 {
-    QGitOId oid;
+    OId oid;
     int err = git_revwalk_next(oid.data(), m_revWalk);
 
     if ( (err != GIT_OK) || !oid.isValid() )

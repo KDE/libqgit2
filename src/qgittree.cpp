@@ -43,9 +43,9 @@ QGitTree::~QGitTree()
 {
 }
 
-QGitOId QGitTree::oid()
+OId QGitTree::oid()
 {
-    return QGitOId(git_tree_id(data()));
+    return OId(git_tree_id(data()));
 }
 
 size_t QGitTree::entryCount()

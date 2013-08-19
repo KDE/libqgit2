@@ -25,7 +25,7 @@
 
 namespace LibQGit2
 {
-    class QGitOId;
+    class OId;
     class QGitSignature;
 
     /**
@@ -61,7 +61,7 @@ namespace LibQGit2
              * Get the id of a tag.
              * @return object identity for the tag.
              */
-            QGitOId oid() const;
+            OId oid() const;
 
             /**
              * Get the tagged object of a tag

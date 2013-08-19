@@ -149,11 +149,11 @@ Reference* QGitRepository::lookupRef(const QString& name) const
     return qr;
 }
 
-QGitOId* QGitRepository::lookupRefOId(const QString& name) const
+OId* QGitRepository::lookupRefOId(const QString& name) const
 {
     git_oid oid;
     qGitThrow(git_reference_name_to_id(&oid, data(), QFile::encodeName(name)));
-    QGitOId* qo = new QGitOId(&oid);
+    OId* qo = new OId(&oid);
     return qo;
 }
 
@@ -165,42 +165,42 @@ Reference* QGitRepository::lookupShorthandRef(const QString& shorthand) const
     return qr;
 }
 
-Commit QGitRepository::lookupCommit(const QGitOId& oid) const
+Commit QGitRepository::lookupCommit(const OId& oid) const
 {
     git_commit *commit = 0;
     qGitThrow(git_commit_lookup_prefix(&commit, data(), oid.constData(), oid.length()));
     return Commit(commit);
 }
 
-QGitTag QGitRepository::lookupTag(const QGitOId& oid) const
+QGitTag QGitRepository::lookupTag(const OId& oid) const
 {
     git_tag *tag = 0;
     qGitThrow(git_tag_lookup_prefix(&tag, data(), oid.constData(), oid.length()));
     return QGitTag(tag);
 }
 
-QGitTree QGitRepository::lookupTree(const QGitOId& oid) const
+QGitTree QGitRepository::lookupTree(const OId& oid) const
 {
     git_tree *tree = 0;
     qGitThrow(git_tree_lookup_prefix(&tree, data(), oid.constData(), oid.length()));
     return QGitTree(tree);
 }
 
-Blob QGitRepository::lookupBlob(const QGitOId& oid) const
+Blob QGitRepository::lookupBlob(const OId& oid) const
 {
     git_blob *blob = 0;
     qGitThrow(git_blob_lookup_prefix(&blob, data(), oid.constData(), oid.length()));
     return Blob(blob);
 }
 
-Object QGitRepository::lookupAny(const QGitOId &oid) const
+Object QGitRepository::lookupAny(const OId &oid) const
 {
     git_object *object = 0;
     qGitThrow(git_object_lookup_prefix(&object, data(), oid.constData(), oid.length(), GIT_OBJ_ANY));
     return Object(object);
 }
 
-Reference* QGitRepository::createRef(const QString& name, const LibQGit2::QGitOId& oid, bool overwrite)
+Reference* QGitRepository::createRef(const QString& name, const LibQGit2::OId& oid, bool overwrite)
 {
     git_reference *ref = 0;
     qGitThrow(git_reference_create(&ref, data(), QFile::encodeName(name), oid.constData(), overwrite));
@@ -216,7 +216,7 @@ Reference* QGitRepository::createSymbolicRef(const QString& name, const QString&
     return qr;
 }
 
-QGitOId QGitRepository::createCommit(const QString& ref,
+OId QGitRepository::createCommit(const QString& ref,
                                      const QGitSignature& author,
                                      const QGitSignature& committer,
                                      const QString& message,
@@ -228,29 +228,29 @@ QGitOId QGitRepository::createCommit(const QString& ref,
         p.append(parent.data());
     }
 
-    QGitOId oid;
+    OId oid;
     qGitThrow(git_commit_create(oid.data(), data(), QFile::encodeName(ref), author.data(), committer.data(),
                                 NULL, message.toUtf8(), tree.data(), p.size(), p.data()));
     return oid;
 }
 
-QGitOId QGitRepository::createTag(const QString& name,
+OId QGitRepository::createTag(const QString& name,
                                   const Object& target,
                                   bool overwrite)
 {
-    QGitOId oid;
+    OId oid;
     qGitThrow(git_tag_create_lightweight(oid.data(), data(), QFile::encodeName(name),
                                          target.data(), overwrite));
     return oid;
 }
 
-QGitOId QGitRepository::createTag(const QString& name,
+OId QGitRepository::createTag(const QString& name,
                                   const Object& target,
                                   const QGitSignature& tagger,
                                   const QString& message,
                                   bool overwrite)
 {
-    QGitOId oid;
+    OId oid;
     qGitThrow(git_tag_create(oid.data(), data(), QFile::encodeName(name), target.data(),
                              tagger.data(), message.toUtf8(), overwrite));
     return oid;
@@ -261,16 +261,16 @@ void QGitRepository::deleteTag(const QString& name)
     qGitThrow(git_tag_delete(data(), QFile::encodeName(name)));
 }
 
-QGitOId QGitRepository::createBlobFromFile(const QString& path)
+OId QGitRepository::createBlobFromFile(const QString& path)
 {
-    QGitOId oid;
+    OId oid;
     qGitThrow(git_blob_create_fromdisk(oid.data(), data(), QFile::encodeName(path)));
     return oid;
 }
 
-QGitOId QGitRepository::createBlobFromBuffer(const QByteArray& buffer)
+OId QGitRepository::createBlobFromBuffer(const QByteArray& buffer)
 {
-    QGitOId oid;
+    OId oid;
     qGitThrow(git_blob_create_frombuffer(oid.data(), data(), buffer.data(), buffer.size()));
     return oid;
 }

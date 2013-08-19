@@ -40,9 +40,9 @@ IndexEntry::~IndexEntry()
 {
 }
 
-QGitOId IndexEntry::id() const
+OId IndexEntry::id() const
 {
-    return QGitOId(&d->oid);
+    return OId(&d->oid);
 }
 
 QString IndexEntry::path() const

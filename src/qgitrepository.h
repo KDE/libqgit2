@@ -231,7 +231,7 @@ namespace LibQGit2
              * @throws QGitException
              * @return The OId of the target 
              */
-            QGitOId* lookupRefOId(const QString& name) const;
+            OId* lookupRefOId(const QString& name) const;
 
             /**
              * Lookup a reference by its shorthand name in a repository.
@@ -246,35 +246,35 @@ namespace LibQGit2
              *
              * @throws QGitException
              */
-            Commit lookupCommit(const QGitOId& oid) const;
+            Commit lookupCommit(const OId& oid) const;
 
             /**
              * Lookup a tag object from the repository.
              *
              * @throws QGitException
              */
-            QGitTag lookupTag(const QGitOId& oid) const;
+            QGitTag lookupTag(const OId& oid) const;
 
             /**
              * Lookup a tree object from the repository.
              *
              * @throws QGitException
              */
-            QGitTree lookupTree(const QGitOId& oid) const;
+            QGitTree lookupTree(const OId& oid) const;
 
             /**
              * Lookup a blob object from a repository.
              *
              * @throws QGitException
              */
-            Blob lookupBlob(const QGitOId& oid) const;
+            Blob lookupBlob(const OId& oid) const;
 
             /**
              * Lookup a reference to one of the objects in a repostory.
              *
              * @throws QGitException
              */
-            Object lookupAny(const QGitOId& oid) const;
+            Object lookupAny(const OId& oid) const;
 
             /**
              * Create a new object id reference.
@@ -287,7 +287,7 @@ namespace LibQGit2
              *
              * @throws QGitException
              */
-            Reference* createRef(const QString& name, const QGitOId& oid, bool overwrite = true);
+            Reference* createRef(const QString& name, const OId& oid, bool overwrite = true);
 
             /**
              * Create a new symbolic reference.
@@ -307,7 +307,7 @@ namespace LibQGit2
              *
              * @throws QGitException
              */
-            QGitOId createCommit(const QString& ref,
+            OId createCommit(const QString& ref,
                                  const QGitSignature& author,
                                  const QGitSignature& committer,
                                  const QString& message,
@@ -323,7 +323,7 @@ namespace LibQGit2
              *
              * @throws QGitException
              */
-            QGitOId createTag(const QString& name,
+            OId createTag(const QString& name,
                               const Object& target,
                               bool overwrite = true);
 
@@ -336,7 +336,7 @@ namespace LibQGit2
              *
              * @throws QGitException
              */
-            QGitOId createTag(const QString& name,
+            OId createTag(const QString& name,
                               const Object& target,
                               const QGitSignature& tagger,
                               const QString& message,
@@ -355,14 +355,14 @@ namespace LibQGit2
              *
              * @throws QGitException
              */
-            QGitOId createBlobFromFile(const QString& path);
+            OId createBlobFromFile(const QString& path);
 
             /**
              * Write an in-memory buffer to the ODB as a blob
              *
              * @throws QGitException
              */
-            QGitOId createBlobFromBuffer(const QByteArray& buffer);
+            OId createBlobFromBuffer(const QByteArray& buffer);
 
             /**
              * Create a list with all the tags in the Repository

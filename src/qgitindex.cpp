@@ -52,9 +52,9 @@ void Index::open(const QString& indexPath)
     d = ptr_type(index, git_index_free);
 }
 
-QGitOId Index::createTree()
+OId Index::createTree()
 {
-    QGitOId oid;
+    OId oid;
     qGitThrow(git_index_write_tree(oid.data(), data()));
     return oid;
 }

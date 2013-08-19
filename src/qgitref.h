@@ -31,7 +31,7 @@
 namespace LibQGit2
 {
     class QGitRepository;
-    class QGitOId;
+    class OId;
 
     /**
      * @brief Wrapper class for git_refs.
@@ -68,7 +68,7 @@ namespace LibQGit2
              *
              * @return a pointer to the oid if available, NULL otherwise
              */
-            QGitOId target() const;
+            OId target() const;
 
             /**
              * Get full name to the reference pointed by this reference
@@ -172,7 +172,7 @@ namespace LibQGit2
              * @param target The new target OID for the reference
              * @throws QGitException
              */
-            void setTarget(const QGitOId& oid);
+            void setTarget(const OId& oid);
 
             bool isNull() const;
 

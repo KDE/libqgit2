@@ -29,7 +29,7 @@
 
 namespace LibQGit2
 {
-    class QGitOId;
+    class OId;
     class QGitRepository;
     class IndexEntry;
 
@@ -81,7 +81,7 @@ namespace LibQGit2
              *
              * @throws QGitException
              */
-            QGitOId createTree();
+            OId createTree();
 
             /**
              * Clear the contents (all the entries) of an index object.

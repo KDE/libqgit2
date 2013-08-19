@@ -27,7 +27,7 @@
 
 namespace LibQGit2
 {
-    class QGitOId;
+    class OId;
     class QGitSignature;
     class QGitTree;
     class QGitRepository;
@@ -65,7 +65,7 @@ namespace LibQGit2
             * Get the id of a commit.
             * @return object identity for the commit.
             */
-            QGitOId oid() const;
+            OId oid() const;
 
             /**
              * Get the full message of a commit.
@@ -134,7 +134,7 @@ namespace LibQGit2
              * @param n the position of the entry
              * @return the parent's object id or an empty id, when there is no parent
              */
-            QGitOId parentId(unsigned n) const;
+            OId parentId(unsigned n) const;
 
             git_commit* data() const;
             const git_commit* constData() const;
