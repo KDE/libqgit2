@@ -78,7 +78,7 @@ namespace LibQGit2
              */
             Object toObject(const Repository& repo);
 
-            const git_tree_entry* constData() const;
+            const git_tree_entry* data() const;
 
         private:
             const git_tree_entry *d;
