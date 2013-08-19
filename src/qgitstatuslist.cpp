@@ -44,9 +44,9 @@ size_t QGitStatusList::entryCount()
     return git_status_list_entrycount(data());
 }
 
-const QGitStatusEntry QGitStatusList::entryByIndex(size_t idx)
+const StatusEntry QGitStatusList::entryByIndex(size_t idx)
 {
-    return QGitStatusEntry(git_status_byindex(data(), idx));
+    return StatusEntry(git_status_byindex(data(), idx));
 }
 
 git_status_list* QGitStatusList::data() const

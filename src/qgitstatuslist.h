@@ -55,7 +55,7 @@ public:
     /**
      * Returns the entry with the given index.
      */
-    const QGitStatusEntry entryByIndex(size_t idx);
+    const StatusEntry entryByIndex(size_t idx);
 
     git_status_list* data() const;
     const git_status_list* constData() const;

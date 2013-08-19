@@ -26,36 +26,36 @@
 
 using namespace LibQGit2;
 
-QGitStatusEntry::QGitStatusEntry(const git_status_entry *entry)
+StatusEntry::StatusEntry(const git_status_entry *entry)
     : d(entry)
 {
 }
 
-QGitStatusEntry::QGitStatusEntry(const QGitStatusEntry &other)
+StatusEntry::StatusEntry(const StatusEntry &other)
     : d(other.d)
 {
 }
 
-QGitStatusEntry::~QGitStatusEntry()
+StatusEntry::~StatusEntry()
 {
 }
 
-Status QGitStatusEntry::status() const
+Status StatusEntry::status() const
 {
     return Status(d->status);
 }
 
-QString QGitStatusEntry::oldPath() const
+QString StatusEntry::oldPath() const
 {
     return QFile::decodeName(d->index_to_workdir->old_file.path);
 }
 
-QString QGitStatusEntry::newPath() const
+QString StatusEntry::newPath() const
 {
     return QFile::decodeName(d->index_to_workdir->new_file.path);
 }
 
-QString QGitStatusEntry::path() const
+QString StatusEntry::path() const
 {
     if (d->index_to_workdir->old_file.path) {
         return QFile::decodeName(d->index_to_workdir->old_file.path);
