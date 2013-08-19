@@ -20,6 +20,9 @@
 #ifndef LIBQGIT2_REPOSITORY_H
 #define LIBQGIT2_REPOSITORY_H
 
+#include <QtCore/QSharedPointer>
+#include <QtCore/QStringList>
+
 #include "libqgit2_export.h"
 
 #include "qgitdatabase.h"
@@ -28,9 +31,6 @@
 #include "qgitindex.h"
 #include "qgitstatuslist.h"
 #include "qgitstatusoptions.h"
-
-#include <QtCore/QSharedPointer>
-#include <QtCore/QStringList>
 
 namespace LibQGit2
 {
@@ -156,7 +156,7 @@ namespace LibQGit2
              *
              * @throws QGitException
              */
-            QGitRef head() const;
+            Reference head() const;
 
             /**
              * Check if a repository's HEAD is detached
@@ -220,9 +220,26 @@ namespace LibQGit2
              * Lookup a reference by its name in a repository.
              *
              * @throws QGitException
+             * @return The reference with the given name
              */
-            QGitRef lookupRef(const QString& name) const;
+            Reference* lookupRef(const QString& name) const;
 
+            /**
+             * Lookup a reference by its name in a repository and returns the oid of its target.
+             *
+             * @throws QGitException
+             * @return The OId of the target 
+             */
+            QGitOId* lookupRefOId(const QString& name) const;
+
+            /**
+             * Lookup a reference by its shorthand name in a repository.
+             *
+             * @throws QGitException
+             * @return The reference with the given name
+             */
+            Reference* lookupShorthandRef(const QString& shorthand) const;
+            
             /**
              * Lookup a commit object from a repository.
              *
@@ -269,7 +286,7 @@ namespace LibQGit2
              *
              * @throws QGitException
              */
-            QGitRef createRef(const QString& name, const QGitOId& oid, bool overwrite = true);
+            Reference* createRef(const QString& name, const QGitOId& oid, bool overwrite = true);
 
             /**
              * Create a new symbolic reference.
@@ -282,7 +299,7 @@ namespace LibQGit2
              *
              * @throws QGitException
              */
-            QGitRef createSymbolicRef(const QString& name, const QString& target, bool overwrite = true);
+            Reference* createSymbolicRef(const QString& name, const QString& target, bool overwrite = true);
 
             /**
              * Create a new commit in the repository

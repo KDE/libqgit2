@@ -31,7 +31,7 @@ class QGitException;
 class QGitRepository;
 class QGitOId;
 class QGitCommit;
-class QGitRef;
+class Reference;
 
 /**
   * @brief Wrapper class for git_revwalk.
@@ -106,7 +106,7 @@ public:
      * @param reference the reference to strat from.
      * @throws QGitException
      */
-    void push(const QGitRef& reference) const;
+    void push(const Reference& reference) const;
 
     /**
      * Mark the references matching the given glob as a starting point.
@@ -168,7 +168,7 @@ public:
      * @param reference the reference to strat from.
      * @throws QGitException
      */
-    void hide(const QGitRef& reference) const;
+    void hide(const Reference& reference) const;
 
     /**
      * Hide the references matching the given glob and its ancestors from the walker.

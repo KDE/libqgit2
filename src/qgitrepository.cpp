@@ -17,6 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <QtCore/QDir>
+#include <QtCore/QFile>
+#include <QtCore/QFileInfo>
+#include <QtCore/QVector>
+#include <QtCore/QStringList>
+
 #include <qgitrepository.h>
 #include <qgitcommit.h>
 #include <qgitconfig.h>
@@ -26,12 +32,6 @@
 #include <qgitsignature.h>
 #include <qgitexception.h>
 #include <qgitstatus.h>
-
-#include <QtCore/QDir>
-#include <QtCore/QFile>
-#include <QtCore/QFileInfo>
-#include <QtCore/QVector>
-#include <QtCore/QStringList>
 
 namespace {
 void do_not_free(git_repository*) {}
@@ -87,11 +87,11 @@ void QGitRepository::discoverAndOpen(const QString &startPath,
     open(discover(startPath, acrossFs, ceilingDirs));
 }
 
-QGitRef QGitRepository::head() const
+Reference QGitRepository::head() const
 {
     git_reference *ref = 0;
     qGitThrow(git_repository_head(&ref, data()));
-    return QGitRef(ref);
+    return Reference(ref);
 }
 
 bool QGitRepository::isHeadDetached() const
@@ -140,11 +140,28 @@ QGitConfig QGitRepository::configuration() const
     return QGitConfig(cfg);
 }
 
-QGitRef QGitRepository::lookupRef(const QString& name) const
+Reference* QGitRepository::lookupRef(const QString& name) const
 {
     git_reference *ref = 0;
     qGitThrow(git_reference_lookup(&ref, data(), QFile::encodeName(name)));
-    return QGitRef(ref);
+    Reference* qr = new Reference(ref);
+    return qr;
+}
+
+QGitOId* QGitRepository::lookupRefOId(const QString& name) const
+{
+    git_oid oid;
+    qGitThrow(git_reference_name_to_id(&oid, data(), QFile::encodeName(name)));
+    QGitOId* qo = new QGitOId(&oid);
+    return qo;
+}
+
+Reference* QGitRepository::lookupShorthandRef(const QString& shorthand) const
+{
+    git_reference *ref = 0;
+    qGitThrow(git_reference_dwim(&ref, data(), QFile::encodeName(shorthand)));
+    Reference* qr = new Reference(ref);
+    return qr;
 }
 
 QGitCommit QGitRepository::lookupCommit(const QGitOId& oid) const
@@ -182,18 +199,20 @@ QGitObject QGitRepository::lookupAny(const QGitOId &oid) const
     return QGitObject(object);
 }
 
-QGitRef QGitRepository::createRef(const QString& name, const QGitOId& oid, bool overwrite)
+Reference* QGitRepository::createRef(const QString& name, const LibQGit2::QGitOId& oid, bool overwrite)
 {
     git_reference *ref = 0;
     qGitThrow(git_reference_create(&ref, data(), QFile::encodeName(name), oid.constData(), overwrite));
-    return QGitRef(ref);
+    Reference* qr = new Reference(ref);
+    return qr;
 }
 
-QGitRef QGitRepository::createSymbolicRef(const QString& name, const QString& target, bool overwrite)
+Reference* QGitRepository::createSymbolicRef(const QString& name, const QString& target, bool overwrite)
 {
     git_reference *ref = 0;
     qGitThrow(git_reference_symbolic_create(&ref, data(), QFile::encodeName(name), QFile::encodeName(target), overwrite));
-    return QGitRef(ref);
+    Reference* qr = new Reference(ref);
+    return qr;
 }
 
 QGitOId QGitRepository::createCommit(const QString& ref,

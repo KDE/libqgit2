@@ -20,6 +20,7 @@
 #ifndef LIBQGIT2_REF_H
 #define LIBQGIT2_REF_H
 
+#include <QtCore/QSharedPointer>
 #include <QtCore/QString>
 
 #include "git2.h"
@@ -38,24 +39,24 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_REFS_EXPORT QGitRef
+    class LIBQGIT2_REFS_EXPORT Reference
     {
         public:
 
             /**
              * Create an new ref object
              */
-            explicit QGitRef(git_reference *ref = 0);
+            explicit Reference(git_reference *ref = 0);
 
             /**
              * Copy constructor
              */
-            QGitRef(const QGitRef& other);
+            Reference(const Reference& other);
 
             /**
              * Free an existing reference object.
              */
-            ~QGitRef();
+            ~Reference();
 
         public:
 
@@ -107,7 +108,7 @@ namespace LibQGit2
              * @return 0 on success; error code otherwise
              * @throws QGitException
              */
-            QGitRef resolve() const;
+            Reference resolve() const;
 
             /**
              * Write a reference back to disk.
@@ -178,7 +179,8 @@ namespace LibQGit2
             const git_reference* constData() const;
 
         private:
-            git_reference *m_reference;
+            typedef QSharedPointer<git_reference> ptr_type;
+            ptr_type d;
     };
 
     /**@}*/

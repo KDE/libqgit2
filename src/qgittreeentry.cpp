@@ -57,7 +57,7 @@ const QString QGitTreeEntry::name() const
 
 QGitOId QGitTreeEntry::oid() const
 {
-    return QGitOId( git_tree_entry_id(d) );
+    return QGitOId(git_tree_entry_id(d));
 }
 
 QGitObject QGitTreeEntry::toObject(const QGitRepository& repo)

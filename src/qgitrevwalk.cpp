@@ -60,7 +60,7 @@ void QGitRevWalk::push(const QGitCommit& commit) const
     qGitThrow(git_revwalk_push(m_revWalk, commit.oid().constData()));
 }
 
-void QGitRevWalk::push(const QGitRef& reference) const
+void QGitRevWalk::push(const Reference& reference) const
 {
     qGitThrow(git_revwalk_push_glob(m_revWalk, reference.name().toUtf8().constData()));
 }
@@ -90,7 +90,7 @@ void QGitRevWalk::hide(const QGitCommit& commit) const
     qGitThrow(git_revwalk_hide(m_revWalk, commit.oid().constData()));
 }
 
-void QGitRevWalk::hide(const QGitRef& reference) const
+void QGitRevWalk::hide(const Reference& reference) const
 {
     qGitThrow(git_revwalk_hide_glob(m_revWalk, reference.name().toUtf8().data()));
 }

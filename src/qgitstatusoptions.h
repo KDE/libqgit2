@@ -23,7 +23,6 @@
 #include "git2.h"
 
 #include "libqgit2_export.h"
-#include <my_libgit2/include/git2/status.h>
 
 namespace LibQGit2
 {
