@@ -32,7 +32,16 @@ namespace LibQGit2
 {
     /**
      * @brief Wrapper class for git_oid.
-     * Represents a Git sha1 object id.
+     * 
+     * This class holds a Git SHA1 object id, i.e. 40 hexadecimal digits.
+     * Instead of using the git_oid structure, which is an unsigned char array,
+     * the object redefines it as a QByteArray and provides the conversion
+     * to git_oid through data() and constData().
+     * 
+     * Remember that the QByteArray stores 2 hexadecimal digits for each
+     * element, so the length of the array is half that of the SHA1, namely 20 bytes.
+     * This can either encompass a full oid (40 hexadecimal digits) or a part of it,
+     * (short reference).
      *
      * @ingroup LibQGit2
      * @{
@@ -57,6 +66,49 @@ namespace LibQGit2
             ~OId();
 
             /**
+             * Set the value of the object parsing a hex array.
+             * 
+             * This method parses an array of hexadecimal values trying to
+             * convert it into an OId.
+             * If the array contains more than 40 values, only the first 40
+             * will be converted.
+             * If the array contains less than 40 values the resulting OId
+             * will be a shortened OId, or a prefix.
+             *
+             * @param hex
+             * Input hex string; must be at least 4 bytes.
+             *
+             * @throws Exception
+             */
+            void fromHex(const QByteArray& hex);
+
+            /**
+             * Set the value of the object parsing a string.
+             * 
+             * This method behaves just like fromHex() but parses a string
+             * that contains hexadecimal values. The same rules of fromHex()
+             * apply here.
+             * 
+             * @param string
+             * Input string; must be at least 4 characters long.
+             * 
+             * @throws Exception
+             */
+            void fromString(const QString& string);
+            
+            /**
+             * Set the value of the object from a raw oid.
+             * 
+             * This method uses the input raw hexadecimal array without parsing
+             * it and without performing prefix lookup. The raw array must be
+             * 40 characters long, otherwise throws Exception.
+             * 
+             * @param raw the raw input bytes to be copied.
+             * @throws Exception
+             */
+            void fromRawData(const QByteArray& raw);
+
+            /**
              * Parse a hex formatted object id into a OId.
              *
              * @param string
@@ -64,15 +116,15 @@ namespace LibQGit2
              * at least 4 bytes.
              *
              * @return OId; null OId on failure.
-             * @throws LibQGit2::Exception
+             * @throws Exception
              */
-            static OId fromString(const QByteArray& string);
+            static OId stringToOid(const QByteArray& string);
 
             /**
              * Copy an already raw oid into a git_oid structure.
              * @param raw the raw input bytes to be copied.
              */
-            static OId fromRawData(const QByteArray& raw);
+            static OId rawDataToOid(const QByteArray& raw);
 
             /**
               Checks if this is a valid Git OId. An OId is invalid if it is empty or 0x0000... (20 byte).
@@ -97,10 +149,11 @@ namespace LibQGit2
             const git_oid* constData() const;
 
             /**
-             * Returns the length of the OId as a number of hexadecimal characters.
+             * Returns the length of the OId as a number of hexadecimal
+             * characters.
              *
-             * The full length of a OId is 40, but the OId represented by this class may be smaller,
-             * if it represents a prefix created with fromString().
+             * The full length of a OId is 40, but the OId represented by this
+             * class may be shorter.
              */
             int length() const;
 
