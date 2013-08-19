@@ -57,9 +57,9 @@ const QString QGitTag::name() const
     return git_tag_name(data());
 }
 
-QGitSignature QGitTag::tagger() const
+Signature QGitTag::tagger() const
 {
-    return QGitSignature(git_tag_tagger(data()));
+    return Signature(git_tag_tagger(data()));
 }
 
 const QString QGitTag::message()

@@ -40,7 +40,7 @@ namespace LibQGit2
     class QGitTag;
     class QGitTree;
     class Blob;
-    class QGitSignature;
+    class Signature;
 
     /**
      * @brief Wrapper class for git_repository.
@@ -308,8 +308,8 @@ namespace LibQGit2
              * @throws QGitException
              */
             OId createCommit(const QString& ref,
-                                 const QGitSignature& author,
-                                 const QGitSignature& committer,
+                                 const Signature& author,
+                                 const Signature& committer,
                                  const QString& message,
                                  const QGitTree& tree,
                                  const QList<Commit>& parents);
@@ -338,7 +338,7 @@ namespace LibQGit2
              */
             OId createTag(const QString& name,
                               const Object& target,
-                              const QGitSignature& tagger,
+                              const Signature& tagger,
                               const QString& message,
                               bool overwrite = true);
 

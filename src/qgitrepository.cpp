@@ -217,8 +217,8 @@ Reference* Repository::createSymbolicRef(const QString& name, const QString& tar
 }
 
 OId Repository::createCommit(const QString& ref,
-                                     const QGitSignature& author,
-                                     const QGitSignature& committer,
+                                     const Signature& author,
+                                     const Signature& committer,
                                      const QString& message,
                                      const QGitTree& tree,
                                      const QList<Commit>& parents)
@@ -246,7 +246,7 @@ OId Repository::createTag(const QString& name,
 
 OId Repository::createTag(const QString& name,
                                   const Object& target,
-                                  const QGitSignature& tagger,
+                                  const Signature& tagger,
                                   const QString& message,
                                   bool overwrite)
 {
