@@ -389,7 +389,7 @@ namespace LibQGit2
              * 
              * @return a pointer to the object db
              */
-            LibQGit2::QGitDatabase database() const;
+            LibQGit2::Database database() const;
 
             /**
              * @brief Get the Index file of a Git repository

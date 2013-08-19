@@ -37,7 +37,7 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_DATABASE_EXPORT QGitDatabase
+    class LIBQGIT2_DATABASE_EXPORT Database
     {
         public:
             /**
@@ -47,11 +47,11 @@ namespace LibQGit2
              * backend must be manually added using `addBackend()`
              *
              */
-            explicit QGitDatabase( git_odb *odb = 0);
+            explicit Database( git_odb *odb = 0);
 
-            QGitDatabase( const QGitDatabase& other );
+            Database( const Database& other );
 
-            ~QGitDatabase();
+            ~Database();
 
         public:
             /**
@@ -111,7 +111,7 @@ namespace LibQGit2
              * - true, if the object was found
              * - false, otherwise
              */
-            int exists(QGitDatabase *db, const QGitOId& id);
+            int exists(Database *db, const QGitOId& id);
 
             git_odb* data() const;
             const git_odb* constData() const;

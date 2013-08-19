@@ -25,51 +25,51 @@
 namespace LibQGit2
 {
 
-QGitDatabase::QGitDatabase(git_odb *odb)
+Database::Database(git_odb *odb)
     : m_database(odb)
 {
 }
 
-QGitDatabase::QGitDatabase( const QGitDatabase& other )
+Database::Database( const Database& other )
 {
     m_database = other.m_database;
 }
 
-QGitDatabase::~QGitDatabase()
+Database::~Database()
 {
 }
 
-int QGitDatabase::open(const QString& objectsDir)
+int Database::open(const QString& objectsDir)
 {
     return git_odb_open(&m_database, QFile::encodeName(objectsDir));
 }
 
-void QGitDatabase::close()
+void Database::close()
 {
     return git_odb_free(m_database);
 }
 
-int QGitDatabase::addBackend(QGitDatabaseBackend *backend, int priority)
+int Database::addBackend(QGitDatabaseBackend *backend, int priority)
 {
     return git_odb_add_backend(m_database, (git_odb_backend *)backend, priority);
 }
 
-int QGitDatabase::addAlternate(QGitDatabaseBackend *backend, int priority)
+int Database::addAlternate(QGitDatabaseBackend *backend, int priority)
 {
     return git_odb_add_alternate(m_database, (git_odb_backend *)backend, priority);
 }
 
-int QGitDatabase::exists(QGitDatabase *db, const QGitOId& id)
+int Database::exists(Database *db, const QGitOId& id)
 {
     return git_odb_exists(db->data(), id.constData());
 }
 
-git_odb* QGitDatabase::data() const
+git_odb* Database::data() const
 {
     return m_database;
 }
 
-const git_odb* QGitDatabase::constData() const
+const git_odb* Database::constData() const
 {
     return m_database;
 }

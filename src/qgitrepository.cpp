@@ -301,11 +301,11 @@ QStringList QGitRepository::listReferences() const
     return list;
 }
 
-QGitDatabase QGitRepository::database() const
+Database QGitRepository::database() const
 {
     git_odb *odb;
     qGitThrow( git_repository_odb(&odb, data()) );
-    return QGitDatabase(odb);
+    return Database(odb);
 }
 
 QGitIndex QGitRepository::index() const
