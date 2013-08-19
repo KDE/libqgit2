@@ -27,7 +27,7 @@
 namespace LibQGit2
 {
 
-TreeEntry::TreeEntry(const git_tree_entry *treeEntry)
+TreeEntry::TreeEntry(const git_tree_entry* treeEntry)
     : d(treeEntry)
 {
 }
@@ -43,7 +43,7 @@ TreeEntry::~TreeEntry()
 
 bool TreeEntry::isNull() const
 {
-    return constData() == 0;
+    return d == 0;
 }
 
 unsigned int TreeEntry::attributes() const
@@ -53,7 +53,7 @@ unsigned int TreeEntry::attributes() const
 
 const QString TreeEntry::name() const
 {
-    return QFile::decodeName( git_tree_entry_name(d) );
+    return QFile::decodeName(git_tree_entry_name(d));
 }
 
 OId TreeEntry::oid() const
@@ -68,7 +68,7 @@ Object TreeEntry::toObject(const Repository& repo)
     return Object(obj);
 }
 
-const git_tree_entry* TreeEntry::constData() const
+const git_tree_entry* TreeEntry::data() const
 {
     return d;
 }
