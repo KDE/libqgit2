@@ -25,7 +25,7 @@
 namespace LibQGit2
 {
 
-QGitException::QGitException()
+Exception::Exception()
 {
     const git_error *err = giterr_last();
 
@@ -35,16 +35,16 @@ QGitException::QGitException()
     }
 }
 
-QGitException::~QGitException() throw()
+Exception::~Exception() throw()
 {
 }
 
-const char *QGitException::what() const throw()
+const char *Exception::what() const throw()
 {
     return m;
 }
 
-QByteArray QGitException::message() const throw()
+QByteArray Exception::message() const throw()
 {
     return m;
 }
@@ -52,7 +52,7 @@ QByteArray QGitException::message() const throw()
 int qGitThrow(int ret)
 {
     if (ret < 0) {
-        throw QGitException();
+        throw Exception();
     }
     return ret;
 }

@@ -31,12 +31,12 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_EXPORT QGitException : public std::exception
+    class LIBQGIT2_EXPORT Exception : public std::exception
     {
         public:
-            QGitException();
+            Exception();
 
-            ~QGitException() throw();
+            ~Exception() throw();
 
             const char *what() const throw();
 

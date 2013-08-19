@@ -28,7 +28,7 @@
 namespace LibQGit2
 {
 
-class QGitException;
+class Exception;
 class QGitRepository;
 class QGitOId;
 class Commit;
