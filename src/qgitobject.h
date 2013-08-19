@@ -1,6 +1,7 @@
 /******************************************************************************
  * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,7 +36,7 @@ namespace LibQGit2
     class QGitCommit;
     class QGitTag;
     class QGitTree;
-    class QGitBlob;
+    class Blob;
 
     /**
      * @brief Wrapper class for git_object.
@@ -95,7 +96,7 @@ namespace LibQGit2
              * If the type of the object is blob, then a valid blob object is returned,
              * otherwise the returned object will be null.
              */
-            QGitBlob toBlob() const;
+            Blob toBlob() const;
 
             /**
              * Return true if the git object pointer owned by this instance is null

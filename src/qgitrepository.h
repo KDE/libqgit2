@@ -1,6 +1,7 @@
 /******************************************************************************
  * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -38,7 +39,7 @@ namespace LibQGit2
     class QGitConfig;
     class QGitTag;
     class QGitTree;
-    class QGitBlob;
+    class Blob;
     class QGitSignature;
 
     /**
@@ -266,7 +267,7 @@ namespace LibQGit2
              *
              * @throws QGitException
              */
-            QGitBlob lookupBlob(const QGitOId& oid) const;
+            Blob lookupBlob(const QGitOId& oid) const;
 
             /**
              * Lookup a reference to one of the objects in a repostory.

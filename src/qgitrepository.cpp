@@ -1,6 +1,7 @@
 /******************************************************************************
  * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -185,11 +186,11 @@ QGitTree QGitRepository::lookupTree(const QGitOId& oid) const
     return QGitTree(tree);
 }
 
-QGitBlob QGitRepository::lookupBlob(const QGitOId& oid) const
+Blob QGitRepository::lookupBlob(const QGitOId& oid) const
 {
     git_blob *blob = 0;
     qGitThrow(git_blob_lookup_prefix(&blob, data(), oid.constData(), oid.length()));
-    return QGitBlob(blob);
+    return Blob(blob);
 }
 
 QGitObject QGitRepository::lookupAny(const QGitOId &oid) const

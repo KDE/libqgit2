@@ -1,6 +1,7 @@
 /******************************************************************************
  * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,27 +32,27 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_BLOB_EXPORT QGitBlob : public QGitObject
+    class LIBQGIT2_BLOB_EXPORT Blob : public QGitObject
     {
         public:
 
             /**
-             * Creates a QGitBlob that points to blob. The pointer object becomes managed by
-             * this QGitBlob, and must not be passed to another QGitBlob or closed outside this
+             * Creates a Blob that points to blob. The pointer object becomes managed by
+             * this Blob, and must not be passed to another Blob or closed outside this
              * object.
              */
-            explicit QGitBlob(git_blob *blob = 0);
+            explicit Blob(git_blob *blob = 0);
 
             /**
              * Copy constructor; creates a copy of the object, sharing the same underlaying data
              * structure.
              */
-            QGitBlob(const QGitBlob& other);
+            Blob(const Blob& other);
 
             /**
              * Destroys the object.
              */
-            ~QGitBlob();
+            ~Blob();
 
             /**
              * Get a read-only buffer with the raw content of a blob.

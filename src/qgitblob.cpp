@@ -1,6 +1,7 @@
 /******************************************************************************
  * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,41 +27,41 @@
 namespace LibQGit2
 {
 
-QGitBlob::QGitBlob(git_blob *blob)
+Blob::Blob(git_blob *blob)
     : QGitObject(reinterpret_cast<git_object*>(blob))
 {
 }
 
-QGitBlob::QGitBlob( const QGitBlob& other )
+Blob::Blob( const Blob& other )
     : QGitObject(other)
 {
 }
 
-QGitBlob::~QGitBlob()
+Blob::~Blob()
 {
 }
 
-const void* QGitBlob::rawContent() const
+const void* Blob::rawContent() const
 {
     return git_blob_rawcontent(data());
 }
 
-QByteArray QGitBlob::content() const
+QByteArray Blob::content() const
 {
     return QByteArray::fromRawData( static_cast<const char *>(rawContent()), rawSize() );
 }
 
-int QGitBlob::rawSize() const
+int Blob::rawSize() const
 {
     return git_blob_rawsize(data());
 }
 
-git_blob* QGitBlob::data() const
+git_blob* Blob::data() const
 {
     return reinterpret_cast<git_blob*>(QGitObject::data());
 }
 
-const git_blob* QGitBlob::constData() const
+const git_blob* Blob::constData() const
 {
     return reinterpret_cast<git_blob*>(QGitObject::data());
 }
