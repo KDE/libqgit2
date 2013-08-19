@@ -308,11 +308,11 @@ Database QGitRepository::database() const
     return Database(odb);
 }
 
-QGitIndex QGitRepository::index() const
+Index QGitRepository::index() const
 {
     git_index *idx;
     qGitThrow(git_repository_index(&idx, data()));
-    return QGitIndex(idx);
+    return Index(idx);
 }
 
 QGitStatusList QGitRepository::status(const QGitStatusOptions *options) const

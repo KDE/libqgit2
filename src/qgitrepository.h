@@ -400,7 +400,7 @@ namespace LibQGit2
              * @throws QGitException
              * @return The index file of the repository
              */
-            QGitIndex index() const;
+            Index index() const;
 
             /**
              * @brief Get the status information of the Git repository

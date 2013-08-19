@@ -40,7 +40,7 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_INDEX_EXPORT QGitIndex
+    class LIBQGIT2_INDEX_EXPORT Index
     {
         public:
 
@@ -49,18 +49,18 @@ namespace LibQGit2
              * this QGitIndex, and must not be passed to another QGitIndex or freed outside this
              * object.
              */
-            explicit QGitIndex(git_index *index = 0);
+            explicit Index(git_index *index = 0);
 
             /**
              * Copy constructor; creates a copy of the object, sharing the same underlaying data
              * structure.
              */
-            QGitIndex(const QGitIndex& other);
+            Index(const Index& other);
 
             /**
              * Destruct an existing index object.
              */
-            ~QGitIndex();
+            ~Index();
 
             /**
              * Create a index object as a memory representation

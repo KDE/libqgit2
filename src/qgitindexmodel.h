@@ -33,7 +33,7 @@ class LIBQGIT2_INDEX_EXPORT QGitIndexModel : public QAbstractListModel
     Q_OBJECT
 
 public:
-    explicit QGitIndexModel(const QGitIndex& index, QObject *parent = 0);
+    explicit QGitIndexModel(const Index& index, QObject *parent = 0);
     ~QGitIndexModel();
 
     int rowCount(const QModelIndex& parent) const;
@@ -41,7 +41,7 @@ public:
     QVariant data(const QModelIndex& index, int role) const;
 
 private:
-    QGitIndex m_index;
+    Index m_index;
 };
 
 }

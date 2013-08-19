@@ -25,7 +25,7 @@
 namespace LibQGit2
 {
 
-QGitIndexModel::QGitIndexModel(const QGitIndex& index, QObject *parent)
+QGitIndexModel::QGitIndexModel(const Index& index, QObject *parent)
     : QAbstractListModel(parent)
     , m_index(index)
 {
