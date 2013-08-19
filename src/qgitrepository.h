@@ -36,7 +36,7 @@
 namespace LibQGit2
 {
     class Commit;
-    class QGitConfig;
+    class Config;
     class QGitTag;
     class QGitTree;
     class Blob;
@@ -215,7 +215,7 @@ namespace LibQGit2
             /**
              * The repositories configuration file. Includes the global git configuration file.
              */
-            QGitConfig configuration() const;
+            Config configuration() const;
 
             /**
              * Lookup a reference by its name in a repository.

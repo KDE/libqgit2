@@ -38,7 +38,7 @@ namespace LibQGit2
       * @ingroup LibQGit2
       * @{
       */
-    class LIBQGIT2_EXPORT QGitConfig
+    class LIBQGIT2_EXPORT Config
     {
     public:
         /**
@@ -46,9 +46,9 @@ namespace LibQGit2
           *
           * @param cfg when given, the instance is used instead of creating a new one
           */
-        QGitConfig(git_config *cfg = 0);
-        QGitConfig(const QGitConfig &other);
-        virtual ~QGitConfig();
+        Config(git_config *cfg = 0);
+        Config(const Config &other);
+        virtual ~Config();
 
         /**
           * Creates a new configuration object and adds the global Git configuration when found.
@@ -56,7 +56,7 @@ namespace LibQGit2
           *
           * @return the new instance
           */
-        static QGitConfig fromGlobalConfig();
+        static Config fromGlobalConfig();
 
         /**
           * Appends a config file with the given access priority.

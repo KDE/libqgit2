@@ -134,11 +134,11 @@ QString QGitRepository::workDirPath() const
     return QFile::decodeName(git_repository_workdir(data()));
 }
 
-QGitConfig QGitRepository::configuration() const
+Config QGitRepository::configuration() const
 {
     git_config *cfg;
     qGitThrow( git_repository_config(&cfg, data()) );
-    return QGitConfig(cfg);
+    return Config(cfg);
 }
 
 Reference* QGitRepository::lookupRef(const QString& name) const
