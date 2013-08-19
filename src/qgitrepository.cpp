@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
  */
 
 #include <QtCore/QDir>
@@ -91,28 +91,28 @@ void Repository::discoverAndOpen(const QString &startPath,
 Reference Repository::head() const
 {
     git_reference *ref = 0;
-    qGitThrow(git_repository_head(&ref, data()));
+    qGitThrow(git_repository_head(&ref, d.data()));
     return Reference(ref);
 }
 
 bool Repository::isHeadDetached() const
 {
-    return qGitThrow(git_repository_head_detached(data())) == 1;
+    return qGitThrow(git_repository_head_detached(d.data())) == 1;
 }
 
 bool Repository::isHeadOrphan() const
 {
-    return qGitThrow(git_repository_head_orphan(data())) == 1;
+    return qGitThrow(git_repository_head_orphan(d.data())) == 1;
 }
 
 bool Repository::isEmpty() const
 {
-    return qGitThrow(git_repository_is_empty(data())) == 1;
+    return qGitThrow(git_repository_is_empty(d.data())) == 1;
 }
 
 bool Repository::isBare() const
 {
-    return qGitThrow(git_repository_is_bare(data())) == 1;
+    return qGitThrow(git_repository_is_bare(d.data())) == 1;
 }
 
 QString Repository::name() const
@@ -126,25 +126,25 @@ QString Repository::name() const
 
 QString Repository::path() const
 {
-    return QFile::decodeName(git_repository_path(data()));
+    return QFile::decodeName(git_repository_path(d.data()));
 }
 
 QString Repository::workDirPath() const
 {
-    return QFile::decodeName(git_repository_workdir(data()));
+    return QFile::decodeName(git_repository_workdir(d.data()));
 }
 
 Config Repository::configuration() const
 {
     git_config *cfg;
-    qGitThrow( git_repository_config(&cfg, data()) );
+    qGitThrow( git_repository_config(&cfg, d.data()) );
     return Config(cfg);
 }
 
 Reference* Repository::lookupRef(const QString& name) const
 {
     git_reference *ref = 0;
-    qGitThrow(git_reference_lookup(&ref, data(), QFile::encodeName(name)));
+    qGitThrow(git_reference_lookup(&ref, d.data(), QFile::encodeName(name)));
     Reference* qr = new Reference(ref);
     return qr;
 }
@@ -152,15 +152,15 @@ Reference* Repository::lookupRef(const QString& name) const
 OId* Repository::lookupRefOId(const QString& name) const
 {
     git_oid oid;
-    qGitThrow(git_reference_name_to_id(&oid, data(), QFile::encodeName(name)));
-    OId* qo = new OId(&oid);
-    return qo;
+    qGitThrow(git_reference_name_to_id(&oid, d.data(), QFile::encodeName(name)));
+    OId* qoid = new OId(&oid);
+    return qoid;
 }
 
 Reference* Repository::lookupShorthandRef(const QString& shorthand) const
 {
     git_reference *ref = 0;
-    qGitThrow(git_reference_dwim(&ref, data(), QFile::encodeName(shorthand)));
+    qGitThrow(git_reference_dwim(&ref, d.data(), QFile::encodeName(shorthand)));
     Reference* qr = new Reference(ref);
     return qr;
 }
@@ -168,42 +168,42 @@ Reference* Repository::lookupShorthandRef(const QString& shorthand) const
 Commit Repository::lookupCommit(const OId& oid) const
 {
     git_commit *commit = 0;
-    qGitThrow(git_commit_lookup_prefix(&commit, data(), oid.constData(), oid.length()));
+    qGitThrow(git_commit_lookup_prefix(&commit, d.data(), oid.constData(), oid.length()));
     return Commit(commit);
 }
 
 Tag Repository::lookupTag(const OId& oid) const
 {
     git_tag *tag = 0;
-    qGitThrow(git_tag_lookup_prefix(&tag, data(), oid.constData(), oid.length()));
+    qGitThrow(git_tag_lookup_prefix(&tag, d.data(), oid.constData(), oid.length()));
     return Tag(tag);
 }
 
 Tree Repository::lookupTree(const OId& oid) const
 {
     git_tree *tree = 0;
-    qGitThrow(git_tree_lookup_prefix(&tree, data(), oid.constData(), oid.length()));
+    qGitThrow(git_tree_lookup_prefix(&tree, d.data(), oid.constData(), oid.length()));
     return Tree(tree);
 }
 
 Blob Repository::lookupBlob(const OId& oid) const
 {
     git_blob *blob = 0;
-    qGitThrow(git_blob_lookup_prefix(&blob, data(), oid.constData(), oid.length()));
+    qGitThrow(git_blob_lookup_prefix(&blob, d.data(), oid.constData(), oid.length()));
     return Blob(blob);
 }
 
 Object Repository::lookupAny(const OId &oid) const
 {
     git_object *object = 0;
-    qGitThrow(git_object_lookup_prefix(&object, data(), oid.constData(), oid.length(), GIT_OBJ_ANY));
+    qGitThrow(git_object_lookup_prefix(&object, d.data(), oid.constData(), oid.length(), GIT_OBJ_ANY));
     return Object(object);
 }
 
 Reference* Repository::createRef(const QString& name, const LibQGit2::OId& oid, bool overwrite)
 {
     git_reference *ref = 0;
-    qGitThrow(git_reference_create(&ref, data(), QFile::encodeName(name), oid.constData(), overwrite));
+    qGitThrow(git_reference_create(&ref, d.data(), QFile::encodeName(name), oid.constData(), overwrite));
     Reference* qr = new Reference(ref);
     return qr;
 }
@@ -211,7 +211,7 @@ Reference* Repository::createRef(const QString& name, const LibQGit2::OId& oid, 
 Reference* Repository::createSymbolicRef(const QString& name, const QString& target, bool overwrite)
 {
     git_reference *ref = 0;
-    qGitThrow(git_reference_symbolic_create(&ref, data(), QFile::encodeName(name), QFile::encodeName(target), overwrite));
+    qGitThrow(git_reference_symbolic_create(&ref, d.data(), QFile::encodeName(name), QFile::encodeName(target), overwrite));
     Reference* qr = new Reference(ref);
     return qr;
 }
@@ -229,7 +229,7 @@ OId Repository::createCommit(const QString& ref,
     }
 
     OId oid;
-    qGitThrow(git_commit_create(oid.data(), data(), QFile::encodeName(ref), author.data(), committer.data(),
+    qGitThrow(git_commit_create(oid.data(), d.data(), QFile::encodeName(ref), author.data(), committer.data(),
                                 NULL, message.toUtf8(), tree.data(), p.size(), p.data()));
     return oid;
 }
@@ -239,7 +239,7 @@ OId Repository::createTag(const QString& name,
                                   bool overwrite)
 {
     OId oid;
-    qGitThrow(git_tag_create_lightweight(oid.data(), data(), QFile::encodeName(name),
+    qGitThrow(git_tag_create_lightweight(oid.data(), d.data(), QFile::encodeName(name),
                                          target.data(), overwrite));
     return oid;
 }
@@ -251,27 +251,27 @@ OId Repository::createTag(const QString& name,
                                   bool overwrite)
 {
     OId oid;
-    qGitThrow(git_tag_create(oid.data(), data(), QFile::encodeName(name), target.data(),
+    qGitThrow(git_tag_create(oid.data(), d.data(), QFile::encodeName(name), target.data(),
                              tagger.data(), message.toUtf8(), overwrite));
     return oid;
 }
 
 void Repository::deleteTag(const QString& name)
 {
-    qGitThrow(git_tag_delete(data(), QFile::encodeName(name)));
+    qGitThrow(git_tag_delete(d.data(), QFile::encodeName(name)));
 }
 
 OId Repository::createBlobFromFile(const QString& path)
 {
     OId oid;
-    qGitThrow(git_blob_create_fromdisk(oid.data(), data(), QFile::encodeName(path)));
+    qGitThrow(git_blob_create_fromdisk(oid.data(), d.data(), QFile::encodeName(path)));
     return oid;
 }
 
 OId Repository::createBlobFromBuffer(const QByteArray& buffer)
 {
     OId oid;
-    qGitThrow(git_blob_create_frombuffer(oid.data(), data(), buffer.data(), buffer.size()));
+    qGitThrow(git_blob_create_frombuffer(oid.data(), d.data(), buffer.data(), buffer.size()));
     return oid;
 }
 
@@ -279,7 +279,7 @@ QStringList Repository::listTags(const QString& pattern) const
 {
     QStringList list;
     git_strarray tags;
-    qGitThrow(git_tag_list_match(&tags, qPrintable(pattern), data()));
+    qGitThrow(git_tag_list_match(&tags, qPrintable(pattern), d.data()));
     for (size_t i = 0; i < tags.count; ++i)
     {
         list << QString(tags.strings[i]);
@@ -292,7 +292,7 @@ QStringList Repository::listReferences() const
 {
     QStringList list;
     git_strarray refs;
-    qGitThrow(git_reference_list(&refs, data()));
+    qGitThrow(git_reference_list(&refs, d.data()));
     for (size_t i = 0; i < refs.count; ++i)
     {
         list << QString(refs.strings[i]);
@@ -304,14 +304,14 @@ QStringList Repository::listReferences() const
 Database Repository::database() const
 {
     git_odb *odb;
-    qGitThrow( git_repository_odb(&odb, data()) );
+    qGitThrow( git_repository_odb(&odb, d.data()) );
     return Database(odb);
 }
 
 Index Repository::index() const
 {
     git_index *idx;
-    qGitThrow(git_repository_index(&idx, data()));
+    qGitThrow(git_repository_index(&idx, d.data()));
     return Index(idx);
 }
 
@@ -319,7 +319,7 @@ StatusList Repository::status(const StatusOptions *options) const
 {
     const git_status_options opt = options->constData();
     git_status_list *status_list;
-    qGitThrow(git_status_list_new(&status_list, data(), &opt));
+    qGitThrow(git_status_list_new(&status_list, d.data(), &opt));
     return StatusList(status_list);
 }
 
