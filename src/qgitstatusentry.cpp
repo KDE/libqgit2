@@ -40,9 +40,9 @@ QGitStatusEntry::~QGitStatusEntry()
 {
 }
 
-QGitStatus QGitStatusEntry::status() const
+Status QGitStatusEntry::status() const
 {
-    return QGitStatus(d->status);
+    return Status(d->status);
 }
 
 QString QGitStatusEntry::oldPath() const

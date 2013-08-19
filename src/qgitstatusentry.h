@@ -49,7 +49,7 @@ public:
     /**
      * Return the status of the entry
      */
-    QGitStatus status() const;
+    Status status() const;
     
     /**
      * Returns the old path if set, otherwise an empty string
