@@ -36,23 +36,23 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_INDEX_EXPORT QGitIndexEntry
+    class LIBQGIT2_INDEX_EXPORT IndexEntry
     {
         public:
             /**
              * Create a new Git index entry object
              */
-            explicit QGitIndexEntry(const git_index_entry *data);
+            explicit IndexEntry(const git_index_entry *data);
 
             /**
              * Copy constructor
              */
-            QGitIndexEntry(const QGitIndexEntry& other);
+            IndexEntry(const IndexEntry& other);
 
             /**
              * Destruct an existing index object.
              */
-            ~QGitIndexEntry();
+            ~IndexEntry();
 
             /**
              * Get the id of an index entry.

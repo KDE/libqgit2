@@ -89,14 +89,14 @@ void Index::remove(const QString& path, int stage)
     qGitThrow(git_index_remove(data(), QFile::encodeName(path), stage));
 }
 
-void Index::add(const QGitIndexEntry &source_entry)
+void Index::add(const IndexEntry &source_entry)
 {
     qGitThrow(git_index_add(data(), source_entry.data()));
 }
 
-QGitIndexEntry Index::getByIndex(int n) const
+IndexEntry Index::getByIndex(int n) const
 {
-    return QGitIndexEntry(git_index_get_byindex(data(), n));
+    return IndexEntry(git_index_get_byindex(data(), n));
 }
 
 unsigned int Index::entryCount() const

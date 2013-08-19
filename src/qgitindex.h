@@ -31,7 +31,7 @@ namespace LibQGit2
 {
     class QGitOId;
     class QGitRepository;
-    class QGitIndexEntry;
+    class IndexEntry;
 
     /**
      * @brief Wrapper class for git_index.
@@ -141,7 +141,7 @@ namespace LibQGit2
              * @param source_entry new entry object
              * @throws QGitException
              */
-            void add(const QGitIndexEntry& source_entry);
+            void add(const IndexEntry& source_entry);
 
             /**
              * Get a pointer to one of the entries in the index
@@ -152,7 +152,7 @@ namespace LibQGit2
              * @param n the position of the entry
              * @return a pointer to the entry; NULL if out of bounds
              */
-            QGitIndexEntry getByIndex(int n) const;
+            IndexEntry getByIndex(int n) const;
 
             /**
              * Get the count of entries currently in the index

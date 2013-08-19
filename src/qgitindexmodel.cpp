@@ -53,7 +53,7 @@ QVariant QGitIndexModel::data(const QModelIndex& index, int role) const
         return QVariant();
 
     if (role == Qt::DisplayRole || role == Qt::EditRole) {
-        QGitIndexEntry entry = m_index.getByIndex(index.row());
+        IndexEntry entry = m_index.getByIndex(index.row());
         return entry.path();
     } else {
         return QVariant();
