@@ -31,7 +31,7 @@ namespace LibQGit2
 class QGitException;
 class QGitRepository;
 class QGitOId;
-class QGitCommit;
+class Commit;
 class Reference;
 
 /**
@@ -96,7 +96,7 @@ public:
      * @param commit the commit to start from.
      * @throws QGitException
      */
-    void push(const QGitCommit& commit) const;
+    void push(const Commit& commit) const;
 
     /**
      * Mark the given reference as a starting point.
@@ -158,7 +158,7 @@ public:
      * @param commit the commit to start from.
      * @throws QGitException
      */
-    void hide(const QGitCommit& commit) const;
+    void hide(const Commit& commit) const;
 
     /**
      * Hide the given reference and its ancestors from the walker.
@@ -202,10 +202,10 @@ public:
     /**
      * Get the next commit from the revision traversal and look it up in the owner repository.
      *
-     * @param commit The next commit within the set repository, if it was found; otherwise an empty QGitCommit.
+     * @param commit The next commit within the set repository, if it was found; otherwise an empty Commit.
      * @return True when the commit was found.
      */
-    bool next(QGitCommit& commit);
+    bool next(Commit& commit);
 
     /**
      * Change the sorting mode when iterating through the

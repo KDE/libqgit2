@@ -165,11 +165,11 @@ Reference* QGitRepository::lookupShorthandRef(const QString& shorthand) const
     return qr;
 }
 
-QGitCommit QGitRepository::lookupCommit(const QGitOId& oid) const
+Commit QGitRepository::lookupCommit(const QGitOId& oid) const
 {
     git_commit *commit = 0;
     qGitThrow(git_commit_lookup_prefix(&commit, data(), oid.constData(), oid.length()));
-    return QGitCommit(commit);
+    return Commit(commit);
 }
 
 QGitTag QGitRepository::lookupTag(const QGitOId& oid) const
@@ -221,10 +221,10 @@ QGitOId QGitRepository::createCommit(const QString& ref,
                                      const QGitSignature& committer,
                                      const QString& message,
                                      const QGitTree& tree,
-                                     const QList<QGitCommit>& parents)
+                                     const QList<Commit>& parents)
 {
     QVector<const git_commit*> p;
-    foreach (const QGitCommit& parent, parents) {
+    foreach (const Commit& parent, parents) {
         p.append(parent.data());
     }
 

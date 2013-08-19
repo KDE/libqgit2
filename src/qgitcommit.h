@@ -39,27 +39,27 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_COMMIT_EXPORT QGitCommit : public QGitObject
+    class LIBQGIT2_COMMIT_EXPORT Commit : public QGitObject
     {
         public:
 
             /**
-             * Creates a QGitCommit that points to commit. The pointer object becomes managed by
-             * this QGitCommit, and must not be passed to another QGitCommit or closed outside this
+             * Creates a Commit that points to commit. The pointer object becomes managed by
+             * this Commit, and must not be passed to another Commit or closed outside this
              * object.
              */
-            explicit QGitCommit(git_commit *commit = 0);
+            explicit Commit(git_commit *commit = 0);
 
             /**
              * Copy constructor; creates a copy of the object, sharing the same underlaying data
              * structure.
              */
-            QGitCommit(const QGitCommit& other);
+            Commit(const Commit& other);
 
             /**
              * Destroys the object.
              */
-            ~QGitCommit();
+            ~Commit();
 
             /**
             * Get the id of a commit.
@@ -127,7 +127,7 @@ namespace LibQGit2
              * @return the parent commit or an empty commit, when there is no parent
              * @throws QGitException
              */
-            QGitCommit parent(unsigned n) const;
+            Commit parent(unsigned n) const;
 
             /**
              * Get the object id of the specified parent of the commit.

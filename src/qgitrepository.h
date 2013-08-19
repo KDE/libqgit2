@@ -35,7 +35,7 @@
 
 namespace LibQGit2
 {
-    class QGitCommit;
+    class Commit;
     class QGitConfig;
     class QGitTag;
     class QGitTree;
@@ -246,7 +246,7 @@ namespace LibQGit2
              *
              * @throws QGitException
              */
-            QGitCommit lookupCommit(const QGitOId& oid) const;
+            Commit lookupCommit(const QGitOId& oid) const;
 
             /**
              * Lookup a tag object from the repository.
@@ -312,7 +312,7 @@ namespace LibQGit2
                                  const QGitSignature& committer,
                                  const QString& message,
                                  const QGitTree& tree,
-                                 const QList<QGitCommit>& parents);
+                                 const QList<Commit>& parents);
 
             /**
              * Create a new lightweight tag pointing at a target object

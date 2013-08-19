@@ -44,9 +44,9 @@ QGitObject::~QGitObject()
 {
 }
 
-QGitCommit QGitObject::toCommit() const
+Commit QGitObject::toCommit() const
 {
-    QGitCommit commit;
+    Commit commit;
     if (isCommit()) {
         commit.d = d;
     }

@@ -56,7 +56,7 @@ void QGitRevWalk::push(const QGitOId& oid) const
     qGitThrow(git_revwalk_push(m_revWalk, oid.constData()));
 }
 
-void QGitRevWalk::push(const QGitCommit& commit) const
+void QGitRevWalk::push(const Commit& commit) const
 {
     qGitThrow(git_revwalk_push(m_revWalk, commit.oid().constData()));
 }
@@ -86,7 +86,7 @@ void QGitRevWalk::hide(const QGitOId& oid) const
     qGitThrow(git_revwalk_hide(m_revWalk, oid.constData()));
 }
 
-void QGitRevWalk::hide(const QGitCommit& commit) const
+void QGitRevWalk::hide(const Commit& commit) const
 {
     qGitThrow(git_revwalk_hide(m_revWalk, commit.oid().constData()));
 }
@@ -112,13 +112,13 @@ bool QGitRevWalk::next(QGitOId& oid) const
     return (err == GIT_OK);
 }
 
-bool QGitRevWalk::next(QGitCommit& commit)
+bool QGitRevWalk::next(Commit& commit)
 {
     QGitOId oid;
     int err = git_revwalk_next(oid.data(), m_revWalk);
 
     if ( (err != GIT_OK) || !oid.isValid() )
-        commit = QGitCommit();
+        commit = Commit();
     else
         commit = constRepository()->lookupCommit(oid);
 

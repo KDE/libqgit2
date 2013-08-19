@@ -33,7 +33,7 @@ namespace LibQGit2
 {
     class QGitRepository;
     class QGitOId;
-    class QGitCommit;
+    class Commit;
     class QGitTag;
     class QGitTree;
     class Blob;
@@ -72,7 +72,7 @@ namespace LibQGit2
              * If the type of the object is commit, then a valid commit object is returned,
              * otherwise the returned object will be null.
              */
-            QGitCommit toCommit() const;
+            Commit toCommit() const;
 
             /**
              * Convert a generic object into a tag object.
