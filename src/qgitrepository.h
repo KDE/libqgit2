@@ -49,7 +49,7 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_REPOSITORY_EXPORT QGitRepository
+    class LIBQGIT2_REPOSITORY_EXPORT Repository
     {
         public:
 
@@ -61,18 +61,18 @@ namespace LibQGit2
              * sharing the ownership. If `own` is true, the pointer must not be freed manually,
              * and must not be passed to another QGitRepository instance also with `own` true.
              */
-            explicit QGitRepository(git_repository *repository = 0, bool own = false);
+            explicit Repository(git_repository *repository = 0, bool own = false);
 
             /**
              * Copy constructor; creates a copy of the object, sharing the same underlaying data
              * structure.
              */
-            QGitRepository(const QGitRepository& other);
+            Repository(const Repository& other);
 
             /**
              * Destruct a previously allocated repository
              */
-            ~QGitRepository();
+            ~Repository();
 
             /**
              * Look for a git repository and return its path. The lookup start from startPath and

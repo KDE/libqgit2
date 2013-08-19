@@ -30,7 +30,7 @@
 namespace LibQGit2
 {
 
-    class QGitRepository;
+    class Repository;
 
     /**
       * @brief Represents the git configuration file.

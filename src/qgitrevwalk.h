@@ -29,7 +29,7 @@ namespace LibQGit2
 {
 
 class Exception;
-class QGitRepository;
+class Repository;
 class OId;
 class Commit;
 class Reference;
@@ -62,7 +62,7 @@ public:
      *
      * @param repo the repo to walk through
      */
-    explicit QGitRevWalk(const QGitRepository& repository);
+    explicit QGitRevWalk(const Repository& repository);
 
     QGitRevWalk( const QGitRevWalk& other );
 
@@ -222,20 +222,20 @@ public:
      *
      * @return a copy of the repository being walked
      */
-    QGitRepository* repository();
+    Repository* repository();
 
     /**
      * Return the const repository on which this walker is operating.
      *
      * @return the repository being walked
      */
-    const QGitRepository* constRepository();
+    const Repository* constRepository();
 
     git_revwalk* data() const;
     const git_revwalk* constData() const;
 
 private:
-    const QGitRepository* m_repository;
+    const Repository* m_repository;
     git_revwalk* m_revWalk;
 };
 

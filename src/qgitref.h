@@ -30,7 +30,7 @@
 
 namespace LibQGit2
 {
-    class QGitRepository;
+    class Repository;
     class OId;
 
     /**
@@ -131,7 +131,7 @@ namespace LibQGit2
              *
              * @return a pointer to the repository
              */
-            QGitRepository owner() const;
+            Repository owner() const;
 
             /**
              * Set the name of a reference.

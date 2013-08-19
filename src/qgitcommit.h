@@ -30,7 +30,7 @@ namespace LibQGit2
     class OId;
     class QGitSignature;
     class QGitTree;
-    class QGitRepository;
+    class Repository;
 
     /**
      * @brief Wrapper class for git_commit.

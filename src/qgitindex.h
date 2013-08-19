@@ -30,7 +30,7 @@
 namespace LibQGit2
 {
     class OId;
-    class QGitRepository;
+    class Repository;
     class IndexEntry;
 
     /**

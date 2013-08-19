@@ -115,9 +115,9 @@ QString Object::typeString() const
     return QString(git_object_type2string(git_object_type(data())));
 }
 
-QGitRepository Object::owner() const
+Repository Object::owner() const
 {
-    return QGitRepository(git_object_owner(data()));
+    return Repository(git_object_owner(data()));
 }
 
 git_object* Object::data() const

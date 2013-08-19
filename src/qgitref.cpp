@@ -75,9 +75,9 @@ Reference Reference::resolve() const
     return Reference(ref);
 }
 
-QGitRepository Reference::owner() const
+Repository Reference::owner() const
 {
-    return QGitRepository(git_reference_owner(d.data()));
+    return Repository(git_reference_owner(d.data()));
 }
 
 void Reference::setSymbolicTarget(const QString& target)

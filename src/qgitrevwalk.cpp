@@ -30,7 +30,7 @@
 namespace LibQGit2
 {
 
-QGitRevWalk::QGitRevWalk(const QGitRepository& repository)
+QGitRevWalk::QGitRevWalk(const Repository& repository)
 {
     git_revwalk_new(&m_revWalk, repository.data());
     m_repository = &repository;
@@ -130,13 +130,13 @@ void QGitRevWalk::setSorting(SortModes sm)
     git_revwalk_sorting(m_revWalk, sm);
 }
 
-QGitRepository* QGitRevWalk::repository()
+Repository* QGitRevWalk::repository()
 {
-    QGitRepository* repo = new QGitRepository(git_revwalk_repository(m_revWalk));
+    Repository* repo = new Repository(git_revwalk_repository(m_revWalk));
     return repo;
 }
 
-const QGitRepository* QGitRevWalk::constRepository()
+const Repository* QGitRevWalk::constRepository()
 {
     return m_repository;
 }

@@ -31,7 +31,7 @@
 
 namespace LibQGit2
 {
-    class QGitRepository;
+    class Repository;
     class OId;
     class Commit;
     class QGitTag;
@@ -144,7 +144,7 @@ namespace LibQGit2
              * @param obj the object
              * @return the repository who owns this object
              */
-            QGitRepository owner() const;
+            Repository owner() const;
 
             git_object* data() const;
             const git_object* constData() const;

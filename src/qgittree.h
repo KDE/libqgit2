@@ -27,7 +27,7 @@
 
 namespace LibQGit2
 {
-    class QGitRepository;
+    class Repository;
     class OId;
     class QGitTreeEntry;
 

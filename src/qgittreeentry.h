@@ -29,7 +29,7 @@ namespace LibQGit2
 {
     class OId;
     class Object;
-    class QGitRepository;
+    class Repository;
 
     /**
      * @brief Wrapper class for git_tree_entry.
@@ -76,7 +76,7 @@ namespace LibQGit2
              * @return a reference to the pointed object in the repository
              * @throws QGitException
              */
-            Object toObject(const QGitRepository& repo);
+            Object toObject(const Repository& repo);
 
             const git_tree_entry* constData() const;
 
