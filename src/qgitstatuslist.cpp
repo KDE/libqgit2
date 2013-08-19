@@ -25,36 +25,36 @@
 namespace LibQGit2
 {
 
-QGitStatusList::QGitStatusList(git_status_list *status_list)
+StatusList::StatusList(git_status_list *status_list)
     : d(status_list, git_status_list_free)
 {
 }
 
-QGitStatusList::QGitStatusList(const QGitStatusList &other)
+StatusList::StatusList(const StatusList &other)
     : d(other.d)
 {
 }
 
-QGitStatusList::~QGitStatusList()
+StatusList::~StatusList()
 {
 }
 
-size_t QGitStatusList::entryCount()
+size_t StatusList::entryCount()
 {
     return git_status_list_entrycount(data());
 }
 
-const StatusEntry QGitStatusList::entryByIndex(size_t idx)
+const StatusEntry StatusList::entryByIndex(size_t idx)
 {
     return StatusEntry(git_status_byindex(data(), idx));
 }
 
-git_status_list* QGitStatusList::data() const
+git_status_list* StatusList::data() const
 {
     return d.data();
 }
 
-const git_status_list* QGitStatusList::constData() const
+const git_status_list* StatusList::constData() const
 {
     return d.data();
 }

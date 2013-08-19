@@ -38,14 +38,14 @@ namespace LibQGit2
  * @ingroup LibQGit2
  * @{
  */
-class LIBQGIT2_STATUS_EXPORT QGitStatusList
+class LIBQGIT2_STATUS_EXPORT StatusList
 {
 public:
-    explicit QGitStatusList(git_status_list *status_list = 0);
+    explicit StatusList(git_status_list *status_list = 0);
 
-    QGitStatusList(const QGitStatusList& other);
+    StatusList(const StatusList& other);
 
-    ~QGitStatusList();
+    ~StatusList();
 
     /**
      * Returns the number of entries in the status list.

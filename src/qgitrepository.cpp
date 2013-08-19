@@ -315,12 +315,12 @@ Index Repository::index() const
     return Index(idx);
 }
 
-QGitStatusList Repository::status(const QGitStatusOptions *options) const
+StatusList Repository::status(const QGitStatusOptions *options) const
 {
     const git_status_options opt = options->constData();
     git_status_list *status_list;
     qGitThrow(git_status_list_new(&status_list, data(), &opt));
-    return QGitStatusList(status_list);
+    return StatusList(status_list);
 }
 
 git_repository* Repository::data() const

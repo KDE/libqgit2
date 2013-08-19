@@ -31,7 +31,7 @@ QStatus::QStatus()
     );
             
     // Get the list of status entries
-    QGitStatusList status_list = repo->status(opt);
+    StatusList status_list = repo->status(opt);
     
     // Count entries
     size_t entries = status_list.entryCount();
