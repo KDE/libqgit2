@@ -49,7 +49,26 @@ bool OId::isValid() const
              );
 }
 
-OId OId::fromString(const QByteArray& string)
+void OId::fromHex(const QByteArray& hex)
+{
+    int len = qMin(hex.length(), GIT_OID_HEXSZ);
+    qGitThrow(git_oid_fromstrn(data(), hex.constData(), len));
+    d.resize(len / 2);
+}
+
+void OId::fromString(const QString& string)
+{
+    fromHex(string.toUtf8());
+}
+
+
+void OId::fromRawData(const QByteArray& raw)
+{
+    qGitThrow(raw.length() < GIT_OID_HEXSZ);
+    d = raw;
+}
+
+OId OId::stringToOid(const QByteArray& string)
 {
     int len = qMin(string.length(), GIT_OID_HEXSZ);
     OId oid;
@@ -58,7 +77,7 @@ OId OId::fromString(const QByteArray& string)
     return oid;
 }
 
-OId OId::fromRawData(const QByteArray& raw)
+OId OId::rawDataToOid(const QByteArray& raw)
 {
     OId oid;
     oid.d = raw;
