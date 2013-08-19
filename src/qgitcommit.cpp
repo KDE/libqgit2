@@ -29,12 +29,12 @@ namespace LibQGit2
 {
 
 Commit::Commit(git_commit *commit)
-    : QGitObject(reinterpret_cast<git_object*>(commit))
+    : Object(reinterpret_cast<git_object*>(commit))
 {
 }
 
 Commit::Commit(const Commit& other)
-    : QGitObject(other)
+    : Object(other)
 {
 }
 
@@ -105,12 +105,12 @@ QGitOId Commit::parentId(unsigned n) const
 
 git_commit* Commit::data() const
 {
-    return reinterpret_cast<git_commit*>(QGitObject::data());
+    return reinterpret_cast<git_commit*>(Object::data());
 }
 
 const git_commit* Commit::constData() const
 {
-    return reinterpret_cast<git_commit*>(QGitObject::data());
+    return reinterpret_cast<git_commit*>(Object::data());
 }
 
 } // namespace LibQGit2

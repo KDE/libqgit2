@@ -44,7 +44,7 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_OBJECT_EXPORT QGitObject
+    class LIBQGIT2_OBJECT_EXPORT Object
     {
         public:
 
@@ -53,18 +53,18 @@ namespace LibQGit2
              * this QGitObject, and must not be passed to another QGitObject or closed outside this
              * object.
              */
-            explicit QGitObject(git_object *object = 0);
+            explicit Object(git_object *object = 0);
 
             /**
              * Copy constructor; creates a copy of the object, sharing the same underlaying data
              * structure.
              */
-            QGitObject(const QGitObject& other);
+            Object(const Object& other);
 
             /**
              * Destroys the object.
              */
-            ~QGitObject();
+            ~Object();
 
             /**
              * Convert a generic object into a commit object.
@@ -156,11 +156,11 @@ namespace LibQGit2
     /**
      * Compares two QGitObjects. Objects are equal when their oid is.
      */
-    bool operator ==(const QGitObject &o1, const QGitObject &o2);
+    bool operator ==(const Object &o1, const Object &o2);
     /**
      * Compares two QGitObjects. Objects are equal when their oid is.
      */
-    bool operator !=(const QGitObject &o1, const QGitObject &o2);
+    bool operator !=(const Object &o1, const Object &o2);
 
     /**@}*/
 }

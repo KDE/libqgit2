@@ -274,7 +274,7 @@ namespace LibQGit2
              *
              * @throws QGitException
              */
-            QGitObject lookupAny(const QGitOId& oid) const;
+            Object lookupAny(const QGitOId& oid) const;
 
             /**
              * Create a new object id reference.
@@ -324,7 +324,7 @@ namespace LibQGit2
              * @throws QGitException
              */
             QGitOId createTag(const QString& name,
-                              const QGitObject& target,
+                              const Object& target,
                               bool overwrite = true);
 
             /**
@@ -337,7 +337,7 @@ namespace LibQGit2
              * @throws QGitException
              */
             QGitOId createTag(const QString& name,
-                              const QGitObject& target,
+                              const Object& target,
                               const QGitSignature& tagger,
                               const QString& message,
                               bool overwrite = true);

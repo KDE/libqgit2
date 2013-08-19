@@ -28,7 +28,7 @@
 namespace LibQGit2
 {
     class QGitOId;
-    class QGitObject;
+    class Object;
     class QGitRepository;
 
     /**
@@ -76,7 +76,7 @@ namespace LibQGit2
              * @return a reference to the pointed object in the repository
              * @throws QGitException
              */
-            QGitObject toObject(const QGitRepository& repo);
+            Object toObject(const QGitRepository& repo);
 
             const git_tree_entry* constData() const;
 

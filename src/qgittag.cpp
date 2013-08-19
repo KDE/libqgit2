@@ -27,12 +27,12 @@ namespace LibQGit2
 {
 
 QGitTag::QGitTag(git_tag *tag)
-    : QGitObject(reinterpret_cast<git_object*>(tag))
+    : Object(reinterpret_cast<git_object*>(tag))
 {
 }
 
 QGitTag::QGitTag(const QGitTag& other)
-    : QGitObject(other)
+    : Object(other)
 {
 }
 
@@ -45,11 +45,11 @@ QGitOId QGitTag::oid() const
     return QGitOId(git_tag_id(data()));
 }
 
-QGitObject QGitTag::target() const
+Object QGitTag::target() const
 {
     git_object *obj;
     qGitThrow(git_tag_target(&obj, data()));
-    return QGitObject(obj);
+    return Object(obj);
 }
 
 const QString QGitTag::name() const
@@ -69,12 +69,12 @@ const QString QGitTag::message()
 
 git_tag* QGitTag::data() const
 {
-    return reinterpret_cast<git_tag*>(QGitObject::data());
+    return reinterpret_cast<git_tag*>(Object::data());
 }
 
 const git_tag* QGitTag::constData() const
 {
-    return reinterpret_cast<git_tag*>(QGitObject::data());
+    return reinterpret_cast<git_tag*>(Object::data());
 }
 
 } // namespace LibQGit2

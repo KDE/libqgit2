@@ -28,12 +28,12 @@ namespace LibQGit2
 {
 
 Blob::Blob(git_blob *blob)
-    : QGitObject(reinterpret_cast<git_object*>(blob))
+    : Object(reinterpret_cast<git_object*>(blob))
 {
 }
 
 Blob::Blob( const Blob& other )
-    : QGitObject(other)
+    : Object(other)
 {
 }
 
@@ -58,12 +58,12 @@ int Blob::rawSize() const
 
 git_blob* Blob::data() const
 {
-    return reinterpret_cast<git_blob*>(QGitObject::data());
+    return reinterpret_cast<git_blob*>(Object::data());
 }
 
 const git_blob* Blob::constData() const
 {
-    return reinterpret_cast<git_blob*>(QGitObject::data());
+    return reinterpret_cast<git_blob*>(Object::data());
 }
 
 } // namespace LibQGit2

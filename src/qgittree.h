@@ -38,7 +38,7 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_TREE_EXPORT QGitTree : public QGitObject
+    class LIBQGIT2_TREE_EXPORT QGitTree : public Object
     {
         public:
 

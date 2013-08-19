@@ -30,21 +30,21 @@
 namespace LibQGit2
 {
 
-QGitObject::QGitObject(git_object *object)
+Object::Object(git_object *object)
     : d(object, git_object_free)
 {
 }
 
-QGitObject::QGitObject(const QGitObject& other)
+Object::Object(const Object& other)
     : d(other.d)
 {
 }
 
-QGitObject::~QGitObject()
+Object::~Object()
 {
 }
 
-Commit QGitObject::toCommit() const
+Commit Object::toCommit() const
 {
     Commit commit;
     if (isCommit()) {
@@ -53,7 +53,7 @@ Commit QGitObject::toCommit() const
     return commit;
 }
 
-QGitTag QGitObject::toTag() const
+QGitTag Object::toTag() const
 {
     QGitTag tag;
     if (isTag()) {
@@ -62,7 +62,7 @@ QGitTag QGitObject::toTag() const
     return tag;
 }
 
-QGitTree QGitObject::toTree() const
+QGitTree Object::toTree() const
 {
     QGitTree tree;
     if (isTree()) {
@@ -71,7 +71,7 @@ QGitTree QGitObject::toTree() const
     return tree;
 }
 
-Blob QGitObject::toBlob() const
+Blob Object::toBlob() const
 {
     Blob blob;
     if (isBlob()) {
@@ -80,62 +80,62 @@ Blob QGitObject::toBlob() const
     return blob;
 }
 
-bool QGitObject::isNull() const
+bool Object::isNull() const
 {
     return d.isNull();
 }
 
-QGitOId QGitObject::oid() const
+QGitOId Object::oid() const
 {
     return QGitOId(git_object_id(data()));
 }
 
-bool QGitObject::isCommit() const
+bool Object::isCommit() const
 {
     return git_object_type(data()) == GIT_OBJ_COMMIT;
 }
 
-bool QGitObject::isTag() const
+bool Object::isTag() const
 {
     return git_object_type(data()) == GIT_OBJ_TAG;
 }
 
-bool QGitObject::isTree() const
+bool Object::isTree() const
 {
     return git_object_type(data()) == GIT_OBJ_TREE;
 }
 
-bool QGitObject::isBlob() const
+bool Object::isBlob() const
 {
     return git_object_type(data()) == GIT_OBJ_BLOB;
 }
 
-QString QGitObject::typeString() const
+QString Object::typeString() const
 {
     return QString(git_object_type2string(git_object_type(data())));
 }
 
-QGitRepository QGitObject::owner() const
+QGitRepository Object::owner() const
 {
     return QGitRepository(git_object_owner(data()));
 }
 
-git_object* QGitObject::data() const
+git_object* Object::data() const
 {
     return d.data();
 }
 
-const git_object* QGitObject::constData() const
+const git_object* Object::constData() const
 {
     return d.data();
 }
 
-bool operator ==(const QGitObject &o1, const QGitObject &o2)
+bool operator ==(const Object &o1, const Object &o2)
 {
     return (o1.oid() == o2.oid());
 }
 
-bool operator !=(const QGitObject &o1, const QGitObject &o2)
+bool operator !=(const Object &o1, const Object &o2)
 {
     return !(operator ==(o1, o2));
 }

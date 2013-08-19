@@ -32,7 +32,7 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_BLOB_EXPORT Blob : public QGitObject
+    class LIBQGIT2_BLOB_EXPORT Blob : public Object
     {
         public:
 

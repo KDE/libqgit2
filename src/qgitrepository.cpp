@@ -193,11 +193,11 @@ Blob QGitRepository::lookupBlob(const QGitOId& oid) const
     return Blob(blob);
 }
 
-QGitObject QGitRepository::lookupAny(const QGitOId &oid) const
+Object QGitRepository::lookupAny(const QGitOId &oid) const
 {
     git_object *object = 0;
     qGitThrow(git_object_lookup_prefix(&object, data(), oid.constData(), oid.length(), GIT_OBJ_ANY));
-    return QGitObject(object);
+    return Object(object);
 }
 
 Reference* QGitRepository::createRef(const QString& name, const LibQGit2::QGitOId& oid, bool overwrite)
@@ -235,7 +235,7 @@ QGitOId QGitRepository::createCommit(const QString& ref,
 }
 
 QGitOId QGitRepository::createTag(const QString& name,
-                                  const QGitObject& target,
+                                  const Object& target,
                                   bool overwrite)
 {
     QGitOId oid;
@@ -245,7 +245,7 @@ QGitOId QGitRepository::createTag(const QString& name,
 }
 
 QGitOId QGitRepository::createTag(const QString& name,
-                                  const QGitObject& target,
+                                  const Object& target,
                                   const QGitSignature& tagger,
                                   const QString& message,
                                   bool overwrite)
