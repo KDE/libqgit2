@@ -27,48 +27,48 @@
 namespace LibQGit2
 {
 
-QGitTreeEntry::QGitTreeEntry(const git_tree_entry *treeEntry)
+TreeEntry::TreeEntry(const git_tree_entry *treeEntry)
     : d(treeEntry)
 {
 }
 
-QGitTreeEntry::QGitTreeEntry(const QGitTreeEntry& other)
+TreeEntry::TreeEntry(const TreeEntry& other)
     : d(other.d)
 {
 }
 
-QGitTreeEntry::~QGitTreeEntry()
+TreeEntry::~TreeEntry()
 {
 }
 
-bool QGitTreeEntry::isNull() const
+bool TreeEntry::isNull() const
 {
     return constData() == 0;
 }
 
-unsigned int QGitTreeEntry::attributes() const
+unsigned int TreeEntry::attributes() const
 {
     return git_tree_entry_filemode(d);
 }
 
-const QString QGitTreeEntry::name() const
+const QString TreeEntry::name() const
 {
     return QFile::decodeName( git_tree_entry_name(d) );
 }
 
-OId QGitTreeEntry::oid() const
+OId TreeEntry::oid() const
 {
     return OId(git_tree_entry_id(d));
 }
 
-Object QGitTreeEntry::toObject(const Repository& repo)
+Object TreeEntry::toObject(const Repository& repo)
 {
     git_object *obj;
     qGitThrow(git_tree_entry_to_object(&obj, repo.data(), d));
     return Object(obj);
 }
 
-const git_tree_entry* QGitTreeEntry::constData() const
+const git_tree_entry* TreeEntry::constData() const
 {
     return d;
 }
