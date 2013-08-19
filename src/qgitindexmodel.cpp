@@ -25,17 +25,17 @@
 namespace LibQGit2
 {
 
-QGitIndexModel::QGitIndexModel(const Index& index, QObject *parent)
+IndexModel::IndexModel(const Index& index, QObject *parent)
     : QAbstractListModel(parent)
     , m_index(index)
 {
 }
 
-QGitIndexModel::~QGitIndexModel()
+IndexModel::~IndexModel()
 {
 }
 
-int QGitIndexModel::rowCount(const QModelIndex& parent) const
+int IndexModel::rowCount(const QModelIndex& parent) const
 {
     if (parent.isValid()) {
         return 0;
@@ -44,7 +44,7 @@ int QGitIndexModel::rowCount(const QModelIndex& parent) const
     }
 }
 
-QVariant QGitIndexModel::data(const QModelIndex& index, int role) const
+QVariant IndexModel::data(const QModelIndex& index, int role) const
 {
     if (index.parent().isValid())
         return QVariant();

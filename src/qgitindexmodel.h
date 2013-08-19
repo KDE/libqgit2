@@ -28,13 +28,13 @@
 namespace LibQGit2
 {
 
-class LIBQGIT2_INDEX_EXPORT QGitIndexModel : public QAbstractListModel
+class LIBQGIT2_INDEX_EXPORT IndexModel : public QAbstractListModel
 {
     Q_OBJECT
 
 public:
-    explicit QGitIndexModel(const Index& index, QObject *parent = 0);
-    ~QGitIndexModel();
+    explicit IndexModel(const Index& index, QObject *parent = 0);
+    ~IndexModel();
 
     int rowCount(const QModelIndex& parent) const;
 
