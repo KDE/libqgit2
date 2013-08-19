@@ -64,7 +64,7 @@ namespace LibQGit2
              * at least 4 bytes.
              *
              * @return OId; null OId on failure.
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             static OId fromString(const QByteArray& string);
 
@@ -109,11 +109,11 @@ namespace LibQGit2
     };
 
     /**
-     * Compare two QGitOIds.
+     * Compare two OIds.
      */
     bool operator ==(const OId &oid1, const OId &oid2);
     /**
-     * Compare two QGitOIds.
+     * Compare two OIds.
      */
     bool operator !=(const OId &oid1, const OId &oid2);
 

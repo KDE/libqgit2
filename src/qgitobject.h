@@ -49,8 +49,8 @@ namespace LibQGit2
         public:
 
             /**
-             * Creates a QGitObject that points to object. The pointer object becomes managed by
-             * this QGitObject, and must not be passed to another QGitObject or closed outside this
+             * Creates a Object that points to object. The pointer object becomes managed by
+             * this Object, and must not be passed to another Object or closed outside this
              * object.
              */
             explicit Object(git_object *object = 0);
@@ -154,11 +154,11 @@ namespace LibQGit2
     };
 
     /**
-     * Compares two QGitObjects. Objects are equal when their oid is.
+     * Compares two Objects. Objects are equal when their oid is.
      */
     bool operator ==(const Object &o1, const Object &o2);
     /**
-     * Compares two QGitObjects. Objects are equal when their oid is.
+     * Compares two Objects. Objects are equal when their oid is.
      */
     bool operator !=(const Object &o1, const Object &o2);
 

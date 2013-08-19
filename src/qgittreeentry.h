@@ -74,7 +74,7 @@ namespace LibQGit2
              *
              * @param object pointer to the converted object
              * @return a reference to the pointed object in the repository
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             Object toObject(const Repository& repo);
 

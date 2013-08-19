@@ -40,8 +40,8 @@ namespace LibQGit2
         public:
 
             /**
-             * Creates a QGitTag that points to tag. The pointer object becomes managed by
-             * this QGitTag, and must not be passed to another QGitTag or closed outside this
+             * Creates a Tag that points to tag. The pointer object becomes managed by
+             * this Tag, and must not be passed to another Tag or closed outside this
              * object.
              */
             explicit Tag(git_tag *tag = 0);
@@ -66,7 +66,7 @@ namespace LibQGit2
             /**
              * Get the tagged object of a tag
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             Object target() const;
 

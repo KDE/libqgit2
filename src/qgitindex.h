@@ -45,8 +45,8 @@ namespace LibQGit2
         public:
 
             /**
-             * Creates a QGitIndex that points to 'index'. The pointer 'index' becomes managed by
-             * this QGitIndex, and must not be passed to another QGitIndex or freed outside this
+             * Creates a Index that points to 'index'. The pointer 'index' becomes managed by
+             * this Index, and must not be passed to another Index or freed outside this
              * object.
              */
             explicit Index(git_index *index = 0);
@@ -72,14 +72,14 @@ namespace LibQGit2
              * GIT_EBAREINDEX error code.
              *
              * @param index_path the path to the index file in disk
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             void open(const QString& indexPath);
 
             /**
              * Create a new tree object from the index
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             OId createTree();
 
@@ -94,7 +94,7 @@ namespace LibQGit2
              * Update the contents of an existing index object in memory
              * by reading from the hard disk.
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             void read() const;
 
@@ -102,7 +102,7 @@ namespace LibQGit2
              * Write an existing index object from memory back to disk
              * using an atomic file lock.
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             void write();
 
@@ -119,7 +119,7 @@ namespace LibQGit2
              * Add or update an index entry from a file in disk.
              *
              * @param path filename to add
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             void addByPath(const QString& path);
 
@@ -127,7 +127,7 @@ namespace LibQGit2
              * Remove an entry from the index given the path
              *
              * @param stage stage of the entry to remove
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             void remove(const QString& path, int stage = GIT_INDEX_STAGE_ANY);
 
@@ -139,7 +139,7 @@ namespace LibQGit2
              * will be updated.
              *
              * @param source_entry new entry object
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             void add(const IndexEntry& source_entry);
 

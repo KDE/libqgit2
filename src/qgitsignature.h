@@ -36,7 +36,7 @@ namespace LibQGit2
      * The underlaying data structure is owned by the object, and deleted when the object is
      * destroyed.
      *
-     * The interface provided by this class is identical to QGitSignature, with additional
+     * The interface provided by this class is identical to Signature, with additional
      * constructors for creating new signatures.
      *
      * @ingroup LibQGit2
@@ -52,7 +52,7 @@ namespace LibQGit2
              * @param name name of the person
              * @param email email of the person
              * @param dateTime time when the action happened
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             SignatureBuilder(const QString& name, const QString& email, QDateTime dateTime);
 
@@ -62,7 +62,7 @@ namespace LibQGit2
              *
              * @param name name of the person
              * @param email email of the person
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             SignatureBuilder(const QString& name, const QString& email);
 
@@ -109,7 +109,7 @@ namespace LibQGit2
      * An instance of this class does not own the underlaying data structure, only a reference
      * (pointer) to it.
      *
-     * Use QGitSignatureBuilder to create new signatures.
+     * Use SignatureBuilder to create new signatures.
      *
      * @ingroup LibQGit2
      * @{
@@ -129,8 +129,8 @@ namespace LibQGit2
             Signature(const Signature& other);
 
             /**
-             * Create a reference to the signature owned by 'other'; this allows QGitSignatureBuilder to
-             * be passed as QGitSignature function argument.
+             * Create a reference to the signature owned by 'other'; this allows SignatureBuilder to
+             * be passed as Signature function argument.
              */
             Signature(const SignatureBuilder& other);
 

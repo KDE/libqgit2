@@ -30,7 +30,7 @@ StatusOptions::StatusOptions()
 {
 }
 
-StatusOptions::QGitStatusOptions(git_status_options status_options)
+StatusOptions::StatusOptions(git_status_options status_options)
     : d(status_options)
 {
 }

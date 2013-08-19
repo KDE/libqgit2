@@ -43,8 +43,8 @@ namespace LibQGit2
         public:
 
             /**
-             * Creates a QGitTree that points to tree. The pointer object becomes managed by
-             * this QGitTree, and must not be passed to another QGitTree or closed outside this
+             * Creates a Tree that points to tree. The pointer object becomes managed by
+             * this Tree, and must not be passed to another Tree or closed outside this
              * object.
              */
             explicit Tree(git_tree *tree = 0);

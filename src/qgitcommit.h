@@ -110,7 +110,7 @@ namespace LibQGit2
             /**
              * Get the tree pointed to by a commit.
              * @return the tree of a commit
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             Tree tree() const;
 
@@ -125,7 +125,7 @@ namespace LibQGit2
              * Get the specified parent of the commit.
              * @param n the position of the entry
              * @return the parent commit or an empty commit, when there is no parent
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             Commit parent(unsigned n) const;
 

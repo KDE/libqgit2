@@ -32,7 +32,7 @@ namespace LibQGit2
 /**
  * @brief Wrapper class for git_status_list.
  * 
- * Represents a list of status entries in a Git repository. This is not a simple QList of QGitStatusEntry,
+ * Represents a list of status entries in a Git repository. This is not a simple QList of StatusEntry,
  * it wraps the underlying libgit2 functions.
  *
  * @ingroup LibQGit2

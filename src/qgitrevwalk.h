@@ -83,7 +83,7 @@ public:
      * of the starting points for the revision traversal.
      *
      * @param oid the oid of the commit to start from.
-     * @throws QGitException
+     * @throws LibQGit2::Exception
      */
     void push(const OId& oid) const;
 
@@ -94,7 +94,7 @@ public:
      * of the starting points for the revision traversal.
      *
      * @param commit the commit to start from.
-     * @throws QGitException
+     * @throws LibQGit2::Exception
      */
     void push(const Commit& commit) const;
 
@@ -105,7 +105,7 @@ public:
      * of the starting points for the revision traversal.
      *
      * @param reference the reference to strat from.
-     * @throws QGitException
+     * @throws LibQGit2::Exception
      */
     void push(const Reference& reference) const;
 
@@ -116,7 +116,7 @@ public:
      * glob as starting points for the revision traversal.
      *
      * @param glob the glob that reference names shall match.
-     * @throws QGitException
+     * @throws LibQGit2::Exception
      */
     void push(const QString& glob) const;
 
@@ -125,7 +125,7 @@ public:
      * 
      * This method adds HEAD as a starting point for the revision traversal.
      *
-     * @throws QGitException
+     * @throws LibQGit2::Exception
      */
     void pushHead() const;
 
@@ -145,7 +145,7 @@ public:
      * the output of the revision traversal.
      *
      * @param oid the oid of the commit to start from.
-     * @throws QGitException
+     * @throws LibQGit2::Exception
      */
     void hide(const OId& oid) const;
 
@@ -156,7 +156,7 @@ public:
      * the output of the revision traversal.
      *
      * @param commit the commit to start from.
-     * @throws QGitException
+     * @throws LibQGit2::Exception
      */
     void hide(const Commit& commit) const;
 
@@ -167,7 +167,7 @@ public:
      * the output of the revision traversal.
      *
      * @param reference the reference to strat from.
-     * @throws QGitException
+     * @throws LibQGit2::Exception
      */
     void hide(const Reference& reference) const;
 
@@ -178,7 +178,7 @@ public:
      * glob from the output of the revision traversal.
      *
      * @param glob the glob that reference names shall match.
-     * @throws QGitException
+     * @throws LibQGit2::Exception
      */
     void hide(const QString& glob) const;
 
@@ -187,7 +187,7 @@ public:
      * 
      * This method hides HEAD and its ancestors from the output of the revision traversal.
      *
-     * @throws QGitException
+     * @throws LibQGit2::Exception
      */
     void hideHead() const;
 
