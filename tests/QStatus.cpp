@@ -37,7 +37,7 @@ QStatus::QStatus()
     size_t entries = status_list.entryCount();
 
     for (size_t i = 0; i < entries; ++i) {
-        const QGitStatusEntry entry = status_list.entryByIndex(i);
+        const StatusEntry entry = status_list.entryByIndex(i);
         
         if (entry.status().isCurrent()) {
             std::cout << "C";
