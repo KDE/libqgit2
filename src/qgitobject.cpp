@@ -30,6 +30,8 @@
 namespace LibQGit2
 {
 
+// git_object_free() is automatically invoked on the pointer when
+// it is no more referenced.
 Object::Object(git_object *object)
     : d(object, git_object_free)
 {
@@ -87,37 +89,37 @@ bool Object::isNull() const
 
 OId Object::oid() const
 {
-    return OId(git_object_id(data()));
+    return OId(git_object_id(d.data()));
 }
 
 bool Object::isCommit() const
 {
-    return git_object_type(data()) == GIT_OBJ_COMMIT;
+    return git_object_type(d.data()) == GIT_OBJ_COMMIT;
 }
 
 bool Object::isTag() const
 {
-    return git_object_type(data()) == GIT_OBJ_TAG;
+    return git_object_type(d.data()) == GIT_OBJ_TAG;
 }
 
 bool Object::isTree() const
 {
-    return git_object_type(data()) == GIT_OBJ_TREE;
+    return git_object_type(d.data()) == GIT_OBJ_TREE;
 }
 
 bool Object::isBlob() const
 {
-    return git_object_type(data()) == GIT_OBJ_BLOB;
+    return git_object_type(d.data()) == GIT_OBJ_BLOB;
 }
 
 QString Object::typeString() const
 {
-    return QString(git_object_type2string(git_object_type(data())));
+    return QString(git_object_type2string(git_object_type(d.data())));
 }
 
 Repository Object::owner() const
 {
-    return Repository(git_object_owner(data()));
+    return Repository(git_object_owner(d.data()));
 }
 
 git_object* Object::data() const

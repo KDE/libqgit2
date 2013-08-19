@@ -18,8 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef QGITCONFIG_H
-#define QGITCONFIG_H
+#ifndef LIBQGIT2_CONFIG_H
+#define LIBQGIT2_CONFIG_H
 
 #include <QtCore/QVariant>
 
@@ -112,4 +112,4 @@ namespace LibQGit2
     /**@}*/
 }
 
-#endif // QGITCONFIG_H
+#endif // LIBQGIT2_CONFIG_H

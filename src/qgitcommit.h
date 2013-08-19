@@ -18,8 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef LIBQGIT2_HASHTABLE_H
-#define LIBQGIT2_HASHTABLE_H
+#ifndef LIBQGIT2_COMMIT_H
+#define LIBQGIT2_COMMIT_H
 
 #include "qgitobject.h"
 
@@ -34,7 +34,8 @@ namespace LibQGit2
 
     /**
      * @brief Wrapper class for git_commit.
-     * Represents a Git commit object.
+     * 
+     * This class represents a Git commit object.
      *
      * @ingroup LibQGit2
      * @{
@@ -63,76 +64,86 @@ namespace LibQGit2
 
             /**
             * Get the id of a commit.
-            * @return object identity for the commit.
             */
             OId oid() const;
 
             /**
              * Get the full message of a commit.
-             * @return the message of a commit
              */
             QString message() const;
 
             /**
-             * Get the first part of the commit message (similar to git log --oneline).
-             * The string is further cut when a linebreak is found.
-             * @param maxLen maximal length of the resulting string. Default is 80 characters.
+             * Get the short commit message.
+             * 
+             * Get the first part of the commit message (similar to 
+             * git log --oneline). The string is further cut when a
+             * linebreak is found.
+             * 
+             * @param maxLen maximal length of the resulting string.
+             * Default is 80 characters.
+             * 
              * @return the short message
              */
             QString shortMessage(int maxLen = 80) const;
 
             /**
-             * Get the commit time (i.e. committer time) of a commit.
-             * @return the time of a commit
+             * Get the commit time (i.e. committer time) of this commit.
              */
             QDateTime dateTime() const;
 
             /**
-            * Get the commit timezone offset (i.e. committer's preferred timezone) of a commit.
-            * @return positive or negative timezone offset, in minutes from UTC
-            */
+             * Get the timezone offset.
+             * 
+             * Get the timezone offset (i.e. committer's preferred timezone)
+             * of this commit.
+             * 
+             * @return positive or negative timezone offset, in minutes from UTC
+             */
             int timeOffset() const;
 
-
             /**
-            * Get the committer of a commit.
-            * @return the committer of a commit
-            */
+             * Get the committer signature of this commit.
+             */
             Signature committer() const;
 
-
             /**
-            * Get the committer of a commit.
-            * @return the committer of a commit
-            */
+             * Get the author signature of this commit.
+             */
             Signature author() const;
 
             /**
-             * Get the tree pointed to by a commit.
-             * @return the tree of a commit
-             * @throws LibQGit2::Exception
+             * Get the tree pointed to by this commit.
+             * 
+             * @throws Exception
              */
             Tree tree() const;
 
             /**
              * Get the number of parents of this commit
-             *
-             * @return integer of count of parents
              */
             unsigned int parentCount() const;
 
             /**
              * Get the specified parent of the commit.
-             * @param n the position of the entry
-             * @return the parent commit or an empty commit, when there is no parent
-             * @throws LibQGit2::Exception
+             * 
+             * This method returns the nth parent of this commit or, if no
+             * parent can be found, an empty commit.
+             * 
+             * @param n the position of the parent
+             * @return the parent commit or an empty commit
+             * @throws Exception
              */
             Commit parent(unsigned n) const;
 
             /**
-             * Get the object id of the specified parent of the commit.
-             * @param n the position of the entry
-             * @return the parent's object id or an empty id, when there is no parent
+             * Get the OId of the specified parent of the commit.
+             * 
+             * This method returns the Oid of the nth parent of this commit or,
+             * if no parent can be found, an empty OId.
+             * 
+             * @param n the position of the parent
+             * @return the OId of the parent commit or an empty OId
+             * @throws Exception
              */
             OId parentId(unsigned n) const;
 
@@ -143,4 +154,4 @@ namespace LibQGit2
     /**@}*/
 }
 
-#endif // LIBQGIT2_HASHTABLE_H
+#endif // LIBQGIT2_COMMIT_H

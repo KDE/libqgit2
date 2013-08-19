@@ -46,10 +46,6 @@ namespace LibQGit2
             ~DatabaseBackend();
 
         public:
-//             int pack(const QString& objectsDir);
-// 
-//             int loose(const QString& objectsDir);
-
             git_odb_backend* data() const;
             const git_odb_backend* constData() const;
 
