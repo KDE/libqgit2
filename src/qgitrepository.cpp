@@ -172,11 +172,11 @@ Commit Repository::lookupCommit(const OId& oid) const
     return Commit(commit);
 }
 
-QGitTag Repository::lookupTag(const OId& oid) const
+Tag Repository::lookupTag(const OId& oid) const
 {
     git_tag *tag = 0;
     qGitThrow(git_tag_lookup_prefix(&tag, data(), oid.constData(), oid.length()));
-    return QGitTag(tag);
+    return Tag(tag);
 }
 
 QGitTree Repository::lookupTree(const OId& oid) const

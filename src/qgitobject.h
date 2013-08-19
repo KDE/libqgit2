@@ -34,7 +34,7 @@ namespace LibQGit2
     class Repository;
     class OId;
     class Commit;
-    class QGitTag;
+    class Tag;
     class QGitTree;
     class Blob;
 
@@ -80,7 +80,7 @@ namespace LibQGit2
              * If the type of the object is tag, then a valid tag object is returned,
              * otherwise the returned object will be null.
              */
-            QGitTag toTag() const;
+            Tag toTag() const;
 
             /**
              * Convert a generic object into a tree object.

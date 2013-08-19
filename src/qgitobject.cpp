@@ -53,9 +53,9 @@ Commit Object::toCommit() const
     return commit;
 }
 
-QGitTag Object::toTag() const
+Tag Object::toTag() const
 {
-    QGitTag tag;
+    Tag tag;
     if (isTag()) {
         tag.d = d;
     }

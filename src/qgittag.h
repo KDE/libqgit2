@@ -35,7 +35,7 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_TAG_EXPORT QGitTag : public Object
+    class LIBQGIT2_TAG_EXPORT Tag : public Object
     {
         public:
 
@@ -44,18 +44,18 @@ namespace LibQGit2
              * this QGitTag, and must not be passed to another QGitTag or closed outside this
              * object.
              */
-            explicit QGitTag(git_tag *tag = 0);
+            explicit Tag(git_tag *tag = 0);
 
             /**
              * Copy constructor; creates a copy of the object, sharing the same underlaying data
              * structure.
              */
-            QGitTag(const QGitTag& other);
+            Tag(const Tag& other);
 
             /**
              * Destroys the object.
              */
-            ~QGitTag();
+            ~Tag();
 
             /**
              * Get the id of a tag.

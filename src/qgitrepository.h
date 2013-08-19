@@ -37,7 +37,7 @@ namespace LibQGit2
 {
     class Commit;
     class Config;
-    class QGitTag;
+    class Tag;
     class QGitTree;
     class Blob;
     class Signature;
@@ -253,7 +253,7 @@ namespace LibQGit2
              *
              * @throws QGitException
              */
-            QGitTag lookupTag(const OId& oid) const;
+            Tag lookupTag(const OId& oid) const;
 
             /**
              * Lookup a tree object from the repository.
