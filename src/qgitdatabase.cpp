@@ -49,12 +49,12 @@ void Database::close()
     return git_odb_free(m_database);
 }
 
-int Database::addBackend(QGitDatabaseBackend *backend, int priority)
+int Database::addBackend(DatabaseBackend *backend, int priority)
 {
     return git_odb_add_backend(m_database, (git_odb_backend *)backend, priority);
 }
 
-int Database::addAlternate(QGitDatabaseBackend *backend, int priority)
+int Database::addAlternate(DatabaseBackend *backend, int priority)
 {
     return git_odb_add_alternate(m_database, (git_odb_backend *)backend, priority);
 }

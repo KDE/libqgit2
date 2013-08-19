@@ -84,7 +84,7 @@ namespace LibQGit2
              * @param backend pointer to a databaseBackend instance
              * @return 0 on sucess; error code otherwise
              */
-            int addBackend(QGitDatabaseBackend *backend, int priority);
+            int addBackend(DatabaseBackend *backend, int priority);
 
             /**
             * Add a custom backend to an existing Object DB; this
@@ -100,7 +100,7 @@ namespace LibQGit2
             * @param backend pointer to a databaseBackend instance
             * @return 0 on sucess; error code otherwise
             */
-            int addAlternate(QGitDatabaseBackend *backend, int priority);
+            int addAlternate(DatabaseBackend *backend, int priority);
 
             /**
              * Determine if the given object can be found in the object database.

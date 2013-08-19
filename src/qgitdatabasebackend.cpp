@@ -25,34 +25,24 @@
 namespace LibQGit2
 {
 
-QGitDatabaseBackend::QGitDatabaseBackend()
+DatabaseBackend::DatabaseBackend()
 {
 }
 
-QGitDatabaseBackend::QGitDatabaseBackend(const QGitDatabaseBackend&)
+DatabaseBackend::DatabaseBackend(const DatabaseBackend&)
 {
 }
 
-QGitDatabaseBackend::~QGitDatabaseBackend()
+DatabaseBackend::~DatabaseBackend()
 {
 }
 
-// int QGitDatabaseBackend::pack(const QString& objectsDir)
-// {
-//     return git_odb_backend_pack(&m_databaseBackend, QFile::encodeName(objectsDir));
-// }
-// 
-// int QGitDatabaseBackend::loose(const QString& objectsDir)
-// {
-//     return git_odb_backend_loose(&m_databaseBackend, QFile::encodeName(objectsDir), -1, 0);
-// }
-
-git_odb_backend* QGitDatabaseBackend::data() const
+git_odb_backend* DatabaseBackend::data() const
 {
     return m_databaseBackend;
 }
 
-const git_odb_backend* QGitDatabaseBackend::constData() const
+const git_odb_backend* DatabaseBackend::constData() const
 {
     return m_databaseBackend;
 }

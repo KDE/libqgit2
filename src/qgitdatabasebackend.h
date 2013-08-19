@@ -36,14 +36,14 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_DATABASEBACKEND_EXPORT QGitDatabaseBackend
+    class LIBQGIT2_DATABASEBACKEND_EXPORT DatabaseBackend
     {
         public:
-            QGitDatabaseBackend();
+            DatabaseBackend();
 
-            QGitDatabaseBackend( const QGitDatabaseBackend& other );
+            DatabaseBackend( const DatabaseBackend& other );
 
-            ~QGitDatabaseBackend();
+            ~DatabaseBackend();
 
         public:
 //             int pack(const QString& objectsDir);
