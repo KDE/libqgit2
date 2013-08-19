@@ -17,14 +17,14 @@ using namespace LibQGit2;
 QRev::QRev()
 {
     // Create a new repository object
-    QGitRepository * repo = new LibQGit2::QGitRepository();
+    Repository * repo = new LibQGit2::Repository();
     
     // Open a local fixed path
     repo->open(QString("/home/leo/projects/libqgit2"));
     
-    QGitRevWalk * rw = new QGitRevWalk(*repo);
+    RevWalk * rw = new RevWalk(*repo);
     
-    rw->setSorting(QGitRevWalk::Topological);
+    rw->setSorting(RevWalk::Topological);
     
     rw->pushHead();
 

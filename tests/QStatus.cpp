@@ -19,7 +19,7 @@ using namespace LibQGit2;
 QStatus::QStatus()
 {
     // Create a new repository object
-    QGitRepository * repo = new LibQGit2::QGitRepository();
+    Repository * repo = new LibQGit2::Repository();
     
     // Open a local fixed path
     repo->open(QString("/home/leo/projects/libqgit2"));
