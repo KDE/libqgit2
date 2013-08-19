@@ -62,9 +62,9 @@ Tag Object::toTag() const
     return tag;
 }
 
-QGitTree Object::toTree() const
+Tree Object::toTree() const
 {
-    QGitTree tree;
+    Tree tree;
     if (isTree()) {
         tree.d = d;
     }

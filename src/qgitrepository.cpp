@@ -179,11 +179,11 @@ Tag Repository::lookupTag(const OId& oid) const
     return Tag(tag);
 }
 
-QGitTree Repository::lookupTree(const OId& oid) const
+Tree Repository::lookupTree(const OId& oid) const
 {
     git_tree *tree = 0;
     qGitThrow(git_tree_lookup_prefix(&tree, data(), oid.constData(), oid.length()));
-    return QGitTree(tree);
+    return Tree(tree);
 }
 
 Blob Repository::lookupBlob(const OId& oid) const
@@ -220,7 +220,7 @@ OId Repository::createCommit(const QString& ref,
                                      const Signature& author,
                                      const Signature& committer,
                                      const QString& message,
-                                     const QGitTree& tree,
+                                     const Tree& tree,
                                      const QList<Commit>& parents)
 {
     QVector<const git_commit*> p;

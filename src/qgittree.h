@@ -38,7 +38,7 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_TREE_EXPORT QGitTree : public Object
+    class LIBQGIT2_TREE_EXPORT Tree : public Object
     {
         public:
 
@@ -47,18 +47,18 @@ namespace LibQGit2
              * this QGitTree, and must not be passed to another QGitTree or closed outside this
              * object.
              */
-            explicit QGitTree(git_tree *tree = 0);
+            explicit Tree(git_tree *tree = 0);
 
             /**
              * Copy constructor; creates a copy of the object, sharing the same underlaying data
              * structure.
              */
-            QGitTree(const QGitTree& other);
+            Tree(const Tree& other);
 
             /**
              * Destroys the object.
              */
-            ~QGitTree();
+            ~Tree();
 
             /**
              * * Get the id of a tree.

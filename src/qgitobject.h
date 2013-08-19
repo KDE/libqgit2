@@ -35,7 +35,7 @@ namespace LibQGit2
     class OId;
     class Commit;
     class Tag;
-    class QGitTree;
+    class Tree;
     class Blob;
 
     /**
@@ -88,7 +88,7 @@ namespace LibQGit2
              * If the type of the object is tree, then a valid tree object is returned,
              * otherwise the returned object will be null.
              */
-            QGitTree toTree() const;
+            Tree toTree() const;
 
             /**
              * Convert a generic object into a blob object.

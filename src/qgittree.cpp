@@ -29,46 +29,46 @@
 namespace LibQGit2
 {
 
-QGitTree::QGitTree(git_tree *tree)
+Tree::Tree(git_tree *tree)
     : Object(reinterpret_cast<git_object*>(tree))
 {
 }
 
-QGitTree::QGitTree( const QGitTree& other )
+Tree::Tree( const Tree& other )
     : Object(other)
 {
 }
 
-QGitTree::~QGitTree()
+Tree::~Tree()
 {
 }
 
-OId QGitTree::oid()
+OId Tree::oid()
 {
     return OId(git_tree_id(data()));
 }
 
-size_t QGitTree::entryCount()
+size_t Tree::entryCount()
 {
     return git_tree_entrycount(data());
 }
 
-QGitTreeEntry QGitTree::entryByName(const QString& fileName) const
+QGitTreeEntry Tree::entryByName(const QString& fileName) const
 {
     return QGitTreeEntry(git_tree_entry_byname(data(), QFile::encodeName(fileName)));
 }
 
-QGitTreeEntry QGitTree::entryByIndex(int idx) const
+QGitTreeEntry Tree::entryByIndex(int idx) const
 {
     return QGitTreeEntry(git_tree_entry_byindex(data(), idx));
 }
 
-git_tree* QGitTree::data() const
+git_tree* Tree::data() const
 {
     return reinterpret_cast<git_tree*>(Object::data());
 }
 
-const git_tree* QGitTree::constData() const
+const git_tree* Tree::constData() const
 {
     return reinterpret_cast<git_tree*>(Object::data());
 }

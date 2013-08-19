@@ -29,7 +29,7 @@ namespace LibQGit2
 {
     class OId;
     class Signature;
-    class QGitTree;
+    class Tree;
     class Repository;
 
     /**
@@ -112,7 +112,7 @@ namespace LibQGit2
              * @return the tree of a commit
              * @throws QGitException
              */
-            QGitTree tree() const;
+            Tree tree() const;
 
             /**
              * Get the number of parents of this commit

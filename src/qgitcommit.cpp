@@ -79,11 +79,11 @@ Signature Commit::author() const
     return Signature(git_commit_author(data()));
 }
 
-QGitTree Commit::tree() const
+Tree Commit::tree() const
 {
     git_tree *tree;
     qGitThrow(git_commit_tree(&tree, data()));
-    return QGitTree(tree);
+    return Tree(tree);
 }
 
 unsigned int Commit::parentCount() const
