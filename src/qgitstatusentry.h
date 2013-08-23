@@ -36,20 +36,20 @@ namespace LibQGit2
  * @ingroup LibQGit2
  * @{
  */
-class LIBQGIT2_STATUS_EXPORT QGitStatusEntry
+class LIBQGIT2_STATUS_EXPORT StatusEntry
 {
 public:
 
-    explicit QGitStatusEntry(const git_status_entry *entry);
+    explicit StatusEntry(const git_status_entry *entry);
 
-    QGitStatusEntry(const QGitStatusEntry& other);
+    StatusEntry(const StatusEntry& other);
 
-    ~QGitStatusEntry();
+    ~StatusEntry();
 
     /**
      * Return the status of the entry
      */
-    QGitStatus status() const;
+    Status status() const;
     
     /**
      * Returns the old path if set, otherwise an empty string

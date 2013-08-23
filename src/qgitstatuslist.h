@@ -32,20 +32,20 @@ namespace LibQGit2
 /**
  * @brief Wrapper class for git_status_list.
  * 
- * Represents a list of status entries in a Git repository. This is not a simple QList of QGitStatusEntry,
+ * Represents a list of status entries in a Git repository. This is not a simple QList of StatusEntry,
  * it wraps the underlying libgit2 functions.
  *
  * @ingroup LibQGit2
  * @{
  */
-class LIBQGIT2_STATUS_EXPORT QGitStatusList
+class LIBQGIT2_STATUS_EXPORT StatusList
 {
 public:
-    explicit QGitStatusList(git_status_list *status_list = 0);
+    explicit StatusList(git_status_list *status_list = 0);
 
-    QGitStatusList(const QGitStatusList& other);
+    StatusList(const StatusList& other);
 
-    ~QGitStatusList();
+    ~StatusList();
 
     /**
      * Returns the number of entries in the status list.
@@ -55,7 +55,7 @@ public:
     /**
      * Returns the entry with the given index.
      */
-    const QGitStatusEntry entryByIndex(size_t idx);
+    const StatusEntry entryByIndex(size_t idx);
 
     git_status_list* data() const;
     const git_status_list* constData() const;

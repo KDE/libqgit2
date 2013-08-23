@@ -1,6 +1,7 @@
 /******************************************************************************
- * This file is part of the Gluon Development Platform
+ * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,12 +31,12 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_EXPORT QGitException : public std::exception
+    class LIBQGIT2_EXPORT Exception : public std::exception
     {
         public:
-            QGitException();
+            Exception();
 
-            ~QGitException() throw();
+            ~Exception() throw();
 
             const char *what() const throw();
 

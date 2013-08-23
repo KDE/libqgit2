@@ -1,6 +1,7 @@
 /******************************************************************************
- * This file is part of the Gluon Development Platform
+ * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,40 +27,39 @@ namespace LibQGit2
 {
     /**
      * @brief Wrapper class for git_blob.
-     * Represents a Git blob (binary large object).
-     *
+     * 
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_BLOB_EXPORT QGitBlob : public QGitObject
+    class LIBQGIT2_BLOB_EXPORT Blob : public Object
     {
         public:
 
             /**
-             * Creates a QGitBlob that points to blob. The pointer object becomes managed by
-             * this QGitBlob, and must not be passed to another QGitBlob or closed outside this
-             * object.
+             * Create an Blob.
+             * 
+             * Creates a Blob that points to the given git_blob.
              */
-            explicit QGitBlob(git_blob *blob = 0);
+            explicit Blob(git_blob *blob = 0);
 
             /**
-             * Copy constructor; creates a copy of the object, sharing the same underlaying data
-             * structure.
+             * Copy constructor.
              */
-            QGitBlob(const QGitBlob& other);
+            Blob(const Blob& other);
 
             /**
-             * Destroys the object.
+             * Destroy the object.
              */
-            ~QGitBlob();
+            ~Blob();
 
             /**
-             * Get a read-only buffer with the raw content of a blob.
-             *
-             * A pointer to the raw content of a blob is returned;
-             * this pointer is owned internally by the object and shall
-             * not be free'd. The pointer may be invalidated at a later
-             * time (e.g. when changing the contents of the blob).
+             * Get the raw content of this blob.
+             * 
+             * This method returns a read-only buffer with the raw content
+             * of the blob. This pointer is automatically freed when there
+             * are no more objects referencing it. The pointer may be
+             * invalidated at a later time (e.g. when changing the contents
+             * of the blob).
              *
              * @return the pointer; NULL if the blob has no contents
              */

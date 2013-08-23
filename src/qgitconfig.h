@@ -1,6 +1,7 @@
 /******************************************************************************
- * This file is part of the Gluon Development Platform
+ * This file is part of the libqgit2 library
  * Copyright (c) 2012 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,8 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef QGITCONFIG_H
-#define QGITCONFIG_H
+#ifndef LIBQGIT2_CONFIG_H
+#define LIBQGIT2_CONFIG_H
 
 #include <QtCore/QVariant>
 
@@ -29,7 +30,7 @@
 namespace LibQGit2
 {
 
-    class QGitRepository;
+    class Repository;
 
     /**
       * @brief Represents the git configuration file.
@@ -37,7 +38,7 @@ namespace LibQGit2
       * @ingroup LibQGit2
       * @{
       */
-    class LIBQGIT2_EXPORT QGitConfig
+    class LIBQGIT2_EXPORT Config
     {
     public:
         /**
@@ -45,9 +46,9 @@ namespace LibQGit2
           *
           * @param cfg when given, the instance is used instead of creating a new one
           */
-        QGitConfig(git_config *cfg = 0);
-        QGitConfig(const QGitConfig &other);
-        virtual ~QGitConfig();
+        Config(git_config *cfg = 0);
+        Config(const Config &other);
+        virtual ~Config();
 
         /**
           * Creates a new configuration object and adds the global Git configuration when found.
@@ -55,7 +56,7 @@ namespace LibQGit2
           *
           * @return the new instance
           */
-        static QGitConfig fromGlobalConfig();
+        static Config fromGlobalConfig();
 
         /**
           * Appends a config file with the given access priority.
@@ -111,4 +112,4 @@ namespace LibQGit2
     /**@}*/
 }
 
-#endif // QGITCONFIG_H
+#endif // LIBQGIT2_CONFIG_H

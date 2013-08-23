@@ -1,6 +1,7 @@
 /******************************************************************************
- * This file is part of the Gluon Development Platform
+ * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,48 +27,48 @@
 namespace LibQGit2
 {
 
-QGitTreeEntry::QGitTreeEntry(const git_tree_entry *treeEntry)
+TreeEntry::TreeEntry(const git_tree_entry* treeEntry)
     : d(treeEntry)
 {
 }
 
-QGitTreeEntry::QGitTreeEntry(const QGitTreeEntry& other)
+TreeEntry::TreeEntry(const TreeEntry& other)
     : d(other.d)
 {
 }
 
-QGitTreeEntry::~QGitTreeEntry()
+TreeEntry::~TreeEntry()
 {
 }
 
-bool QGitTreeEntry::isNull() const
+bool TreeEntry::isNull() const
 {
-    return constData() == 0;
+    return d == 0;
 }
 
-unsigned int QGitTreeEntry::attributes() const
+unsigned int TreeEntry::attributes() const
 {
     return git_tree_entry_filemode(d);
 }
 
-const QString QGitTreeEntry::name() const
+const QString TreeEntry::name() const
 {
-    return QFile::decodeName( git_tree_entry_name(d) );
+    return QFile::decodeName(git_tree_entry_name(d));
 }
 
-QGitOId QGitTreeEntry::oid() const
+OId TreeEntry::oid() const
 {
-    return QGitOId(git_tree_entry_id(d));
+    return OId(git_tree_entry_id(d));
 }
 
-QGitObject QGitTreeEntry::toObject(const QGitRepository& repo)
+Object TreeEntry::toObject(const Repository& repo)
 {
     git_object *obj;
     qGitThrow(git_tree_entry_to_object(&obj, repo.data(), d));
-    return QGitObject(obj);
+    return Object(obj);
 }
 
-const git_tree_entry* QGitTreeEntry::constData() const
+const git_tree_entry* TreeEntry::data() const
 {
     return d;
 }

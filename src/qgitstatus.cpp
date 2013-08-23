@@ -25,76 +25,76 @@
 namespace LibQGit2
 {
 
-QGitStatus::QGitStatus(const git_status_t status_flags)
+Status::Status(const git_status_t status_flags)
     : d(status_flags)
 {
 }
 
-QGitStatus::QGitStatus(const QGitStatus &other)
+Status::Status(const Status &other)
     : d(other.d)
 {
 }
 
-QGitStatus::~QGitStatus()
+Status::~Status()
 {
 }
 
-bool QGitStatus::isCurrent() const
+bool Status::isCurrent() const
 {
     return d == GIT_STATUS_CURRENT;
 }
 
-bool QGitStatus::isNewInIndex() const
+bool Status::isNewInIndex() const
 {
     return d & GIT_STATUS_INDEX_NEW;
 }
 
-bool QGitStatus::isModifiedInIndex() const
+bool Status::isModifiedInIndex() const
 {
     return d & GIT_STATUS_INDEX_MODIFIED;
 }
 
-bool QGitStatus::isDeletedInIndex() const
+bool Status::isDeletedInIndex() const
 {
     return d & GIT_STATUS_INDEX_DELETED;
 }
 
-bool QGitStatus::isRenamedInIndex() const
+bool Status::isRenamedInIndex() const
 {
     return d & GIT_STATUS_INDEX_RENAMED;
 }
 
-bool QGitStatus::isTypeChangedInIndex() const
+bool Status::isTypeChangedInIndex() const
 {
     return d & GIT_STATUS_INDEX_TYPECHANGE;
 }
 
-bool QGitStatus::isNewInWorkdir() const
+bool Status::isNewInWorkdir() const
 {
     return d & GIT_STATUS_WT_NEW;
 }
 
-bool QGitStatus::isModifiedInWorkdir() const
+bool Status::isModifiedInWorkdir() const
 {
     return d & GIT_STATUS_WT_MODIFIED;
 }
 
-bool QGitStatus::isDeletedInWorkdir() const
+bool Status::isDeletedInWorkdir() const
 {
     return d & GIT_STATUS_WT_DELETED;
 }
 
-bool QGitStatus::isRenamedInWorkdir() const
+bool Status::isRenamedInWorkdir() const
 {
     return d & GIT_STATUS_WT_RENAMED;
 }
 
-bool QGitStatus::isTypeChangedInWorkdir() const
+bool Status::isTypeChangedInWorkdir() const
 {
     return d & GIT_STATUS_WT_TYPECHANGE;
 }
 
-unsigned int QGitStatus::data() const
+unsigned int Status::data() const
 {
     return (unsigned int)d;
 }

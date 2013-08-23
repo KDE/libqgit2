@@ -1,6 +1,7 @@
 /******************************************************************************
- * This file is part of the Gluon Development Platform
+ * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,10 +28,10 @@
 namespace LibQGit2
 {
 
-class QGitException;
-class QGitRepository;
-class QGitOId;
-class QGitCommit;
+class Exception;
+class Repository;
+class OId;
+class Commit;
 class Reference;
 
 /**
@@ -40,7 +41,7 @@ class Reference;
   * @ingroup LibQGit2
   * @{
   */
-class LIBQGIT2_REVWALK_EXPORT QGitRevWalk
+class LIBQGIT2_REVWALK_EXPORT RevWalk
 {
 public:
     /**
@@ -61,14 +62,14 @@ public:
      *
      * @param repo the repo to walk through
      */
-    explicit QGitRevWalk(const QGitRepository& repository);
+    explicit RevWalk(const Repository& repository);
 
-    QGitRevWalk( const QGitRevWalk& other );
+    RevWalk( const RevWalk& other );
 
     /**
      * Delete a revwalk previously allocated.
      */
-    ~QGitRevWalk();
+    ~RevWalk();
 
     /**
      * Reset the walking machinery for reuse.
@@ -82,9 +83,9 @@ public:
      * of the starting points for the revision traversal.
      *
      * @param oid the oid of the commit to start from.
-     * @throws QGitException
+     * @throws LibQGit2::Exception
      */
-    void push(const QGitOId& oid) const;
+    void push(const OId& oid) const;
 
     /**
      * Mark the given commit as a starting point.
@@ -93,9 +94,9 @@ public:
      * of the starting points for the revision traversal.
      *
      * @param commit the commit to start from.
-     * @throws QGitException
+     * @throws LibQGit2::Exception
      */
-    void push(const QGitCommit& commit) const;
+    void push(const Commit& commit) const;
 
     /**
      * Mark the given reference as a starting point.
@@ -104,7 +105,7 @@ public:
      * of the starting points for the revision traversal.
      *
      * @param reference the reference to strat from.
-     * @throws QGitException
+     * @throws LibQGit2::Exception
      */
     void push(const Reference& reference) const;
 
@@ -115,7 +116,7 @@ public:
      * glob as starting points for the revision traversal.
      *
      * @param glob the glob that reference names shall match.
-     * @throws QGitException
+     * @throws LibQGit2::Exception
      */
     void push(const QString& glob) const;
 
@@ -124,7 +125,7 @@ public:
      * 
      * This method adds HEAD as a starting point for the revision traversal.
      *
-     * @throws QGitException
+     * @throws LibQGit2::Exception
      */
     void pushHead() const;
 
@@ -144,9 +145,9 @@ public:
      * the output of the revision traversal.
      *
      * @param oid the oid of the commit to start from.
-     * @throws QGitException
+     * @throws LibQGit2::Exception
      */
-    void hide(const QGitOId& oid) const;
+    void hide(const OId& oid) const;
 
     /**
      * Hide the given commit and its ancestors from the walker.
@@ -155,9 +156,9 @@ public:
      * the output of the revision traversal.
      *
      * @param commit the commit to start from.
-     * @throws QGitException
+     * @throws LibQGit2::Exception
      */
-    void hide(const QGitCommit& commit) const;
+    void hide(const Commit& commit) const;
 
     /**
      * Hide the given reference and its ancestors from the walker.
@@ -166,7 +167,7 @@ public:
      * the output of the revision traversal.
      *
      * @param reference the reference to strat from.
-     * @throws QGitException
+     * @throws LibQGit2::Exception
      */
     void hide(const Reference& reference) const;
 
@@ -177,7 +178,7 @@ public:
      * glob from the output of the revision traversal.
      *
      * @param glob the glob that reference names shall match.
-     * @throws QGitException
+     * @throws LibQGit2::Exception
      */
     void hide(const QString& glob) const;
 
@@ -186,7 +187,7 @@ public:
      * 
      * This method hides HEAD and its ancestors from the output of the revision traversal.
      *
-     * @throws QGitException
+     * @throws LibQGit2::Exception
      */
     void hideHead() const;
 
@@ -196,15 +197,15 @@ public:
      * @param oid The oid of the next object in the revisions tree if it was found; otherwise it is undefined.
      * @return True if the object was found.
      */
-    bool next(QGitOId& oid) const;
+    bool next(OId& oid) const;
 
     /**
      * Get the next commit from the revision traversal and look it up in the owner repository.
      *
-     * @param commit The next commit within the set repository, if it was found; otherwise an empty QGitCommit.
+     * @param commit The next commit within the set repository, if it was found; otherwise an empty Commit.
      * @return True when the commit was found.
      */
-    bool next(QGitCommit& commit);
+    bool next(Commit& commit);
 
     /**
      * Change the sorting mode when iterating through the
@@ -221,24 +222,24 @@ public:
      *
      * @return a copy of the repository being walked
      */
-    QGitRepository* repository();
+    Repository* repository();
 
     /**
      * Return the const repository on which this walker is operating.
      *
      * @return the repository being walked
      */
-    const QGitRepository* constRepository();
+    const Repository* constRepository();
 
     git_revwalk* data() const;
     const git_revwalk* constData() const;
 
 private:
-    const QGitRepository* m_repository;
+    const Repository* m_repository;
     git_revwalk* m_revWalk;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QGitRevWalk::SortModes)
+Q_DECLARE_OPERATORS_FOR_FLAGS(RevWalk::SortModes)
 
 /**@}*/
 }

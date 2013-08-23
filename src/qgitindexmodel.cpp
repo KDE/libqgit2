@@ -1,6 +1,7 @@
 /******************************************************************************
- * This file is part of the Gluon Development Platform
+ * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,17 +25,17 @@
 namespace LibQGit2
 {
 
-QGitIndexModel::QGitIndexModel(const QGitIndex& index, QObject *parent)
+IndexModel::IndexModel(const Index& index, QObject *parent)
     : QAbstractListModel(parent)
     , m_index(index)
 {
 }
 
-QGitIndexModel::~QGitIndexModel()
+IndexModel::~IndexModel()
 {
 }
 
-int QGitIndexModel::rowCount(const QModelIndex& parent) const
+int IndexModel::rowCount(const QModelIndex& parent) const
 {
     if (parent.isValid()) {
         return 0;
@@ -43,7 +44,7 @@ int QGitIndexModel::rowCount(const QModelIndex& parent) const
     }
 }
 
-QVariant QGitIndexModel::data(const QModelIndex& index, int role) const
+QVariant IndexModel::data(const QModelIndex& index, int role) const
 {
     if (index.parent().isValid())
         return QVariant();
@@ -52,7 +53,7 @@ QVariant QGitIndexModel::data(const QModelIndex& index, int role) const
         return QVariant();
 
     if (role == Qt::DisplayRole || role == Qt::EditRole) {
-        QGitIndexEntry entry = m_index.getByIndex(index.row());
+        IndexEntry entry = m_index.getByIndex(index.row());
         return entry.path();
     } else {
         return QVariant();

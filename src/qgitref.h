@@ -1,6 +1,7 @@
 /******************************************************************************
- * This file is part of the Gluon Development Platform
+ * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,8 +30,8 @@
 
 namespace LibQGit2
 {
-    class QGitRepository;
-    class QGitOId;
+    class Repository;
+    class OId;
 
     /**
      * @brief Wrapper class for git_refs.
@@ -67,7 +68,7 @@ namespace LibQGit2
              *
              * @return a pointer to the oid if available, NULL otherwise
              */
-            QGitOId target() const;
+            OId target() const;
 
             /**
              * Get full name to the reference pointed by this reference
@@ -106,7 +107,7 @@ namespace LibQGit2
              *
              * @param resolvedRef Pointer to the peeled reference
              * @return 0 on success; error code otherwise
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             Reference resolve() const;
 
@@ -130,7 +131,7 @@ namespace LibQGit2
              *
              * @return a pointer to the repository
              */
-            QGitRepository owner() const;
+            Repository owner() const;
 
             /**
              * Set the name of a reference.
@@ -154,7 +155,7 @@ namespace LibQGit2
              * to disk.
              *
              * @param target The new target for the reference
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             void setSymbolicTarget(const QString& target);
 
@@ -169,9 +170,9 @@ namespace LibQGit2
              * to disk.
              *
              * @param target The new target OID for the reference
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
-            void setTarget(const QGitOId& oid);
+            void setTarget(const OId& oid);
 
             bool isNull() const;
 

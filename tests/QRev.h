@@ -12,7 +12,7 @@ public:
     QRev();
     virtual ~QRev();
 private:
-    LibQGit2::QGitRepository *repo;
+    LibQGit2::Repository *repo;
 };
 
 #endif // QRev_H

@@ -1,6 +1,7 @@
 /******************************************************************************
- * This file is part of the Gluon Development Platform
+ * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,9 +27,9 @@
 
 namespace LibQGit2
 {
-    class QGitOId;
-    class QGitObject;
-    class QGitRepository;
+    class OId;
+    class Object;
+    class Repository;
 
     /**
      * @brief Wrapper class for git_tree_entry.
@@ -37,12 +38,12 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_TREEENTRY_EXPORT QGitTreeEntry
+    class LIBQGIT2_TREEENTRY_EXPORT TreeEntry
     {
         public:
-            explicit QGitTreeEntry(const git_tree_entry* treeEntry);
-            QGitTreeEntry(const QGitTreeEntry& other);
-            ~QGitTreeEntry();
+            explicit TreeEntry(const git_tree_entry* treeEntry);
+            TreeEntry(const TreeEntry& other);
+            ~TreeEntry();
 
         public:
             /**
@@ -66,18 +67,18 @@ namespace LibQGit2
              * Get the id of the object pointed by the entry
              * @return the oid of the object
              */
-            QGitOId oid() const;
+            OId oid() const;
 
             /**
              * Convert a tree entry to the Object it points too.
              *
              * @param object pointer to the converted object
              * @return a reference to the pointed object in the repository
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
-            QGitObject toObject(const QGitRepository& repo);
+            Object toObject(const Repository& repo);
 
-            const git_tree_entry* constData() const;
+            const git_tree_entry* data() const;
 
         private:
             const git_tree_entry *d;

@@ -37,14 +37,14 @@ namespace LibQGit2
  * @ingroup LibQGit2
  * @{
  */
-class LIBQGIT2_STATUS_EXPORT QGitStatus
+class LIBQGIT2_STATUS_EXPORT Status
 {
 public:
-    explicit QGitStatus(const git_status_t status_flags);
+    explicit Status(const git_status_t status_flags);
 
-    QGitStatus(const QGitStatus& other);
+    Status(const Status& other);
 
-    ~QGitStatus();
+    ~Status();
 
     /**
      * Returns true if no changes are pending

@@ -1,6 +1,7 @@
 /******************************************************************************
- * This file is part of the Gluon Development Platform
+ * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,48 +29,48 @@
 namespace LibQGit2
 {
 
-QGitTree::QGitTree(git_tree *tree)
-    : QGitObject(reinterpret_cast<git_object*>(tree))
+Tree::Tree(git_tree *tree)
+    : Object(reinterpret_cast<git_object*>(tree))
 {
 }
 
-QGitTree::QGitTree( const QGitTree& other )
-    : QGitObject(other)
+Tree::Tree( const Tree& other )
+    : Object(other)
 {
 }
 
-QGitTree::~QGitTree()
+Tree::~Tree()
 {
 }
 
-QGitOId QGitTree::oid()
+OId Tree::oid()
 {
-    return QGitOId(git_tree_id(data()));
+    return OId(git_tree_id(data()));
 }
 
-size_t QGitTree::entryCount()
+size_t Tree::entryCount()
 {
     return git_tree_entrycount(data());
 }
 
-QGitTreeEntry QGitTree::entryByName(const QString& fileName) const
+TreeEntry Tree::entryByName(const QString& fileName) const
 {
-    return QGitTreeEntry(git_tree_entry_byname(data(), QFile::encodeName(fileName)));
+    return TreeEntry(git_tree_entry_byname(constData(), QFile::encodeName(fileName)));
 }
 
-QGitTreeEntry QGitTree::entryByIndex(int idx) const
+TreeEntry Tree::entryByIndex(int idx) const
 {
-    return QGitTreeEntry(git_tree_entry_byindex(data(), idx));
+    return TreeEntry(git_tree_entry_byindex(data(), idx));
 }
 
-git_tree* QGitTree::data() const
+git_tree* Tree::data() const
 {
-    return reinterpret_cast<git_tree*>(QGitObject::data());
+    return reinterpret_cast<git_tree*>(Object::data());
 }
 
-const git_tree* QGitTree::constData() const
+const git_tree* Tree::constData() const
 {
-    return reinterpret_cast<git_tree*>(QGitObject::data());
+    return reinterpret_cast<git_tree*>(Object::data());
 }
 
 } // namespace LibQGit2

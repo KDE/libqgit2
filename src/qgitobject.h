@@ -1,6 +1,7 @@
 /******************************************************************************
- * This file is part of the Gluon Development Platform
+ * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,120 +31,133 @@
 
 namespace LibQGit2
 {
-    class QGitRepository;
-    class QGitOId;
-    class QGitCommit;
-    class QGitTag;
-    class QGitTree;
-    class QGitBlob;
+    class Repository;
+    class OId;
+    class Commit;
+    class Tag;
+    class Tree;
+    class Blob;
 
     /**
      * @brief Wrapper class for git_object.
-     * This is the base class for every repository object, that is identified with it's LibQGit2::QGitOid.
+     * 
+     * This is the base class for every repository object, i.e. blob, commit,
+     * tag and tree. Every object is identified with it's LibQGit2::OId.
+     * 
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_OBJECT_EXPORT QGitObject
+    class LIBQGIT2_OBJECT_EXPORT Object
     {
         public:
 
             /**
-             * Creates a QGitObject that points to object. The pointer object becomes managed by
-             * this QGitObject, and must not be passed to another QGitObject or closed outside this
-             * object.
+             * Create an Object.
+             * 
+             * Creates an Object that points to the given object.
+             * The pointer to the underlaying git_object is managed by this
+             * Object, and is automatically freed when no more referenced.
              */
-            explicit QGitObject(git_object *object = 0);
+            explicit Object(git_object *object = 0);
 
             /**
-             * Copy constructor; creates a copy of the object, sharing the same underlaying data
-             * structure.
+             * Copy constructor.
              */
-            QGitObject(const QGitObject& other);
+            Object(const Object& other);
 
             /**
-             * Destroys the object.
+             * Destroy the object.
              */
-            ~QGitObject();
+            ~Object();
 
             /**
-             * Convert a generic object into a commit object.
+             * Convert into a commit object.
              *
-             * If the type of the object is commit, then a valid commit object is returned,
-             * otherwise the returned object will be null.
+             * If the underlaying git_object is a commit this returns a valid
+             * Commit object, otherwise it returns an empty one.
              */
-            QGitCommit toCommit() const;
+            Commit toCommit() const;
 
             /**
-             * Convert a generic object into a tag object.
+             * Convert into a tag object.
              *
-             * If the type of the object is tag, then a valid tag object is returned,
-             * otherwise the returned object will be null.
+             * If the underlaying git_object is a tag this returns a valid
+             * Tag object, otherwise it returns an empty one.
              */
-            QGitTag toTag() const;
+            Tag toTag() const;
 
             /**
-             * Convert a generic object into a tree object.
+             * Convert into a tree object.
              *
-             * If the type of the object is tree, then a valid tree object is returned,
-             * otherwise the returned object will be null.
+             * If the underlaying git_object is a tree this returns a valid
+             * Tag object, otherwise it returns an empty one.
              */
-            QGitTree toTree() const;
+            Tree toTree() const;
 
             /**
-             * Convert a generic object into a blob object.
+             * Convert into a blob object.
              *
-             * If the type of the object is blob, then a valid blob object is returned,
-             * otherwise the returned object will be null.
+             * If the underlaying git_object is a blob this returns a valid
+             * Tag object, otherwise it returns an empty one.
              */
-            QGitBlob toBlob() const;
+            Blob toBlob() const;
 
             /**
-             * Return true if the git object pointer owned by this instance is null
+             * Check if the pointer is null.
+             * 
+             * Returns true if the git_object pointer owned by this
+             * instance is null.
              */
             bool isNull() const;
 
             /**
-             * Get the id (SHA1) of a repository object
+             * Get the OId (SHA1) of a repository object.
              *
-             * In-memory objects created by git_object_new() do not
-             * have a SHA1 ID until they are written on a repository.
+             * This returns the OId of the object.
+             * Remember that in-memory objects created by git_object_new()
+             * do not have a SHA1 id until they are written on a repository.
              *
-             * @return the SHA1 id
+             * @return the OId of the object
              */
-            QGitOId oid() const;
+            OId oid() const;
 
             /**
-             * Return true if the object represents a commit; false otherwise
+             * Check if this is a commit.
+             * 
+             * Returns true if the object represents a commit; false otherwise.
              */
             bool isCommit() const;
 
             /**
-             * Return true if the object represents a tag; false otherwise
+             * Check if this is a tag.
+             * 
+             * Returns true if the object represents a tag; false otherwise.
              */
             bool isTag() const;
 
             /**
-             * Return true if the object represents a tree; false otherwise
+             * Check if this is a tree.
+             * 
+             * Returns true if the object represents a tree; false otherwise.
              */
             bool isTree() const;
 
             /**
-             * Return true if the object represents a blob; false otherwise
+             * Check if this is a blob.
+             * 
+             * Returns true if the object represents a blob; false otherwise.
              */
             bool isBlob() const;
 
             /**
-             * Get the object type as a string
+             * Get the object type as a string.
              */
             QString typeString() const;
 
             /**
-             * Get the repository that owns this object
-             *
-             * @param obj the object
-             * @return the repository who owns this object
+             * Get the repository that owns this object.
              */
-            QGitRepository owner() const;
+            Repository owner() const;
 
             git_object* data() const;
             const git_object* constData() const;
@@ -153,13 +167,14 @@ namespace LibQGit2
     };
 
     /**
-     * Compares two QGitObjects. Objects are equal when their oid is.
+     * Compares two Objects. Objects are equal when their oid are equal.
      */
-    bool operator ==(const QGitObject &o1, const QGitObject &o2);
+    bool operator ==(const Object &o1, const Object &o2);
+
     /**
-     * Compares two QGitObjects. Objects are equal when their oid is.
+     * Compares two Objects. Objects are different when their oid are different.
      */
-    bool operator !=(const QGitObject &o1, const QGitObject &o2);
+    bool operator !=(const Object &o1, const Object &o2);
 
     /**@}*/
 }

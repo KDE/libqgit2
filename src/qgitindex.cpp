@@ -1,6 +1,7 @@
 /******************************************************************************
- * This file is part of the Gluon Development Platform
+ * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,21 +30,21 @@
 namespace LibQGit2
 {
 
-QGitIndex::QGitIndex(git_index *index)
+Index::Index(git_index *index)
     : d(index, git_index_free)
 {
 }
 
-QGitIndex::QGitIndex(const QGitIndex& other)
+Index::Index(const Index& other)
     : d(other.d)
 {
 }
 
-QGitIndex::~QGitIndex()
+Index::~Index()
 {
 }
 
-void QGitIndex::open(const QString& indexPath)
+void Index::open(const QString& indexPath)
 {
     d.clear();
     git_index *index = 0;
@@ -51,64 +52,64 @@ void QGitIndex::open(const QString& indexPath)
     d = ptr_type(index, git_index_free);
 }
 
-QGitOId QGitIndex::createTree()
+OId Index::createTree()
 {
-    QGitOId oid;
+    OId oid;
     qGitThrow(git_index_write_tree(oid.data(), data()));
     return oid;
 }
 
-void QGitIndex::clear()
+void Index::clear()
 {
     return git_index_clear(data());
 }
 
-void QGitIndex::read() const
+void Index::read() const
 {
     qGitThrow(git_index_read(data()));
 }
 
-void QGitIndex::write()
+void Index::write()
 {
     qGitThrow(git_index_write(data()));
 }
 
-int QGitIndex::find(const QString& path)
+int Index::find(const QString& path)
 {
     return git_index_find(NULL, data(), QFile::encodeName(path));
 }
 
-void QGitIndex::addByPath(const QString& path)
+void Index::addByPath(const QString& path)
 {
     qGitThrow(git_index_add_bypath(data(), QFile::encodeName(path)));
 }
 
-void QGitIndex::remove(const QString& path, int stage)
+void Index::remove(const QString& path, int stage)
 {
     qGitThrow(git_index_remove(data(), QFile::encodeName(path), stage));
 }
 
-void QGitIndex::add(const QGitIndexEntry &source_entry)
+void Index::add(const IndexEntry &source_entry)
 {
     qGitThrow(git_index_add(data(), source_entry.data()));
 }
 
-QGitIndexEntry QGitIndex::getByIndex(int n) const
+IndexEntry Index::getByIndex(int n) const
 {
-    return QGitIndexEntry(git_index_get_byindex(data(), n));
+    return IndexEntry(git_index_get_byindex(data(), n));
 }
 
-unsigned int QGitIndex::entryCount() const
+unsigned int Index::entryCount() const
 {
     return git_index_entrycount(data());
 }
 
-git_index* QGitIndex::data() const
+git_index* Index::data() const
 {
     return d.data();
 }
 
-const git_index* QGitIndex::constData() const
+const git_index* Index::constData() const
 {
     return d.data();
 }

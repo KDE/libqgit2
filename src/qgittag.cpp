@@ -1,6 +1,7 @@
 /******************************************************************************
- * This file is part of the Gluon Development Platform
+ * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,55 +26,55 @@
 namespace LibQGit2
 {
 
-QGitTag::QGitTag(git_tag *tag)
-    : QGitObject(reinterpret_cast<git_object*>(tag))
+Tag::Tag(git_tag *tag)
+    : Object(reinterpret_cast<git_object*>(tag))
 {
 }
 
-QGitTag::QGitTag(const QGitTag& other)
-    : QGitObject(other)
+Tag::Tag(const Tag& other)
+    : Object(other)
 {
 }
 
-QGitTag::~QGitTag()
+Tag::~Tag()
 {
 }
 
-QGitOId QGitTag::oid() const
+OId Tag::oid() const
 {
-    return QGitOId(git_tag_id(data()));
+    return OId(git_tag_id(data()));
 }
 
-QGitObject QGitTag::target() const
+Object Tag::target() const
 {
     git_object *obj;
     qGitThrow(git_tag_target(&obj, data()));
-    return QGitObject(obj);
+    return Object(obj);
 }
 
-const QString QGitTag::name() const
+const QString Tag::name() const
 {
     return git_tag_name(data());
 }
 
-QGitSignature QGitTag::tagger() const
+Signature Tag::tagger() const
 {
-    return QGitSignature(git_tag_tagger(data()));
+    return Signature(git_tag_tagger(data()));
 }
 
-const QString QGitTag::message()
+const QString Tag::message()
 {
     return git_tag_message(data());
 }
 
-git_tag* QGitTag::data() const
+git_tag* Tag::data() const
 {
-    return reinterpret_cast<git_tag*>(QGitObject::data());
+    return reinterpret_cast<git_tag*>(Object::data());
 }
 
-const git_tag* QGitTag::constData() const
+const git_tag* Tag::constData() const
 {
-    return reinterpret_cast<git_tag*>(QGitObject::data());
+    return reinterpret_cast<git_tag*>(Object::data());
 }
 
 } // namespace LibQGit2

@@ -1,6 +1,7 @@
 /******************************************************************************
- * This file is part of the Gluon Development Platform
+ * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -42,9 +43,9 @@ Reference::~Reference()
 {
 }
 
-QGitOId Reference::target() const
+OId Reference::target() const
 {
-    return QGitOId(git_reference_target(d.data()));
+    return OId(git_reference_target(d.data()));
 }
 
 QString Reference::symbolicTarget() const
@@ -74,9 +75,9 @@ Reference Reference::resolve() const
     return Reference(ref);
 }
 
-QGitRepository Reference::owner() const
+Repository Reference::owner() const
 {
-    return QGitRepository(git_reference_owner(d.data()));
+    return Repository(git_reference_owner(d.data()));
 }
 
 void Reference::setSymbolicTarget(const QString& target)
@@ -86,7 +87,7 @@ void Reference::setSymbolicTarget(const QString& target)
     d = ptr_type(rp);
 }
 
-void Reference::setTarget(const QGitOId& oid)
+void Reference::setTarget(const OId& oid)
 {
     git_reference* rp;
     qGitThrow(git_reference_set_target(&rp, data(), oid.constData()));

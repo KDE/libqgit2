@@ -1,6 +1,7 @@
 /******************************************************************************
- * This file is part of the Gluon Development Platform
+ * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,20 +28,20 @@
 namespace LibQGit2
 {
 
-class LIBQGIT2_INDEX_EXPORT QGitIndexModel : public QAbstractListModel
+class LIBQGIT2_INDEX_EXPORT IndexModel : public QAbstractListModel
 {
     Q_OBJECT
 
 public:
-    explicit QGitIndexModel(const QGitIndex& index, QObject *parent = 0);
-    ~QGitIndexModel();
+    explicit IndexModel(const Index& index, QObject *parent = 0);
+    ~IndexModel();
 
     int rowCount(const QModelIndex& parent) const;
 
     QVariant data(const QModelIndex& index, int role) const;
 
 private:
-    QGitIndex m_index;
+    Index m_index;
 };
 
 }

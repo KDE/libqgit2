@@ -1,6 +1,7 @@
 /******************************************************************************
- * This file is part of the Gluon Development Platform
+ * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,36 +26,36 @@
 namespace LibQGit2
 {
 
-QGitIndexEntry::QGitIndexEntry(const git_index_entry *data)
+IndexEntry::IndexEntry(const git_index_entry *data)
     : d(data)
 {
 }
 
-QGitIndexEntry::QGitIndexEntry(const QGitIndexEntry& other)
+IndexEntry::IndexEntry(const IndexEntry& other)
     : d(other.d)
 {
 }
 
-QGitIndexEntry::~QGitIndexEntry()
+IndexEntry::~IndexEntry()
 {
 }
 
-QGitOId QGitIndexEntry::id() const
+OId IndexEntry::id() const
 {
-    return QGitOId(&d->oid);
+    return OId(&d->oid);
 }
 
-QString QGitIndexEntry::path() const
+QString IndexEntry::path() const
 {
     return QFile::decodeName(d->path);
 }
 
-qint64 QGitIndexEntry::fileSize() const
+qint64 IndexEntry::fileSize() const
 {
     return d->file_size;
 }
 
-const git_index_entry *QGitIndexEntry::data() const
+const git_index_entry *IndexEntry::data() const
 {
     return d;
 }
