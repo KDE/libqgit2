@@ -74,7 +74,6 @@ IF (NOT CMAKE_BUILD_TYPE)
     SET(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel." FORCE)
 ENDIF ()
 
-
 option(USE_LOCAL_LIBGIT2 "Use libgit2 compiled in ${CMAKE_SOURCE_DIR}/libgit2" OFF)
 
 if(USE_LOCAL_LIBGIT2)
@@ -91,7 +90,6 @@ else()
     pkg_check_modules(GIT2 REQUIRED libgit2)
     include_directories(src ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${GIT2_INCLUDEDIR} ${QT_INCLUDES})
 endif()
-
 
 # Collect sourcefiles
 FILE(GLOB SRC src/*.cpp)
@@ -152,7 +150,6 @@ include(CPack)
 
 add_subdirectory(tests)
 
-
 # Doxygen
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
@@ -163,4 +160,3 @@ WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 COMMENT "Generating API documentation with Doxygen" VERBATIM
 )
 endif(DOXYGEN_FOUND)
-

@@ -33,6 +33,8 @@ this library will hopefully reach version 1.0.0 and remain in version 1.x.y unti
 Feel free to disagree with this policy but please do not break it.
 If you think I'm committing a crime versioning with just MINOR and REV let me (lgiordani) know, I'm always ready to discuss my choices.
 
+I consider the API NOT stable until it reaches version 1.0.0.
+
 @authors
 Digging in the Git repository log I find the following (in order of appearance):
 - Laszlo Papp (lpapp)

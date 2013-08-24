@@ -1,6 +1,7 @@
 /******************************************************************************
- * This file is part of the Gluon Development Platform
+ * This file is part of the libqgit2 library
  * Copyright (c) 2012 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,33 +29,35 @@
 namespace LibQGit2
 {
 
-QGitConfig::QGitConfig(git_config *cfg)
+Config::Config(git_config *cfg)
     : d(cfg)
 {
     if (d == 0)
         git_config_new(&d);
 }
 
-QGitConfig::QGitConfig(const QGitConfig &other)
+Config::Config(const Config &other)
     : d(other.d)
 {
 }
 
-QGitConfig::~QGitConfig()
+Config::~Config()
 {
     git_config_free(d);
 }
 
-QGitConfig QGitConfig::fromGlobalConfig()
+Config Config::fromGlobalConfig()
 {
-    git_config *    cfg;
-    if ( git_config_open_global(&cfg) == GIT_OK )
-        return QGitConfig(cfg);
+    git_config * def;
+    git_config * cfg;
+    git_config_open_default(&def);
+    if ( git_config_open_global(&cfg, def) == GIT_OK )
+        return Config(cfg);
 
-    return QGitConfig();
+    return Config();
 }
 
-QString QGitConfig::findGlobal()
+QString Config::findGlobal()
 {
     char buffer[GIT_PATH_MAX];
     qGitThrow( git_config_find_global(buffer, GIT_PATH_MAX) );
@@ -62,7 +65,7 @@ QString QGitConfig::findGlobal()
     return QFile::decodeName(buffer);
 }
 
-QString QGitConfig::findSystem()
+QString Config::findSystem()
 {
     char buffer[GIT_PATH_MAX];
     qGitThrow( git_config_find_system(buffer, GIT_PATH_MAX) );
@@ -70,12 +73,12 @@ QString QGitConfig::findSystem()
     return QFile::decodeName(buffer);
 }
 
-bool QGitConfig::append(const QString &path, int priority)
+bool Config::append(const QString &path, git_config_level_t level, int force)
 {
-    return GIT_OK == git_config_add_file_ondisk(d, QFile::encodeName(path).constData(), priority);
+    return GIT_OK == git_config_add_file_ondisk(d, QFile::encodeName(path).constData(), level, force);
 }
 
-QVariant QGitConfig::value(const QString &key, const QVariant &defaultValue) const
+QVariant Config::value(const QString &key, const QVariant &defaultValue) const
 {
     const char * result = 0;
     if (git_config_get_string(&result, d, key.toUtf8().constData()) == GIT_OK)
@@ -84,7 +87,7 @@ QVariant QGitConfig::value(const QString &key, const QVariant &defaultValue) con
     return defaultValue;
 }
 
-void QGitConfig::setValue(const QString &key, const QVariant &value)
+void Config::setValue(const QString &key, const QVariant &value)
 {
     qGitThrow( git_config_set_string(d, key.toUtf8(), value.toString().toUtf8().constData()) );
 }

@@ -1,6 +1,7 @@
 /******************************************************************************
- * This file is part of the Gluon Development Platform
+ * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,91 +18,95 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <QtCore/QFile>
+
 #include "qgitref.h"
 
 #include "qgitoid.h"
 #include "qgitrepository.h"
 #include "qgitexception.h"
 
-#include <QtCore/QFile>
-
 namespace LibQGit2
 {
 
-QGitRef::QGitRef(git_reference *ref)
-    : m_reference(ref)
+Reference::Reference(git_reference *ref)
+    : d(ref, git_reference_free)
 {
 }
 
-QGitRef::QGitRef(const QGitRef& other)
-    : m_reference(other.m_reference)
+Reference::Reference(const Reference& other)
+    : d(other.d)
 {
 }
 
-QGitRef::~QGitRef()
+Reference::~Reference()
 {
 }
 
-QGitOId QGitRef::oid() const
+OId Reference::target() const
 {
-    return QGitOId(git_reference_oid(m_reference));
+    return OId(git_reference_target(d.data()));
 }
 
-QString QGitRef::target() const
+QString Reference::symbolicTarget() const
 {
-    return QString::fromUtf8(git_reference_target(m_reference));
+    return QString::fromUtf8(git_reference_symbolic_target(d.data()));
 }
 
-bool QGitRef::isDirect() const
+bool Reference::isDirect() const
 {
-    return git_reference_type(m_reference) == GIT_REF_OID;
+    return git_reference_type(d.data()) == GIT_REF_OID;
 }
 
-bool QGitRef::isSymbolic() const
+bool Reference::isSymbolic() const
 {
-    return git_reference_type(m_reference) == GIT_REF_SYMBOLIC;
+    return git_reference_type(d.data()) == GIT_REF_SYMBOLIC;
 }
 
-QString QGitRef::name() const
+QString Reference::name() const
 {
-    return QString::fromUtf8(git_reference_name(m_reference));
+    return QString::fromUtf8(git_reference_name(d.data()));
 }
 
-QGitRef QGitRef::resolve() const
+Reference Reference::resolve() const
 {
     git_reference *ref;
-    qGitThrow(git_reference_resolve(&ref, m_reference));
-    return QGitRef(ref);
+    qGitThrow(git_reference_resolve(&ref, d.data()));
+    return Reference(ref);
 }
 
-QGitRepository QGitRef::owner() const
+Repository Reference::owner() const
 {
-    return QGitRepository(git_reference_owner(m_reference));
+    return Repository(git_reference_owner(d.data()));
 }
 
-void QGitRef::setTarget(const QString& target)
+void Reference::setSymbolicTarget(const QString& target)
 {
-    qGitThrow(git_reference_set_target(m_reference, QFile::encodeName(target)));
+    git_reference* rp;
+    qGitThrow(git_reference_symbolic_set_target(&rp, data(), QFile::encodeName(target)));
+    d = ptr_type(rp);
 }
 
-void QGitRef::setOId(const QGitOId& oid)
+void Reference::setTarget(const OId& oid)
 {
-    qGitThrow(git_reference_set_oid(m_reference, oid.constData()));
+    git_reference* rp;
+    qGitThrow(git_reference_set_target(&rp, data(), oid.constData()));
+    d = ptr_type(rp);
 }
 
-bool QGitRef::isNull() const
+bool Reference::isNull() const
 {
     return data() == 0;
 }
 
-git_reference* QGitRef::data() const
+git_reference* Reference::data() const
 {
-    return m_reference;
+    return d.data();
 }
 
-const git_reference* QGitRef::constData() const
+const git_reference* Reference::constData() const
 {
-    return m_reference;
+    return d.data();
 }
 
 } // namespace LibQGit2

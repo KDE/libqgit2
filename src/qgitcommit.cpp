@@ -1,6 +1,7 @@
 /******************************************************************************
- * This file is part of the Gluon Development Platform
+ * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,89 +28,89 @@
 namespace LibQGit2
 {
 
-QGitCommit::QGitCommit(git_commit *commit)
-    : QGitObject(reinterpret_cast<git_object*>(commit))
+Commit::Commit(git_commit *commit)
+    : Object(reinterpret_cast<git_object*>(commit))
 {
 }
 
-QGitCommit::QGitCommit(const QGitCommit& other)
-    : QGitObject(other)
+Commit::Commit(const Commit& other)
+    : Object(other)
 {
 }
 
-QGitCommit::~QGitCommit()
+Commit::~Commit()
 {
 }
 
-QGitOId QGitCommit::oid() const
+OId Commit::oid() const
 {
-    return QGitOId(git_commit_id(data()));
+    return OId(git_commit_id(data()));
 }
 
-QString QGitCommit::message() const
+QString Commit::message() const
 {
     return QString::fromUtf8(git_commit_message(data()));
 }
 
-QString QGitCommit::shortMessage(int maxLen) const
+QString Commit::shortMessage(int maxLen) const
 {
     return message().left(maxLen).split(QRegExp("(\\r|\\n)")).first();
 }
 
-QDateTime QGitCommit::dateTime() const
+QDateTime Commit::dateTime() const
 {
     QDateTime dateTime;
     dateTime.setTime_t(git_commit_time(data()));
     return dateTime;
 }
 
-int QGitCommit::timeOffset() const
+int Commit::timeOffset() const
 {
     return git_commit_time_offset(data());
 }
 
-QGitSignature QGitCommit::committer() const
+Signature Commit::committer() const
 {
-    return QGitSignature(git_commit_committer(data()));
+    return Signature(git_commit_committer(data()));
 }
 
-QGitSignature QGitCommit::author() const
+Signature Commit::author() const
 {
-    return QGitSignature(git_commit_author(data()));
+    return Signature(git_commit_author(data()));
 }
 
-QGitTree QGitCommit::tree() const
+Tree Commit::tree() const
 {
     git_tree *tree;
     qGitThrow(git_commit_tree(&tree, data()));
-    return QGitTree(tree);
+    return Tree(tree);
 }
 
-unsigned int QGitCommit::parentCount() const
+unsigned int Commit::parentCount() const
 {
     return git_commit_parentcount(data());
 }
 
-QGitCommit QGitCommit::parent(unsigned n) const
+Commit Commit::parent(unsigned n) const
 {
     git_commit *parent;
     qGitThrow(git_commit_parent(&parent, data(), n));
-    return QGitCommit(parent);
+    return Commit(parent);
 }
 
-QGitOId QGitCommit::parentId(unsigned n) const
+OId Commit::parentId(unsigned n) const
 {
-    return QGitOId(git_commit_parent_oid(data(), n));
+    return OId(git_commit_parent_id(data(), n));
 }
 
-git_commit* QGitCommit::data() const
+git_commit* Commit::data() const
 {
-    return reinterpret_cast<git_commit*>(QGitObject::data());
+    return reinterpret_cast<git_commit*>(Object::data());
 }
 
-const git_commit* QGitCommit::constData() const
+const git_commit* Commit::constData() const
 {
-    return reinterpret_cast<git_commit*>(QGitObject::data());
+    return reinterpret_cast<git_commit*>(Object::data());
 }
 
 } // namespace LibQGit2

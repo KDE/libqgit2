@@ -1,6 +1,7 @@
 /******************************************************************************
- * This file is part of the Gluon Development Platform
+ * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,80 +18,135 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "qgitrevwalk.h"
+#include <iostream>
 
+#include "qgitrevwalk.h"
 #include "qgitcommit.h"
+#include "qgitref.h"
+#include "qgitexception.h"
 #include "qgitrepository.h"
+
 
 namespace LibQGit2
 {
 
-QGitRevWalk::QGitRevWalk(const QGitRepository& repository)
+RevWalk::RevWalk(const Repository& repository)
 {
     git_revwalk_new(&m_revWalk, repository.data());
+    m_repository = &repository;
 }
 
-QGitRevWalk::QGitRevWalk( const QGitRevWalk& other )
+RevWalk::RevWalk( const RevWalk& other )
 {
     m_revWalk = other.m_revWalk;
 }
 
-QGitRevWalk::~QGitRevWalk()
+RevWalk::~RevWalk()
 {
     git_revwalk_free(m_revWalk);
 }
 
-void QGitRevWalk::reset() const
+void RevWalk::reset() const
 {
-    return git_revwalk_reset(m_revWalk);
+    git_revwalk_reset(m_revWalk);
 }
 
-int QGitRevWalk::push(const QGitCommit& commit) const
+void RevWalk::push(const OId& oid) const
 {
-    return git_revwalk_push(m_revWalk, commit.oid().data());
+    qGitThrow(git_revwalk_push(m_revWalk, oid.constData()));
 }
 
-int QGitRevWalk::hide(const QGitOId& oid) const
+void RevWalk::push(const Commit& commit) const
 {
-    return git_revwalk_hide(m_revWalk, oid.constData());
+    qGitThrow(git_revwalk_push(m_revWalk, commit.oid().constData()));
 }
 
-QGitOId QGitRevWalk::next() const
+void RevWalk::push(const Reference& reference) const
 {
-    QGitOId oid;
-    git_revwalk_next(oid.data(), m_revWalk);
-    return oid;
+    qGitThrow(git_revwalk_push_glob(m_revWalk, reference.name().toUtf8().constData()));
 }
 
-bool QGitRevWalk::next(QGitCommit & commit)
+void RevWalk::push(const QString& glob) const
 {
-    QGitOId oid;
+    qGitThrow(git_revwalk_push_glob(m_revWalk, glob.toUtf8().constData()));
+}
+
+void RevWalk::pushHead() const
+{
+    qGitThrow(git_revwalk_push_head(m_revWalk));
+}
+
+void RevWalk::pushRange(const QString& range) const
+{
+    qGitThrow(git_revwalk_push_range(m_revWalk,range.toUtf8().constData()));
+}
+
+void RevWalk::hide(const OId& oid) const
+{
+    qGitThrow(git_revwalk_hide(m_revWalk, oid.constData()));
+}
+
+void RevWalk::hide(const Commit& commit) const
+{
+    qGitThrow(git_revwalk_hide(m_revWalk, commit.oid().constData()));
+}
+
+void RevWalk::hide(const Reference& reference) const
+{
+    qGitThrow(git_revwalk_hide_glob(m_revWalk, reference.name().toUtf8().data()));
+}
+
+void RevWalk::hide(const QString& glob) const
+{
+    qGitThrow(git_revwalk_hide_glob(m_revWalk, glob.toUtf8().data()));
+}
+
+void RevWalk::hideHead() const
+{
+    qGitThrow(git_revwalk_hide_head(m_revWalk));
+}
+
+bool RevWalk::next(OId& oid) const
+{
+    int err = git_revwalk_next(oid.data(), m_revWalk);
+    return (err == GIT_OK);
+}
+
+bool RevWalk::next(Commit& commit)
+{
+    OId oid;
     int err = git_revwalk_next(oid.data(), m_revWalk);
 
     if ( (err != GIT_OK) || !oid.isValid() )
-        commit = QGitCommit();
+        commit = Commit();
     else
-        commit = (repository().lookupCommit(oid));
+        commit = constRepository()->lookupCommit(oid);
 
     return !commit.isNull();
 }
 
-void QGitRevWalk::setSorting(SortModes sm)
+void RevWalk::setSorting(SortModes sm)
 {
     git_revwalk_sorting(m_revWalk, sm);
 }
 
-QGitRepository QGitRevWalk::repository()
+Repository* RevWalk::repository()
 {
-    return QGitRepository(git_revwalk_repository(m_revWalk));
+    Repository* repo = new Repository(git_revwalk_repository(m_revWalk));
+    return repo;
 }
 
-git_revwalk* QGitRevWalk::data() const
+const Repository* RevWalk::constRepository()
+{
+    return m_repository;
+}
+
+git_revwalk* RevWalk::data() const
 {
     return m_revWalk;
 }
 
-const git_revwalk* QGitRevWalk::constData() const
+const git_revwalk* RevWalk::constData() const
 {
     return m_revWalk;
 }

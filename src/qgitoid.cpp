@@ -1,6 +1,7 @@
 /******************************************************************************
- * This file is part of the Gluon Development Platform
+ * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,7 +24,7 @@
 namespace LibQGit2
 {
 
-QGitOId::QGitOId(const git_oid *oid)
+OId::OId(const git_oid* oid)
     : d(GIT_OID_RAWSZ, 0)
 {
     if (oid != 0) {
@@ -31,16 +32,16 @@ QGitOId::QGitOId(const git_oid *oid)
     }
 }
 
-QGitOId::QGitOId(const QGitOId& other)
+OId::OId(const OId& other)
     : d(other.d)
 {
 }
 
-QGitOId::~QGitOId()
+OId::~OId()
 {
 }
 
-bool QGitOId::isValid() const
+bool OId::isValid() const
 {
     return ( !d.isEmpty() &&
              (d.length() <= GIT_OID_RAWSZ) &&
@@ -48,57 +49,76 @@ bool QGitOId::isValid() const
              );
 }
 
-QGitOId QGitOId::fromString(const QByteArray& string)
+void OId::fromHex(const QByteArray& hex)
+{
+    int len = qMin(hex.length(), GIT_OID_HEXSZ);
+    qGitThrow(git_oid_fromstrn(data(), hex.constData(), len));
+    d.resize(len / 2);
+}
+
+void OId::fromString(const QString& string)
+{
+    fromHex(string.toUtf8());
+}
+
+
+void OId::fromRawData(const QByteArray& raw)
+{
+    qGitThrow(raw.length() < GIT_OID_HEXSZ);
+    d = raw;
+}
+
+OId OId::stringToOid(const QByteArray& string)
 {
     int len = qMin(string.length(), GIT_OID_HEXSZ);
-    QGitOId oid;
+    OId oid;
     qGitThrow(git_oid_fromstrn(oid.data(), string.constData(), len));
     oid.d.resize(len / 2);
     return oid;
 }
 
-QGitOId QGitOId::fromRawData(const QByteArray& raw)
+OId OId::rawDataToOid(const QByteArray& raw)
 {
-    QGitOId oid;
+    OId oid;
     oid.d = raw;
     return oid;
 }
 
-QByteArray QGitOId::format() const
+QByteArray OId::format() const
 {
     QByteArray ba(GIT_OID_HEXSZ, Qt::Uninitialized);
     git_oid_fmt(ba.data(), constData());
     return ba;
 }
 
-QByteArray QGitOId::pathFormat() const
+QByteArray OId::pathFormat() const
 {
     QByteArray ba(GIT_OID_HEXSZ+1, Qt::Uninitialized);
     git_oid_pathfmt(ba.data(), constData());
     return ba;
 }
 
-git_oid* QGitOId::data()
+git_oid* OId::data()
 {
     return reinterpret_cast<git_oid*>(d.data());
 }
 
-const git_oid* QGitOId::constData() const
+const git_oid* OId::constData() const
 {
     return reinterpret_cast<const git_oid*>(d.constData());
 }
 
-bool operator ==(const QGitOId &oid1, const QGitOId &oid2)
+bool operator ==(const OId &oid1, const OId &oid2)
 {
     return git_oid_cmp(oid1.constData(), oid2.constData()) == 0;
 }
 
-bool operator !=(const QGitOId &oid1, const QGitOId &oid2)
+bool operator !=(const OId &oid1, const OId &oid2)
 {
     return !(operator ==(oid1, oid2));
 }
 
-int QGitOId::length() const
+int OId::length() const
 {
     return d.length() * 2;
 }

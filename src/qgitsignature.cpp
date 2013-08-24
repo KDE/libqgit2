@@ -1,6 +1,7 @@
 /******************************************************************************
- * This file is part of the Gluon Development Platform
+ * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,37 +24,37 @@
 namespace LibQGit2
 {
 
-QGitSignatureBuilder::QGitSignatureBuilder(const QString& name, const QString& email, QDateTime dateTime)
+SignatureBuilder::SignatureBuilder(const QString& name, const QString& email, QDateTime dateTime)
 {
     qGitThrow(git_signature_new(&d, qPrintable(name), qPrintable(email), dateTime.toTime_t(), dateTime.utcOffset() / 60));
 }
 
-QGitSignatureBuilder::QGitSignatureBuilder(const QString& name, const QString& email)
+SignatureBuilder::SignatureBuilder(const QString& name, const QString& email)
 {
     qGitThrow(git_signature_now(&d, qPrintable(name), qPrintable(email)));
 }
 
-QGitSignatureBuilder::QGitSignatureBuilder(const QGitSignatureBuilder& other)
+SignatureBuilder::SignatureBuilder(const SignatureBuilder& other)
 {
     d = git_signature_dup(other.d);
 }
 
-QGitSignatureBuilder::~QGitSignatureBuilder()
+SignatureBuilder::~SignatureBuilder()
 {
     git_signature_free(d);
 }
 
-QString QGitSignatureBuilder::name() const
+QString SignatureBuilder::name() const
 {
     return QString::fromUtf8(d->name);
 }
 
-QString QGitSignatureBuilder::email() const
+QString SignatureBuilder::email() const
 {
     return QString::fromUtf8(d->email);
 }
 
-QDateTime QGitSignatureBuilder::when() const
+QDateTime SignatureBuilder::when() const
 {
     QDateTime dt;
     dt.setTime_t(d->when.time);
@@ -61,41 +62,41 @@ QDateTime QGitSignatureBuilder::when() const
     return dt;
 }
 
-const git_signature* QGitSignatureBuilder::data() const
+const git_signature* SignatureBuilder::data() const
 {
     return d;
 }
 
-QGitSignature::QGitSignature(const git_signature *signature)
+Signature::Signature(const git_signature *signature)
     : d(signature)
 {
 }
 
-QGitSignature::QGitSignature(const QGitSignature& other)
+Signature::Signature(const Signature& other)
     : d(other.data())
 {
 }
 
-QGitSignature::QGitSignature(const QGitSignatureBuilder& other)
+Signature::Signature(const SignatureBuilder& other)
     : d(other.data())
 {
 }
 
-QGitSignature::~QGitSignature()
+Signature::~Signature()
 {
 }
 
-QString QGitSignature::name() const
+QString Signature::name() const
 {
     return QString::fromUtf8(d->name);
 }
 
-QString QGitSignature::email() const
+QString Signature::email() const
 {
     return QString::fromUtf8(d->email);
 }
 
-QDateTime QGitSignature::when() const
+QDateTime Signature::when() const
 {
     QDateTime dt;
     dt.setTime_t(d->when.time);
@@ -103,7 +104,7 @@ QDateTime QGitSignature::when() const
     return dt;
 }
 
-const git_signature *QGitSignature::data() const
+const git_signature *Signature::data() const
 {
     return d;
 }

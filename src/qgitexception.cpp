@@ -1,6 +1,7 @@
 /******************************************************************************
- * This file is part of the Gluon Development Platform
+ * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,7 +25,7 @@
 namespace LibQGit2
 {
 
-QGitException::QGitException()
+Exception::Exception()
 {
     const git_error *err = giterr_last();
 
@@ -34,16 +35,16 @@ QGitException::QGitException()
     }
 }
 
-QGitException::~QGitException() throw()
+Exception::~Exception() throw()
 {
 }
 
-const char *QGitException::what() const throw()
+const char *Exception::what() const throw()
 {
     return m;
 }
 
-QByteArray QGitException::message() const throw()
+QByteArray Exception::message() const throw()
 {
     return m;
 }
@@ -51,7 +52,7 @@ QByteArray QGitException::message() const throw()
 int qGitThrow(int ret)
 {
     if (ret < 0) {
-        throw QGitException();
+        throw Exception();
     }
     return ret;
 }

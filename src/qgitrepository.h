@@ -1,6 +1,7 @@
 /******************************************************************************
- * This file is part of the Gluon Development Platform
+ * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,6 +21,9 @@
 #ifndef LIBQGIT2_REPOSITORY_H
 #define LIBQGIT2_REPOSITORY_H
 
+#include <QtCore/QSharedPointer>
+#include <QtCore/QStringList>
+
 #include "libqgit2_export.h"
 
 #include "qgitdatabase.h"
@@ -29,17 +33,14 @@
 #include "qgitstatuslist.h"
 #include "qgitstatusoptions.h"
 
-#include <QtCore/QSharedPointer>
-#include <QtCore/QStringList>
-
 namespace LibQGit2
 {
-    class QGitCommit;
-    class QGitConfig;
-    class QGitTag;
-    class QGitTree;
-    class QGitBlob;
-    class QGitSignature;
+    class Commit;
+    class Config;
+    class Tag;
+    class Tree;
+    class Blob;
+    class Signature;
 
     /**
      * @brief Wrapper class for git_repository.
@@ -48,30 +49,30 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_REPOSITORY_EXPORT QGitRepository
+    class LIBQGIT2_REPOSITORY_EXPORT Repository
     {
         public:
 
             /**
              * Construct a wrapper around a libgit2 repository pointer.
              *
-             * If `own` is true, this QGitRepository takes ownership of the pointer, and makes
+             * If `own` is true, this Repository takes ownership of the pointer, and makes
              * sure it is freed when the owner is deleted, unless there are other instances
              * sharing the ownership. If `own` is true, the pointer must not be freed manually,
-             * and must not be passed to another QGitRepository instance also with `own` true.
+             * and must not be passed to another Repository instance also with `own` true.
              */
-            explicit QGitRepository(git_repository *repository = 0, bool own = false);
+            explicit Repository(git_repository *repository = 0, bool own = false);
 
             /**
              * Copy constructor; creates a copy of the object, sharing the same underlaying data
              * structure.
              */
-            QGitRepository(const QGitRepository& other);
+            Repository(const Repository& other);
 
             /**
              * Destruct a previously allocated repository
              */
-            ~QGitRepository();
+            ~Repository();
 
             /**
              * Look for a git repository and return its path. The lookup start from startPath and
@@ -98,7 +99,7 @@ namespace LibQGit2
              * startPath appears in ceilingDirs.
              *
              * @return The path of the found repository
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             static QString discover(const QString& startPath,
                                     bool acrossFs = false,
@@ -112,7 +113,7 @@ namespace LibQGit2
              * at the pointed path. If false, provided path will be considered as the working
              * directory into which the .git directory will be created.
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             void init(const QString& path, bool isBare);
 
@@ -136,7 +137,7 @@ namespace LibQGit2
              * or bare repository or fail is 'path' is neither.
              *
              * @param path the path to the repository
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             void open(const QString& path);
 
@@ -145,7 +146,7 @@ namespace LibQGit2
              *
              * Calls discover() with the given arguments, and passes the result to open().
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             void discoverAndOpen(const QString &startPath,
                                  bool acrossFs = false,
@@ -154,9 +155,9 @@ namespace LibQGit2
             /**
              * Retrieve and resolve the reference pointed at by HEAD.
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
-            QGitRef head() const;
+            Reference head() const;
 
             /**
              * Check if a repository's HEAD is detached
@@ -164,7 +165,7 @@ namespace LibQGit2
              * A repository's HEAD is detached when it points directly to a commit
              * instead of a branch.
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             bool isHeadDetached() const;
 
@@ -174,7 +175,7 @@ namespace LibQGit2
              * An orphan branch is one named from HEAD but which doesn't exist in
              * the refs namespace, because it doesn't have any commit to point to.
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             bool isHeadOrphan() const;
 
@@ -184,14 +185,14 @@ namespace LibQGit2
              * An empty repository has just been initialized and contains
              * no commits.
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             bool isEmpty() const;
 
             /**
              * Check if a repository is bare
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             bool isBare() const;
 
@@ -214,49 +215,66 @@ namespace LibQGit2
             /**
              * The repositories configuration file. Includes the global git configuration file.
              */
-            QGitConfig configuration() const;
+            Config configuration() const;
 
             /**
              * Lookup a reference by its name in a repository.
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
+             * @return The reference with the given name
              */
-            QGitRef lookupRef(const QString& name) const;
+            Reference* lookupRef(const QString& name) const;
 
+            /**
+             * Lookup a reference by its name in a repository and returns the oid of its target.
+             *
+             * @throws LibQGit2::Exception
+             * @return The OId of the target 
+             */
+            OId* lookupRefOId(const QString& name) const;
+
+            /**
+             * Lookup a reference by its shorthand name in a repository.
+             *
+             * @throws LibQGit2::Exception
+             * @return The reference with the given name
+             */
+            Reference* lookupShorthandRef(const QString& shorthand) const;
+            
             /**
              * Lookup a commit object from a repository.
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
-            QGitCommit lookupCommit(const QGitOId& oid) const;
+            Commit lookupCommit(const OId& oid) const;
 
             /**
              * Lookup a tag object from the repository.
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
-            QGitTag lookupTag(const QGitOId& oid) const;
+            Tag lookupTag(const OId& oid) const;
 
             /**
              * Lookup a tree object from the repository.
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
-            QGitTree lookupTree(const QGitOId& oid) const;
+            Tree lookupTree(const OId& oid) const;
 
             /**
              * Lookup a blob object from a repository.
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
-            QGitBlob lookupBlob(const QGitOId& oid) const;
+            Blob lookupBlob(const OId& oid) const;
 
             /**
              * Lookup a reference to one of the objects in a repostory.
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
-            QGitObject lookupAny(const QGitOId& oid) const;
+            Object lookupAny(const OId& oid) const;
 
             /**
              * Create a new object id reference.
@@ -267,9 +285,9 @@ namespace LibQGit2
              * If `overwrite` is true and there already exists a reference
              * with the same name, it will be overwritten.
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
-            QGitRef createRef(const QString& name, const QGitOId& oid, bool overwrite = true);
+            Reference* createRef(const QString& name, const OId& oid, bool overwrite = true);
 
             /**
              * Create a new symbolic reference.
@@ -280,21 +298,21 @@ namespace LibQGit2
              * If `overwrite` is true and there already exists a reference
              * with the same name, it will be overwritten.
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
-            QGitRef createSymbolicRef(const QString& name, const QString& target, bool overwrite = true);
+            Reference* createSymbolicRef(const QString& name, const QString& target, bool overwrite = true);
 
             /**
              * Create a new commit in the repository
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
-            QGitOId createCommit(const QString& ref,
-                                 const QGitSignature& author,
-                                 const QGitSignature& committer,
+            OId createCommit(const QString& ref,
+                                 const Signature& author,
+                                 const Signature& committer,
                                  const QString& message,
-                                 const QGitTree& tree,
-                                 const QList<QGitCommit>& parents);
+                                 const Tree& tree,
+                                 const QList<Commit>& parents);
 
             /**
              * Create a new lightweight tag pointing at a target object
@@ -303,10 +321,10 @@ namespace LibQGit2
              * this target object. If `force` is true and a reference
              * already exists with the given name, it'll be replaced.
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
-            QGitOId createTag(const QString& name,
-                              const QGitObject& target,
+            OId createTag(const QString& name,
+                              const Object& target,
                               bool overwrite = true);
 
             /**
@@ -316,18 +334,18 @@ namespace LibQGit2
              * this tag object. If `overwrite` is true and a reference
              * already exists with the given name, it'll be replaced.
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
-            QGitOId createTag(const QString& name,
-                              const QGitObject& target,
-                              const QGitSignature& tagger,
+            OId createTag(const QString& name,
+                              const Object& target,
+                              const Signature& tagger,
                               const QString& message,
                               bool overwrite = true);
 
             /**
              * Delete an existing tag reference.
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             void deleteTag(const QString& name);
 
@@ -335,16 +353,16 @@ namespace LibQGit2
              * Read a file from the working folder of a repository
              * and write it to the Object Database as a loose blob
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
-            QGitOId createBlobFromFile(const QString& path);
+            OId createBlobFromFile(const QString& path);
 
             /**
              * Write an in-memory buffer to the ODB as a blob
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
-            QGitOId createBlobFromBuffer(const QByteArray& buffer);
+            OId createBlobFromBuffer(const QByteArray& buffer);
 
             /**
              * Create a list with all the tags in the Repository
@@ -354,7 +372,7 @@ namespace LibQGit2
              * will be returned.
              *
              * @param pattern Standard fnmatch pattern
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             QStringList listTags(const QString& pattern = QString()) const;
 
@@ -362,7 +380,7 @@ namespace LibQGit2
              * Create a list with all references in the Repository.
              *
              * @param pattern Standard fnmatch pattern
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             QStringList listReferences() const;
 
@@ -371,7 +389,7 @@ namespace LibQGit2
              * 
              * @return a pointer to the object db
              */
-            LibQGit2::QGitDatabase database() const;
+            LibQGit2::Database database() const;
 
             /**
              * @brief Get the Index file of a Git repository
@@ -379,10 +397,10 @@ namespace LibQGit2
              * This is a cheap operation; the index is only opened on the first call,
              * and subsequent calls only retrieve the previous pointer.
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              * @return The index file of the repository
              */
-            QGitIndex index() const;
+            Index index() const;
 
             /**
              * @brief Get the status information of the Git repository
@@ -390,10 +408,10 @@ namespace LibQGit2
              * This function returns the status of the repository entries, according to
              * the given options.
              * 
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              * @return The list of status entries
              */
-            QGitStatusList status(const QGitStatusOptions *options) const;
+            StatusList status(const StatusOptions *options) const;
             
             git_repository* data() const;
             const git_repository* constData() const;

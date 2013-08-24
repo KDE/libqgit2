@@ -1,6 +1,7 @@
 /******************************************************************************
- * This file is part of the Gluon Development Platform
+ * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,7 +21,6 @@
 #ifndef LIBQGIT2_INDEX_H
 #define LIBQGIT2_INDEX_H
 
-
 #include <QtCore/QSharedPointer>
 
 #include "git2.h"
@@ -29,9 +29,9 @@
 
 namespace LibQGit2
 {
-    class QGitOId;
-    class QGitRepository;
-    class QGitIndexEntry;
+    class OId;
+    class Repository;
+    class IndexEntry;
 
     /**
      * @brief Wrapper class for git_index.
@@ -40,27 +40,27 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_INDEX_EXPORT QGitIndex
+    class LIBQGIT2_INDEX_EXPORT Index
     {
         public:
 
             /**
-             * Creates a QGitIndex that points to 'index'. The pointer 'index' becomes managed by
-             * this QGitIndex, and must not be passed to another QGitIndex or freed outside this
+             * Creates a Index that points to 'index'. The pointer 'index' becomes managed by
+             * this Index, and must not be passed to another Index or freed outside this
              * object.
              */
-            explicit QGitIndex(git_index *index = 0);
+            explicit Index(git_index *index = 0);
 
             /**
              * Copy constructor; creates a copy of the object, sharing the same underlaying data
              * structure.
              */
-            QGitIndex(const QGitIndex& other);
+            Index(const Index& other);
 
             /**
              * Destruct an existing index object.
              */
-            ~QGitIndex();
+            ~Index();
 
             /**
              * Create a index object as a memory representation
@@ -72,16 +72,16 @@ namespace LibQGit2
              * GIT_EBAREINDEX error code.
              *
              * @param index_path the path to the index file in disk
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             void open(const QString& indexPath);
 
             /**
              * Create a new tree object from the index
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
-            QGitOId createTree();
+            OId createTree();
 
             /**
              * Clear the contents (all the entries) of an index object.
@@ -94,7 +94,7 @@ namespace LibQGit2
              * Update the contents of an existing index object in memory
              * by reading from the hard disk.
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             void read() const;
 
@@ -102,7 +102,7 @@ namespace LibQGit2
              * Write an existing index object from memory back to disk
              * using an atomic file lock.
              *
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
             void write();
 
@@ -119,18 +119,17 @@ namespace LibQGit2
              * Add or update an index entry from a file in disk.
              *
              * @param path filename to add
-             * @param stage stage for the entry
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
-            void add(const QString& path, int stage = 0);
+            void addByPath(const QString& path);
 
             /**
-             * Remove an entry from the index
+             * Remove an entry from the index given the path
              *
-             * @param position position of the entry to remove
-             * @throws QGitException
+             * @param stage stage of the entry to remove
+             * @throws LibQGit2::Exception
              */
-            void remove(int position);
+            void remove(const QString& path, int stage = GIT_INDEX_STAGE_ANY);
 
             /**
              * Insert an entry into the index.
@@ -140,9 +139,9 @@ namespace LibQGit2
              * will be updated.
              *
              * @param source_entry new entry object
-             * @throws QGitException
+             * @throws LibQGit2::Exception
              */
-            void insert(const QGitIndexEntry& source_entry);
+            void add(const IndexEntry& source_entry);
 
             /**
              * Get a pointer to one of the entries in the index
@@ -153,7 +152,7 @@ namespace LibQGit2
              * @param n the position of the entry
              * @return a pointer to the entry; NULL if out of bounds
              */
-            QGitIndexEntry get(int n) const;
+            IndexEntry getByIndex(int n) const;
 
             /**
              * Get the count of entries currently in the index

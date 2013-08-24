@@ -1,6 +1,7 @@
 /******************************************************************************
- * This file is part of the Gluon Development Platform
+ * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -36,7 +37,7 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_DATABASE_EXPORT QGitDatabase
+    class LIBQGIT2_DATABASE_EXPORT Database
     {
         public:
             /**
@@ -46,11 +47,11 @@ namespace LibQGit2
              * backend must be manually added using `addBackend()`
              *
              */
-            explicit QGitDatabase( git_odb *odb = 0);
+            explicit Database( git_odb *odb = 0);
 
-            QGitDatabase( const QGitDatabase& other );
+            Database( const Database& other );
 
-            ~QGitDatabase();
+            ~Database();
 
         public:
             /**
@@ -83,7 +84,7 @@ namespace LibQGit2
              * @param backend pointer to a databaseBackend instance
              * @return 0 on sucess; error code otherwise
              */
-            int addBackend(QGitDatabaseBackend *backend, int priority);
+            int addBackend(DatabaseBackend *backend, int priority);
 
             /**
             * Add a custom backend to an existing Object DB; this
@@ -99,7 +100,7 @@ namespace LibQGit2
             * @param backend pointer to a databaseBackend instance
             * @return 0 on sucess; error code otherwise
             */
-            int addAlternate(QGitDatabaseBackend *backend, int priority);
+            int addAlternate(DatabaseBackend *backend, int priority);
 
             /**
              * Determine if the given object can be found in the object database.
@@ -110,7 +111,7 @@ namespace LibQGit2
              * - true, if the object was found
              * - false, otherwise
              */
-            int exists(QGitDatabase *db, const QGitOId& id);
+            int exists(Database *db, const OId& id);
 
             git_odb* data() const;
             const git_odb* constData() const;

@@ -1,6 +1,7 @@
 /******************************************************************************
- * This file is part of the Gluon Development Platform
+ * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,9 +27,9 @@
 
 namespace LibQGit2
 {
-    class QGitRepository;
-    class QGitOId;
-    class QGitTreeEntry;
+    class Repository;
+    class OId;
+    class TreeEntry;
 
     /**
      * @brief Wrapper class for git_tree.
@@ -37,33 +38,33 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_TREE_EXPORT QGitTree : public QGitObject
+    class LIBQGIT2_TREE_EXPORT Tree : public Object
     {
         public:
 
             /**
-             * Creates a QGitTree that points to tree. The pointer object becomes managed by
-             * this QGitTree, and must not be passed to another QGitTree or closed outside this
+             * Creates a Tree that points to tree. The pointer object becomes managed by
+             * this Tree, and must not be passed to another Tree or closed outside this
              * object.
              */
-            explicit QGitTree(git_tree *tree = 0);
+            explicit Tree(git_tree *tree = 0);
 
             /**
              * Copy constructor; creates a copy of the object, sharing the same underlaying data
              * structure.
              */
-            QGitTree(const QGitTree& other);
+            Tree(const Tree& other);
 
             /**
              * Destroys the object.
              */
-            ~QGitTree();
+            ~Tree();
 
             /**
              * * Get the id of a tree.
              * * @return object identity for the tree.
              * */
-            QGitOId oid();
+            OId oid();
 
             /**
              * Get the number of entries listed in a tree
@@ -76,14 +77,14 @@ namespace LibQGit2
              * @param filename the filename of the desired entry
              * @return the tree entry; NULL if not found
              */
-            QGitTreeEntry entryByName(const QString& fileName) const;
+            TreeEntry entryByName(const QString& fileName) const;
 
             /**
              * Lookup a tree entry by its position in the tree
              * @param idx the position in the entry list
              * @return the tree entry; NULL if not found
              */
-            QGitTreeEntry entryByIndex(int idx) const;
+            TreeEntry entryByIndex(int idx) const;
 
             git_tree* data() const;
             const git_tree* constData() const;

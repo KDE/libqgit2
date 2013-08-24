@@ -12,7 +12,7 @@ public:
     QStatus();
     virtual ~QStatus();
 private:
-    LibQGit2::QGitRepository *repo;
+    LibQGit2::Repository *repo;
 };
 
 #endif // QStatus_H

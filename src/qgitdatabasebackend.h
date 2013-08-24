@@ -1,6 +1,7 @@
 /******************************************************************************
- * This file is part of the Gluon Development Platform
+ * This file is part of the libqgit2 library
  * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
+ * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,20 +36,16 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_DATABASEBACKEND_EXPORT QGitDatabaseBackend
+    class LIBQGIT2_DATABASEBACKEND_EXPORT DatabaseBackend
     {
         public:
-            QGitDatabaseBackend();
+            DatabaseBackend();
 
-            QGitDatabaseBackend( const QGitDatabaseBackend& other );
+            DatabaseBackend( const DatabaseBackend& other );
 
-            ~QGitDatabaseBackend();
+            ~DatabaseBackend();
 
         public:
-//             int pack(const QString& objectsDir);
-// 
-//             int loose(const QString& objectsDir);
-
             git_odb_backend* data() const;
             const git_odb_backend* constData() const;
 
