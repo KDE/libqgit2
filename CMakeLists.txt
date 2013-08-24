@@ -77,19 +77,15 @@ ENDIF ()
 option(USE_LOCAL_LIBGIT2 "Use libgit2 compiled in ${CMAKE_SOURCE_DIR}/libgit2" OFF)
 
 if(USE_LOCAL_LIBGIT2)
-    set(GIT2_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/libgit2/include ${CMAKE_SOURCE_DIR}/libgit2/src )
     message("Using local libgit2 in ${CMAKE_SOURCE_DIR}/libgit2")
-    include_directories(src ${CMAKE_CURRENT_SOURCE_DIR}
-        ${CMAKE_CURRENT_BINARY_DIR}
-        ${GIT2_INCLUDEDIR}
-        ${GIT2_INCLUDE_DIR}
-        ${QT_INCLUDES}
-    )
+    add_subdirectory(libgit2)
+    set(GIT2_INCLUDEDIR ${CMAKE_SOURCE_DIR}/libgit2/include)
+    set(GIT2_LIBRARIES git2)
 else()
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(GIT2 REQUIRED libgit2)
-    include_directories(src ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${GIT2_INCLUDEDIR} ${QT_INCLUDES})
 endif()
+include_directories(src ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${GIT2_INCLUDEDIR} ${QT_INCLUDES})
 
 # Collect sourcefiles
 FILE(GLOB SRC src/*.cpp)
@@ -108,6 +104,7 @@ message(STATUS "To build and install LIBQGIT2, run \"make\" and \"make install\"
 message(STATUS)
 
 # Compile and link libqgit2
+add_definitions(-DMAKE_LIBQGIT2_LIB)
 ADD_LIBRARY(qgit2 ${SRC} ${MOC_SRC})
 TARGET_LINK_LIBRARIES(qgit2 ${GIT2_LIBRARIES} ${QT_QTCORE_LIBRARY})
 SET_TARGET_PROPERTIES(qgit2 PROPERTIES VERSION ${LIBQGIT2_VERSION_STRING})
