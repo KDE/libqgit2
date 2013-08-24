@@ -49,7 +49,7 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_REPOSITORY_EXPORT Repository
+    class LIBQGIT2_EXPORT Repository
     {
         public:
 
@@ -229,7 +229,7 @@ namespace LibQGit2
              * Lookup a reference by its name in a repository and returns the oid of its target.
              *
              * @throws LibQGit2::Exception
-             * @return The OId of the target 
+             * @return The OId of the target
              */
             OId* lookupRefOId(const QString& name) const;
 
@@ -240,7 +240,7 @@ namespace LibQGit2
              * @return The reference with the given name
              */
             Reference* lookupShorthandRef(const QString& shorthand) const;
-            
+
             /**
              * Lookup a commit object from a repository.
              *
@@ -386,14 +386,14 @@ namespace LibQGit2
 
             /**
              * @brief Get the object database behind a Git repository
-             * 
+             *
              * @return a pointer to the object db
              */
             LibQGit2::Database database() const;
 
             /**
              * @brief Get the Index file of a Git repository
-             * 
+             *
              * This is a cheap operation; the index is only opened on the first call,
              * and subsequent calls only retrieve the previous pointer.
              *
@@ -404,15 +404,15 @@ namespace LibQGit2
 
             /**
              * @brief Get the status information of the Git repository
-             * 
+             *
              * This function returns the status of the repository entries, according to
              * the given options.
-             * 
+             *
              * @throws LibQGit2::Exception
              * @return The list of status entries
              */
             StatusList status(const StatusOptions *options) const;
-            
+
             git_repository* data() const;
             const git_repository* constData() const;
 

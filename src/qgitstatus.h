@@ -28,7 +28,7 @@ namespace LibQGit2
 {
 /**
  * @brief Wrapper class for status flags.
- * 
+ *
  * You will find a complete description of libgit status values in git2/status.h
  * in the libgit2 code tree.
  * Remember that Git status refers both to index and workdir, i.e. to modifications
@@ -37,7 +37,7 @@ namespace LibQGit2
  * @ingroup LibQGit2
  * @{
  */
-class LIBQGIT2_STATUS_EXPORT Status
+class LIBQGIT2_EXPORT Status
 {
 public:
     explicit Status(const git_status_t status_flags);
@@ -102,7 +102,7 @@ public:
     bool isTypeChangedInWorkdir() const;
 
     unsigned int data() const;
-    
+
 private:
     git_status_t d;
 };

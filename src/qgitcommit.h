@@ -34,13 +34,13 @@ namespace LibQGit2
 
     /**
      * @brief Wrapper class for git_commit.
-     * 
+     *
      * This class represents a Git commit object.
      *
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_COMMIT_EXPORT Commit : public Object
+    class LIBQGIT2_EXPORT Commit : public Object
     {
         public:
 
@@ -74,14 +74,14 @@ namespace LibQGit2
 
             /**
              * Get the short commit message.
-             * 
-             * Get the first part of the commit message (similar to 
+             *
+             * Get the first part of the commit message (similar to
              * git log --oneline). The string is further cut when a
              * linebreak is found.
-             * 
+             *
              * @param maxLen maximal length of the resulting string.
              * Default is 80 characters.
-             * 
+             *
              * @return the short message
              */
             QString shortMessage(int maxLen = 80) const;
@@ -93,10 +93,10 @@ namespace LibQGit2
 
             /**
              * Get the timezone offset.
-             * 
+             *
              * Get the timezone offset (i.e. committer's preferred timezone)
              * of this commit.
-             * 
+             *
              * @return positive or negative timezone offset, in minutes from UTC
              */
             int timeOffset() const;
@@ -113,7 +113,7 @@ namespace LibQGit2
 
             /**
              * Get the tree pointed to by this commit.
-             * 
+             *
              * @throws Exception
              */
             Tree tree() const;
@@ -125,10 +125,10 @@ namespace LibQGit2
 
             /**
              * Get the specified parent of the commit.
-             * 
+             *
              * This method returns the nth parent of this commit or, if no
              * parent can be found, an empty commit.
-             * 
+             *
              * @param n the position of the parent
              * @return the parent commit or an empty commit
              * @throws Exception
@@ -137,10 +137,10 @@ namespace LibQGit2
 
             /**
              * Get the OId of the specified parent of the commit.
-             * 
+             *
              * This method returns the Oid of the nth parent of this commit or,
              * if no parent can be found, an empty OId.
-             * 
+             *
              * @param n the position of the parent
              * @return the OId of the parent commit or an empty OId
              * @throws Exception

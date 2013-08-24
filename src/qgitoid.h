@@ -32,12 +32,12 @@ namespace LibQGit2
 {
     /**
      * @brief Wrapper class for git_oid.
-     * 
+     *
      * This class holds a Git SHA1 object id, i.e. 40 hexadecimal digits.
      * Instead of using the git_oid structure, which is an unsigned char array,
      * the object redefines it as a QByteArray and provides the conversion
      * to git_oid through data() and constData().
-     * 
+     *
      * Remember that the QByteArray stores 2 hexadecimal digits for each
      * element, so the length of the array is half that of the SHA1, namely 20 bytes.
      * This can either encompass a full oid (40 hexadecimal digits) or a part of it,
@@ -46,7 +46,7 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_OID_EXPORT OId
+    class LIBQGIT2_EXPORT OId
     {
         public:
 
@@ -67,7 +67,7 @@ namespace LibQGit2
 
             /**
              * Set the value of the object parsing a hex array.
-             * 
+             *
              * This method parses an array of hexadecimal values trying to
              * convert it into an OId.
              * If the array contains more than 40 values, only the first 40
@@ -84,25 +84,25 @@ namespace LibQGit2
 
             /**
              * Set the value of the object parsing a string.
-             * 
+             *
              * This method behaves just like fromHex() but parses a string
              * that contains hexadecimal values. The same rules of fromHex()
              * apply here.
-             * 
+             *
              * @param string
              * Input string; must be at least 4 characters long.
-             * 
+             *
              * @throws Exception
              */
             void fromString(const QString& string);
-            
+
             /**
              * Set the value of the object from a raw oid.
-             * 
+             *
              * This method uses the input raw hexadecimal array without parsing
              * it and without performing prefix lookup. The raw array must be
              * 40 characters long, otherwise throws Exception.
-             * 
+             *
              * @param raw the raw input bytes to be copied.
              * @throws Exception
              */

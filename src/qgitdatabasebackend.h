@@ -36,7 +36,7 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_DATABASEBACKEND_EXPORT DatabaseBackend
+    class LIBQGIT2_EXPORT DatabaseBackend
     {
         public:
             DatabaseBackend();

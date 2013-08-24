@@ -27,17 +27,17 @@ namespace LibQGit2
 {
     /**
      * @brief Wrapper class for git_blob.
-     * 
+     *
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_BLOB_EXPORT Blob : public Object
+    class LIBQGIT2_EXPORT Blob : public Object
     {
         public:
 
             /**
              * Create an Blob.
-             * 
+             *
              * Creates a Blob that points to the given git_blob.
              */
             explicit Blob(git_blob *blob = 0);
@@ -54,7 +54,7 @@ namespace LibQGit2
 
             /**
              * Get the raw content of this blob.
-             * 
+             *
              * This method returns a read-only buffer with the raw content
              * of the blob. This pointer is automatically freed when there
              * are no more objects referencing it. The pointer may be

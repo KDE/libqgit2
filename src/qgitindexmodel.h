@@ -28,7 +28,7 @@
 namespace LibQGit2
 {
 
-class LIBQGIT2_INDEX_EXPORT IndexModel : public QAbstractListModel
+class LIBQGIT2_EXPORT IndexModel : public QAbstractListModel
 {
     Q_OBJECT
 

@@ -31,14 +31,14 @@ namespace LibQGit2
 {
 /**
  * @brief Wrapper class for git_status_list.
- * 
+ *
  * Represents a list of status entries in a Git repository. This is not a simple QList of StatusEntry,
  * it wraps the underlying libgit2 functions.
  *
  * @ingroup LibQGit2
  * @{
  */
-class LIBQGIT2_STATUS_EXPORT StatusList
+class LIBQGIT2_EXPORT StatusList
 {
 public:
     explicit StatusList(git_status_list *status_list = 0);

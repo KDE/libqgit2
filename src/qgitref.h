@@ -40,7 +40,7 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_REFS_EXPORT Reference
+    class LIBQGIT2_EXPORT Reference
     {
         public:
 

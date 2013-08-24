@@ -41,7 +41,7 @@ class Reference;
   * @ingroup LibQGit2
   * @{
   */
-class LIBQGIT2_REVWALK_EXPORT RevWalk
+class LIBQGIT2_EXPORT RevWalk
 {
 public:
     /**
@@ -122,7 +122,7 @@ public:
 
     /**
      * Mark HEAD as a starting point.
-     * 
+     *
      * This method adds HEAD as a starting point for the revision traversal.
      *
      * @throws LibQGit2::Exception
@@ -131,13 +131,13 @@ public:
 
     /**
      * Uses the given range to perform the traversal.
-     * 
+     *
      * This method accepts a range in the form <commit1>..<commit2>,
      * according to Git range syntax, i.e. walk all commits that are
      * reachable from commit2 excluding those reachable from commit1.
      */
     void pushRange(const QString& range) const;
-    
+
     /**
      * Hide the commit with the given oid and its ancestors from the walker.
      *
@@ -184,7 +184,7 @@ public:
 
     /**
      * Hide HEAD from the walker.
-     * 
+     *
      * This method hides HEAD and its ancestors from the output of the revision traversal.
      *
      * @throws LibQGit2::Exception

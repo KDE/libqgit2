@@ -40,7 +40,7 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_INDEX_EXPORT Index
+    class LIBQGIT2_EXPORT Index
     {
         public:
 
@@ -129,7 +129,7 @@ namespace LibQGit2
              * @param stage stage of the entry to remove
              * @throws LibQGit2::Exception
              */
-            void remove(const QString& path, int stage = GIT_INDEX_STAGE_ANY);
+            void remove(const QString& path, int stage);
 
             /**
              * Insert an entry into the index.

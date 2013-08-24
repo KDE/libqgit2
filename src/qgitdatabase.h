@@ -37,7 +37,7 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_DATABASE_EXPORT Database
+    class LIBQGIT2_EXPORT Database
     {
         public:
             /**

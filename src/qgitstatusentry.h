@@ -29,14 +29,14 @@ namespace LibQGit2
 {
 /**
  * @brief Wrapper class for git_status_entry.
- * 
+ *
  * Represents a status entry in a Git repository, that is a Git status linked to a file name.
  * Actually the status entry encompasses two file names, to take renames into account.
  *
  * @ingroup LibQGit2
  * @{
  */
-class LIBQGIT2_STATUS_EXPORT StatusEntry
+class LIBQGIT2_EXPORT StatusEntry
 {
 public:
 
@@ -50,23 +50,23 @@ public:
      * Return the status of the entry
      */
     Status status() const;
-    
+
     /**
      * Returns the old path if set, otherwise an empty string
      */
     QString oldPath() const;
-    
+
     /**
      * Returns the new path if set, otherwise an empty string
      */
     QString newPath() const;
-    
+
     /**
      * Returns the path if set, otherwise an empty string
      */
     QString path() const;
 
-private:    
+private:
     const git_status_entry* d; //!< Internal pointer to the libgit2 status entry
 };
 

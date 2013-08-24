@@ -37,7 +37,7 @@ namespace LibQGit2
  * @ingroup LibQGit2
  * @{
  */
-class LIBQGIT2_STATUS_EXPORT StatusOptions
+class LIBQGIT2_EXPORT StatusOptions
 {
 public:
 
@@ -64,7 +64,7 @@ public:
     };
 
     Q_DECLARE_FLAGS(StatusFlags, StatusFlag)
-    
+
     explicit StatusOptions();
 
     explicit StatusOptions(git_status_options status_options);
@@ -74,11 +74,11 @@ public:
     ~StatusOptions();
 
     ShowFlags showFlags() const;
-    
+
     void setShowFlags(StatusOptions::ShowFlags sf);
-    
+
     StatusFlags statusFlags() const;
-    
+
     void setStatusFlags(StatusOptions::StatusFlags sf);
 
     git_status_options data() const;
@@ -86,7 +86,7 @@ public:
 
 private:
     git_status_options d;
-    
+
     ShowFlags show_flags;
     StatusFlags status_flags;
 };
