@@ -75,9 +75,13 @@ IF (NOT CMAKE_BUILD_TYPE)
 ENDIF ()
 
 option(USE_LOCAL_LIBGIT2 "Use libgit2 compiled in ${CMAKE_SOURCE_DIR}/libgit2" OFF)
+option(LIBGIT2_TESTS     "Build libgit2 tests" OFF)
 
 if(USE_LOCAL_LIBGIT2)
     message("Using local libgit2 in ${CMAKE_SOURCE_DIR}/libgit2")
+    if(NOT LIBGIT2_TESTS)
+        set(BUILD_CLAR OFF CACHE STRING "libgit2 tests" FORCE)
+    endif()
     add_subdirectory(libgit2)
     set(GIT2_INCLUDEDIR ${CMAKE_SOURCE_DIR}/libgit2/include)
     set(GIT2_LIBRARIES git2)
