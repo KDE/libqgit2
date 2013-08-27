@@ -1,18 +1,21 @@
-project(QStatus)
-cmake_minimum_required(VERSION 2.6)
-find_package(Qt4 REQUIRED)
 
-include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_BINARY_DIR}/../../tests/src ${CMAKE_CURRENT_BINARY_DIR}/../../src ${CMAKE_CURRENT_BINARY_DIR}/../../ ${CMAKE_CURRENT_BINARY_DIR}/../../libgit2/include)
-link_directories(${CMAKE_CURRENT_BINARY_DIR}/.. ${CMAKE_CURRENT_BINARY_DIR}/../../libgit2/build)
+add_definitions(-DTEST_DIR=${CMAKE_BINARY_DIR}/TestDir)
 
-set(QStatus_SRCS QStatus.cpp)
-qt4_automoc(${QStatus_SRCS})
-add_executable(QStatus ${QStatus_SRCS})
-target_link_libraries(QStatus qgit2 git2 ${QT_QTCORE_LIBRARY})
+include_directories( ${CMAKE_CURRENT_BINARY_DIR})
 
-set(QRev_SRCS QRev.cpp)
-qt4_automoc(${QRev_SRCS})
-add_executable(QRev ${QRev_SRCS})
-target_link_libraries(QRev qgit2 git2 ${QT_QTCORE_LIBRARY})
+set(EXECUTABLE_OUTPUT_PATH  ${CMAKE_BINARY_DIR}/bin)
 
-install(TARGETS QStatus RUNTIME DESTINATION bin)
+macro(addTest name)
+    set(_source ${CMAKE_CURRENT_SOURCE_DIR}/${name}.cpp)
+    set(_moced ${CMAKE_CURRENT_BINARY_DIR}/${name}.moc)
+    qt4_generate_moc(${_source} ${_moced})
+    set_source_files_properties(${_source} PROPERTIES OBJECT_DEPENDS "${_moced}")
+    set(testname test${name})
+    add_executable(${testname} ${_source})
+    target_link_libraries(test${name} qgit2 git2 ${QT_QTCORE_LIBRARY} ${QT_QTTEST_LIBRARY})
+    add_test(NAME ${testname} COMMAND ${testname})
+endmacro()
+
+
+addTest(Revision)
+addTest(StatusOptions)

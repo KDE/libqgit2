@@ -1,5 +1,7 @@
 // A try to port libgit2 status.c example to libqgit2
 
+#include <QTest>
+
 #include <QCoreApplication>
 #include <QTimer>
 #include <iostream>
@@ -10,22 +12,34 @@
 #include "qgitrepository.h"
 #include "qgitrevwalk.h"
 
-#include "QRev.h"
+class TestRevision : public QObject
+{
+
+    Q_OBJECT
+
+public:
+    TestRevision();
+    ~TestRevision();
+
+private:
+    LibQGit2::Repository *repo;
+};
+
 
 using namespace LibQGit2;
 
-QRev::QRev()
+TestRevision::TestRevision()
 {
     // Create a new repository object
     Repository * repo = new LibQGit2::Repository();
-    
+
     // Open a local fixed path
     repo->open(QString("/home/leo/projects/libqgit2"));
-    
+
     RevWalk * rw = new RevWalk(*repo);
-    
+
     rw->setSorting(RevWalk::Topological);
-    
+
     rw->pushHead();
 
     Commit commit;
@@ -33,19 +47,13 @@ QRev::QRev()
         QByteArray qb = commit.oid().format();
         std::cout << qb.data() << std::endl;
     }
-    
+
 }
 
-QRev::~QRev()
+TestRevision::~TestRevision()
 {}
 
-#include "QRev.moc"
 
-int main(int argc, char** argv)
-{
-    QCoreApplication app(argc, argv);
-    QRev foo;
-    return app.exec();
-}
+QTEST_MAIN(TestRevision);
 
-
+#include "Revision.moc"
