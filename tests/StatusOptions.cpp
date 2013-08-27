@@ -1,6 +1,7 @@
 // A try to port libgit2 status.c example to libqgit2
 
-#include <QTest>
+
+#include "TestHelpers.h"
 
 #include <QCoreApplication>
 #include <QTimer>
@@ -38,7 +39,7 @@ TestStatusOptions::TestStatusOptions()
     Repository * repo = new LibQGit2::Repository();
 
     // Open a local fixed path
-    repo->open(QString("/home/leo/projects/libqgit2"));
+    repo->open(QString(VALUE_TO_STR(TEST_DIR)) + "/libqgit2");
 
     StatusOptions *opt = new StatusOptions;
     opt->setShowFlags(StatusOptions::ShowIndexAndWorkdir);

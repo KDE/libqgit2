@@ -1,7 +1,9 @@
 
-add_definitions(-DTEST_DIR=${CMAKE_BINARY_DIR}/TestDir)
+set(testdir ${CMAKE_BINARY_DIR}/TestDir)
+file(MAKE_DIRECTORY ${testdir})
+add_definitions(-DTEST_DIR=${testdir})
 
-include_directories( ${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(EXECUTABLE_OUTPUT_PATH  ${CMAKE_BINARY_DIR}/bin)
 
