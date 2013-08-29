@@ -26,8 +26,8 @@ namespace LibQGit2
 {
 
 StatusOptions::StatusOptions()
-    : d(GIT_STATUS_OPTIONS_INIT)
 {
+    d.version = GIT_STATUS_OPTIONS_VERSION;
 }
 
 StatusOptions::StatusOptions(git_status_options status_options)
