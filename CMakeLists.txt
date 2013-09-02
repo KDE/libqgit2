@@ -71,9 +71,11 @@ set(LIBQGIT2_BUILD_ALL TRUE
     CACHE INTERNAL "Build all of LIBQGIT2"
 )
 
-SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-Wall -O2 -g")
-SET(CMAKE_CXX_FLAGS_RELEASE "-Wall -O2")
-SET(CMAKE_CXX_FLAGS_DEBUG  "-Wall -g3 -ggdb -O0" CACHE STRING "Debug options." FORCE)
+if(NOT MSVC)
+    SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-Wall -O2 -g")
+    SET(CMAKE_CXX_FLAGS_RELEASE "-Wall -O2")
+    SET(CMAKE_CXX_FLAGS_DEBUG  "-Wall -g3 -ggdb -O0" CACHE STRING "Debug options." FORCE)
+endif()
 
 # Build Release by default
 IF (NOT CMAKE_BUILD_TYPE)
@@ -87,6 +89,13 @@ if(USE_LOCAL_LIBGIT2)
     message("Using local libgit2 in ${CMAKE_SOURCE_DIR}/libgit2")
     if(NOT LIBGIT2_TESTS)
         set(BUILD_CLAR OFF CACHE STRING "libgit2 tests" FORCE)
+    endif()
+    if(MSVC)
+        set(STDCALL    OFF CACHE STRING "no stdcall" FORCE)
+        set(STATIC_CRT OFF CACHE STRING "shared runtime" FORCE)
+        # QSharedPointer on opaque libgit structures
+        set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_DEBUG}   /wd4150")
+        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /wd4150")
     endif()
     add_subdirectory(libgit2)
     set(GIT2_INCLUDEDIR ${CMAKE_SOURCE_DIR}/libgit2/include)

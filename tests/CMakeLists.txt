@@ -19,5 +19,6 @@ macro(addTest name)
 endmacro()
 
 
+addTest(Init)
 addTest(Revision)
 addTest(StatusOptions)
