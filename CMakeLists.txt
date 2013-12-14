@@ -38,7 +38,22 @@ if(WIN32) # Dll's into bin
     set(LIBRARY_OUTPUT_PATH     ${CMAKE_BINARY_DIR}/bin)
 endif()
 
-find_package(Qt4 4.6 REQUIRED)
+option(QT4_BUILD "Force building with Qt4 even if Qt5 is found")
+if (NOT QT4_BUILD)
+  find_package(Qt5Core QUIET)
+endif()
+
+if (Qt5Core_FOUND)
+  message(STATUS "Building with Qt5 support")
+  find_package(Qt5Core REQUIRED Core Network)
+  add_definitions(${Qt5Core_DEFINITIONS})
+  set(CMAKE_CXX_FLAGS "${Qt5Core_EXECUTABLE_COMPILE_FLAGS}")
+  set(CMAKE_AUTOMOC ON)
+else()
+  set(QT_MIN_VERSION "4.6.0")
+  find_package(Qt4 REQUIRED)
+endif()
+
 
 FILE(STRINGS "qgit2.h" QGIT2_HEADER REGEX "^#define LIBQGIT2_VERSION \"[^\"]*\"$")
 
@@ -104,13 +119,22 @@ else()
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(GIT2 REQUIRED libgit2)
 endif()
-include_directories(src ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${GIT2_INCLUDEDIR} ${QT_INCLUDES})
+include_directories(src ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${GIT2_INCLUDEDIR} ${Qt5Core_INCLUDES})
+
+if(Qt5Core_FOUND)
+    include_directories(${Qt5Core_INCLUDES})
+else()
+    include_directories(${QT_INCLUDES})
+endif()
 
 # Collect sourcefiles
 FILE(GLOB SRC src/*.cpp)
 
 # MOC
-QT4_WRAP_CPP(MOC_SRC src/qgitindexmodel.h)
+if(Qt5Core_FOUND)
+else()
+    QT4_WRAP_CPP(MOC_SRC src/qgitindexmodel.h)
+endif()
 
 message(STATUS)
 message(STATUS "========== LIBQGIT2 Build Information ==========")
@@ -128,6 +152,10 @@ ADD_LIBRARY(qgit2 ${SRC} ${MOC_SRC})
 TARGET_LINK_LIBRARIES(qgit2 ${GIT2_LIBRARIES} ${QT_QTCORE_LIBRARY})
 SET_TARGET_PROPERTIES(qgit2 PROPERTIES VERSION ${LIBQGIT2_VERSION_STRING})
 SET_TARGET_PROPERTIES(qgit2 PROPERTIES SOVERSION ${LIBQGIT2_VERSION_MAJOR})
+
+if(Qt5Core_FOUND)
+    qt5_use_modules(qgit2 Core)
+endif()
 
 # Install
 INSTALL(TARGETS qgit2
