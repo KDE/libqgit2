@@ -104,7 +104,7 @@ public:
      * This method adds the given reference as one
      * of the starting points for the revision traversal.
      *
-     * @param reference the reference to strat from.
+     * @param reference the reference to start from.
      * @throws LibQGit2::Exception
      */
     void push(const Reference& reference) const;
@@ -166,7 +166,7 @@ public:
      * This method hides the given reference from
      * the output of the revision traversal.
      *
-     * @param reference the reference to strat from.
+     * @param reference the reference to start from.
      * @throws LibQGit2::Exception
      */
     void hide(const Reference& reference) const;
