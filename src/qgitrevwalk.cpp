@@ -63,7 +63,7 @@ void RevWalk::push(const Commit& commit) const
 
 void RevWalk::push(const Reference& reference) const
 {
-    qGitThrow(git_revwalk_push_glob(m_revWalk, reference.name().toUtf8().constData()));
+    qGitThrow(git_revwalk_push(m_revWalk, reference.target().constData()));
 }
 
 void RevWalk::push(const QString& glob) const
