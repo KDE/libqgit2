@@ -84,14 +84,14 @@ void Reference::setSymbolicTarget(const QString& target)
 {
     git_reference* rp;
     qGitThrow(git_reference_symbolic_set_target(&rp, data(), QFile::encodeName(target)));
-    d = ptr_type(rp);
+    d = ptr_type(rp, git_reference_free);
 }
 
 void Reference::setTarget(const OId& oid)
 {
     git_reference* rp;
     qGitThrow(git_reference_set_target(&rp, data(), oid.constData()));
-    d = ptr_type(rp);
+    d = ptr_type(rp, git_reference_free);
 }
 
 bool Reference::isNull() const
