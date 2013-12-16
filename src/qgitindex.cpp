@@ -64,9 +64,9 @@ void Index::clear()
     return git_index_clear(data());
 }
 
-void Index::read() const
+void Index::read(bool force) const
 {
-    qGitThrow(git_index_read(data()));
+    qGitThrow(git_index_read(data(), force ? 1 : 0));
 }
 
 void Index::write()

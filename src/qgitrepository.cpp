@@ -100,9 +100,9 @@ bool Repository::isHeadDetached() const
     return qGitThrow(git_repository_head_detached(d.data())) == 1;
 }
 
-bool Repository::isHeadOrphan() const
+bool Repository::isHeadUnborn() const
 {
-    return qGitThrow(git_repository_head_orphan(d.data())) == 1;
+    return qGitThrow(git_repository_head_unborn(d.data())) == 1;
 }
 
 bool Repository::isEmpty() const

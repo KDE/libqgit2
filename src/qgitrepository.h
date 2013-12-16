@@ -170,14 +170,14 @@ namespace LibQGit2
             bool isHeadDetached() const;
 
             /**
-             * Check if the current branch is an orphan
+             * Check if the current branch is unborn
              *
-             * An orphan branch is one named from HEAD but which doesn't exist in
-             * the refs namespace, because it doesn't have any commit to point to.
+             * An unborn branch is one named from HEAD but which doesn't exist
+             * in the refs namespace, because it doesn't have any commit to point to.
              *
              * @throws LibQGit2::Exception
              */
-            bool isHeadOrphan() const;
+            bool isHeadUnborn() const;
 
             /**
              * Check if a repository is empty
