@@ -7,6 +7,20 @@ set(testdir ${CMAKE_BINARY_DIR}/TestDir)
 file(MAKE_DIRECTORY ${testdir})
 add_definitions(-DTEST_DIR=${testdir})
 
+set(existing_repository ${testdir}/existing_repository)
+add_definitions(-DTEST_EXISTING_REPOSITORY=${existing_repository})
+if(NOT EXISTS ${existing_repository})
+    message(STATUS "Creating test repository ...")
+    file(MAKE_DIRECTORY ${existing_repository})
+    file(MAKE_DIRECTORY ${existing_repository}/.git)
+    file(GLOB_RECURSE gitfiles RELATIVE ${CMAKE_SOURCE_DIR}/.git ${CMAKE_SOURCE_DIR}/.git/*)
+    foreach(gitfile ${gitfiles})
+        configure_file(${CMAKE_SOURCE_DIR}/.git/${gitfile} ${existing_repository}/.git/${gitfile} COPYONLY)
+    endforeach()
+endif()
+message(STATUS "Using test repository at '${existing_repository}'")
+
+
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(EXECUTABLE_OUTPUT_PATH  ${CMAKE_BINARY_DIR}/bin)

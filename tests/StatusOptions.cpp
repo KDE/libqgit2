@@ -39,7 +39,7 @@ TestStatusOptions::TestStatusOptions()
     Repository * repo = new LibQGit2::Repository();
 
     // Open a local fixed path
-    repo->open(QString(VALUE_TO_STR(TEST_DIR)) + "/libqgit2");
+    repo->open(QString(VALUE_TO_STR(TEST_EXISTING_REPOSITORY)));
 
     StatusOptions *opt = new StatusOptions;
     opt->setShowFlags(StatusOptions::ShowIndexAndWorkdir);

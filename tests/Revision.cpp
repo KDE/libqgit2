@@ -59,7 +59,7 @@ void TestRevision::open()
 {
     try {
         // Open a local fixed path
-        repo->open(QString(VALUE_TO_STR(TEST_DIR)) + "/libqgit2"); // TODO create test rep
+        repo->open(QString(VALUE_TO_STR(TEST_EXISTING_REPOSITORY)));
     } catch (const LibQGit2::Exception& ex) {
         QFAIL(ex.what());
     }
