@@ -138,8 +138,9 @@ else()
     include_directories(${QT_INCLUDES})
 endif()
 
-# Collect sourcefiles
+# Collect files
 FILE(GLOB SRC src/*.cpp)
+FILE(GLOB QGIT2_HEADERS src/*.h)
 
 # MOC
 if(Qt5Core_FOUND)
@@ -159,7 +160,7 @@ message(STATUS)
 
 # Compile and link libqgit2
 add_definitions(-DMAKE_LIBQGIT2_LIB)
-ADD_LIBRARY(qgit2 ${SRC} ${MOC_SRC})
+add_library(qgit2 ${SRC} ${MOC_SRC} ${QGIT2_HEADERS})
 TARGET_LINK_LIBRARIES(qgit2 ${GIT2_LIBRARIES} ${QT_QTCORE_LIBRARY})
 SET_TARGET_PROPERTIES(qgit2 PROPERTIES VERSION ${LIBQGIT2_VERSION_STRING})
 SET_TARGET_PROPERTIES(qgit2 PROPERTIES SOVERSION ${LIBQGIT2_VERSION_MAJOR})
@@ -175,7 +176,6 @@ INSTALL(TARGETS qgit2
     ARCHIVE DESTINATION ${INSTALL_LIB}
 )
 
-FILE(GLOB QGIT2_HEADERS src/*.h)
 INSTALL(FILES
     ${QGIT2_HEADERS}
     libqgit2_export.h
