@@ -7,7 +7,7 @@ Official repository is https://projects.kde.org/projects/playground/libs/libqgit
 
 Feel free to fork this repository to play with the library but remember it is not the official one.
 
-Currently updated to libgit2 0.19.0.
+libqgit2 uses libgit2 version 0.20.0.
 
 Compiler warnings
 =================
