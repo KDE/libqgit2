@@ -363,7 +363,7 @@ void Repository::clone(const QString& url, const QString& path)
 
     m_clone_progress = 0;
     git_repository* repo = NULL;
-    qGitThrow(git_clone(&repo, qPrintable(url), qPrintable(path), &opts));
+    qGitThrow(git_clone(&repo, url.toLatin1(), QFile::encodeName(path), &opts));
     d = ptr_type(repo, git_repository_free);
 }
 
