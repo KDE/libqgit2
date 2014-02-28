@@ -3,11 +3,22 @@
 #include <QTest>
 
 #include <QDir>
+#include <QDebug>
+#include <QTimer>
+#include <QThread>
 
 #include "qgitexception.h"
 
 #define TO_STR(s) #s
 #define VALUE_TO_STR(s) TO_STR(s)
+#define VALUE_TO_QSTR(s) QLatin1String(TO_STR(s))
+
+
+struct sleep : QThread
+{
+    static void ms(int msec) { QThread::msleep(msec); }
+};
+
 
 bool removeDir(const QString & dirName)
 {
@@ -21,6 +32,13 @@ bool removeDir(const QString & dirName)
             }
             else {
                 result = QFile::remove(info.absoluteFilePath());
+                if (!result) {
+                    QFile(info.absoluteFilePath()).setPermissions(QFile::WriteOwner);
+                    result = QFile::remove(info.absoluteFilePath());
+                }
+                if (!result) {
+                    qDebug() << "Could not remove " << info.absoluteFilePath();
+                }
             }
 
             if (!result) {
@@ -28,6 +46,9 @@ bool removeDir(const QString & dirName)
             }
         }
         result = dir.rmdir(dirName);
+        if (!result) {
+            qDebug() << "Could not remove " << dirName;
+        }
     }
     return result;
 }

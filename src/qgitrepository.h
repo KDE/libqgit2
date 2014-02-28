@@ -23,6 +23,7 @@
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStringList>
+#include <QtCore/QObject>
 
 #include "libqgit2_export.h"
 
@@ -49,8 +50,10 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_EXPORT Repository
+    class LIBQGIT2_EXPORT Repository : public QObject
     {
+            Q_OBJECT
+
         public:
 
             /**
@@ -413,12 +416,29 @@ namespace LibQGit2
              */
             StatusList status(const StatusOptions *options) const;
 
+            /**
+            * Clone a git repository.
+            *
+            * Signal cloneProgress(int) is emitted with progress in percent.
+            *
+            * @param url URL of the git repository
+            * @param path non-existing directory for the new clone
+            * @throws LibQGit2::Exception
+            */
+            void clone(const QString& url, const QString& path);
+
             git_repository* data() const;
             const git_repository* constData() const;
+
+        signals:
+            void cloneProgress(int);
 
         private:
             typedef QSharedPointer<git_repository> ptr_type;
             ptr_type d;
+
+            int m_clone_progress;
+            static int fetchProgressCallback(const git_transfer_progress* stats, void* data);
     };
 
     /**@}*/

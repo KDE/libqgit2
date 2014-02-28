@@ -333,4 +333,39 @@ const git_repository* Repository::constData() const
     return d.data();
 }
 
+
+int Repository::fetchProgressCallback(const git_transfer_progress* stats, void* data)
+{
+    if (!data) {
+        return 1;
+    }
+    Repository* repo = static_cast<Repository*>(data);
+    int percent = (int)(0.5 + 100.0 * ((double)stats->received_objects) / ((double)stats->total_objects));
+    if (percent != repo->m_clone_progress) {
+        emit repo->cloneProgress(percent);
+        repo->m_clone_progress = percent;
+    }
+    return 0;
+}
+
+
+void Repository::clone(const QString& url, const QString& path)
+{
+    git_clone_options opts;
+    memset(&opts, 0, sizeof(git_clone_options));
+    opts = GIT_CLONE_OPTIONS_INIT;
+
+    opts.remote_callbacks.transfer_progress = &fetchProgressCallback;
+    opts.remote_callbacks.payload = (void*)this;;
+
+    opts.checkout_opts = GIT_CHECKOUT_OPTS_INIT;
+    opts.checkout_opts.checkout_strategy = GIT_CHECKOUT_SAFE_CREATE;
+
+    m_clone_progress = 0;
+    git_repository* repo = NULL;
+    qGitThrow(git_clone(&repo, qPrintable(url), qPrintable(path), &opts));
+    d = ptr_type(repo, git_repository_free);
+}
+
+
 } // namespace LibQGit2
