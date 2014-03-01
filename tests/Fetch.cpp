@@ -53,6 +53,7 @@ public slots:
 private slots:
     void remoteAdd();
     void remoteAddExisiting();
+    void remoteAddExisitingDifferentUrl();
     void fetchMaster();
     void fetchAdditionalBranch();
     void fetchAll();
@@ -102,6 +103,35 @@ void TestFetch::remoteAddExisiting()
     }
 
     // TODO verify remote branches with unit test
+}
+
+
+
+void TestFetch::remoteAddExisitingDifferentUrl()
+{
+    LibQGit2::Repository repo;
+
+    const QString repoPath = testdir + "/fetch_test";
+
+    QVERIFY(removeDir(repoPath));
+    sleep::ms(500);
+
+    try {
+        repo.init(repoPath);
+        repo.remoteAdd("kde", "http://anongit.kde.org/libqgit2");
+    }
+    catch (const LibQGit2::Exception& ex) {
+        QFAIL(ex.what());
+    }
+
+    try{
+        repo.remoteAdd("kde", "XYZ");
+    }
+    catch (const LibQGit2::Exception&) {
+        return;
+    }
+
+    QFAIL("Could add invalid remote URL");
 }
 
 

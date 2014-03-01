@@ -39,9 +39,9 @@ namespace {
     void do_not_free(git_repository*) {}
 
     struct RemoteRAII {
-        git_remote& remote;
-        RemoteRAII(git_remote& r) : remote(r) {}
-        ~RemoteRAII() { git_remote_free(&remote); }
+        git_remote*const remote;
+        RemoteRAII(git_remote* r) : remote(r) {}
+        ~RemoteRAII() { if (remote) git_remote_free(remote); }
     };
 }
 
@@ -383,16 +383,17 @@ void Repository::remoteAdd(const QString& name, const QString& url)
 
     git_remote* remote = 0;
     int ret = git_remote_load(&remote, data(), name.toLatin1());
-    if (ret != 0 && ret != GIT_ENOTFOUND) {
+    RemoteRAII rai(remote); (void)rai;
+    if (ret == 0) {
+        if (QString::fromLatin1(git_remote_url(remote)) == url) {
+            return;
+        } else {
+            throw Exception("Repository::remoteAdd() remote already exists");
+        }
+    } else if (ret != GIT_ENOTFOUND) {
         throw Exception();
     }
 
-    RemoteRAII rai(*remote); (void)rai;
-
-    if (remote && QString::fromLatin1(git_remote_url(remote)) == url) {
-        return;
-    }
- 
     qGitThrow(git_remote_create(&remote, data(), name.toLatin1(), url.toLatin1()));
 }
 
@@ -405,8 +406,7 @@ void Repository::fetch(const QString& name, const QString& head)
 
     git_remote* remote = 0;
     qGitThrow(git_remote_load(&remote, data(), name.toLatin1()));
-    
-    RemoteRAII rai(*remote); (void)rai;
+    RemoteRAII rai(remote); (void)rai;
 
     const QString usedhead = head.isEmpty() ? "*" : head;
     const QString refspec = QString("refs/heads/%2:refs/remotes/%1/%2").arg(name).arg(usedhead);
