@@ -36,6 +36,8 @@ namespace LibQGit2
         public:
             Exception();
 
+            Exception(const QString& msg) : m(msg.toLatin1()) {}
+
             ~Exception() throw();
 
             const char *what() const throw();

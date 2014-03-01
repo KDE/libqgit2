@@ -118,7 +118,7 @@ namespace LibQGit2
              *
              * @throws LibQGit2::Exception
              */
-            void init(const QString& path, bool isBare);
+            void init(const QString& path, bool isBare = false);
 
             /**
              * Open a git repository.
@@ -426,6 +426,25 @@ namespace LibQGit2
             * @throws LibQGit2::Exception
             */
             void clone(const QString& url, const QString& path);
+
+            /**
+            * Add remote repository
+            *
+            * @param name name of the remote
+            * @param url URL of the reote git repository
+            * @throws LibQGit2::Exception
+            */
+            void remoteAdd(const QString& name, const QString& url);
+
+            /**
+            * Ftech from known remote repository.
+            *
+            * @param remote name of the remote repository (e.g. "origin")
+            * @param head name of head to fetch (e.g. "master"), default: "*" (all branches)
+            * @throws LibQGit2::Exception
+            */
+            void fetch(const QString& remote, const QString& head = "");
+
 
             git_repository* data() const;
             const git_repository* constData() const;

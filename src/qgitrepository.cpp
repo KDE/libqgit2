@@ -23,6 +23,7 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QVector>
 #include <QtCore/QStringList>
+#include <QtCore/QDebug>
 
 #include <qgitrepository.h>
 #include <qgitcommit.h>
@@ -35,7 +36,13 @@
 #include <qgitstatus.h>
 
 namespace {
-void do_not_free(git_repository*) {}
+    void do_not_free(git_repository*) {}
+
+    struct RemoteRAII {
+        git_remote& remote;
+        RemoteRAII(git_remote* r) : remote(*r) {}
+        ~RemoteRAII() { git_remote_free(&remote); }
+    };
 }
 
 namespace LibQGit2
@@ -365,6 +372,58 @@ void Repository::clone(const QString& url, const QString& path)
     git_repository* repo = NULL;
     qGitThrow(git_clone(&repo, url.toLatin1(), QFile::encodeName(path), &opts));
     d = ptr_type(repo, git_repository_free);
+}
+
+
+void Repository::remoteAdd(const QString& name, const QString& url)
+{
+    if (d.isNull()){
+        throw Exception("Repository::fetch(): no repository available");
+    }
+
+    git_remote* remote = 0;
+    int ret = git_remote_load(&remote, data(), name.toLatin1());
+    if (ret != 0 && ret != GIT_ENOTFOUND) {
+        throw Exception();
+    }
+
+    RemoteRAII rai(remote); (void)rai;
+
+    if (remote && QString::fromLatin1(git_remote_url(remote)) == url) {
+        return;
+    }
+ 
+    qGitThrow(git_remote_create(&remote, data(), name.toLatin1(), url.toLatin1()));
+}
+
+
+void Repository::fetch(const QString& name, const QString& head)
+{
+    if (d.isNull()){
+        throw Exception("Repository::fetch(): no repository available");
+    }
+
+    git_remote* remote = 0;
+    qGitThrow(git_remote_load(&remote, data(), name.toLatin1()));
+
+    const QString usedhead = head.isEmpty() ? "*" : head;
+    const QString refspec = QString("refs/heads/%2:refs/remotes/%1/%2").arg(name).arg(usedhead);
+
+    RemoteRAII rai(remote); (void)rai;
+
+    git_strarray refs;
+    const QByteArray hbytes = refspec.toLatin1();
+    const char* strings[1];
+    strings[0] = hbytes.constData();
+    refs.count = 1;
+    refs.strings = const_cast<char**>(strings);
+    qGitThrow(git_remote_set_fetch_refspecs(remote, &refs));
+
+    qGitThrow(git_remote_connect(remote, GIT_DIRECTION_FETCH));
+    qGitThrow(git_remote_connected(remote));
+    qGitThrow(git_remote_download(remote));
+    qGitThrow(git_remote_update_tips(remote));
+
 }
 
 

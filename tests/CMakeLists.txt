@@ -46,3 +46,6 @@ addTest(Init)
 addTest(Revision)
 addTest(StatusOptions)
 addTest(Clone)
+addTest(Fetch)
+
+
