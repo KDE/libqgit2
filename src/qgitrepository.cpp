@@ -40,7 +40,7 @@ namespace {
 
     struct RemoteRAII {
         git_remote& remote;
-        RemoteRAII(git_remote* r) : remote(*r) {}
+        RemoteRAII(git_remote& r) : remote(r) {}
         ~RemoteRAII() { git_remote_free(&remote); }
     };
 }
@@ -387,7 +387,7 @@ void Repository::remoteAdd(const QString& name, const QString& url)
         throw Exception();
     }
 
-    RemoteRAII rai(remote); (void)rai;
+    RemoteRAII rai(*remote); (void)rai;
 
     if (remote && QString::fromLatin1(git_remote_url(remote)) == url) {
         return;
@@ -405,11 +405,11 @@ void Repository::fetch(const QString& name, const QString& head)
 
     git_remote* remote = 0;
     qGitThrow(git_remote_load(&remote, data(), name.toLatin1()));
+    
+    RemoteRAII rai(*remote); (void)rai;
 
     const QString usedhead = head.isEmpty() ? "*" : head;
     const QString refspec = QString("refs/heads/%2:refs/remotes/%1/%2").arg(name).arg(usedhead);
-
-    RemoteRAII rai(remote); (void)rai;
 
     git_strarray refs;
     const QByteArray hbytes = refspec.toLatin1();
