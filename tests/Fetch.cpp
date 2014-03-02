@@ -24,7 +24,6 @@
 #include <QCoreApplication>
 #include <QTimer>
 
-
 #include <iostream>
 #include <bitset>
 
@@ -62,6 +61,8 @@ private slots:
 private:
     int m_progress;
     const QString testdir;
+
+    void fetch(const QString& branch, const QString dirname);
 };
 
 
@@ -69,7 +70,7 @@ void TestFetch::remoteAdd()
 {
     LibQGit2::Repository repo;
 
-    const QString repoPath = testdir + "/fetch_test";
+    const QString repoPath = testdir + "/fetch_test/remote_add";
 
     QVERIFY(removeDir(repoPath));
     sleep::ms(500);
@@ -89,7 +90,7 @@ void TestFetch::remoteAddExisiting()
 {
     LibQGit2::Repository repo;
 
-    const QString repoPath = testdir + "/fetch_test";
+    const QString repoPath = testdir + "/fetch_test/add_exisiting";
 
     QVERIFY(removeDir(repoPath));
     sleep::ms(500);
@@ -112,7 +113,7 @@ void TestFetch::remoteAddExisitingDifferentUrl()
 {
     LibQGit2::Repository repo;
 
-    const QString repoPath = testdir + "/fetch_test";
+    const QString repoPath = testdir + "/fetch_test/add_existing_url";
 
     QVERIFY(removeDir(repoPath));
     sleep::ms(500);
@@ -136,11 +137,11 @@ void TestFetch::remoteAddExisitingDifferentUrl()
 }
 
 
-void TestFetch::fetchMaster()
+void TestFetch::fetch(const QString& branch, const QString dirname)
 {
     LibQGit2::Repository repo;
 
-    const QString repoPath = testdir + "/fetch_test";
+    const QString repoPath = testdir + "/fetch_test/" + dirname;
 
     QVERIFY(removeDir(repoPath));
     sleep::ms(500);
@@ -148,7 +149,7 @@ void TestFetch::fetchMaster()
     try {
         repo.init(repoPath);
         repo.remoteAdd("kde", "http://anongit.kde.org/libqgit2");
-        repo.fetch("kde", "master");
+        repo.fetch("kde", branch);
     }
     catch (const LibQGit2::Exception& ex) {
         QFAIL(ex.what());
@@ -158,11 +159,25 @@ void TestFetch::fetchMaster()
 }
 
 
+void TestFetch::fetchMaster()
+{
+    fetch("master", "fetch_master");
+}
+
+
+void TestFetch::fetchAll()
+{
+    fetch("", "fetch_default");
+}
+
+
 void TestFetch::fetchAdditionalBranch()
 {
+    fetch("master", "fetch_additional");
+
     LibQGit2::Repository repo;
 
-    const QString repoPath = testdir + "/fetch_test";
+    const QString repoPath = testdir + "/fetch_test/fetch_additional";
 
     try {
         repo.open(repoPath);
@@ -176,29 +191,11 @@ void TestFetch::fetchAdditionalBranch()
 }
 
 
-void TestFetch::fetchAll()
-{
-    LibQGit2::Repository repo;
-
-    const QString repoPath = testdir + "/fetch_test";
-
-    try {
-        repo.open(repoPath);
-        repo.fetch("kde");
-    }
-    catch (const LibQGit2::Exception& ex) {
-        QFAIL(ex.what());
-    }
-
-    // TODO verify remote branches with unit test
-}
-
-
 void TestFetch::remoteBranches()
 {
     LibQGit2::Repository repo;
 
-    const QString repoPath = testdir + "/remote_ls";
+    const QString repoPath = testdir + "/fetch_test/remote_branches";
 
     QVERIFY(removeDir(repoPath));
     sleep::ms(500);
