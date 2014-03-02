@@ -420,7 +420,7 @@ void Repository::fetch(const QString& name, const QString& head)
     qGitThrow(git_remote_set_fetch_refspecs(remote, &refs));
 
     qGitThrow(git_remote_connect(remote, GIT_DIRECTION_FETCH));
-    qGitThrow(git_remote_connected(remote) == 1 ? 0 : -1);
+    qGitEnsureValue(1, git_remote_connected(remote));
     qGitThrow(git_remote_download(remote));
     qGitThrow(git_remote_update_tips(remote));
 }
@@ -437,7 +437,7 @@ QStringList Repository::remoteBranches(const QString& remoteName)
     RemoteRAII rai(remote); (void)rai;
 
     qGitThrow(git_remote_connect(remote, GIT_DIRECTION_FETCH));
-    qGitThrow(git_remote_connected(remote) == 1 ? 0 : -1);
+    qGitEnsureValue(1, git_remote_connected(remote));
 
     /* List the heads on the remote */
     const git_remote_head** remote_heads = NULL;

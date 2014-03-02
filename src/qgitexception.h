@@ -50,6 +50,8 @@ namespace LibQGit2
 
     int qGitThrow(int ret);
 
+    inline void qGitEnsureValue(int value, int ret) { if (qGitThrow(ret) != value) throw Exception(); }
+
     /**@}*/
 }
 
