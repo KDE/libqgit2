@@ -48,7 +48,7 @@ namespace LibQGit2
             QByteArray m;
     };
 
-    int qGitThrow(int ret);
+    inline int qGitThrow(int ret) { if (ret < 0) throw Exception(); return ret; }
 
     inline void qGitEnsureValue(int value, int ret) { if (qGitThrow(ret) != value) throw Exception(); }
 

@@ -49,12 +49,5 @@ QByteArray Exception::message() const throw()
     return m;
 }
 
-int qGitThrow(int ret)
-{
-    if (ret < 0) {
-        throw Exception();
-    }
-    return ret;
-}
 
 }
