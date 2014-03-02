@@ -420,11 +420,41 @@ void Repository::fetch(const QString& name, const QString& head)
     qGitThrow(git_remote_set_fetch_refspecs(remote, &refs));
 
     qGitThrow(git_remote_connect(remote, GIT_DIRECTION_FETCH));
-    qGitThrow(git_remote_connected(remote));
+    qGitThrow(git_remote_connected(remote) == 1 ? 0 : -1);
     qGitThrow(git_remote_download(remote));
     qGitThrow(git_remote_update_tips(remote));
-
 }
 
+
+QStringList Repository::remoteBranches(const QString& remoteName)
+{
+    if (d.isNull()){
+        throw Exception("Repository::fetch(): no repository available");
+    }
+
+    git_remote* remote = 0;
+    qGitThrow(git_remote_load(&remote, data(), remoteName.toLatin1()));
+    RemoteRAII rai(remote); (void)rai;
+
+    qGitThrow(git_remote_connect(remote, GIT_DIRECTION_FETCH));
+    qGitThrow(git_remote_connected(remote) == 1 ? 0 : -1);
+
+    /* List the heads on the remote */
+    const git_remote_head** remote_heads = NULL;
+    size_t count = 0;
+    qGitThrow(git_remote_ls(&remote_heads, &count, remote));
+    QStringList heads;
+    for (size_t i = 0; i < count; ++i) {
+        const git_remote_head* head = remote_heads[i];
+        if (head && head->name) {
+            QString ref = QString::fromLatin1(head->name);
+            if (ref.startsWith("refs/heads/")) {
+                heads << ref.replace("refs/heads/", "");
+            }
+        }
+    }
+
+    return heads;
+}
 
 } // namespace LibQGit2

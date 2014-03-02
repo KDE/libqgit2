@@ -445,6 +445,7 @@ namespace LibQGit2
             */
             void fetch(const QString& remote, const QString& head = "");
 
+            QStringList remoteBranches(const QString& remoteName);
 
             git_repository* data() const;
             const git_repository* constData() const;

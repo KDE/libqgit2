@@ -51,6 +51,7 @@ public slots:
     }
 
 private slots:
+    void remoteBranches();
     void remoteAdd();
     void remoteAddExisiting();
     void remoteAddExisitingDifferentUrl();
@@ -124,7 +125,7 @@ void TestFetch::remoteAddExisitingDifferentUrl()
         QFAIL(ex.what());
     }
 
-    try{
+    try {
         repo.remoteAdd("kde", "XYZ");
     }
     catch (const LibQGit2::Exception&) {
@@ -192,6 +193,32 @@ void TestFetch::fetchAll()
     // TODO verify remote branches with unit test
 }
 
+
+void TestFetch::remoteBranches()
+{
+    LibQGit2::Repository repo;
+
+    const QString repoPath = testdir + "/remote_ls";
+
+    QVERIFY(removeDir(repoPath));
+    sleep::ms(500);
+
+    QStringList heads;
+    try {
+        repo.init(repoPath);
+        repo.remoteAdd("kde", "http://anongit.kde.org/libqgit2");
+        heads = repo.remoteBranches("kde");
+    }
+    catch (const LibQGit2::Exception& ex) {
+        QFAIL(ex.what());
+    }
+
+    qDebug() << "heads" << heads;
+
+    QVERIFY(!heads.isEmpty());
+    QVERIFY(heads.size() > 1);
+    QVERIFY(heads.contains("master"));
+}
 
 
 QTEST_MAIN(TestFetch);
