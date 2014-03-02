@@ -43,6 +43,12 @@ namespace {
         RemoteRAII(git_remote* r) : remote(r) {}
         ~RemoteRAII() { if (remote) git_remote_free(remote); }
     };
+
+    struct ObjectRAII {
+        git_object*const ptr;
+        ObjectRAII(git_object* p) : ptr(p) {}
+        ~ObjectRAII() { if (ptr) git_object_free(ptr); }
+    };
 }
 
 namespace LibQGit2
@@ -456,5 +462,27 @@ QStringList Repository::remoteBranches(const QString& remoteName)
 
     return heads;
 }
+
+
+void Repository::checkoutRemote(const QString& branch, bool force, const QString& remote)
+{
+    if (d.isNull()){
+        throw Exception("Repository::fetch(): no repository available");
+    }
+
+    const QString refspec = "refs/remotes/" + remote + "/" + branch;
+    git_object* tree = NULL;
+    qGitThrow(git_revparse_single(&tree, data(), refspec.toLatin1()));
+    ObjectRAII rai(tree); (void)rai;
+
+    git_checkout_opts opts;
+    memset(&opts, 0, sizeof(git_checkout_opts));
+    opts = GIT_CHECKOUT_OPTS_INIT;
+    opts.checkout_strategy = force ? GIT_CHECKOUT_FORCE : GIT_CHECKOUT_SAFE;
+    qGitThrow(git_checkout_tree(data(), tree, &opts));
+
+    qGitThrow(git_repository_set_head(data(), refspec.toLatin1()));
+}
+
 
 } // namespace LibQGit2

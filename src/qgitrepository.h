@@ -437,7 +437,7 @@ namespace LibQGit2
             void remoteAdd(const QString& name, const QString& url);
 
             /**
-            * Ftech from known remote repository.
+            * Fetch from known remote repository.
             *
             * @param remote name of the remote repository (e.g. "origin")
             * @param head name of head to fetch (e.g. "master"), default: "*" (all branches)
@@ -446,6 +446,18 @@ namespace LibQGit2
             void fetch(const QString& remote, const QString& head = "");
 
             QStringList remoteBranches(const QString& remoteName);
+
+
+            /**
+            * Checkout a remote branch without creating a local branch.
+            *
+            * @param branch  branch name
+            * @param force   use forced checkout, default is false
+            * @param remote  remote which should be used, default is 'origin'
+            * @throws LibQGit2::Exception
+            */
+            void checkoutRemote(const QString& branch, bool force = false, const QString& remote = "origin");
+
 
             git_repository* data() const;
             const git_repository* constData() const;
