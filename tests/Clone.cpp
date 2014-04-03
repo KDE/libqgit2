@@ -101,7 +101,7 @@ void TestClone::clone(const QString& url)
 
 void TestClone::fileProtocol()
 {
-    clone("file:///" + VALUE_TO_QSTR(TEST_EXISTING_REPOSITORY) + "/.git");
+    clone("file://" + VALUE_TO_QSTR(TEST_EXISTING_REPOSITORY) + "/.git");
 }
 
 
