@@ -430,7 +430,7 @@ void Repository::fetch(const QString& name, const QString& head)
 QStringList Repository::remoteBranches(const QString& remoteName)
 {
     if (d.isNull()){
-        throw Exception("Repository::fetch(): no repository available");
+        throw Exception("Repository::remoteBranches(): no repository available");
     }
 
     git_remote* remote = 0;
@@ -462,7 +462,7 @@ QStringList Repository::remoteBranches(const QString& remoteName)
 void Repository::checkoutRemote(const QString& branch, bool force, const QString& remote)
 {
     if (d.isNull()){
-        throw Exception("Repository::fetch(): no repository available");
+        throw Exception("Repository::checkoutRemote(): no repository available");
     }
 
     const QString refspec = "refs/remotes/" + remote + "/" + branch;
