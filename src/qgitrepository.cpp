@@ -364,14 +364,9 @@ int Repository::fetchProgressCallback(const git_transfer_progress* stats, void* 
 
 void Repository::clone(const QString& url, const QString& path)
 {
-    git_clone_options opts;
-    memset(&opts, 0, sizeof(git_clone_options));
-    opts = GIT_CLONE_OPTIONS_INIT;
-
+    git_clone_options opts = GIT_CLONE_OPTIONS_INIT;
     opts.remote_callbacks.transfer_progress = &fetchProgressCallback;
     opts.remote_callbacks.payload = (void*)this;;
-
-    opts.checkout_opts = GIT_CHECKOUT_OPTS_INIT;
     opts.checkout_opts.checkout_strategy = GIT_CHECKOUT_SAFE_CREATE;
 
     m_clone_progress = 0;
@@ -475,9 +470,7 @@ void Repository::checkoutRemote(const QString& branch, bool force, const QString
     qGitThrow(git_revparse_single(&tree, data(), refspec.toLatin1()));
     ObjectRAII rai(tree); (void)rai;
 
-    git_checkout_opts opts;
-    memset(&opts, 0, sizeof(git_checkout_opts));
-    opts = GIT_CHECKOUT_OPTS_INIT;
+    git_checkout_opts opts = GIT_CHECKOUT_OPTS_INIT;
     opts.checkout_strategy = force ? GIT_CHECKOUT_FORCE : GIT_CHECKOUT_SAFE;
     qGitThrow(git_checkout_tree(data(), tree, &opts));
 
