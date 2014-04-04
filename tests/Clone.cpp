@@ -30,6 +30,7 @@
 
 #include "qgitcommit.h"
 #include "qgitrepository.h"
+#include "qgitcredentials.h"
 
 using namespace LibQGit2;
 
@@ -55,12 +56,13 @@ private slots:
     void gitProtocol();
     void httpProtocol();
     void httpsProtocol();
+    void sshProtocol();
 
 private:
     int m_clone_progress;
     const QString testdir;
 
-    void clone(const QString& url);
+    void clone(const QString& url, const Credentials &credentials = Credentials());
 };
 
 
@@ -70,9 +72,10 @@ TestClone::TestClone() : testdir(VALUE_TO_STR(TEST_DIR))
 }
 
 
-void TestClone::clone(const QString& url)
+void TestClone::clone(const QString& url, const Credentials &credentials)
 {
-    LibQGit2::Repository repo;
+    Repository repo;
+    repo.setRemoteCredentials("origin", credentials);
     connect(&repo, SIGNAL(cloneProgress(int)), this, SLOT(cloneProgress(int)));
 
     QString dirname = url;
@@ -91,7 +94,7 @@ void TestClone::clone(const QString& url)
     try {
         repo.clone(url, repoPath);
     }
-    catch (const LibQGit2::Exception& ex) {
+    catch (const Exception& ex) {
         QFAIL(ex.what());
     }
 
@@ -123,6 +126,12 @@ void TestClone::httpsProtocol()
 }
 
 
-QTEST_MAIN(TestClone);
+void TestClone::sshProtocol()
+{
+    clone("github.com:libqgit2-test/test-repo.git", Credentials::ssh("libqgit2_id_rsa", "libqgit2_id_rsa.pub", "git"));
+}
+
+
+QTEST_MAIN(TestClone)
 
 #include "Clone.moc"

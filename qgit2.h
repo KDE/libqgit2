@@ -28,6 +28,7 @@
 #include "qgit2/qgitblob.h"
 #include "qgit2/qgitcommit.h"
 #include "qgit2/qgitconfig.h"
+#include "qgit2/qgitcredentials.h"
 #include "qgit2/qgitdatabase.h"
 #include "qgit2/qgitdatabasebackend.h"
 #include "qgit2/qgitexception.h"

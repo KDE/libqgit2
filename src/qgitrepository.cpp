@@ -34,6 +34,7 @@
 #include <qgitsignature.h>
 #include <qgitexception.h>
 #include <qgitstatus.h>
+#include <qgitcredentials.h>
 
 namespace {
     void do_not_free(git_repository*) {}
@@ -48,6 +49,11 @@ namespace {
         git_object*const ptr;
         ObjectRAII(git_object* p) : ptr(p) {}
         ~ObjectRAII() { if (ptr) git_object_free(ptr); }
+    };
+
+    struct RemoteCallbackPayload {
+        LibQGit2::Repository &repository;
+        QString remoteName;
     };
 }
 
@@ -352,21 +358,47 @@ int Repository::fetchProgressCallback(const git_transfer_progress* stats, void* 
     if (!data) {
         return 1;
     }
-    Repository* repo = static_cast<Repository*>(data);
+    Repository& repo = static_cast<RemoteCallbackPayload*>(data)->repository;
     int percent = (int)(0.5 + 100.0 * ((double)stats->received_objects) / ((double)stats->total_objects));
-    if (percent != repo->m_clone_progress) {
-        emit repo->cloneProgress(percent);
-        repo->m_clone_progress = percent;
+    if (percent != repo.m_clone_progress) {
+        emit repo.cloneProgress(percent);
+        repo.m_clone_progress = percent;
     }
     return 0;
 }
 
 
+void Repository::setRemoteCredentials(const QString& remoteName, Credentials credentials)
+{
+    m_remote_credentials[remoteName] = credentials;
+}
+
+
+int Repository::acquireCredentialsCallback(git_cred **cred, const char *url, const char *username_from_url, unsigned int allowed_types, void *data)
+{
+    int result = -1;
+    if (data) {
+        RemoteCallbackPayload &payload = *static_cast<RemoteCallbackPayload*>(data);
+        if (payload.repository.m_remote_credentials.contains(payload.remoteName)) {
+            const Credentials &credentials = payload.repository.m_remote_credentials.value(payload.remoteName);
+            result = credentials.create(cred, url, username_from_url, allowed_types);
+        }
+    }
+
+    return result;
+}
+
+
 void Repository::clone(const QString& url, const QString& path)
 {
+    const QString remoteName("origin");
     git_clone_options opts = GIT_CLONE_OPTIONS_INIT;
     opts.remote_callbacks.transfer_progress = &fetchProgressCallback;
-    opts.remote_callbacks.payload = (void*)this;;
+    if (m_remote_credentials.contains(remoteName)) {
+        opts.remote_callbacks.credentials = &acquireCredentialsCallback;
+    }
+    RemoteCallbackPayload payload = { *this, remoteName };
+    opts.remote_callbacks.payload = (void*)&payload;
     opts.checkout_opts.checkout_strategy = GIT_CHECKOUT_SAFE_CREATE;
 
     m_clone_progress = 0;

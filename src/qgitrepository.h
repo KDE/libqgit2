@@ -24,6 +24,7 @@
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStringList>
 #include <QtCore/QObject>
+#include <QtCore/QMap>
 
 #include "libqgit2_export.h"
 
@@ -42,6 +43,7 @@ namespace LibQGit2
     class Tree;
     class Blob;
     class Signature;
+    class Credentials;
 
     /**
      * @brief Wrapper class for git_repository.
@@ -417,6 +419,19 @@ namespace LibQGit2
             StatusList status(const StatusOptions *options) const;
 
             /**
+             * @brief Sets a \c Credentials object to be used for a named remote.
+             *
+             * Some remotes require authentication when communicating with them. Authentication
+             * is performed by using \c Credentials objects. Each named remote can have its own
+             * \c Credentials object. The credentials for a remote must be set using this method
+             * before trying to communicate with it.
+             *
+             * @param remoteName the name of the remote
+             * @param credentials the \c Credentials to be used for the remote
+             */
+            void setRemoteCredentials(const QString& remoteName, Credentials credentials);
+
+            /**
             * Clone a git repository.
             *
             * Signal cloneProgress(int) is emitted with progress in percent.
@@ -468,9 +483,12 @@ namespace LibQGit2
         private:
             typedef QSharedPointer<git_repository> ptr_type;
             ptr_type d;
+            QMap<QString, Credentials> m_remote_credentials;
 
             int m_clone_progress;
             static int fetchProgressCallback(const git_transfer_progress* stats, void* data);
+
+            static int acquireCredentialsCallback(git_cred **cred, const char *url, const char *username_from_url, unsigned int allowed_types, void *data);
     };
 
     /**@}*/
