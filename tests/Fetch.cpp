@@ -29,6 +29,7 @@
 
 #include "qgitcommit.h"
 #include "qgitrepository.h"
+#include "qgitcredentials.h"
 
 using namespace LibQGit2;
 
@@ -57,6 +58,7 @@ private slots:
     void fetchMaster();
     void fetchAdditionalBranch();
     void fetchAll();
+    void fetchSSH();
 
 private:
     int m_progress;
@@ -191,6 +193,31 @@ void TestFetch::fetchAdditionalBranch()
 }
 
 
+void TestFetch::fetchSSH()
+{
+    if (!libgit2HasSSH()) {
+        SKIPTEST("libgit2 is not compiled with SSH support. Skipping SSH fetch test.");
+    }
+
+    LibQGit2::Repository repo;
+
+    const QString repoPath = testdir + "/fetch_test/fetch_ssh";
+
+    QVERIFY(removeDir(repoPath));
+    sleep::ms(500);
+
+    try {
+        repo.init(repoPath);
+        repo.remoteAdd("origin", "github.com:libqgit2-test/test-repo.git");
+        repo.setRemoteCredentials("origin", Credentials::ssh("libqgit2_id_rsa", "libqgit2_id_rsa.pub", "git"));
+        repo.fetch("origin", "master");
+    }
+    catch (const LibQGit2::Exception& ex) {
+        QFAIL(ex.what());
+    }
+}
+
+
 void TestFetch::remoteBranches()
 {
     LibQGit2::Repository repo;
@@ -218,6 +245,6 @@ void TestFetch::remoteBranches()
 }
 
 
-QTEST_MAIN(TestFetch);
+QTEST_MAIN(TestFetch)
 
 #include "Fetch.moc"

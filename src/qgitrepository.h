@@ -483,6 +483,8 @@ namespace LibQGit2
         private:
             typedef QSharedPointer<git_repository> ptr_type;
             ptr_type d;
+
+            struct Remote;
             QMap<QString, Credentials> m_remote_credentials;
 
             int m_clone_progress;

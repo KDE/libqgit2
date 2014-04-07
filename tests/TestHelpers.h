@@ -8,6 +8,7 @@
 #include <QTimer>
 #include <QThread>
 
+#include "git2.h"
 #include "qgitexception.h"
 
 #define TO_STR(s) #s
@@ -52,6 +53,16 @@ bool removeDir(const QString & dirName)
         }
     }
     return result;
+}
+
+bool libgit2HasSSH() {
+#if LIBGIT2_VER_MAJOR <= 0 && LIBGIT2_VER_MINOR <= 20
+	bool hasSSH = git_libgit2_capabilities() & GIT_CAP_SSH;
+#else
+	bool hasSSH = git_libgit2_features() & GIT_FEATURE_SSH;
+#endif
+
+	return hasSSH;
 }
 
 #if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))

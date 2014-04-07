@@ -39,12 +39,6 @@
 namespace {
     void do_not_free(git_repository*) {}
 
-    struct RemoteRAII {
-        git_remote*const remote;
-        RemoteRAII(git_remote* r) : remote(r) {}
-        ~RemoteRAII() { if (remote) git_remote_free(remote); }
-    };
-
     struct ObjectRAII {
         git_object*const ptr;
         ObjectRAII(git_object* p) : ptr(p) {}
@@ -52,6 +46,11 @@ namespace {
     };
 
     struct RemoteCallbackPayload {
+        RemoteCallbackPayload(LibQGit2::Repository &repo, const QString &remoteName) :
+            repository(repo),
+            remoteName(remoteName)
+        {}
+
         LibQGit2::Repository &repository;
         QString remoteName;
     };
@@ -59,6 +58,41 @@ namespace {
 
 namespace LibQGit2
 {
+
+struct Repository::Remote {
+    Remote(Repository &repo, const QString &remoteName) :
+        native(NULL),
+        status(0),
+        payload(repo, remoteName)
+    {
+        {
+        git_remote_callbacks tempCB = GIT_REMOTE_CALLBACKS_INIT;
+        remoteCallbacks = tempCB;
+        }
+
+        if ((status = git_remote_load(&native, repo.data(), remoteName.toLatin1())) == 0) {
+            remoteCallbacks.payload = (void*)&payload;
+            remoteCallbacks.transfer_progress = &Repository::fetchProgressCallback;
+            if (repo.m_remote_credentials.contains(remoteName)) {
+                remoteCallbacks.credentials = &Repository::acquireCredentialsCallback;
+            }
+            status = git_remote_set_callbacks(native, &remoteCallbacks);
+        }
+    }
+
+    ~Remote() {
+        if (native) {
+            git_remote_free(native);
+        }
+    }
+
+    git_remote* native;
+    int status;
+private:
+    git_remote_callbacks remoteCallbacks;
+    RemoteCallbackPayload payload;
+};
+
 
 Repository::Repository(git_repository *repository, bool own)
     : d(repository, own ? git_repository_free : do_not_free)
@@ -391,43 +425,39 @@ int Repository::acquireCredentialsCallback(git_cred **cred, const char *url, con
 
 void Repository::clone(const QString& url, const QString& path)
 {
-    const QString remoteName("origin");
-    git_clone_options opts = GIT_CLONE_OPTIONS_INIT;
-    opts.remote_callbacks.transfer_progress = &fetchProgressCallback;
-    if (m_remote_credentials.contains(remoteName)) {
-        opts.remote_callbacks.credentials = &acquireCredentialsCallback;
-    }
-    RemoteCallbackPayload payload = { *this, remoteName };
-    opts.remote_callbacks.payload = (void*)&payload;
-    opts.checkout_opts.checkout_strategy = GIT_CHECKOUT_SAFE_CREATE;
+    init(path);
 
+    const QString remoteName("origin");
+    remoteAdd(remoteName.toLatin1(), url);
+
+    Remote remote(*this, remoteName);
+    qGitThrow(remote.status);
+
+    git_checkout_opts checkoutOpts = GIT_CHECKOUT_OPTS_INIT;
+    checkoutOpts.checkout_strategy = GIT_CHECKOUT_SAFE_CREATE;
     m_clone_progress = 0;
-    git_repository* repo = NULL;
-    qGitThrow(git_clone(&repo, url.toLatin1(), QFile::encodeName(path), &opts));
-    d = ptr_type(repo, git_repository_free);
+    qGitEnsureValue(0, git_clone_into(d.data(), remote.native, &checkoutOpts, NULL));
 }
 
 
 void Repository::remoteAdd(const QString& name, const QString& url)
 {
     if (d.isNull()){
-        throw Exception("Repository::fetch(): no repository available");
+        throw Exception("Repository::remoteAdd(): no repository available");
     }
 
-    git_remote* remote = 0;
-    int ret = git_remote_load(&remote, data(), name.toLatin1());
-    RemoteRAII rai(remote); (void)rai;
-    if (ret == 0) {
-        if (QString::fromLatin1(git_remote_url(remote)) == url) {
+    Remote remote(*this, name);
+    if (remote.status == 0) {
+        if (QString::fromLatin1(git_remote_url(remote.native)) == url) {
             return;
         } else {
             throw Exception("Repository::remoteAdd() remote already exists");
         }
-    } else if (ret != GIT_ENOTFOUND) {
+    } else if (remote.status != GIT_ENOTFOUND) {
         throw Exception();
     }
 
-    qGitThrow(git_remote_create(&remote, data(), name.toLatin1(), url.toLatin1()));
+    qGitThrow(git_remote_create(&remote.native, data(), name.toLatin1(), url.toLatin1()));
 }
 
 
@@ -437,9 +467,8 @@ void Repository::fetch(const QString& name, const QString& head)
         throw Exception("Repository::fetch(): no repository available");
     }
 
-    git_remote* remote = 0;
-    qGitThrow(git_remote_load(&remote, data(), name.toLatin1()));
-    RemoteRAII rai(remote); (void)rai;
+    Remote remote(*this, name);
+    qGitThrow(remote.status);
 
     const QString usedhead = head.isEmpty() ? "*" : head;
     const QString refspec = QString("refs/heads/%2:refs/remotes/%1/%2").arg(name).arg(usedhead);
@@ -450,12 +479,12 @@ void Repository::fetch(const QString& name, const QString& head)
     strings[0] = hbytes.constData();
     refs.count = 1;
     refs.strings = const_cast<char**>(strings);
-    qGitThrow(git_remote_set_fetch_refspecs(remote, &refs));
+    qGitThrow(git_remote_set_fetch_refspecs(remote.native, &refs));
 
-    qGitThrow(git_remote_connect(remote, GIT_DIRECTION_FETCH));
-    qGitEnsureValue(1, git_remote_connected(remote));
-    qGitThrow(git_remote_download(remote));
-    qGitThrow(git_remote_update_tips(remote));
+    qGitThrow(git_remote_connect(remote.native, GIT_DIRECTION_FETCH));
+    qGitEnsureValue(1, git_remote_connected(remote.native));
+    qGitThrow(git_remote_download(remote.native));
+    qGitThrow(git_remote_update_tips(remote.native));
 }
 
 
@@ -465,17 +494,16 @@ QStringList Repository::remoteBranches(const QString& remoteName)
         throw Exception("Repository::remoteBranches(): no repository available");
     }
 
-    git_remote* remote = 0;
-    qGitThrow(git_remote_load(&remote, data(), remoteName.toLatin1()));
-    RemoteRAII rai(remote); (void)rai;
+    Remote remote(*this, remoteName);
+    qGitThrow(remote.status);
 
-    qGitThrow(git_remote_connect(remote, GIT_DIRECTION_FETCH));
-    qGitEnsureValue(1, git_remote_connected(remote));
+    qGitThrow(git_remote_connect(remote.native, GIT_DIRECTION_FETCH));
+    qGitEnsureValue(1, git_remote_connected(remote.native));
 
     /* List the heads on the remote */
     const git_remote_head** remote_heads = NULL;
     size_t count = 0;
-    qGitThrow(git_remote_ls(&remote_heads, &count, remote));
+    qGitThrow(git_remote_ls(&remote_heads, &count, remote.native));
     QStringList heads;
     for (size_t i = 0; i < count; ++i) {
         const git_remote_head* head = remote_heads[i];
