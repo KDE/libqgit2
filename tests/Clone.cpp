@@ -128,6 +128,16 @@ void TestClone::httpsProtocol()
 
 void TestClone::sshProtocol()
 {
+#if LIBGIT2_VER_MAJOR <= 0 && LIBGIT2_VER_MINOR <= 20
+    bool hasSSH = git_libgit2_capabilities() & GIT_CAP_SSH;
+#else
+    bool hasSSH = git_libgit2_features() & GIT_FEATURE_SSH;
+#endif
+
+    if (!hasSSH) {
+        SKIPTEST("libgit2 is not compiled with SSH support. Skipping SSH fetch test.");
+    }
+
     clone("github.com:libqgit2-test/test-repo.git", Credentials::ssh("libqgit2_id_rsa", "libqgit2_id_rsa.pub", "git"));
 }
 

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef LIBQGIT2_TEST_HELPERS_H
+#define LIBQGIT2_TEST_HELPERS_H
 
 #include <QTest>
 
@@ -52,3 +53,12 @@ bool removeDir(const QString & dirName)
     }
     return result;
 }
+
+#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
+#define SKIPTEST(description) QSKIP(description, QTest::SkipSingle);
+#else
+#define SKIPTEST(description) QSKIP(description);
+#endif
+
+
+#endif  // LIBQGIT2_TEST_HELPERS_H
