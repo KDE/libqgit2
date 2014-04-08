@@ -484,13 +484,7 @@ namespace LibQGit2
             typedef QSharedPointer<git_repository> ptr_type;
             ptr_type d;
 
-            struct Remote;
             QMap<QString, Credentials> m_remote_credentials;
-
-            int m_clone_progress;
-            static int fetchProgressCallback(const git_transfer_progress* stats, void* data);
-
-            static int acquireCredentialsCallback(git_cred **cred, const char *url, const char *username_from_url, unsigned int allowed_types, void *data);
     };
 
     /**@}*/

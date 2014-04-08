@@ -47,6 +47,8 @@ public:
      */
     Credentials();
 
+    bool isEmpty() const;
+
     /**
      * @brief Creates \c Credentials suitable for public key SSH authentication.
      *
@@ -60,7 +62,7 @@ public:
 
     struct CredCreator;
 private:
-    friend class Repository;
+    friend class Remote;
 
     int create(git_cred **cred, const char *url, const char *username_from_url, unsigned int allowed_types) const;
 

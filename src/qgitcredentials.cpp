@@ -59,6 +59,12 @@ Credentials::Credentials() :
 }
 
 
+bool Credentials::isEmpty() const
+{
+    return m_cred_creator.isNull();
+}
+
+
 Credentials::Credentials(unsigned int allowed_types, CredCreator *creator) :
     m_allowed_types(allowed_types),
     m_cred_creator(creator)

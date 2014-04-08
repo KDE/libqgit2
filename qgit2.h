@@ -38,6 +38,7 @@
 #include "qgit2/qgitobject.h"
 #include "qgit2/qgitoid.h"
 #include "qgit2/qgitref.h"
+#include "qgit2/qgitremote.h"
 #include "qgit2/qgitrepository.h"
 #include "qgit2/qgitrevwalk.h"
 #include "qgit2/qgitsignature.h"
