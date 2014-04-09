@@ -25,8 +25,8 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(EXECUTABLE_OUTPUT_PATH  ${CMAKE_BINARY_DIR}/bin)
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/libqgit2_id_rsa ${EXECUTABLE_OUTPUT_PATH}/ COPYONLY)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/libqgit2_id_rsa.pub ${EXECUTABLE_OUTPUT_PATH}/ COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/libqgit2_id_rsa ${EXECUTABLE_OUTPUT_PATH}/libqgit2_id_rsa COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/libqgit2_id_rsa.pub ${EXECUTABLE_OUTPUT_PATH}/libqgit2_id_rsa.pub COPYONLY)
 
 macro(addTest name)
     set(_source ${CMAKE_CURRENT_SOURCE_DIR}/${name}.cpp ${CMAKE_CURRENT_SOURCE_DIR}/TestHelpers.h)
