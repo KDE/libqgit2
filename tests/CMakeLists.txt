@@ -29,7 +29,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/libqgit2_id_rsa ${EXECUTABLE_OUTPUT_P
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/libqgit2_id_rsa.pub ${EXECUTABLE_OUTPUT_PATH}/ COPYONLY)
 
 macro(addTest name)
-    set(_source ${CMAKE_CURRENT_SOURCE_DIR}/${name}.cpp)
+    set(_source ${CMAKE_CURRENT_SOURCE_DIR}/${name}.cpp ${CMAKE_CURRENT_SOURCE_DIR}/TestHelpers.h)
     set(_moced ${CMAKE_CURRENT_BINARY_DIR}/${name}.moc)
     set_source_files_properties(${_source} PROPERTIES OBJECT_DEPENDS "${_moced}")
     set(testname test${name})
