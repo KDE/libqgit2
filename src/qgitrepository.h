@@ -44,6 +44,7 @@ namespace LibQGit2
     class Blob;
     class Signature;
     class Credentials;
+    class Push;
 
     /**
      * @brief Wrapper class for git_repository.
@@ -473,6 +474,14 @@ namespace LibQGit2
             */
             void checkoutRemote(const QString& branch, bool force = false, const QString& remote = "origin");
 
+            /**
+			 * Gets a \c Push object for the named remote.
+			 *
+			 * @param remoteName the name of the remote to push to.
+			 * @return An object to be used for pushing to the named remote.
+			 * @throws LibQGit2::Exception
+             */
+            Push push(const QString &remoteName);
 
             git_repository* data() const;
             const git_repository* constData() const;

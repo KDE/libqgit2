@@ -55,6 +55,38 @@ bool removeDir(const QString & dirName)
     return result;
 }
 
+
+bool copyDir(QString srcPath, QString destPath)
+{
+    QDir srcDir(srcPath);
+    if (!srcDir.exists()) {
+        qDebug() << "Source directory does not exist:" << srcPath;
+        return false;
+    }
+
+    foreach (QString dir, srcDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {
+        QString subDestPath = destPath + QDir::separator() + dir;
+        if (!srcDir.mkpath(subDestPath)) {
+            qDebug() << "Could not create target directory:" << subDestPath;
+            return false;
+        }
+        if (!copyDir(srcPath + QDir::separator() + dir, subDestPath)) {
+            return false;
+        }
+    }
+
+    foreach (QString file, srcDir.entryList(QDir::Files)) {
+        if (!QFile::copy(srcPath + QDir::separator() + file, destPath + QDir::separator() + file)) {
+            qDebug() << "Could not copy" << file << "from" << srcPath << "to" << destPath;
+            return false;
+        }
+    }
+
+    return true;
+}
+
+
+
 bool libgit2HasSSH() {
 #if LIBGIT2_VER_MAJOR <= 0 && LIBGIT2_VER_MINOR <= 20
     bool hasSSH = git_libgit2_capabilities() & GIT_CAP_SSH;

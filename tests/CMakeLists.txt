@@ -50,4 +50,4 @@ addTest(StatusOptions)
 addTest(Clone)
 addTest(Fetch)
 addTest(Checkout)
-
+addTest(Push)

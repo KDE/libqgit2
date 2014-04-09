@@ -36,6 +36,7 @@
 #include <qgitstatus.h>
 #include <qgitremote.h>
 #include <qgitcredentials.h>
+#include <qgitpush.h>
 
 namespace {
     void do_not_free(git_repository*) {}
@@ -466,6 +467,19 @@ void Repository::checkoutRemote(const QString& branch, bool force, const QString
     qGitThrow(git_checkout_tree(data(), tree, &opts));
 
     qGitThrow(git_repository_set_head(data(), refspec.toLatin1()));
+}
+
+
+Push Repository::push(const QString &remoteName)
+{
+    if (d.isNull()) {
+        throw Exception("Repository::push(): no repository available");
+    }
+
+    git_remote *remote = NULL;
+    qGitThrow(git_remote_load(&remote, data(), remoteName.toLatin1()));
+
+    return Push(*new Remote(remote, m_remote_credentials.value(remoteName)));
 }
 
 
