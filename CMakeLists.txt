@@ -210,9 +210,10 @@ set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "libgit2 bindings for Qt")
 include(InstallRequiredSystemLibraries)
 include(CPack)
 
-
-enable_testing()
-add_subdirectory(tests)
+if(BUILD_TESTS)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
 
 # Doxygen
 find_package(Doxygen)
