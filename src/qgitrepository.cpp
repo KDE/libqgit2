@@ -354,7 +354,7 @@ void Repository::clone(const QString& url, const QString& path)
     init(path);
 
     const QString remoteName("origin");
-    remoteAdd(remoteName.toLatin1(), url);
+    remoteAdd(remoteName, url);
 
     git_remote *_remote = NULL;
     qGitThrow(git_remote_load(&_remote, data(), remoteName.toLatin1()));
