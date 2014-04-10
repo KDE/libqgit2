@@ -25,18 +25,18 @@
 #include <QtCore/QStringList>
 #include <QtCore/QDebug>
 
-#include <qgitrepository.h>
-#include <qgitcommit.h>
-#include <qgitconfig.h>
-#include <qgittag.h>
-#include <qgittree.h>
-#include <qgitblob.h>
-#include <qgitsignature.h>
-#include <qgitexception.h>
-#include <qgitstatus.h>
-#include <qgitremote.h>
-#include <qgitcredentials.h>
-#include <qgitpush.h>
+#include "qgitrepository.h"
+#include "qgitcommit.h"
+#include "qgitconfig.h"
+#include "qgittag.h"
+#include "qgittree.h"
+#include "qgitblob.h"
+#include "qgitsignature.h"
+#include "qgitexception.h"
+#include "qgitstatus.h"
+#include "qgitremote.h"
+#include "qgitcredentials.h"
+#include "qgitpush.h"
 
 namespace {
     void do_not_free(git_repository*) {}
