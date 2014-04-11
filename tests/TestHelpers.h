@@ -98,7 +98,7 @@ bool libgit2HasSSH() {
 }
 
 #if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
-#define SKIPTEST(description) QSKIP(description, QTest::SkipSingle);
+#define SKIPTEST(description) QSKIP(description, SkipSingle);
 #else
 #define SKIPTEST(description) QSKIP(description);
 #endif
