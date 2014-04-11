@@ -145,7 +145,7 @@ FILE(GLOB QGIT2_HEADERS src/*.h)
 # MOC
 if(Qt5Core_FOUND)
 else()
-    QT4_WRAP_CPP(MOC_SRC src/qgitindexmodel.h src/qgitrepository.h)
+    QT4_WRAP_CPP(MOC_SRC src/qgitindexmodel.h src/qgitrepository.h src/qgitremote.h)
 endif()
 
 message(STATUS)
