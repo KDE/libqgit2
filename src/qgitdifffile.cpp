@@ -1,6 +1,5 @@
 /******************************************************************************
  * This file is part of the libqgit2 library
- * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,41 +16,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include "qgitdifffile.h"
 
-#include <QtCore/QDir>
 #include <QtCore/QFile>
 
-#include "qgitstatusentry.h"
-#include "qgitstatus.h"
-#include "qgitdiffdelta.h"
+namespace LibQGit2 {
 
-using namespace LibQGit2;
-
-StatusEntry::StatusEntry(const git_status_entry *entry)
-    : d(entry)
+DiffFile::DiffFile(const git_diff_file *diff) : m_diff_file(diff)
 {
 }
 
-StatusEntry::StatusEntry(const StatusEntry &other)
-    : d(other.d)
+QString DiffFile::path() const
 {
+    return QFile::decodeName(m_diff_file != NULL ? m_diff_file->path : "");
 }
 
-StatusEntry::~StatusEntry()
-{
-}
-
-Status StatusEntry::status() const
-{
-    return Status(d->status);
-}
-
-DiffDelta StatusEntry::headToIndex() const
-{
-    return DiffDelta(d->head_to_index);
-}
-
-DiffDelta StatusEntry::indexToWorkdir() const
-{
-    return DiffDelta(d->index_to_workdir);
 }

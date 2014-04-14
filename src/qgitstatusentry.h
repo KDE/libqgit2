@@ -20,13 +20,16 @@
 #ifndef LIBQGIT2_STATUS_ENTRY_H
 #define LIBQGIT2_STATUS_ENTRY_H
 
-#include "git2.h"
-
 #include "libqgit2_export.h"
-#include "qgitstatus.h"
+
+#include "git2.h"
 
 namespace LibQGit2
 {
+
+class Status;
+class DiffDelta;
+
 /**
  * @brief Wrapper class for git_status_entry.
  *
@@ -52,22 +55,17 @@ public:
     Status status() const;
 
     /**
-     * Returns the old path if set, otherwise an empty string
+     * Returns the diff between HEAD and index.
      */
-    QString oldPath() const;
+    DiffDelta headToIndex() const;
 
     /**
-     * Returns the new path if set, otherwise an empty string
+     * Returns the diff between index and working directory.
      */
-    QString newPath() const;
-
-    /**
-     * Returns the path if set, otherwise an empty string
-     */
-    QString path() const;
+    DiffDelta indexToWorkdir() const;
 
 private:
-    const git_status_entry* d; //!< Internal pointer to the libgit2 status entry
+    const git_status_entry* d;
 };
 
 /**@}*/

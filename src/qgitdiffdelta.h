@@ -1,6 +1,5 @@
 /******************************************************************************
  * This file is part of the libqgit2 library
- * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,41 +16,44 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#ifndef LIBQGIT2_DIFFDELTA_H
+#define LIBQGIT2_DIFFDELTA_H
 
-#include <QtCore/QDir>
-#include <QtCore/QFile>
+#include "libqgit2_export.h"
 
-#include "qgitstatusentry.h"
-#include "qgitstatus.h"
-#include "qgitdiffdelta.h"
+#include "git2.h"
 
-using namespace LibQGit2;
+namespace LibQGit2 {
 
-StatusEntry::StatusEntry(const git_status_entry *entry)
-    : d(entry)
+class DiffFile;
+
+/**
+ * @brief Wrapper class for git_diff_delta.
+ *
+ * @ingroup LibQGit2
+ * @{
+ */
+class LIBQGIT2_EXPORT DiffDelta
 {
+public:
+    DiffDelta(const git_diff_delta *d);
+
+    /**
+     * Returns the information of the file on the "old" side of the diff.
+     */
+    DiffFile oldFile() const;
+
+    /**
+     * Returns the information of the file on the "new" side of the diff.
+     */
+    DiffFile newFile() const;
+
+private:
+    const git_diff_delta *m_diff_delta;
+};
+
+/** @} */
+
 }
 
-StatusEntry::StatusEntry(const StatusEntry &other)
-    : d(other.d)
-{
-}
-
-StatusEntry::~StatusEntry()
-{
-}
-
-Status StatusEntry::status() const
-{
-    return Status(d->status);
-}
-
-DiffDelta StatusEntry::headToIndex() const
-{
-    return DiffDelta(d->head_to_index);
-}
-
-DiffDelta StatusEntry::indexToWorkdir() const
-{
-    return DiffDelta(d->index_to_workdir);
-}
+#endif // LIBQGIT2_DIFFDELTA_H

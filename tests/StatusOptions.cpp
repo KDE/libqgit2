@@ -8,6 +8,8 @@
 #include "qgitrepository.h"
 #include "qgitstatuslist.h"
 #include "qgitstatusentry.h"
+#include "qgitdiffdelta.h"
+#include "qgitdifffile.h"
 #include "qgitstatus.h"
 #include "qgitstatusoptions.h"
 
@@ -110,7 +112,7 @@ TestStatusOptions::TestStatusOptions()
 
         std::cout << " ";
 
-        std::cout << entry.path().toStdString() << std::endl;
+        std::cout << entry.indexToWorkdir().newFile().path().toStdString() << std::endl;
     }
 }
 
