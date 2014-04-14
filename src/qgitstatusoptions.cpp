@@ -17,9 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-
-#include <QtCore/QFile>
-
 #include "qgitstatusoptions.h"
 
 namespace LibQGit2
@@ -45,17 +42,16 @@ StatusOptions::~StatusOptions()
 {
 }
 
-StatusOptions::ShowFlags StatusOptions::showFlags() const
+StatusOptions::ShowType StatusOptions::showType() const
 {
-    return show_flags;
+    return show_type;
 }
 
-void StatusOptions::setShowFlags(StatusOptions::ShowFlags sf)
+void StatusOptions::setShowType(ShowType type)
 {
-    show_flags = sf;
-    int i = show_flags;
+    show_type = type;
+    int i = show_type;
     d.show = (git_status_show_t)i;
-
 }
 
 StatusOptions::StatusFlags StatusOptions::statusFlags() const

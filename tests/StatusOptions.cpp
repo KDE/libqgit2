@@ -31,7 +31,7 @@ TestStatusOptions::TestStatusOptions()
     repo.open(QString(VALUE_TO_STR(TEST_EXISTING_REPOSITORY)));
 
     StatusOptions opt;
-    opt.setShowFlags(StatusOptions::ShowIndexAndWorkdir);
+    opt.setShowType(StatusOptions::ShowIndexAndWorkdir);
     opt.setStatusFlags(StatusOptions::IncludeUnmodified | StatusOptions::IncludeUntracked |
         StatusOptions::RenamesHeadToIndex | StatusOptions::RenamesIndexToWorkdir
     );

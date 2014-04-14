@@ -41,13 +41,11 @@ class LIBQGIT2_EXPORT StatusOptions
 {
 public:
 
-    enum ShowFlag {
+    enum ShowType {
         ShowIndexAndWorkdir = GIT_STATUS_SHOW_INDEX_AND_WORKDIR,
         ShowOnlyIndex = GIT_STATUS_SHOW_INDEX_ONLY,
         ShowOnlyWorkdir = GIT_STATUS_SHOW_WORKDIR_ONLY
     };
-
-    Q_DECLARE_FLAGS(ShowFlags, ShowFlag)
 
     enum StatusFlag {
         IncludeUntracked = GIT_STATUS_OPT_INCLUDE_UNTRACKED,
@@ -73,9 +71,9 @@ public:
 
     ~StatusOptions();
 
-    ShowFlags showFlags() const;
+    ShowType showType() const;
 
-    void setShowFlags(StatusOptions::ShowFlags sf);
+    void setShowType(ShowType type);
 
     StatusFlags statusFlags() const;
 
@@ -87,11 +85,10 @@ public:
 private:
     git_status_options d;
 
-    ShowFlags show_flags;
+    ShowType show_type;
     StatusFlags status_flags;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(StatusOptions::ShowFlags)
 Q_DECLARE_OPERATORS_FOR_FLAGS(StatusOptions::StatusFlags)
 
 
