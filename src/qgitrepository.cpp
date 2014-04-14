@@ -41,10 +41,8 @@
 namespace {
     void do_not_free(git_repository*) {}
 
-    struct ObjectRAII {
-        git_object*const ptr;
-        ObjectRAII(git_object* p) : ptr(p) {}
-        ~ObjectRAII() { if (ptr) git_object_free(ptr); }
+    struct ObjectRAII : public QSharedPointer<git_object> {
+        ObjectRAII(git_object* p) : QSharedPointer<git_object>(p, git_object_free) {}
     };
 }
 
