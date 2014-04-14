@@ -63,7 +63,7 @@ public:
 
     Q_DECLARE_FLAGS(StatusFlags, StatusFlag)
 
-    explicit StatusOptions();
+    explicit StatusOptions(ShowType showType = ShowIndexAndWorkdir, StatusFlags statusFlags = StatusFlags());
 
     explicit StatusOptions(git_status_options status_options);
 
