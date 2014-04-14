@@ -229,7 +229,7 @@ namespace LibQGit2
              * @throws LibQGit2::Exception
              * @return The reference with the given name
              */
-            Reference* lookupRef(const QString& name) const;
+            Reference lookupRef(const QString& name) const;
 
             /**
              * Lookup a reference by its name in a repository and returns the oid of its target.
@@ -245,7 +245,7 @@ namespace LibQGit2
              * @throws LibQGit2::Exception
              * @return The reference with the given name
              */
-            Reference* lookupShorthandRef(const QString& shorthand) const;
+            Reference lookupShorthandRef(const QString& shorthand) const;
 
             /**
              * Lookup a commit object from a repository.
@@ -293,7 +293,7 @@ namespace LibQGit2
              *
              * @throws LibQGit2::Exception
              */
-            Reference* createRef(const QString& name, const OId& oid, bool overwrite = true);
+            Reference createRef(const QString& name, const OId& oid, bool overwrite = true);
 
             /**
              * Create a new symbolic reference.
@@ -306,7 +306,7 @@ namespace LibQGit2
              *
              * @throws LibQGit2::Exception
              */
-            Reference* createSymbolicRef(const QString& name, const QString& target, bool overwrite = true);
+            Reference createSymbolicRef(const QString& name, const QString& target, bool overwrite = true);
 
             /**
              * Create a new commit in the repository

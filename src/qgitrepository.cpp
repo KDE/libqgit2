@@ -151,12 +151,11 @@ Config Repository::configuration() const
     return Config(cfg);
 }
 
-Reference* Repository::lookupRef(const QString& name) const
+Reference Repository::lookupRef(const QString& name) const
 {
     git_reference *ref = 0;
     qGitThrow(git_reference_lookup(&ref, d.data(), QFile::encodeName(name)));
-    Reference* qr = new Reference(ref);
-    return qr;
+    return Reference(ref);
 }
 
 OId* Repository::lookupRefOId(const QString& name) const
@@ -167,12 +166,11 @@ OId* Repository::lookupRefOId(const QString& name) const
     return qoid;
 }
 
-Reference* Repository::lookupShorthandRef(const QString& shorthand) const
+Reference Repository::lookupShorthandRef(const QString& shorthand) const
 {
     git_reference *ref = 0;
     qGitThrow(git_reference_dwim(&ref, d.data(), QFile::encodeName(shorthand)));
-    Reference* qr = new Reference(ref);
-    return qr;
+    return Reference(ref);
 }
 
 Commit Repository::lookupCommit(const OId& oid) const
@@ -210,20 +208,18 @@ Object Repository::lookupAny(const OId &oid) const
     return Object(object);
 }
 
-Reference* Repository::createRef(const QString& name, const LibQGit2::OId& oid, bool overwrite)
+Reference Repository::createRef(const QString& name, const LibQGit2::OId& oid, bool overwrite)
 {
     git_reference *ref = 0;
     qGitThrow(git_reference_create(&ref, d.data(), QFile::encodeName(name), oid.constData(), overwrite));
-    Reference* qr = new Reference(ref);
-    return qr;
+    return Reference(ref);
 }
 
-Reference* Repository::createSymbolicRef(const QString& name, const QString& target, bool overwrite)
+Reference Repository::createSymbolicRef(const QString& name, const QString& target, bool overwrite)
 {
     git_reference *ref = 0;
     qGitThrow(git_reference_symbolic_create(&ref, d.data(), QFile::encodeName(name), QFile::encodeName(target), overwrite));
-    Reference* qr = new Reference(ref);
-    return qr;
+    return Reference(ref);
 }
 
 OId Repository::createCommit(const QString& ref,
