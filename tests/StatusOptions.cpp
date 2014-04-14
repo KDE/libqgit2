@@ -44,7 +44,7 @@ TestStatusOptions::TestStatusOptions()
     StatusOptions *opt = new StatusOptions;
     opt->setShowFlags(StatusOptions::ShowIndexAndWorkdir);
     opt->setStatusFlags(StatusOptions::IncludeUnmodified | StatusOptions::IncludeUntracked |
-        StatusOptions::RenamesHeadToIndex | StatusOptions::RenamesIdexToWorkdir
+        StatusOptions::RenamesHeadToIndex | StatusOptions::RenamesIndexToWorkdir
     );
 
     // Get the list of status entries

@@ -58,7 +58,7 @@ public:
         DisablePathspecMatch = GIT_STATUS_OPT_DISABLE_PATHSPEC_MATCH,
         RecurseIgnoredDirs = GIT_STATUS_OPT_RECURSE_IGNORED_DIRS,
         RenamesHeadToIndex = GIT_STATUS_OPT_RENAMES_HEAD_TO_INDEX,
-        RenamesIdexToWorkdir = GIT_STATUS_OPT_RENAMES_INDEX_TO_WORKDIR,
+        RenamesIndexToWorkdir = GIT_STATUS_OPT_RENAMES_INDEX_TO_WORKDIR,
         SortCaseSensitively = GIT_STATUS_OPT_SORT_CASE_SENSITIVELY,
         SortCaseInsensitively = GIT_STATUS_OPT_SORT_CASE_INSENSITIVELY
     };
