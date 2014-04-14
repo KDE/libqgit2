@@ -22,7 +22,9 @@
 #include "TestHelpers.h"
 
 #include "qgitrepository.h"
-
+#include "qgitcommit.h"
+#include "qgitdiffdelta.h"
+#include "qgitdifffile.h"
 
 using namespace LibQGit2;
 
@@ -31,34 +33,36 @@ class TestCheckout : public QObject
 {
     Q_OBJECT
 
-public:
-    TestCheckout() : testdir(VALUE_TO_STR(TEST_DIR)) {}
-
-public slots:
-
 private slots:
+    void init();
+
     void checkoutRemote();
     void checkoutRemoteKde();
+    void checkoutCommitAsTree();
 
 private:
-    const QString testdir;
+    QString testdir;
 
     void fetch(const QString& branch, const QString& repoPath, const QString& remote);
 };
 
 
+void TestCheckout::init()
+{
+    testdir = VALUE_TO_QSTR(TEST_DIR) + "/checkout_test/" + QTest::currentTestFunction();
+    QVERIFY(removeDir(testdir));
+    sleep::ms(500);
+}
+
 void TestCheckout::fetch(const QString& branch, const QString& repoPath, const QString& remote = "origin")
 {
-    QVERIFY(removeDir(repoPath));
-    sleep::ms(500);
-
     try {
-        LibQGit2::Repository repo;
+        Repository repo;
         repo.init(repoPath);
         repo.remoteAdd(remote, "http://anongit.kde.org/libqgit2");
         repo.fetch(remote, branch);
     }
-    catch (const LibQGit2::Exception& ex) {
+    catch (const Exception& ex) {
         QFAIL(ex.what());
     }
 }
@@ -66,16 +70,14 @@ void TestCheckout::fetch(const QString& branch, const QString& repoPath, const Q
 
 void TestCheckout::checkoutRemote()
 {
-    const QString repoPath = testdir + "/checkout_test/checkout_remote";
-
-    fetch("master", repoPath);
+    fetch("master", testdir);
 
     try {
-        LibQGit2::Repository repo;
-        repo.open(repoPath);
+        Repository repo;
+        repo.open(testdir);
         repo.checkoutRemote("master");
     }
-    catch (const LibQGit2::Exception& ex) {
+    catch (const Exception& ex) {
         QFAIL(ex.what());
     }
 }
@@ -83,21 +85,45 @@ void TestCheckout::checkoutRemote()
 
 void TestCheckout::checkoutRemoteKde()
 {
-    const QString repoPath = testdir + "/checkout_test/checkout_remote_kde";
-
-    fetch("master", repoPath, "kde");
+    fetch("master", testdir, "kde");
 
     try {
-        LibQGit2::Repository repo;
-        repo.open(repoPath);
+        Repository repo;
+        repo.open(testdir);
         repo.checkoutRemote("master", false, "kde");
     }
-    catch (const LibQGit2::Exception& ex) {
+    catch (const Exception& ex) {
         QFAIL(ex.what());
     }
 }
 
-QTEST_MAIN(TestCheckout);
+
+void TestCheckout::checkoutCommitAsTree()
+{
+    const QString existingRepoPath = "file://" + VALUE_TO_QSTR(TEST_EXISTING_REPOSITORY) + "/.git";
+
+    Repository repo;
+    try {
+        repo.clone(existingRepoPath, testdir);
+        OId id = OId::stringToOid("127c9e7d17");  // 127c9e7d17 is a commit where CMakeLists.txt was modified
+        repo.checkoutTree(repo.lookupCommit(id));
+    } catch (const Exception& ex) {
+        QFAIL(ex.what());
+    }
+
+    StatusList status = repo.status(StatusOptions(StatusOptions::ShowOnlyIndex, StatusOptions::ExcludeSubmodules));
+    bool found = false;
+    for (size_t i = 0; i < status.entryCount(); ++i) {
+        const StatusEntry entry = status.entryByIndex(i);
+        if ((found = (entry.headToIndex().newFile().path() == "CMakeLists.txt"))) {
+            break;
+        }
+    }
+    QVERIFY2(found, "Expected path was not part of the checked out commit");
+}
+
+
+QTEST_MAIN(TestCheckout)
 
 #include "Checkout.moc"
 

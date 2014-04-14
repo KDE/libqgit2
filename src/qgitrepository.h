@@ -465,6 +465,14 @@ namespace LibQGit2
 
 
             /**
+             * Checkout a treeish, i.e. a Commit, Tag or Tree.
+             * @param treeish the Object to checkout
+             * @param force use forced checkout, default is false
+             * @throws LibQGit2::Exception
+             */
+            void checkoutTree(const Object &treeish, bool force = false);
+
+            /**
             * Checkout a remote branch without creating a local branch.
             *
             * @param branch  branch name

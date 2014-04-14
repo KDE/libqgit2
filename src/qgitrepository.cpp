@@ -40,10 +40,6 @@
 
 namespace {
     void do_not_free(git_repository*) {}
-
-    struct ObjectRAII : public QSharedPointer<git_object> {
-        ObjectRAII(git_object* p) : QSharedPointer<git_object>(p, git_object_free) {}
-    };
 }
 
 namespace LibQGit2
@@ -445,6 +441,14 @@ QStringList Repository::remoteBranches(const QString& remoteName)
 }
 
 
+void Repository::checkoutTree(const Object &treeish, bool force)
+{
+    git_checkout_opts opts = GIT_CHECKOUT_OPTS_INIT;
+    opts.checkout_strategy = force ? GIT_CHECKOUT_FORCE : GIT_CHECKOUT_SAFE;
+    qGitThrow(git_checkout_tree(d.data(), treeish.constData(), &opts));
+}
+
+
 void Repository::checkoutRemote(const QString& branch, bool force, const QString& remote)
 {
     if (d.isNull()){
@@ -454,11 +458,8 @@ void Repository::checkoutRemote(const QString& branch, bool force, const QString
     const QString refspec = "refs/remotes/" + remote + "/" + branch;
     git_object* tree = NULL;
     qGitThrow(git_revparse_single(&tree, data(), refspec.toLatin1()));
-    ObjectRAII rai(tree); (void)rai;
-
-    git_checkout_opts opts = GIT_CHECKOUT_OPTS_INIT;
-    opts.checkout_strategy = force ? GIT_CHECKOUT_FORCE : GIT_CHECKOUT_SAFE;
-    qGitThrow(git_checkout_tree(data(), tree, &opts));
+    Object obj(tree);
+    checkoutTree(obj, force);
 
     qGitThrow(git_repository_set_head(data(), refspec.toLatin1()));
 }
