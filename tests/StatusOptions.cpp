@@ -3,11 +3,7 @@
 
 #include "TestHelpers.h"
 
-#include <QCoreApplication>
-#include <QTimer>
 #include <iostream>
-
-#include <bitset>
 
 #include "qgitrepository.h"
 #include "qgitstatuslist.h"
@@ -18,41 +14,29 @@
 
 class TestStatusOptions : public QObject
 {
-
     Q_OBJECT
 
 public:
     TestStatusOptions();
-    ~TestStatusOptions();
-
-private:
-    LibQGit2::Repository *repo;
 };
-
 
 
 using namespace LibQGit2;
 
 TestStatusOptions::TestStatusOptions()
 {
-    // Create a new repository object
-    Repository * repo = new LibQGit2::Repository();
+    Repository repo;
+    repo.open(QString(VALUE_TO_STR(TEST_EXISTING_REPOSITORY)));
 
-    // Open a local fixed path
-    repo->open(QString(VALUE_TO_STR(TEST_EXISTING_REPOSITORY)));
-
-    StatusOptions *opt = new StatusOptions;
-    opt->setShowFlags(StatusOptions::ShowIndexAndWorkdir);
-    opt->setStatusFlags(StatusOptions::IncludeUnmodified | StatusOptions::IncludeUntracked |
+    StatusOptions opt;
+    opt.setShowFlags(StatusOptions::ShowIndexAndWorkdir);
+    opt.setStatusFlags(StatusOptions::IncludeUnmodified | StatusOptions::IncludeUntracked |
         StatusOptions::RenamesHeadToIndex | StatusOptions::RenamesIndexToWorkdir
     );
 
-    // Get the list of status entries
-    StatusList status_list = repo->status(opt);
+    StatusList status_list = repo.status(opt);
 
-    // Count entries
     size_t entries = status_list.entryCount();
-
     for (size_t i = 0; i < entries; ++i) {
         const StatusEntry entry = status_list.entryByIndex(i);
 
@@ -127,18 +111,10 @@ TestStatusOptions::TestStatusOptions()
         std::cout << " ";
 
         std::cout << entry.path().toStdString() << std::endl;
-
-//        std::bitset<16> x(entry.status().data());
     }
-
 }
 
-TestStatusOptions::~TestStatusOptions()
-{}
 
-
-QTEST_MAIN(TestStatusOptions);
-
+QTEST_MAIN(TestStatusOptions)
 
 #include "StatusOptions.moc"
-

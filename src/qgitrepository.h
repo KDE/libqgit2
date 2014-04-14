@@ -417,7 +417,7 @@ namespace LibQGit2
              * @throws LibQGit2::Exception
              * @return The list of status entries
              */
-            StatusList status(const StatusOptions *options) const;
+            StatusList status(const StatusOptions &options) const;
 
             /**
              * @brief Sets a \c Credentials object to be used for a named remote.
