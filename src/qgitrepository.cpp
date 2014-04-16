@@ -358,26 +358,46 @@ void Repository::clone(const QString& url, const QString& path)
 }
 
 
-void Repository::remoteAdd(const QString& name, const QString& url)
+void Repository::remoteAdd(const QString& name, const QString& url, bool changeUrlIfExists)
 {
     if (d.isNull()){
         throw Exception("Repository::remoteAdd(): no repository available");
     }
 
-    git_remote *remote = NULL;
-    int status = git_remote_load(&remote, data(), name.toLatin1());
-    if (status == 0) {
-        if (QString::fromLatin1(git_remote_url(remote)) == url) {
-            return;
-        } else {
-            throw Exception("Repository::remoteAdd() remote already exists");
+    git_remote *r = NULL;
+    switch (git_remote_load(&r, data(), name.toLatin1())) {
+    case GIT_ENOTFOUND:
+        r = NULL;
+        qGitThrow(git_remote_create(&r, data(), name.toLatin1(), url.toLatin1()));
+        break;
+
+    case GIT_OK:
+        if (QString::fromLatin1(git_remote_url(r)) != url) {
+            if (changeUrlIfExists) {
+                qGitThrow(git_remote_set_url(r, url.toLatin1()));
+                qGitThrow(git_remote_save(r));
+            } else {
+                throw Exception("Repository::remoteAdd() remote already exists");
+            }
         }
-    } else if (status != GIT_ENOTFOUND) {
+        break;
+
+    default:
         throw Exception();
+        break;
+    }
+}
+
+
+Remote* Repository::remote(const QString &remoteName, QObject *parent) const
+{
+    if (d.isNull()){
+        throw Exception("Repository::remote(): no repository available");
     }
 
-    remote = NULL;
-    qGitThrow(git_remote_create(&remote, data(), name.toLatin1(), url.toLatin1()));
+    git_remote *r = NULL;
+    qGitThrow(git_remote_load(&r, data(), remoteName.toLatin1()));
+    return new Remote(r, m_remote_credentials.value(remoteName), parent);
 }
 
 
@@ -471,10 +491,7 @@ Push Repository::push(const QString &remoteName)
         throw Exception("Repository::push(): no repository available");
     }
 
-    git_remote *remote = NULL;
-    qGitThrow(git_remote_load(&remote, data(), remoteName.toLatin1()));
-
-    return Push(*new Remote(remote, m_remote_credentials.value(remoteName)));
+    return Push(*remote(remoteName));
 }
 
 

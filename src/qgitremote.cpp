@@ -82,6 +82,12 @@ Remote::Remote(git_remote *remote, const Credentials &credentials, QObject *pare
 }
 
 
+QString Remote::url() const
+{
+    return QString::fromLatin1(git_remote_url(data()));
+}
+
+
 git_remote* Remote::data() const
 {
     return d_ptr->m_data.data();

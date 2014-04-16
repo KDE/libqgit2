@@ -45,6 +45,7 @@ namespace LibQGit2
     class Signature;
     class Credentials;
     class Push;
+    class Remote;
 
     /**
      * @brief Wrapper class for git_repository.
@@ -444,13 +445,24 @@ namespace LibQGit2
             void clone(const QString& url, const QString& path);
 
             /**
-            * Add remote repository
+            * Add remote repository.
             *
             * @param name name of the remote
-            * @param url URL of the reote git repository
+            * @param url URL of the remote git repository
+            * @param changeUrlIfExists affects the behaviour if the remote already exists:
+            * if true changes the remote's URL, if false throws an exception.
             * @throws LibQGit2::Exception
             */
-            void remoteAdd(const QString& name, const QString& url);
+            void remoteAdd(const QString& name, const QString& url, bool changeUrlIfExists = false);
+
+            /**
+             * Gets a named remote from this repository. The caller is responsible for
+             * managing the returned object.
+             * @param remoteName the name of the remote
+             * @param parent the parent for the object that is returned
+             * @throws LibQGit2::Exception
+             */
+            Remote* remote(const QString &remoteName, QObject *parent = 0) const;
 
             /**
             * Fetch from known remote repository.

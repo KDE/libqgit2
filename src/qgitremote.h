@@ -47,6 +47,11 @@ public:
      */
     explicit Remote(git_remote *remote, const Credentials &credentials = Credentials(), QObject *parent = 0);
 
+    /**
+     * Gets the URL specified for this remote.
+     */
+    QString url() const;
+
     git_remote* data() const;
 
 signals:
