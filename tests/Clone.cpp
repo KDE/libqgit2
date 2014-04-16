@@ -110,19 +110,19 @@ void TestClone::fileProtocol()
 
 void TestClone::gitProtocol()
 {
-    clone("git://anongit.kde.org/libqgit2");
+    clone(GitRemoteUrl);
 }
 
 
 void TestClone::httpProtocol()
 {
-    clone("http://anongit.kde.org/libqgit2");
+    clone(HttpRemoteUrl);
 }
 
 
 void TestClone::httpsProtocol()
 {
-    clone("https://github.com/lgiordani/libqgit2.git");
+    clone(HttpsRemoteUrl);
 }
 
 
@@ -132,7 +132,7 @@ void TestClone::sshProtocol()
         SKIPTEST("libgit2 is not compiled with SSH support. Skipping SSH clone test.");
     }
 
-    clone("github.com:libqgit2-test/test-repo.git", Credentials::ssh("libqgit2_id_rsa", "libqgit2_id_rsa.pub", "git"));
+    clone(SshRemoteUrl, Credentials::ssh("libqgit2_id_rsa", "libqgit2_id_rsa.pub", "git"));
 }
 
 

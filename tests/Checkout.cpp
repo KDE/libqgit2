@@ -59,7 +59,7 @@ void TestCheckout::fetch(const QString& branch, const QString& repoPath, const Q
     try {
         Repository repo;
         repo.init(repoPath);
-        repo.remoteAdd(remote, "http://anongit.kde.org/libqgit2");
+        repo.remoteAdd(remote, HttpRemoteUrl);
         repo.fetch(remote, branch);
     }
     catch (const Exception& ex) {

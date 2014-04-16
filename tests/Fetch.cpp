@@ -80,7 +80,7 @@ void TestFetch::remoteAdd()
 
     try {
         repo.init(repoPath);
-        repo.remoteAdd("kde", "http://anongit.kde.org/libqgit2");
+        repo.remoteAdd("kde", HttpRemoteUrl);
     }
     catch (const LibQGit2::Exception& ex) {
         QFAIL(ex.what());
@@ -99,8 +99,8 @@ void TestFetch::remoteAddExisiting()
 
     try {
         repo.init(repoPath);
-        repo.remoteAdd("kde", "http://anongit.kde.org/libqgit2");
-        repo.remoteAdd("kde", "http://anongit.kde.org/libqgit2");
+        repo.remoteAdd("kde", HttpRemoteUrl);
+        repo.remoteAdd("kde", HttpRemoteUrl);
     }
     catch (const LibQGit2::Exception& ex) {
         QFAIL(ex.what());
@@ -122,7 +122,7 @@ void TestFetch::remoteAddExisitingDifferentUrl()
 
     try {
         repo.init(repoPath);
-        repo.remoteAdd("kde", "http://anongit.kde.org/libqgit2");
+        repo.remoteAdd("kde", HttpRemoteUrl);
     }
     catch (const LibQGit2::Exception& ex) {
         QFAIL(ex.what());
@@ -150,7 +150,7 @@ void TestFetch::fetch(const QString& branch, const QString dirname)
 
     try {
         repo.init(repoPath);
-        repo.remoteAdd("kde", "http://anongit.kde.org/libqgit2");
+        repo.remoteAdd("kde", HttpRemoteUrl);
         repo.fetch("kde", branch);
     }
     catch (const LibQGit2::Exception& ex) {
@@ -208,7 +208,7 @@ void TestFetch::fetchSSH()
 
     try {
         repo.init(repoPath);
-        repo.remoteAdd("origin", "github.com:libqgit2-test/test-repo.git");
+        repo.remoteAdd("origin", SshRemoteUrl);
         repo.setRemoteCredentials("origin", Credentials::ssh("libqgit2_id_rsa", "libqgit2_id_rsa.pub", "git"));
         repo.fetch("origin", "master");
     }
@@ -230,7 +230,7 @@ void TestFetch::remoteBranches()
     QStringList heads;
     try {
         repo.init(repoPath);
-        repo.remoteAdd("kde", "http://anongit.kde.org/libqgit2");
+        repo.remoteAdd("kde", HttpRemoteUrl);
         heads = repo.remoteBranches("kde");
     }
     catch (const LibQGit2::Exception& ex) {
