@@ -46,6 +46,32 @@ Object::~Object()
 {
 }
 
+Object::Type Object::type() const
+{
+    Type t = BadType;
+    if (!isNull()) {
+        t = resolveType(git_object_type(d.data()));
+    }
+
+    return t;
+}
+
+Object::Type Object::resolveType(git_otype rawType)
+{
+    switch (rawType) {
+    case GIT_OBJ_COMMIT:
+        return CommitType;
+    case GIT_OBJ_TAG:
+        return TagType;
+    case GIT_OBJ_TREE:
+        return TreeType;
+    case GIT_OBJ_BLOB:
+        return BlobType;
+    default:
+        return BadType;
+    }
+}
+
 Commit Object::toCommit() const
 {
     Commit commit;
@@ -94,22 +120,22 @@ OId Object::oid() const
 
 bool Object::isCommit() const
 {
-    return git_object_type(d.data()) == GIT_OBJ_COMMIT;
+    return type() == CommitType;
 }
 
 bool Object::isTag() const
 {
-    return git_object_type(d.data()) == GIT_OBJ_TAG;
+    return type() == TagType;
 }
 
 bool Object::isTree() const
 {
-    return git_object_type(d.data()) == GIT_OBJ_TREE;
+    return type() == TreeType;
 }
 
 bool Object::isBlob() const
 {
-    return git_object_type(d.data()) == GIT_OBJ_BLOB;
+    return type() == BlobType;
 }
 
 QString Object::typeString() const

@@ -61,6 +61,15 @@ OId TreeEntry::oid() const
     return OId(git_tree_entry_id(d));
 }
 
+Object::Type TreeEntry::type() const
+{
+    if (isNull()) {
+        throw Exception("TreeEntry::type(): unknown type since this tree entry is null.");
+    }
+
+    return Object::resolveType(git_tree_entry_type(d));
+}
+
 Object TreeEntry::toObject(const Repository& repo)
 {
     git_object *obj;

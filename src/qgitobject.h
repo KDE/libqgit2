@@ -50,6 +50,16 @@ namespace LibQGit2
     class LIBQGIT2_EXPORT Object
     {
         public:
+            /**
+             * @brief The type of an \c Object.
+             */
+            enum Type {
+                BadType,  ///< Not a valid Object type
+                CommitType,
+                TreeType,
+                BlobType,
+                TagType
+            };
 
             /**
              * Create an Object.
@@ -69,6 +79,11 @@ namespace LibQGit2
              * Destroy the object.
              */
             ~Object();
+
+            /**
+             * Gets the type of this \c Object.
+             */
+            Type type() const;
 
             /**
              * Convert into a commit object.
@@ -164,6 +179,10 @@ namespace LibQGit2
 
         private:
             QSharedPointer<git_object> d;
+
+            static Type resolveType(git_otype);
+
+            friend class TreeEntry;
     };
 
     /**

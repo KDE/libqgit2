@@ -23,12 +23,12 @@
 
 #include "git2.h"
 
+#include "qgitobject.h"
 #include "libqgit2_export.h"
 
 namespace LibQGit2
 {
     class OId;
-    class Object;
     class Repository;
 
     /**
@@ -68,6 +68,12 @@ namespace LibQGit2
              * @return the oid of the object
              */
             OId oid() const;
+
+            /**
+             * Get the type of the \c Object where this entry points to.
+             * @note Tree entries might not support all the possible object types.
+             */
+            Object::Type type() const;
 
             /**
              * Convert a tree entry to the Object it points too.
