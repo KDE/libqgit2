@@ -201,6 +201,13 @@ Object Repository::lookupAny(const OId &oid) const
     return Object(object);
 }
 
+Object Repository::lookupRevision(const QString &revspec) const
+{
+    git_object *object = 0;
+    qGitThrow(git_revparse_single(&object, d.data(), revspec.toLatin1()));
+    return Object(object);
+}
+
 Reference Repository::createRef(const QString& name, const LibQGit2::OId& oid, bool overwrite)
 {
     git_reference *ref = 0;
@@ -475,10 +482,7 @@ void Repository::checkoutRemote(const QString& branch, bool force, const QString
     }
 
     const QString refspec = "refs/remotes/" + remote + "/" + branch;
-    git_object* tree = NULL;
-    qGitThrow(git_revparse_single(&tree, data(), refspec.toLatin1()));
-    Object obj(tree);
-    checkoutTree(obj, force);
+    checkoutTree(lookupRevision(refspec), force);
 
     qGitThrow(git_repository_set_head(data(), refspec.toLatin1()));
 }

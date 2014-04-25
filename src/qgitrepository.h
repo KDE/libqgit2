@@ -284,6 +284,18 @@ namespace LibQGit2
             Object lookupAny(const OId& oid) const;
 
             /**
+             * @brief Lookup an \c Object by a revision specifier.
+             *
+             * See `man gitrevisions`, or
+             * [the Git documentation](http://git-scm.com/docs/git-rev-parse.html#_specifying_revisions)
+             * for information about the accepted syntax.
+             * @param revspec the revision specifier.
+             * @throws LibQGit2::Exception
+             * @return The found object if any.
+             */
+            Object lookupRevision(const QString &revspec) const;
+
+            /**
              * Create a new object id reference.
              *
              * The reference will be created in the repository and written

@@ -71,7 +71,7 @@ namespace LibQGit2
 
             /**
              * Get the type of the \c Object where this entry points to.
-             * @note Tree entries might not support all the possible object types.
+             * @note %Tree entries might not support all the possible object types.
              */
             Object::Type type() const;
 

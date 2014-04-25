@@ -33,9 +33,11 @@ private slots:
     void init();
 
     void testRemoteUrlChanging();
+    void testLookingUpRevision();
 
 private:
     QString testdir;
+    Repository repo;
 };
 
 void TestRepository::init()
@@ -48,7 +50,6 @@ void TestRepository::init()
 
 void TestRepository::testRemoteUrlChanging()
 {
-    Repository repo;
     repo.init(testdir);
 
     const QString remoteName("origin");
@@ -56,6 +57,14 @@ void TestRepository::testRemoteUrlChanging()
     repo.remoteAdd(remoteName, GitRemoteUrl, true);
 
     QCOMPARE(repo.remote(remoteName)->url(), GitRemoteUrl);
+}
+
+void TestRepository::testLookingUpRevision()
+{
+    repo.open(ExistingRepository);
+
+    Object object = repo.lookupRevision("HEAD^{tree}");
+    QCOMPARE(Object::TreeType, object.type());
 }
 
 QTEST_MAIN(TestRepository)
