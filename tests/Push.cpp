@@ -34,8 +34,8 @@ class TestPush : public QObject
 public:
     TestPush() :
         testdir(VALUE_TO_QSTR(TEST_DIR) + "/push_test/"),
-        existingRepo(VALUE_TO_QSTR(TEST_EXISTING_REPOSITORY) + "/.git"),
-        existingBareRepo(VALUE_TO_QSTR(TEST_EXISTING_REPOSITORY) + "_bare")
+        existingRepo(ExistingRepository + "/.git"),
+        existingBareRepo(ExistingRepository + "_bare")
     {}
 
 private slots:

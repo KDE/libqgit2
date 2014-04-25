@@ -100,11 +100,9 @@ void TestCheckout::checkoutRemoteKde()
 
 void TestCheckout::checkoutCommitAsTree()
 {
-    const QString existingRepoPath = "file://" + VALUE_TO_QSTR(TEST_EXISTING_REPOSITORY) + "/.git";
-
     Repository repo;
     try {
-        repo.clone(existingRepoPath, testdir);
+        repo.clone(FileRepositoryUrl, testdir);
         OId id = OId::stringToOid("127c9e7d17");  // 127c9e7d17 is a commit where CMakeLists.txt was modified
         repo.checkoutTree(repo.lookupCommit(id));
     } catch (const Exception& ex) {

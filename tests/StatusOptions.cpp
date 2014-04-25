@@ -28,7 +28,7 @@ using namespace LibQGit2;
 TestStatusOptions::TestStatusOptions()
 {
     Repository repo;
-    repo.open(QString(VALUE_TO_STR(TEST_EXISTING_REPOSITORY)));
+    repo.open(ExistingRepository);
 
     StatusOptions opt;
     opt.setShowType(StatusOptions::ShowIndexAndWorkdir);
