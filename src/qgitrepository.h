@@ -238,7 +238,7 @@ namespace LibQGit2
              * @throws LibQGit2::Exception
              * @return The OId of the target
              */
-            OId* lookupRefOId(const QString& name) const;
+            OId lookupRefOId(const QString& name) const;
 
             /**
              * Lookup a reference by its shorthand name in a repository.

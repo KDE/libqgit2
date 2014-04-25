@@ -152,12 +152,11 @@ Reference Repository::lookupRef(const QString& name) const
     return Reference(ref);
 }
 
-OId* Repository::lookupRefOId(const QString& name) const
+OId Repository::lookupRefOId(const QString& name) const
 {
     git_oid oid;
     qGitThrow(git_reference_name_to_id(&oid, d.data(), QFile::encodeName(name)));
-    OId* qoid = new OId(&oid);
-    return qoid;
+    return OId(&oid);
 }
 
 Reference Repository::lookupShorthandRef(const QString& shorthand) const
