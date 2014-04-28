@@ -46,6 +46,7 @@ namespace LibQGit2
     class Credentials;
     class Push;
     class Remote;
+    class Diff;
 
     /**
      * @brief Wrapper class for git_repository.
@@ -431,6 +432,18 @@ namespace LibQGit2
              * @return The list of status entries
              */
             StatusList status(const StatusOptions &options) const;
+
+            /**
+             * @brief Makes a Diff between two Trees.
+             *
+             * Either Tree argument can be a NULL Tree, but not both.
+             *
+             * @param oldTree the Tree on the `old' side of the diff.
+             * @param newTree the Tree on the `new' side of the diff.
+             * @throws LibQGit2::Exception
+             * @return The Diff between the provided Trees.
+             */
+            Diff diffTrees(const Tree &oldTree, const Tree &newTree) const;
 
             /**
              * @brief Sets a \c Credentials object to be used for a named remote.

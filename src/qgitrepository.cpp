@@ -37,6 +37,7 @@
 #include "qgitremote.h"
 #include "qgitcredentials.h"
 #include "qgitpush.h"
+#include "qgitdiff.h"
 
 namespace {
     void do_not_free(git_repository*) {}
@@ -327,6 +328,17 @@ StatusList Repository::status(const StatusOptions &options) const
     git_status_list *status_list;
     qGitThrow(git_status_list_new(&status_list, d.data(), &opt));
     return StatusList(status_list);
+}
+
+Diff Repository::diffTrees(const Tree &oldTree, const Tree &newTree) const
+{
+    if (d.isNull()){
+        throw Exception("Repository::diffTrees(): no repository available");
+    }
+
+    git_diff *diff = NULL;
+    qGitThrow(git_diff_tree_to_tree(&diff, d.data(), oldTree.data(), newTree.data(), NULL));
+    return Diff(diff);
 }
 
 git_repository* Repository::data() const
