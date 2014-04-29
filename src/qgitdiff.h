@@ -30,13 +30,28 @@ namespace LibQGit2
 
 class DiffDelta;
 
+/**
+ * This class represents a diff.
+ */
 class LIBQGIT2_EXPORT Diff
 {
 public:
     Diff(git_diff *diff = 0);
 
+    /**
+     * @brief Get the number of \c DiffDelta objects in this \c Diff.
+     */
     size_t numDeltas() const;
 
+    /**
+     * @brief Get the \c DiffDelta for the specified index.
+     *
+     * If the given \a index is not on a valid range then a \c NULL \c DiffDelta
+     * object is returned.
+     *
+     * @param index an index from the interval 0 <= index < numDeltas().
+     * @return The \c DiffDelta member.
+     */
     DiffDelta delta(size_t index) const;
 
 public:
