@@ -25,6 +25,15 @@ DiffDelta::DiffDelta(const git_diff_delta *d) : m_diff_delta(d)
 {
 }
 
+DiffDelta::Type DiffDelta::type() const
+{
+    DiffDelta::Type ret = Unknown;
+    if (m_diff_delta != NULL) {
+        ret = DiffDelta::Type(m_diff_delta->status);
+    }
+    return ret;
+}
+
 DiffFile DiffDelta::oldFile() const
 {
     return DiffFile(m_diff_delta != NULL ? &m_diff_delta->old_file : NULL);

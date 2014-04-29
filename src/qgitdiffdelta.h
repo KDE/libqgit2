@@ -38,6 +38,24 @@ class LIBQGIT2_EXPORT DiffDelta
 public:
     DiffDelta(const git_diff_delta *d);
 
+    enum Type {
+        Unknown = GIT_DELTA_UNMODIFIED - 1,  ///< unknown type
+        Unmodified = GIT_DELTA_UNMODIFIED,   ///< no changes
+        Added = GIT_DELTA_ADDED,             ///< entry does not exist in old version
+        Deleted = GIT_DELTA_DELETED,         ///< entry does not exist in new version
+        Modified = GIT_DELTA_MODIFIED,       ///< entry content changed between old and new
+        Renamed = GIT_DELTA_RENAMED,         ///< entry was renamed between old and new
+        Copied = GIT_DELTA_COPIED,           ///< entry was copied from another old entry
+        Ignored = GIT_DELTA_IGNORED,         ///< entry is ignored item in workdir
+        Untracked = GIT_DELTA_UNTRACKED,     ///< entry is untracked item in workdir
+        Typechange = GIT_DELTA_TYPECHANGE,   ///< type of entry changed between old and new
+    };
+
+    /**
+     * Gets the type of this delta.
+     */
+    Type type() const;
+
     /**
      * Returns the information of the file on the "old" side of the diff.
      */
