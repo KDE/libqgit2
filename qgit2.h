@@ -32,6 +32,7 @@
 #include "qgit2/qgitdatabase.h"
 #include "qgit2/qgitdatabasebackend.h"
 #include "qgit2/qgitexception.h"
+#include "qgit2/qgitglobal.h"
 #include "qgit2/qgitindex.h"
 #include "qgit2/qgitindexentry.h"
 #include "qgit2/qgitindexmodel.h"

@@ -24,10 +24,10 @@
 #include <QCoreApplication>
 #include <QTimer>
 
-
 #include <iostream>
 #include <bitset>
 
+#include "qgitglobal.h"
 #include "qgitcommit.h"
 #include "qgitrepository.h"
 #include "qgitcredentials.h"
@@ -52,6 +52,9 @@ public slots:
     }
 
 private slots:
+    void initTestCase();
+    void cleanupTestCase();
+
     void fileProtocol();
     void gitProtocol();
     void httpProtocol();
@@ -71,6 +74,15 @@ TestClone::TestClone() : testdir(VALUE_TO_STR(TEST_DIR))
 {
 }
 
+void TestClone::initTestCase()
+{
+    initLibQGit2();
+}
+
+void TestClone::cleanupTestCase()
+{
+    shutdownLibQGit2();
+}
 
 void TestClone::clone(const QString& url, const Credentials &credentials)
 {
