@@ -62,12 +62,13 @@ Repository::~Repository()
 
 QString Repository::discover(const QString& startPath, bool acrossFs, const QStringList& ceilingDirs)
 {
-    QByteArray repoPath(GIT_PATH_MAX, Qt::Uninitialized);
+    git_buf repoPath = {0};
     QByteArray joinedCeilingDirs = QFile::encodeName(ceilingDirs.join(QChar(GIT_PATH_LIST_SEPARATOR)));
-    qGitThrow(git_repository_discover(repoPath.data(), repoPath.length(),
-                                      QFile::encodeName(startPath),
-                                      acrossFs, joinedCeilingDirs));
-    return QFile::decodeName(repoPath);
+    qGitThrow(git_repository_discover(&repoPath, QFile::encodeName(startPath), acrossFs, joinedCeilingDirs));
+    QString path(repoPath.ptr);
+    git_buf_free(&repoPath);
+
+    return path;
 }
 
 void Repository::init(const QString& path, bool isBare)
@@ -209,17 +210,17 @@ Object Repository::lookupRevision(const QString &revspec) const
     return Object(object);
 }
 
-Reference Repository::createRef(const QString& name, const LibQGit2::OId& oid, bool overwrite)
+Reference Repository::createRef(const QString& name, const LibQGit2::OId& oid, bool overwrite, const Signature &signature, const QString &message)
 {
     git_reference *ref = 0;
-    qGitThrow(git_reference_create(&ref, d.data(), QFile::encodeName(name), oid.constData(), overwrite));
+    qGitThrow(git_reference_create(&ref, d.data(), QFile::encodeName(name), oid.constData(), overwrite, signature.data(), message.toUtf8()));
     return Reference(ref);
 }
 
-Reference Repository::createSymbolicRef(const QString& name, const QString& target, bool overwrite)
+Reference Repository::createSymbolicRef(const QString& name, const QString& target, bool overwrite, const Signature &signature, const QString &message)
 {
     git_reference *ref = 0;
-    qGitThrow(git_reference_symbolic_create(&ref, d.data(), QFile::encodeName(name), QFile::encodeName(target), overwrite));
+    qGitThrow(git_reference_symbolic_create(&ref, d.data(), QFile::encodeName(name), QFile::encodeName(target), overwrite, signature.data(), message.toUtf8()));
     return Reference(ref);
 }
 
@@ -358,7 +359,7 @@ void Repository::setRemoteCredentials(const QString& remoteName, Credentials cre
 }
 
 
-void Repository::clone(const QString& url, const QString& path)
+void Repository::clone(const QString& url, const QString& path, const Signature &signature)
 {
     init(path);
 
@@ -370,9 +371,9 @@ void Repository::clone(const QString& url, const QString& path)
     Remote remote(_remote, m_remote_credentials.value(remoteName));
     connect(&remote, SIGNAL(transferProgress(int)), SIGNAL(cloneProgress(int)));
 
-    git_checkout_opts checkoutOpts = GIT_CHECKOUT_OPTS_INIT;
+    git_checkout_options checkoutOpts = GIT_CHECKOUT_OPTIONS_INIT;
     checkoutOpts.checkout_strategy = GIT_CHECKOUT_SAFE_CREATE;
-    qGitEnsureValue(0, git_clone_into(d.data(), remote.data(), &checkoutOpts, NULL));
+    qGitEnsureValue(0, git_clone_into(d.data(), remote.data(), &checkoutOpts, NULL, signature.data()));
 }
 
 
@@ -419,7 +420,7 @@ Remote* Repository::remote(const QString &remoteName, QObject *parent) const
 }
 
 
-void Repository::fetch(const QString& name, const QString& head)
+void Repository::fetch(const QString& name, const QString& head, const Signature &signature, const QString &message)
 {
     if (d.isNull()){
         throw Exception("Repository::fetch(): no repository available");
@@ -443,7 +444,7 @@ void Repository::fetch(const QString& name, const QString& head)
     qGitThrow(git_remote_connect(remote.data(), GIT_DIRECTION_FETCH));
     qGitEnsureValue(1, git_remote_connected(remote.data()));
     qGitThrow(git_remote_download(remote.data()));
-    qGitThrow(git_remote_update_tips(remote.data()));
+    qGitThrow(git_remote_update_tips(remote.data(), signature.data(), message.isNull() ? NULL : message.toUtf8().constData()));
 }
 
 
@@ -481,13 +482,13 @@ QStringList Repository::remoteBranches(const QString& remoteName)
 
 void Repository::checkoutTree(const Object &treeish, bool force)
 {
-    git_checkout_opts opts = GIT_CHECKOUT_OPTS_INIT;
+    git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
     opts.checkout_strategy = force ? GIT_CHECKOUT_FORCE : GIT_CHECKOUT_SAFE;
     qGitThrow(git_checkout_tree(d.data(), treeish.constData(), &opts));
 }
 
 
-void Repository::checkoutRemote(const QString& branch, bool force, const QString& remote)
+void Repository::checkoutRemote(const QString& branch, bool force, const QString& remote, const Signature &signature, const QString &message)
 {
     if (d.isNull()){
         throw Exception("Repository::checkoutRemote(): no repository available");
@@ -496,7 +497,7 @@ void Repository::checkoutRemote(const QString& branch, bool force, const QString
     const QString refspec = "refs/remotes/" + remote + "/" + branch;
     checkoutTree(lookupRevision(refspec), force);
 
-    qGitThrow(git_repository_set_head(data(), refspec.toLatin1()));
+    qGitThrow(git_repository_set_head(data(), refspec.toLatin1(), signature.data(), message.toUtf8()));
 }
 
 

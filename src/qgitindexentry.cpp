@@ -42,7 +42,7 @@ IndexEntry::~IndexEntry()
 
 OId IndexEntry::id() const
 {
-    return OId(&d->oid);
+    return OId(&d->id);
 }
 
 QString IndexEntry::path() const
