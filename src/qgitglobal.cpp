@@ -1,7 +1,5 @@
 /******************************************************************************
  * This file is part of the libqgit2 library
- * Copyright (c) 2011 Laszlo Papp <djszapi@archlinux.us>
- * Copyright (C) 2013 Leonardo Giordani
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,46 +16,42 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "qgitindexentry.h"
-#include "qgitoid.h"
+#include "qgitglobal.h"
 
-#include <QtCore/QFile>
+#include "git2.h"
+
+#include <QAtomicInt>
 
 namespace LibQGit2
 {
 
-IndexEntry::IndexEntry(const git_index_entry *data)
-    : d(data)
-{
+namespace internal {
+const int Uninitialized = 0;
+const int Initialized = 1;
+
+QAtomicInt LibInitialized(Uninitialized);
 }
 
-IndexEntry::IndexEntry(const IndexEntry& other)
-    : d(other.d)
-{
+using namespace internal;
+
+bool initLibQGit2() {
+    bool ret = false;
+    if (LibInitialized.fetchAndAddRelaxed(Initialized) == Uninitialized) {
+        git_threads_init();
+        ret = true;
+    }
+    return ret;
 }
 
-IndexEntry::~IndexEntry()
-{
+bool shutdownLibQGit2() {
+    bool ret = false;
+    if (LibInitialized.load() > Uninitialized) {
+        if (LibInitialized.fetchAndAddRelaxed(-Initialized) == Initialized) {
+            git_threads_shutdown();
+            ret = true;
+        }
+    }
+    return ret;
 }
 
-OId IndexEntry::id() const
-{
-    return OId(&d->id);
 }
-
-QString IndexEntry::path() const
-{
-    return QFile::decodeName(d->path);
-}
-
-qint64 IndexEntry::fileSize() const
-{
-    return d->file_size;
-}
-
-const git_index_entry *IndexEntry::data() const
-{
-    return d;
-}
-
-} // namespace LibQGit2

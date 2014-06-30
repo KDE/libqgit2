@@ -36,7 +36,7 @@ SignatureBuilder::SignatureBuilder(const QString& name, const QString& email)
 
 SignatureBuilder::SignatureBuilder(const SignatureBuilder& other)
 {
-    d = git_signature_dup(other.d);
+    qGitThrow(git_signature_dup(&d, other.d));
 }
 
 SignatureBuilder::~SignatureBuilder()

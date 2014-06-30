@@ -61,7 +61,7 @@ OId Index::createTree()
 
 void Index::clear()
 {
-    return git_index_clear(data());
+    qGitThrow(git_index_clear(data()));
 }
 
 void Index::read(bool force) const

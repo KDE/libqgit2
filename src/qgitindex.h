@@ -87,6 +87,8 @@ namespace LibQGit2
              * Clear the contents (all the entries) of an index object.
              * This clears the index object in memory; changes must be manually
              * written to disk for them to take effect.
+             *
+             * @throws LibQGit2::Exception
              */
             void clear();
 

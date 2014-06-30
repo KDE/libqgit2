@@ -59,18 +59,22 @@ Config Config::fromGlobalConfig()
 
 QString Config::findGlobal()
 {
-    char buffer[GIT_PATH_MAX];
-    qGitThrow( git_config_find_global(buffer, GIT_PATH_MAX) );
+    git_buf buffer = {0};
+    qGitThrow(git_config_find_global(&buffer));
+    QString path = QFile::decodeName(buffer.ptr);
+    git_buf_free(&buffer);
 
-    return QFile::decodeName(buffer);
+    return path;
 }
 
 QString Config::findSystem()
 {
-    char buffer[GIT_PATH_MAX];
-    qGitThrow( git_config_find_system(buffer, GIT_PATH_MAX) );
+    git_buf buffer = {0};
+    qGitThrow(git_config_find_system(&buffer));
+    QString path = QFile::decodeName(buffer.ptr);
+    git_buf_free(&buffer);
 
-    return QFile::decodeName(buffer);
+    return path;
 }
 
 bool Config::append(const QString &path, git_config_level_t level, int force)

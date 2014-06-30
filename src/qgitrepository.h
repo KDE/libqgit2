@@ -302,12 +302,14 @@ namespace LibQGit2
              * The reference will be created in the repository and written
              * to the disk.
              *
-             * If `overwrite` is true and there already exists a reference
-             * with the same name, it will be overwritten.
-             *
+             * @param name The name of the reference
+             * @param oid The target of the reference
+             * @param overwrite If there already exists a reference with the same name, whether to overwrite it
+             * @param signature The identity that will used to populate the reflog entry
+             * @param message The one line long message to be appended to the reflog
              * @throws LibQGit2::Exception
              */
-            Reference createRef(const QString& name, const OId& oid, bool overwrite = true);
+            Reference createRef(const QString& name, const OId& oid, bool overwrite = true, const Signature &signature = Signature(), const QString &message = QString());
 
             /**
              * Create a new symbolic reference.
@@ -315,12 +317,14 @@ namespace LibQGit2
              * The reference will be created in the repository and written
              * to the disk.
              *
-             * If `overwrite` is true and there already exists a reference
-             * with the same name, it will be overwritten.
-             *
+             * @param name The name of the reference
+             * @param target The target of the reference
+             * @param overwrite If there already exists a reference with the same name, whether to overwrite it
+             * @param signature The identity that will used to populate the reflog entry
+             * @param message The one line long message to be appended to the reflog
              * @throws LibQGit2::Exception
              */
-            Reference createSymbolicRef(const QString& name, const QString& target, bool overwrite = true);
+            Reference createSymbolicRef(const QString& name, const QString& target, bool overwrite = true, const Signature &signature = Signature(), const QString &message = QString());
 
             /**
              * Create a new commit in the repository
@@ -465,9 +469,10 @@ namespace LibQGit2
             *
             * @param url URL of the git repository
             * @param path non-existing directory for the new clone
+            * @param signature The identity used when updating the reflog
             * @throws LibQGit2::Exception
             */
-            void clone(const QString& url, const QString& path);
+            void clone(const QString& url, const QString& path, const Signature &signature = Signature());
 
             /**
             * Add remote repository.
@@ -494,9 +499,13 @@ namespace LibQGit2
             *
             * @param remote name of the remote repository (e.g. "origin")
             * @param head name of head to fetch (e.g. "master"), default: "*" (all branches)
+            * @param signature The identity to use when updating reflogs
+            * @param message The message to insert into the reflogs. If left as the
+            *        default (a null string), a message "fetch <name>" is used , where <name>
+            *        is the name of the remote (or its url, for in-memory remotes).
             * @throws LibQGit2::Exception
             */
-            void fetch(const QString& remote, const QString& head = "");
+            void fetch(const QString& remote, const QString& head = "", const Signature &signature = Signature(), const QString &message = QString());
 
             QStringList remoteBranches(const QString& remoteName);
 
@@ -515,9 +524,11 @@ namespace LibQGit2
             * @param branch  branch name
             * @param force   use forced checkout, default is false
             * @param remote  remote which should be used, default is 'origin'
+            * @param signature The identity that will used to populate the reflog entry
+            * @param message The one line long message to be appended to the reflog
             * @throws LibQGit2::Exception
             */
-            void checkoutRemote(const QString& branch, bool force = false, const QString& remote = "origin");
+            void checkoutRemote(const QString& branch, bool force = false, const QString& remote = "origin", const Signature &signature = Signature(), const QString &message = QString());
 
             /**
 			 * Gets a \c Push object for the named remote.

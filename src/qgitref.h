@@ -26,6 +26,7 @@
 
 #include "git2.h"
 
+#include "qgitsignature.h"
 #include "libqgit2_export.h"
 
 namespace LibQGit2
@@ -155,9 +156,11 @@ namespace LibQGit2
              * to disk.
              *
              * @param target The new target for the reference
+             * @param signature The identity that will used to populate the reflog entry
+             * @param message The one line long message to be appended to the reflog
              * @throws LibQGit2::Exception
              */
-            void setSymbolicTarget(const QString& target);
+            void setSymbolicTarget(const QString& target, const Signature &signature = Signature(), const QString &message = QString());
 
             /**
              * Set the OID target of a reference.
@@ -170,9 +173,11 @@ namespace LibQGit2
              * to disk.
              *
              * @param target The new target OID for the reference
+             * @param signature The identity that will used to populate the reflog entry
+             * @param message The one line long message to be appended to the reflog
              * @throws LibQGit2::Exception
              */
-            void setTarget(const OId& oid);
+            void setTarget(const OId& oid, const Signature &signature = Signature(), const QString &message = QString());
 
             bool isNull() const;
 

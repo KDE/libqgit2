@@ -22,6 +22,7 @@
 #include <QtCore/QPointer>
 #include <QtCore/QSharedPointer>
 
+#include "qgitsignature.h"
 #include "libqgit2_export.h"
 
 struct git_push;
@@ -57,9 +58,12 @@ public:
 
     /**
      * Executes the push.
+     * @param signature The identity to use when updating reflogs
+     * @param message The message to insert into the reflogs. If left as the
+     *        default (a null string), a message "update by push" is used.
      * @throws LibQGit2::Exception
      */
-    void execute();
+    void execute(const Signature &signature = Signature(), const QString &message = QString());
 
 private:
     QPointer<Remote> m_remote;

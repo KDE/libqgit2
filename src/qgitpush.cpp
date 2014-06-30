@@ -39,7 +39,7 @@ void Push::addRefSpec(const QString &refSpec)
     qGitThrow(git_push_add_refspec(m_data.data(), refSpec.toLatin1()));
 }
 
-void Push::execute()
+void Push::execute(const Signature &signature, const QString &message)
 {
     qGitThrow(git_push_finish(m_data.data()));
 
@@ -47,7 +47,7 @@ void Push::execute()
         throw Exception("Push::execute(): remote failed to unpack while pushing");
     }
 
-    qGitThrow(git_push_update_tips(m_data.data()));
+    qGitThrow(git_push_update_tips(m_data.data(), signature.data(), message.isNull() ? NULL : message.toUtf8().constData()));
 }
 
 }
