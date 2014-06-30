@@ -25,6 +25,7 @@
 
 #include "qgitexception.h"
 #include "qgitrepository.h"
+#include "buffer.h"
 
 namespace LibQGit2
 {
@@ -59,22 +60,18 @@ Config Config::fromGlobalConfig()
 
 QString Config::findGlobal()
 {
-    git_buf buffer = {0};
-    qGitThrow(git_config_find_global(&buffer));
-    QString path = QFile::decodeName(buffer.ptr);
-    git_buf_free(&buffer);
+    internal::Buffer buffer;
+    qGitThrow(git_config_find_global(buffer.data()));
 
-    return path;
+    return buffer.asPath();
 }
 
 QString Config::findSystem()
 {
-    git_buf buffer = {0};
-    qGitThrow(git_config_find_system(&buffer));
-    QString path = QFile::decodeName(buffer.ptr);
-    git_buf_free(&buffer);
+    internal::Buffer buffer;
+    qGitThrow(git_config_find_system(buffer.data()));
 
-    return path;
+    return buffer.asPath();
 }
 
 bool Config::append(const QString &path, git_config_level_t level, int force)

@@ -38,6 +38,7 @@
 #include "qgitcredentials.h"
 #include "qgitpush.h"
 #include "qgitdiff.h"
+#include "buffer.h"
 
 namespace {
     void do_not_free(git_repository*) {}
@@ -62,13 +63,11 @@ Repository::~Repository()
 
 QString Repository::discover(const QString& startPath, bool acrossFs, const QStringList& ceilingDirs)
 {
-    git_buf repoPath = {0};
+    internal::Buffer repoPath;
     QByteArray joinedCeilingDirs = QFile::encodeName(ceilingDirs.join(QChar(GIT_PATH_LIST_SEPARATOR)));
-    qGitThrow(git_repository_discover(&repoPath, QFile::encodeName(startPath), acrossFs, joinedCeilingDirs));
-    QString path(repoPath.ptr);
-    git_buf_free(&repoPath);
+    qGitThrow(git_repository_discover(repoPath.data(), QFile::encodeName(startPath), acrossFs, joinedCeilingDirs));
 
-    return path;
+    return repoPath.asPath();
 }
 
 void Repository::init(const QString& path, bool isBare)
