@@ -510,5 +510,33 @@ Push Repository::push(const QString &remoteName)
     return Push(*remote(remoteName));
 }
 
+void Repository::reset(const Object &target, ResetType type, const Signature &signature, const QString &message)
+{
+    if (d.isNull()) {
+        throw Exception("Repository::reset(): no repository available");
+    }
+
+    if (target.isNull()) {
+        throw Exception("Repository::reset(): can not reset to null target");
+    }
+
+    git_reset_t resetType;
+    switch (type) {
+    case Soft:
+        resetType = GIT_RESET_SOFT;
+        break;
+    case Mixed:
+        resetType = GIT_RESET_MIXED;
+        break;
+    case Hard:
+        resetType = GIT_RESET_HARD;
+        break;
+    default:
+        throw Exception("Repository::reset(): invalid reset type argument");
+    }
+
+    qGitThrow(git_reset(data(), target.data(), resetType, const_cast<git_signature*>(signature.data()), message.isNull() ? NULL : message.toUtf8().constData()));
+}
+
 
 } // namespace LibQGit2

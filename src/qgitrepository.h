@@ -539,6 +539,29 @@ namespace LibQGit2
              */
             Push push(const QString &remoteName);
 
+            /**
+             * Types of reset operation.
+             */
+            enum ResetType {
+                Soft,      ///< Move the head to the given commit
+                Mixed,     ///< Soft plus reset index to the commit
+                Hard       ///< Mixed plus changes in working tree discarded
+            };
+
+            /**
+             * Sets the current head to the specified \a target oid and optionally
+             * resets the index and working tree to match.
+             *
+             * @param target the committish to which the HEAD should be moved to
+             * @param type what kind of reset should be performed
+             * @param signature the identity that will used to populate the reflog entry
+             * @param message the one line long message to be appended to the reflog.
+             *        The reflog is only updated if the affected direct reference is actually
+             *        changing. If left as the default (a null string), a message "reset: moving".
+             * @throws LibQGit2::Exception
+             */
+            void reset(const Object &target, ResetType type = Mixed, const Signature &signature = Signature(), const QString &message = QString());
+
             git_repository* data() const;
             const git_repository* constData() const;
 
