@@ -45,7 +45,11 @@ bool initLibQGit2() {
 
 bool shutdownLibQGit2() {
     bool ret = false;
+#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
+    if (int(LibInitialized) > Uninitialized) {
+#else
     if (LibInitialized.load() > Uninitialized) {
+#endif
         if (LibInitialized.fetchAndAddRelaxed(-Initialized) == Initialized) {
             git_threads_shutdown();
             ret = true;
