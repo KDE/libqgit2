@@ -34,6 +34,7 @@
 #include "qgitindex.h"
 #include "qgitstatuslist.h"
 #include "qgitstatusoptions.h"
+#include "qgitcheckoutoptions.h"
 
 namespace LibQGit2
 {
@@ -517,6 +518,13 @@ namespace LibQGit2
              * @throws LibQGit2::Exception
              */
             void checkoutTree(const Object &treeish, bool force = false);
+
+            /**
+             * Updates files in the index and the working tree to match the content
+             * of the commit pointed at by HEAD.
+             * @param opts the options used in the checkout
+             */
+            void checkoutHead(const CheckoutOptions &opts = CheckoutOptions());
 
             /**
             * Checkout a remote branch without creating a local branch.

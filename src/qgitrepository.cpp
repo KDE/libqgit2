@@ -488,6 +488,16 @@ void Repository::checkoutTree(const Object &treeish, bool force)
 }
 
 
+void Repository::checkoutHead(const CheckoutOptions &opts)
+{
+    if (d.isNull()){
+        throw Exception("Repository::checkoutHead(): no repository available");
+    }
+
+    qGitThrow(git_checkout_head(data(), opts.data()));
+}
+
+
 void Repository::checkoutRemote(const QString& branch, bool force, const QString& remote, const Signature &signature, const QString &message)
 {
     if (d.isNull()){

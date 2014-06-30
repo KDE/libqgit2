@@ -26,6 +26,7 @@
 #define LIBQGIT2_VER_REVISION 1
 
 #include "qgit2/qgitblob.h"
+#include "qgit2/qgitcheckoutoptions.h"
 #include "qgit2/qgitcommit.h"
 #include "qgit2/qgitconfig.h"
 #include "qgit2/qgitcredentials.h"

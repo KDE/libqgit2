@@ -39,6 +39,7 @@ private slots:
     void checkoutRemote();
     void checkoutRemoteKde();
     void checkoutCommitAsTree();
+    void checkoutHead();
 
 private:
     QString testdir;
@@ -118,6 +119,22 @@ void TestCheckout::checkoutCommitAsTree()
         }
     }
     QVERIFY2(found, "Expected path was not part of the checked out commit");
+}
+
+void TestCheckout::checkoutHead()
+{
+    const QString fileName(testdir + "/CMakeLists.txt");
+
+    Repository repo;
+    try {
+        repo.clone(FileRepositoryUrl, testdir);
+        QVERIFY(QFile::remove(fileName));
+        repo.checkoutHead(CheckoutOptions(CheckoutOptions::Force));
+    } catch (const Exception& ex) {
+        QFAIL(ex.what());
+    }
+
+    QVERIFY(QFile::exists(fileName));
 }
 
 
