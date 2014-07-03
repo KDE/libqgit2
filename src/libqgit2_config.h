@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef LIBQGIT2_EXPORT_H
-#define LIBQGIT2_EXPORT_H
+#ifndef LIBQGIT2_LIB_CONFIG_H
+#define LIBQGIT2_LIB_CONFIG_H
 
 #include <QtCore/qglobal.h>
 #include <QtCore/QObject>
@@ -39,4 +39,4 @@
 #define LIBQGIT2_EXPORT_DEPRECATED Q_DECL_DEPRECATED LIBQGIT2_EXPORT
 #endif
 
-#endif // LIBQGIT2_EXPORT_H
+#endif // LIBQGIT2_LIB_CONFIG_H

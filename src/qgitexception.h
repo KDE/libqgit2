@@ -21,7 +21,8 @@
 #ifndef LIBQGIT2_EXCEPTION_H
 #define LIBQGIT2_EXCEPTION_H
 
-#include "libqgit2_export.h"
+#include <exception>
+#include "libqgit2_config.h"
 
 namespace LibQGit2
 {

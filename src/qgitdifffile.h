@@ -19,7 +19,7 @@
 #ifndef LIBQGIT2_DIFFFILE_H
 #define LIBQGIT2_DIFFFILE_H
 
-#include "libqgit2_export.h"
+#include "libqgit2_config.h"
 
 #include "git2.h"
 

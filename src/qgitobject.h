@@ -25,7 +25,7 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QSharedPointer>
 
-#include "libqgit2_export.h"
+#include "libqgit2_config.h"
 
 #include "git2.h"
 

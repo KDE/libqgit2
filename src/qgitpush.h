@@ -23,7 +23,7 @@
 #include <QtCore/QSharedPointer>
 
 #include "qgitsignature.h"
-#include "libqgit2_export.h"
+#include "libqgit2_config.h"
 
 struct git_push;
 

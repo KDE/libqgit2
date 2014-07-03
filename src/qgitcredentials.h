@@ -21,7 +21,7 @@
 
 #include <QtCore/QSharedPointer>
 
-#include "libqgit2_export.h"
+#include "libqgit2_config.h"
 
 struct git_cred;
 

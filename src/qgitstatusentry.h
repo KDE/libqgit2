@@ -20,7 +20,7 @@
 #ifndef LIBQGIT2_STATUS_ENTRY_H
 #define LIBQGIT2_STATUS_ENTRY_H
 
-#include "libqgit2_export.h"
+#include "libqgit2_config.h"
 
 #include "git2.h"
 

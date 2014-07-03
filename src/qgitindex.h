@@ -25,7 +25,7 @@
 
 #include "git2.h"
 
-#include "libqgit2_export.h"
+#include "libqgit2_config.h"
 
 namespace LibQGit2
 {
