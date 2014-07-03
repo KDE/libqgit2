@@ -20,7 +20,7 @@
 #define LIBQGIT2_CHECKOUTOPTIONS_H
 
 #include "git2.h"
-
+#include <QSharedPointer>
 #include "libqgit2_config.h"
 
 namespace LibQGit2
@@ -64,10 +64,18 @@ namespace LibQGit2
          */
         CheckoutOptions(Strategy strategy = None, Flags flags = Flags());
 
+        /**
+         * Set the target directory where the files will be checked out.
+         * The default is to use the working directory.
+         */
+        void setTargetDirectory(const QString &dir);
+
         const git_checkout_options* data() const;
 
     private:
-        git_checkout_options d;
+        class Private;
+        QSharedPointer<Private> d_ptr;
+        Q_DECLARE_PRIVATE()
     };
 
     /** @} */

@@ -18,50 +18,77 @@
 
 #include "qgitcheckoutoptions.h"
 
+#include <QFile>
+
 namespace LibQGit2
 {
 
-CheckoutOptions::CheckoutOptions(Strategy strategy, Flags flags)
+class CheckoutOptions::Private
 {
-    git_checkout_options temp = GIT_CHECKOUT_OPTIONS_INIT;
-    d = temp;
+public:
+    Private(Strategy strategy, Flags flags)
+    {
+        git_checkout_options temp = GIT_CHECKOUT_OPTIONS_INIT;
+        native = temp;
 
-    switch (strategy) {
-    case Safe:
-        d.checkout_strategy |= GIT_CHECKOUT_SAFE;
-        break;
-    case SafeCreate:
-        d.checkout_strategy |= GIT_CHECKOUT_SAFE_CREATE;
-        break;
-    case Force:
-        d.checkout_strategy |= GIT_CHECKOUT_FORCE;
-        break;
-    default:
-        break;
+        switch (strategy) {
+        case Safe:
+            native.checkout_strategy |= GIT_CHECKOUT_SAFE;
+            break;
+        case SafeCreate:
+            native.checkout_strategy |= GIT_CHECKOUT_SAFE_CREATE;
+            break;
+        case Force:
+            native.checkout_strategy |= GIT_CHECKOUT_FORCE;
+            break;
+        default:
+            break;
+        }
+
+        if (flags.testFlag(AllowConflicts)) {
+            native.checkout_strategy |= GIT_CHECKOUT_ALLOW_CONFLICTS;
+        }
+        if (flags.testFlag(RemoveUntracked)) {
+            native.checkout_strategy |= GIT_CHECKOUT_REMOVE_UNTRACKED;
+        }
+        if (flags.testFlag(RemoveIgnored)) {
+            native.checkout_strategy |= GIT_CHECKOUT_REMOVE_IGNORED;
+        }
+        if (flags.testFlag(UpdateOnly)) {
+            native.checkout_strategy |= GIT_CHECKOUT_UPDATE_ONLY;
+        }
+        if (flags.testFlag(DontUpdateIndex)) {
+            native.checkout_strategy |= GIT_CHECKOUT_DONT_UPDATE_INDEX;
+        }
+        if (flags.testFlag(NoRefresh)) {
+            native.checkout_strategy |= GIT_CHECKOUT_NO_REFRESH;
+        }
     }
 
-    if (flags.testFlag(AllowConflicts)) {
-        d.checkout_strategy |= GIT_CHECKOUT_ALLOW_CONFLICTS;
+    void setTargetDirectory(const QString &dir)
+    {
+        m_target_directory = QFile::encodeName(dir);
+        native.target_directory = m_target_directory.constData();
     }
-    if (flags.testFlag(RemoveUntracked)) {
-        d.checkout_strategy |= GIT_CHECKOUT_REMOVE_UNTRACKED;
-    }
-    if (flags.testFlag(RemoveIgnored)) {
-        d.checkout_strategy |= GIT_CHECKOUT_REMOVE_IGNORED;
-    }
-    if (flags.testFlag(UpdateOnly)) {
-        d.checkout_strategy |= GIT_CHECKOUT_UPDATE_ONLY;
-    }
-    if (flags.testFlag(DontUpdateIndex)) {
-        d.checkout_strategy |= GIT_CHECKOUT_DONT_UPDATE_INDEX;
-    }
-    if (flags.testFlag(NoRefresh)) {
-        d.checkout_strategy |= GIT_CHECKOUT_NO_REFRESH;
-    }
+
+    git_checkout_options native;
+    QByteArray m_target_directory;
+};
+
+
+CheckoutOptions::CheckoutOptions(Strategy strategy, Flags flags)
+    : d_ptr(new Private(strategy, flags))
+{
 }
 
-const git_checkout_options* CheckoutOptions::data() const {
-    return &d;
+const git_checkout_options* CheckoutOptions::data() const
+{
+    return &d_ptr->native;
+}
+
+void CheckoutOptions::setTargetDirectory(const QString &dir)
+{
+    d_ptr->setTargetDirectory(dir);
 }
 
 }
