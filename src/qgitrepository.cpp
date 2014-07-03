@@ -28,7 +28,6 @@
 #include "qgitrepository.h"
 #include "qgitconfig.h"
 #include "qgittag.h"
-#include "qgittree.h"
 #include "qgitblob.h"
 #include "qgitsignature.h"
 #include "qgitexception.h"
@@ -84,6 +83,12 @@ public:
 
 
 #define SAFE_DATA d_ptr->safeData(LIBQGIT2_FUNC_NAME)
+
+#define THROW(msg) throw Exception(QString("Repository::") + LIBQGIT2_FUNC_NAME + "(): " + msg)
+
+#define AVOID(statement, msg) if (statement) {\
+    THROW(msg);\
+}
 
 
 Repository::Repository(git_repository *repository, bool own)
@@ -388,6 +393,15 @@ Diff Repository::diffTrees(const Tree &oldTree, const Tree &newTree) const
     return Diff(diff);
 }
 
+Index Repository::mergeTrees(const Tree &our, const Tree &their, const Tree &ancestor, const MergeOptions &opts)
+{
+    AVOID(our.isNull() && their.isNull(), "needed at least either 'our' or 'their' tree to merge.")
+
+    git_index *index = NULL;
+    qGitThrow(git_merge_trees(&index, SAFE_DATA, ancestor.data(), our.data(), their.data(), opts.data()));
+    return Index(index);
+}
+
 git_repository* Repository::data() const
 {
     return d_ptr->d.data();
@@ -438,7 +452,7 @@ void Repository::remoteAdd(const QString& name, const QString& url, bool changeU
                 qGitThrow(git_remote_set_url(r, url.toLatin1()));
                 qGitThrow(git_remote_save(r));
             } else {
-                throw Exception("Repository::remoteAdd() remote already exists");
+                THROW("remote already exists");
             }
         }
         break;
@@ -540,9 +554,7 @@ Push Repository::push(const QString &remoteName)
 
 void Repository::reset(const Object &target, ResetType type, const Signature &signature, const QString &message)
 {
-    if (target.isNull()) {
-        throw Exception("Repository::reset(): can not reset to null target");
-    }
+    AVOID(target.isNull(), "can not reset to null target");
 
     git_reset_t resetType;
     switch (type) {
@@ -556,7 +568,7 @@ void Repository::reset(const Object &target, ResetType type, const Signature &si
         resetType = GIT_RESET_HARD;
         break;
     default:
-        throw Exception("Repository::reset(): invalid reset type argument");
+        THROW("invalid reset type argument");
     }
 
     qGitThrow(git_reset(SAFE_DATA, target.data(), resetType, const_cast<git_signature*>(signature.data()), message.isNull() ? NULL : message.toUtf8().constData()));

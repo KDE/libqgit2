@@ -32,10 +32,12 @@
 #include "qgitdatabase.h"
 #include "qgitobject.h"
 #include "qgitref.h"
+#include "qgittree.h"
 #include "qgitindex.h"
 #include "qgitstatuslist.h"
 #include "qgitstatusoptions.h"
 #include "qgitcheckoutoptions.h"
+#include "qgitmergeoptions.h"
 
 namespace LibQGit2
 {
@@ -470,6 +472,21 @@ namespace LibQGit2
              * @return The Diff between the provided Trees.
              */
             Diff diffTrees(const Tree &oldTree, const Tree &newTree) const;
+
+            /**
+             * Merge two trees, producing an Index that reflects the result of the merge. The index
+             * may be written as-is to the working directory or checked out. If the index is to be
+             * converted to a tree, the caller should resolve any conflicts that arose as part of the merge.
+             *
+             * At least one of \a our or \a their must be a valid Tree.
+             *
+             * @param our The tree that reflects the destination tree.
+             * @param their The tree to merge into the destination tree.
+             * @param ancestor The common ancestor between the trees. May be null.
+             * @param opts The merge options.
+             * @return The merged index.
+             */
+            Index mergeTrees(const Tree &our, const Tree &their, const Tree &ancestor = Tree(), const MergeOptions &opts = MergeOptions());
 
             /**
              * @brief Sets a \c Credentials object to be used for a named remote.
