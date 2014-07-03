@@ -104,6 +104,11 @@ unsigned int Index::entryCount() const
     return git_index_entrycount(data());
 }
 
+bool Index::hasConflicts() const
+{
+    return !d.isNull() && git_index_has_conflicts(d.data());
+}
+
 git_index* Index::data() const
 {
     return d.data();

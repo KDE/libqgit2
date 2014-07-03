@@ -174,6 +174,13 @@ namespace LibQGit2
              */
             unsigned int entryCount() const;
 
+            /**
+             * Checks if this Index has conflicts.
+             * If this is a null index it never has conflicts.
+             * @return true if there are conflicts in this Index.
+             */
+            bool hasConflicts() const;
+
             git_index* data() const;
             const git_index* constData() const;
 
