@@ -524,11 +524,9 @@ QStringList Repository::remoteBranches(const QString& remoteName)
 }
 
 
-void Repository::checkoutTree(const Object &treeish, bool force)
+void Repository::checkoutTree(const Object &treeish, const CheckoutOptions &opts)
 {
-    git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
-    opts.checkout_strategy = force ? GIT_CHECKOUT_FORCE : GIT_CHECKOUT_SAFE;
-    qGitThrow(git_checkout_tree(SAFE_DATA, treeish.constData(), &opts));
+    qGitThrow(git_checkout_tree(SAFE_DATA, treeish.constData(), opts.data()));
 }
 
 
@@ -538,10 +536,10 @@ void Repository::checkoutHead(const CheckoutOptions &opts)
 }
 
 
-void Repository::checkoutRemote(const QString& branch, bool force, const QString& remote, const Signature &signature, const QString &message)
+void Repository::checkoutRemote(const QString& branch, const CheckoutOptions &opts, const QString& remote, const Signature &signature, const QString &message)
 {
     const QString refspec = "refs/remotes/" + remote + "/" + branch;
-    checkoutTree(lookupRevision(refspec), force);
+    checkoutTree(lookupRevision(refspec), opts);
 
     qGitThrow(git_repository_set_head(SAFE_DATA, refspec.toLatin1(), signature.data(), message.toUtf8()));
 }

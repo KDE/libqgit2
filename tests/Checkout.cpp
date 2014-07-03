@@ -81,7 +81,7 @@ void TestCheckout::checkoutRemoteKde()
     try {
         Repository repo;
         repo.open(testdir);
-        repo.checkoutRemote("master", false, "kde");
+        repo.checkoutRemote("master", CheckoutOptions(), "kde");
     }
     catch (const Exception& ex) {
         QFAIL(ex.what());
@@ -95,7 +95,7 @@ void TestCheckout::checkoutCommitAsTree()
     try {
         repo.clone(FileRepositoryUrl, testdir);
         OId id = OId::stringToOid("127c9e7d17");  // 127c9e7d17 is a commit where CMakeLists.txt was modified
-        repo.checkoutTree(repo.lookupCommit(id));
+        repo.checkoutTree(repo.lookupCommit(id), CheckoutOptions(CheckoutOptions::SafeCreate));
     } catch (const Exception& ex) {
         QFAIL(ex.what());
     }

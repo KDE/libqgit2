@@ -552,15 +552,16 @@ namespace LibQGit2
             /**
              * Checkout a treeish, i.e. a Commit, Tag or Tree.
              * @param treeish the Object to checkout
-             * @param force use forced checkout, default is false
+             * @param opts the options used in the checkout
              * @throws LibQGit2::Exception
              */
-            void checkoutTree(const Object &treeish, bool force = false);
+            void checkoutTree(const Object &treeish, const CheckoutOptions &opts = CheckoutOptions());
 
             /**
              * Updates files in the index and the working tree to match the content
              * of the commit pointed at by HEAD.
              * @param opts the options used in the checkout
+             * @throws LibQGit2::Exception
              */
             void checkoutHead(const CheckoutOptions &opts = CheckoutOptions());
 
@@ -568,13 +569,13 @@ namespace LibQGit2
             * Checkout a remote branch without creating a local branch.
             *
             * @param branch  branch name
-            * @param force   use forced checkout, default is false
+            * @param opts the options used in the checkout
             * @param remote  remote which should be used, default is 'origin'
             * @param signature The identity that will used to populate the reflog entry
             * @param message The one line long message to be appended to the reflog
             * @throws LibQGit2::Exception
             */
-            void checkoutRemote(const QString& branch, bool force = false, const QString& remote = "origin", const Signature &signature = Signature(), const QString &message = QString());
+            void checkoutRemote(const QString& branch, const CheckoutOptions &opts = CheckoutOptions(), const QString& remote = "origin", const Signature &signature = Signature(), const QString &message = QString());
 
             /**
 			 * Gets a \c Push object for the named remote.
