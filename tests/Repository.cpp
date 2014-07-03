@@ -56,7 +56,8 @@ void TestRepository::testRemoteUrlChanging()
     repo.remoteAdd(remoteName, HttpRemoteUrl);
     repo.remoteAdd(remoteName, GitRemoteUrl, true);
 
-    QCOMPARE(repo.remote(remoteName)->url(), GitRemoteUrl);
+    QScopedPointer<Remote> remote(repo.remote(remoteName));
+    QCOMPARE(remote->url(), GitRemoteUrl);
 }
 
 void TestRepository::testLookingUpRevision()
