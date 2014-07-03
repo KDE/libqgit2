@@ -59,8 +59,8 @@ namespace LibQGit2
 
         /**
          * Constructs a new CheckoutOptions.
-         * @param strategy the checkout strategy to use
-         * @param flags details about the checkout process
+         * @param strategy The checkout strategy to use.
+         * @param flags Details about the checkout process.
          */
         CheckoutOptions(Strategy strategy = None, Flags flags = Flags());
 
@@ -69,6 +69,14 @@ namespace LibQGit2
          * The default is to use the working directory.
          */
         void setTargetDirectory(const QString &dir);
+
+        /**
+         * Sets the paths which are checked out.
+         * These can be exact path names or wildcard matchers like `*.c`.
+         * The wildcard syntax is that accepted by the POSIX \c fnmatch function.
+         * @param paths The paths to checkout.
+         */
+        void setPaths(const QList<QString> &paths);
 
         const git_checkout_options* data() const;
 

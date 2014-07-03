@@ -65,14 +65,40 @@ public:
         }
     }
 
+    ~Private() {
+        free(native.paths.strings);
+    }
+
     void setTargetDirectory(const QString &dir)
     {
         m_target_directory = QFile::encodeName(dir);
         native.target_directory = m_target_directory.constData();
     }
 
+    void setPaths(const QList<QString> &paths)
+    {
+        const size_t newCount = paths.size();
+        if (newCount == 0) {
+            free(native.paths.strings);
+            native.paths.strings = NULL;
+        } else if (newCount > native.paths.count) {
+            native.paths.strings = (char**)realloc(native.paths.strings, newCount * sizeof(char*));
+        }
+        native.paths.count = newCount;
+
+        m_paths.clear();
+        foreach (const QString &path, paths) {
+            m_paths.append(QFile::encodeName(path));
+        }
+
+        for (size_t i = 0; i < newCount; ++i) {
+            native.paths.strings[i] = m_paths[i].data();
+        }
+    }
+
     git_checkout_options native;
     QByteArray m_target_directory;
+    QList<QByteArray> m_paths;
 };
 
 
@@ -89,6 +115,11 @@ const git_checkout_options* CheckoutOptions::data() const
 void CheckoutOptions::setTargetDirectory(const QString &dir)
 {
     d_ptr->setTargetDirectory(dir);
+}
+
+void CheckoutOptions::setPaths(const QList<QString> &paths)
+{
+    d_ptr->setPaths(paths);
 }
 
 }
