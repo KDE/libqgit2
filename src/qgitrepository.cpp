@@ -327,6 +327,12 @@ Reference Repository::createBranch(const QString &branchName, const Commit &targ
     return Reference(ref);
 }
 
+void Repository::deleteBranch(const QString &branchName)
+{
+    Reference branch = lookupShorthandRef(branchName);
+    qGitThrow(git_branch_delete(branch.data()));
+}
+
 QStringList Repository::listTags(const QString& pattern) const
 {
     git_strarray tags;

@@ -45,6 +45,19 @@ protected:
     QString testdir;
 };
 
+#define EXPECT_THROW(statement, exClass) \
+do {\
+    try {\
+        statement;\
+        QTest::qFail(#statement " didn't throw", __FILE__, __LINE__);\
+        return;\
+    } catch (const exClass&) {\
+    } catch (...) {\
+        QTest::qFail(#statement " threw an unexpected kind of exception", __FILE__, __LINE__);\
+        return;\
+    }\
+} while (0)
+
 
 #if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
 #define SKIPTEST(description) QSKIP(description, SkipSingle);

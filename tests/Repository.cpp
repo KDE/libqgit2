@@ -28,14 +28,20 @@ using namespace LibQGit2;
 class TestRepository : public TestBase
 {
     Q_OBJECT
+public:
+    TestRepository() :
+        branchName("new_branch")
+    {}
 
 private slots:
     void testRemoteUrlChanging();
     void testLookingUpRevision();
     void testCreateBranch();
+    void testDeleteBranch();
 
 private:
     Repository repo;
+    const QString branchName;
 };
 
 
@@ -63,11 +69,20 @@ void TestRepository::testCreateBranch()
 {
     initTestRepo();
     repo.open(testdir);
-    const QString branchName("new_branch");
 
     OId head = repo.head().target();
     QCOMPARE(repo.createBranch(branchName).target(), head);
     QCOMPARE(repo.lookupShorthandRef(branchName).target(), head);
+}
+
+void TestRepository::testDeleteBranch()
+{
+    initTestRepo();
+    repo.open(testdir);
+    repo.createBranch(branchName);
+
+    repo.deleteBranch(branchName);
+    EXPECT_THROW(repo.lookupShorthandRef(branchName), Exception);
 }
 
 QTEST_MAIN(TestRepository)

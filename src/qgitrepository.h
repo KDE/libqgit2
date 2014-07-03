@@ -404,6 +404,13 @@ namespace LibQGit2
             Reference createBranch(const QString &branchName, const Commit &target = Commit(), bool force = false, const Signature &signature = Signature(), const QString &message = QString());
 
             /**
+             * Deletes a local branch.
+             * @param branchName The name of the branch.
+             * @throws LibQGit2::Exception
+             */
+            void deleteBranch(const QString &branchName);
+
+            /**
              * Create a list with all the tags in the Repository
              * which name match a defined pattern
              *
