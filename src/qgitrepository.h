@@ -577,10 +577,9 @@ namespace LibQGit2
             void cloneProgress(int);
 
         private:
-            typedef QSharedPointer<git_repository> ptr_type;
-            ptr_type d;
-
-            QMap<QString, Credentials> m_remote_credentials;
+            class Private;
+            QSharedPointer<Private> d_ptr;
+            Q_DECLARE_PRIVATE()
     };
 
     /**@}*/
