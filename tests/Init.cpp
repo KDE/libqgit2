@@ -2,7 +2,7 @@
 #include "TestHelpers.h"
 
 #include "qgitrepository.h"
-
+#include <QDir>
 
 
 using namespace LibQGit2;

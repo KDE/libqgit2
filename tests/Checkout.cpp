@@ -25,35 +25,25 @@
 #include "qgitcommit.h"
 #include "qgitdiffdelta.h"
 #include "qgitdifffile.h"
+#include <QFile>
 
 using namespace LibQGit2;
 
 
-class TestCheckout : public QObject
+class TestCheckout : public TestBase
 {
     Q_OBJECT
 
 private slots:
-    void init();
-
     void checkoutRemote();
     void checkoutRemoteKde();
     void checkoutCommitAsTree();
     void checkoutHead();
 
 private:
-    QString testdir;
-
     void fetch(const QString& branch, const QString& repoPath, const QString& remote);
 };
 
-
-void TestCheckout::init()
-{
-    testdir = VALUE_TO_QSTR(TEST_DIR) + "/checkout_test/" + QTest::currentTestFunction();
-    QVERIFY(removeDir(testdir));
-    sleep::ms(500);
-}
 
 void TestCheckout::fetch(const QString& branch, const QString& repoPath, const QString& remote = "origin")
 {
