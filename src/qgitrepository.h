@@ -28,6 +28,7 @@
 
 #include "libqgit2_config.h"
 
+#include "qgitcommit.h"
 #include "qgitdatabase.h"
 #include "qgitobject.h"
 #include "qgitref.h"
@@ -388,6 +389,19 @@ namespace LibQGit2
              * @throws LibQGit2::Exception
              */
             OId createBlobFromBuffer(const QByteArray& buffer);
+
+            /**
+             * Creates a new branch to this repository.
+             * @param branchName The name of the new branch.
+             * @param target The starting point of the branch, i.e. where the new branch will point to. Defaults to HEAD.
+             * @param force Controls whether to overwrite an already existing branch.
+             * @param signature The identity to use when updating reflogs.
+             * @param message The message to insert into the reflogs. If left as the
+             *        default (a null string), a message "Branch: created" is used.
+             * @return A reference to the newly created branch
+             * @throws LibQGit2::Exception
+             */
+            Reference createBranch(const QString &branchName, const Commit &target = Commit(), bool force = false, const Signature &signature = Signature(), const QString &message = QString());
 
             /**
              * Create a list with all the tags in the Repository

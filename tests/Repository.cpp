@@ -25,27 +25,18 @@
 
 using namespace LibQGit2;
 
-class TestRepository : public QObject
+class TestRepository : public TestBase
 {
     Q_OBJECT
 
 private slots:
-    void init();
-
     void testRemoteUrlChanging();
     void testLookingUpRevision();
+    void testCreateBranch();
 
 private:
-    QString testdir;
     Repository repo;
 };
-
-void TestRepository::init()
-{
-    testdir = VALUE_TO_QSTR(TEST_DIR) + "/repository_test/" + QTest::currentTestFunction();
-    QVERIFY(removeDir(testdir));
-    sleep::ms(500);
-}
 
 
 void TestRepository::testRemoteUrlChanging()
@@ -66,6 +57,17 @@ void TestRepository::testLookingUpRevision()
 
     Object object = repo.lookupRevision("HEAD^{tree}");
     QCOMPARE(Object::TreeType, object.type());
+}
+
+void TestRepository::testCreateBranch()
+{
+    initTestRepo();
+    repo.open(testdir);
+    const QString branchName("new_branch");
+
+    OId head = repo.head().target();
+    QCOMPARE(repo.createBranch(branchName).target(), head);
+    QCOMPARE(repo.lookupShorthandRef(branchName).target(), head);
 }
 
 QTEST_MAIN(TestRepository)

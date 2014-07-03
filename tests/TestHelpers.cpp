@@ -2,7 +2,9 @@
 
 #include <QDir>
 
-#include "git2.h"
+#include "qgitrepository.h"
+
+using namespace LibQGit2;
 
 void sleep::ms(int msec)
 {
@@ -80,4 +82,14 @@ bool libgit2HasSSH() {
 void TestBase::init() {
     testdir = VALUE_TO_QSTR(TEST_DIR) + "/" + QFileInfo(QTest::currentAppName()).fileName() + "/" + QTest::currentTestFunction();
     QVERIFY(removeDir(testdir));
+}
+
+void TestBase::initTestRepo()
+{
+    try {
+        Repository repo;
+        repo.clone(FileRepositoryUrl, testdir);
+    } catch (const Exception& ex) {
+        QFAIL(ex.what());
+    }
 }

@@ -40,6 +40,8 @@ private slots:
     virtual void init();
 
 protected:
+    void initTestRepo();
+
     QString testdir;
 };
 

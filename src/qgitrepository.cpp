@@ -26,7 +26,6 @@
 #include <QtCore/QDebug>
 
 #include "qgitrepository.h"
-#include "qgitcommit.h"
 #include "qgitconfig.h"
 #include "qgittag.h"
 #include "qgittree.h"
@@ -314,6 +313,18 @@ OId Repository::createBlobFromBuffer(const QByteArray& buffer)
     OId oid;
     qGitThrow(git_blob_create_frombuffer(oid.data(), SAFE_DATA, buffer.data(), buffer.size()));
     return oid;
+}
+
+Reference Repository::createBranch(const QString &branchName, const Commit &target, bool force, const Signature &signature, const QString &message)
+{
+    Commit usedTarget(target);
+    if (target.isNull()) {
+        usedTarget = lookupCommit(head().target());
+    }
+
+    git_reference *ref = NULL;
+    qGitThrow(git_branch_create(&ref, SAFE_DATA, branchName.toUtf8(), usedTarget.data(), force, signature.data(), message.isNull() ? NULL : message.toUtf8().constData()));
+    return Reference(ref);
 }
 
 QStringList Repository::listTags(const QString& pattern) const
