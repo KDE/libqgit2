@@ -25,6 +25,8 @@
 #include "qgittree.h"
 #include "qgitexception.h"
 
+#include <QFile>
+
 namespace LibQGit2
 {
 
@@ -102,6 +104,15 @@ OId Commit::parentId(unsigned n) const
 {
     return OId(git_commit_parent_id(data(), n));
 }
+
+OId Commit::amend(const Tree& tree, const Signature& author, const Signature& committer, const QString& message, const QString& ref)
+{
+    OId oid;
+    qGitThrow(git_commit_amend(oid.data(), constData(), ref.isEmpty() ? NULL : QFile::encodeName(ref).constData(), author.data(), committer.data(),
+                               NULL, message.isNull() ? NULL : message.toUtf8().constData(), tree.constData()));
+    return oid;
+}
+
 
 git_commit* Commit::data() const
 {

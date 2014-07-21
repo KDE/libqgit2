@@ -22,14 +22,14 @@
 #define LIBQGIT2_COMMIT_H
 
 #include "qgitobject.h"
+#include "qgittree.h"
+#include "qgitsignature.h"
 
 #include <QtCore/QDateTime>
 
 namespace LibQGit2
 {
     class OId;
-    class Signature;
-    class Tree;
     class Repository;
 
     /**
@@ -146,6 +146,24 @@ namespace LibQGit2
              * @throws Exception
              */
             OId parentId(unsigned n) const;
+
+            /**
+             * Amends an existing commit.
+             *
+             * Only the arguments that are provided are used. Arguments left to their default values
+             * mean that the property in the Commit is not changed.
+             *
+             * @param tree The Tree to be used to amend the Commit.
+             * @param author Author signature.
+             * @param committer Committer signature.
+             * @param message The message for the amended Commit.
+             * @param ref Name of the reference that will be updated to point to the amended Commit.
+             *        See Repository::createCommit.
+             * @return The OId of the amended Commit.
+             *
+             * @see Repository::createCommit
+             */
+            OId amend(const Tree& tree = Tree(), const Signature& author = Signature(), const Signature& committer = Signature(), const QString& message = QString(), const QString& ref = QString());
 
             git_commit* data() const;
             const git_commit* constData() const;
