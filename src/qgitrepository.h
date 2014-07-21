@@ -331,16 +331,23 @@ namespace LibQGit2
             Reference createSymbolicRef(const QString& name, const QString& target, bool overwrite = true, const Signature &signature = Signature(), const QString &message = QString());
 
             /**
-             * Create a new commit in the repository
+             * Create a new commit in the repository.
              *
+             * @param tree The Tree to be used for the new Commit.
+             * @param parents The parent Commits for the new Commit. Can be empty for the root (initial)
+             *        Commit to the repository.
+             * @param author Author signature.
+             * @param committer Committer signature.
+             * @param message The message for the new Commit.
+             * @param ref Name of the reference that will be updated to point to this commit. If the
+             *        reference is not direct, it will be resolved to a direct reference. Use "HEAD" to
+             *        update the HEAD of the current branch and make it point to this commit. If the
+             *        reference doesn't exist yet, it will be created. If it does exist, the first
+             *        parent must be the tip of this branch.
+             * @return The OId of the newly created commit.
              * @throws LibQGit2::Exception
              */
-            OId createCommit(const QString& ref,
-                                 const Signature& author,
-                                 const Signature& committer,
-                                 const QString& message,
-                                 const Tree& tree,
-                                 const QList<Commit>& parents);
+            OId createCommit(const Tree& tree, const QList<Commit>& parents, const Signature& author, const Signature& committer, const QString& message, const QString& ref = QString());
 
             /**
              * Create a new lightweight tag pointing at a target object

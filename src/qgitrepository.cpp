@@ -261,12 +261,7 @@ Reference Repository::createSymbolicRef(const QString& name, const QString& targ
     return Reference(ref);
 }
 
-OId Repository::createCommit(const QString& ref,
-                                     const Signature& author,
-                                     const Signature& committer,
-                                     const QString& message,
-                                     const Tree& tree,
-                                     const QList<Commit>& parents)
+OId Repository::createCommit(const Tree& tree, const QList<Commit>& parents, const Signature& author, const Signature& committer, const QString& message, const QString &ref)
 {
     QVector<const git_commit*> p;
     foreach (const Commit& parent, parents) {
@@ -274,7 +269,7 @@ OId Repository::createCommit(const QString& ref,
     }
 
     OId oid;
-    qGitThrow(git_commit_create(oid.data(), SAFE_DATA, QFile::encodeName(ref), author.data(), committer.data(),
+    qGitThrow(git_commit_create(oid.data(), SAFE_DATA, ref.isEmpty() ? NULL : QFile::encodeName(ref).constData(), author.data(), committer.data(),
                                 NULL, message.toUtf8(), tree.data(), p.size(), p.data()));
     return oid;
 }
