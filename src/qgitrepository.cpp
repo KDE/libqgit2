@@ -333,6 +333,13 @@ void Repository::deleteBranch(const QString &branchName)
     qGitThrow(git_branch_delete(branch.data()));
 }
 
+void Repository::cherryPick(const Commit &commit, const CherryPickOptions &opts)
+{
+    AVOID(commit.isNull(), "can not cherry-pick a null commit.")
+
+    qGitThrow(git_cherry_pick(SAFE_DATA, commit.data(), opts.data()));
+}
+
 QStringList Repository::listTags(const QString& pattern) const
 {
     git_strarray tags;

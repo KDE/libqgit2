@@ -38,6 +38,7 @@
 #include "qgitstatusoptions.h"
 #include "qgitcheckoutoptions.h"
 #include "qgitmergeoptions.h"
+#include "qgitcherrypickoptions.h"
 
 namespace LibQGit2
 {
@@ -418,6 +419,14 @@ namespace LibQGit2
              * @throws LibQGit2::Exception
              */
             void deleteBranch(const QString &branchName);
+
+            /**
+             * Cherry-picks a commit.
+             * @param commit The commit to cherry-pick.
+             * @param opts The options specifying how the cherry-pick is made.
+             * @throws LibQGit2::Exception
+             */
+            void cherryPick(const Commit &commit, const CherryPickOptions &opts = CherryPickOptions());
 
             /**
              * Create a list with all the tags in the Repository
