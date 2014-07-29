@@ -35,18 +35,56 @@ namespace LibQGit2
     class LIBQGIT2_EXPORT Exception : public std::exception
     {
         public:
+            /**
+             * A category for an exception.
+             *
+             * @note These map directly to libgit2 error codes.
+             * @see https://libgit2.github.com/libgit2/#v0.21.0/type/git_error_t
+             */
+            enum Category {
+                None,
+                NoMemory,
+                OS,
+                Invalid,
+                Reference,
+                ZLib,
+                Repository,
+                Config,
+                RegEx,
+                ODB,
+                Index,
+                Object,
+                Net,
+                Tag,
+                Tree,
+                Indexer,
+                SSL,
+                Submodule,
+                Thread,
+                Stash,
+                Checkout,
+                FetchHead,
+                Merge,
+                SSH,
+                Filter,
+                Revert,
+                Callback,
+                Cherrypick
+            };
+
             Exception();
-
-            Exception(const QString& msg) : m(msg.toLatin1()) {}
-
+            Exception(const QString& msg, Category category = None);
             ~Exception() throw();
 
             const char *what() const throw();
 
             QByteArray message() const throw();
 
+            Category category() const throw();
+
         private:
-            QByteArray m;
+            QByteArray m_msg;
+            Category m_category;
     };
 
     inline int qGitThrow(int ret) { if (ret < 0) throw Exception(); return ret; }
