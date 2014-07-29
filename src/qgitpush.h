@@ -66,7 +66,7 @@ public:
     void execute(const Signature &signature = Signature(), const QString &message = QString());
 
 private:
-    QPointer<Remote> m_remote;
+    QSharedPointer<Remote> m_remote;
     QSharedPointer<git_push> m_data;
 };
 
