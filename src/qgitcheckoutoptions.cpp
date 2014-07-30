@@ -63,6 +63,15 @@ public:
         if (flags.testFlag(NoRefresh)) {
             native.checkout_strategy |= GIT_CHECKOUT_NO_REFRESH;
         }
+        if (flags.testFlag(SkipUnmerged)) {
+            native.checkout_strategy |= GIT_CHECKOUT_SKIP_UNMERGED;
+        }
+        if (flags.testFlag(UnmergedUseOurs)) {
+            native.checkout_strategy |= GIT_CHECKOUT_USE_OURS;
+        }
+        if (flags.testFlag(UnmergedUseTheirs)) {
+            native.checkout_strategy |= GIT_CHECKOUT_USE_THEIRS;
+        }
     }
 
     ~Private() {

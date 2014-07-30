@@ -53,7 +53,10 @@ namespace LibQGit2
             RemoveIgnored,     ///< Remove ignored files not in index
             UpdateOnly,        ///< Only update existing files, don't create new ones
             DontUpdateIndex,   ///< Normally checkout updates index entries as it goes; this stops that
-            NoRefresh          ///< Don't refresh index/config/etc before doing checkout
+            NoRefresh,         ///< Don't refresh index/config/etc before doing checkout
+            SkipUnmerged,      ///< Allow checkout to skip unmerged files
+            UnmergedUseOurs,   ///< For unmerged files, checkout stage 2 from index
+            UnmergedUseTheirs  ///< For unmerged files, checkout stage 3 from index
         };
         Q_DECLARE_FLAGS(Flags, Flag)
 
