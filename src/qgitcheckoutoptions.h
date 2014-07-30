@@ -48,15 +48,15 @@ namespace LibQGit2
          * Options specifying details about how a checkout is performed.
          */
         enum Flag {
-            AllowConflicts,    ///< Allow checkout to make safe updates even if conflicts are found
-            RemoveUntracked,   ///< Remove untracked files not in index (that are not ignored)
-            RemoveIgnored,     ///< Remove ignored files not in index
-            UpdateOnly,        ///< Only update existing files, don't create new ones
-            DontUpdateIndex,   ///< Normally checkout updates index entries as it goes; this stops that
-            NoRefresh,         ///< Don't refresh index/config/etc before doing checkout
-            SkipUnmerged,      ///< Allow checkout to skip unmerged files
-            UnmergedUseOurs,   ///< For unmerged files, checkout stage 2 from index
-            UnmergedUseTheirs  ///< For unmerged files, checkout stage 3 from index
+            AllowConflicts = 1u << 0,    ///< Allow checkout to make safe updates even if conflicts are found
+            RemoveUntracked = 1u << 1,   ///< Remove untracked files not in index (that are not ignored)
+            RemoveIgnored = 1u << 2,     ///< Remove ignored files not in index
+            UpdateOnly = 1u << 3,        ///< Only update existing files, don't create new ones
+            DontUpdateIndex = 1u << 4,   ///< Normally checkout updates index entries as it goes; this stops that
+            NoRefresh = 1u << 5,         ///< Don't refresh index/config/etc before doing checkout
+            SkipUnmerged = 1u << 6,      ///< Allow checkout to skip unmerged files
+            UnmergedUseOurs = 1u << 7,   ///< For unmerged files, checkout stage 2 from index
+            UnmergedUseTheirs = 1u << 8  ///< For unmerged files, checkout stage 3 from index
         };
         Q_DECLARE_FLAGS(Flags, Flag)
 
@@ -88,6 +88,8 @@ namespace LibQGit2
         QSharedPointer<Private> d_ptr;
         Q_DECLARE_PRIVATE()
     };
+
+    Q_DECLARE_OPERATORS_FOR_FLAGS(CheckoutOptions::Flags)
 
     /** @} */
 
