@@ -55,6 +55,10 @@ qint64 IndexEntry::fileSize() const
     return d->file_size;
 }
 
+int IndexEntry::stage() const {
+    return git_index_entry_stage(d);
+}
+
 const git_index_entry *IndexEntry::data() const
 {
     return d;

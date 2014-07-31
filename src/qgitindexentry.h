@@ -69,6 +69,15 @@ namespace LibQGit2
              */
             qint64 fileSize() const;
 
+            /**
+             * Get the stage of this index entry.
+             * See `git read-tree` documentation for the meaning of the different stages.
+             *
+             * @return The stage, from 0 to 3 inclusive.
+             * @see http://git-scm.com/docs/git-read-tree
+             */
+            int stage() const;
+
             const git_index_entry *data() const;
 
         private:
