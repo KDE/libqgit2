@@ -94,6 +94,11 @@ void Index::add(const IndexEntry &source_entry)
     qGitThrow(git_index_add(data(), source_entry.data()));
 }
 
+void Index::updateAll()
+{
+    qGitThrow(git_index_update_all(data(), NULL, NULL, NULL));
+}
+
 IndexEntry Index::getByIndex(int n) const
 {
     return IndexEntry(git_index_get_byindex(data(), n));

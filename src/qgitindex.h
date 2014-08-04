@@ -157,6 +157,12 @@ namespace LibQGit2
             void add(const IndexEntry& source_entry);
 
             /**
+             * Update all index entries to match the working directory.
+             * @throws LibQGit2::Exception
+             */
+            void updateAll();
+
+            /**
              * Get a pointer to one of the entries in the index
              *
              * This entry can be modified, and the changes will be written
