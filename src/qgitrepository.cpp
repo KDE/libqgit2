@@ -388,6 +388,13 @@ StatusList Repository::status(const StatusOptions &options) const
     return StatusList(status_list);
 }
 
+Repository::GraphRelationship Repository::commitRelationship(const Commit &local, const Commit &upstream) const
+{
+    GraphRelationship result;
+    qGitThrow(git_graph_ahead_behind(&result.ahead, &result.behind, SAFE_DATA, local.oid().constData(), upstream.oid().constData()));
+    return result;
+}
+
 Diff Repository::diffTrees(const Tree &oldTree, const Tree &newTree) const
 {
     git_diff *diff = NULL;

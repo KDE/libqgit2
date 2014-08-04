@@ -478,6 +478,32 @@ namespace LibQGit2
             StatusList status(const StatusOptions &options) const;
 
             /**
+             * How two nodes are related to each other in a graph.
+             */
+            struct GraphRelationship {
+                /** How many steps one node is ahead of another. */
+                size_t ahead;
+                /** How many steps one node is behind of another. */
+                size_t behind;
+            };
+
+            /**
+             * Solves how the \a local commit is situated in the commit tree in relation to the
+             * \a upstream commit. Both arguments can be any arbitrary commits in this repository
+             * but it's useful to think them as the local branch tip commit and its corresponding
+             * remote branch tip.
+             *
+             * @note The \a local commit can be both ahead of and behind from the \a upstream
+             * commit if the branches have diverged.
+             *
+             * @param local The local commit.
+             * @param upstream The upstream commit.
+             * @return The relationship between the commits.
+             * @throws LibQGit2::Exception
+             */
+            GraphRelationship commitRelationship(const Commit &local, const Commit &upstream) const;
+
+            /**
              * @brief Makes a Diff between two Trees.
              *
              * Either Tree argument can be a NULL Tree, but not both.
