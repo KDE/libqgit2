@@ -391,7 +391,11 @@ StatusList Repository::status(const StatusOptions &options) const
 Repository::GraphRelationship Repository::commitRelationship(const Commit &local, const Commit &upstream) const
 {
     GraphRelationship result;
-    qGitThrow(git_graph_ahead_behind(&result.ahead, &result.behind, SAFE_DATA, local.oid().constData(), upstream.oid().constData()));
+    // git_graph_ahead_behind() seems to have the ahead and behind arguments switched. This is the case at least on libgit2 0.21.0.
+#if LIBGIT2_VER_MAJOR > 0 || LIBGIT2_VER_MINOR > 21
+#error "Updating to a newer libgit2? Check if git_graph_ahead_behind() 'ahead' and 'behind' arguments should be swapped. https://github.com/libgit2/libgit2/issues/2501"
+#endif
+    qGitThrow(git_graph_ahead_behind(&result.behind, &result.ahead, SAFE_DATA, local.oid().constData(), upstream.oid().constData()));
     return result;
 }
 
