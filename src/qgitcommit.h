@@ -154,16 +154,16 @@ namespace LibQGit2
              * mean that the property in the Commit is not changed.
              *
              * @param tree The Tree to be used to amend the Commit.
-             * @param author Author signature.
-             * @param committer Committer signature.
-             * @param message The message for the amended Commit.
              * @param ref Name of the reference that will be updated to point to the amended Commit.
              *        See Repository::createCommit.
+             * @param message The message for the amended Commit.
+             * @param author Author signature.
+             * @param committer Committer signature.
              * @return The OId of the amended Commit.
              *
              * @see Repository::createCommit
              */
-            OId amend(const Tree& tree = Tree(), const Signature& author = Signature(), const Signature& committer = Signature(), const QString& message = QString(), const QString& ref = QString());
+            OId amend(const Tree& tree = Tree(), const QString& ref = QString(), const QString& message = QString(), const Signature& author = Signature(), const Signature& committer = Signature());
 
             git_commit* data() const;
             const git_commit* constData() const;

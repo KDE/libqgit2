@@ -105,7 +105,7 @@ OId Commit::parentId(unsigned n) const
     return OId(git_commit_parent_id(data(), n));
 }
 
-OId Commit::amend(const Tree& tree, const Signature& author, const Signature& committer, const QString& message, const QString& ref)
+OId Commit::amend(const Tree& tree, const QString& ref, const QString& message, const Signature& author, const Signature& committer)
 {
     OId oid;
     qGitThrow(git_commit_amend(oid.data(), constData(), ref.isEmpty() ? NULL : QFile::encodeName(ref).constData(), author.data(), committer.data(),
