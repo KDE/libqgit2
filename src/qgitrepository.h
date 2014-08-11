@@ -516,6 +516,15 @@ namespace LibQGit2
             Diff diffTrees(const Tree &oldTree, const Tree &newTree) const;
 
             /**
+             * Finds a merge base between two commits.
+             * @param one The first Commit.
+             * @param two The second Commit.
+             * @return The merge base Commit.
+             * @throws LibQGit2::Exception
+             */
+            Commit mergeBase(const Commit &one, const Commit &two) const;
+
+            /**
              * Merge two trees, producing an Index that reflects the result of the merge. The index
              * may be written as-is to the working directory or checked out. If the index is to be
              * converted to a tree, the caller should resolve any conflicts that arose as part of the merge.

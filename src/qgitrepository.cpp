@@ -406,6 +406,13 @@ Diff Repository::diffTrees(const Tree &oldTree, const Tree &newTree) const
     return Diff(diff);
 }
 
+Commit Repository::mergeBase(const Commit &one, const Commit &two) const
+{
+    OId out;
+    qGitThrow(git_merge_base(out.data(), SAFE_DATA, one.oid().constData(), two.oid().constData()));
+    return lookupCommit(out);
+}
+
 Index Repository::mergeTrees(const Tree &our, const Tree &their, const Tree &ancestor, const MergeOptions &opts)
 {
     AVOID(our.isNull() && their.isNull(), "needed at least either 'our' or 'their' tree to merge.")
