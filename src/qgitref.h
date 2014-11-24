@@ -113,21 +113,6 @@ namespace LibQGit2
             Reference resolve() const;
 
             /**
-             * Write a reference back to disk.
-             *
-             * The reference must have a valid name and a valid target
-             * (either direct or symbolic).
-             *
-             * If the reference has been loaded from disk and no changes
-             * have been made, no action will take place.
-             *
-             * The writing to disk is atomic.
-             *
-             * @return 0 on success; error code otherwise
-             */
-            int write();
-
-            /**
              * Get the repository where a reference resides
              *
              * @return a pointer to the repository
