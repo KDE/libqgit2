@@ -24,89 +24,67 @@
 namespace LibQGit2
 {
 
-SignatureBuilder::SignatureBuilder(const QString& name, const QString& email, QDateTime dateTime)
+class Signature::Private {
+    static void do_not_free(git_signature*) {}
+public:
+    Private(const git_signature *signature, bool own) :
+        signature(const_cast<git_signature*>(signature), own ? git_signature_free : do_not_free)
+    {
+    }
+
+    QSharedPointer<git_signature> signature;
+};
+
+Signature::Signature(const QString& name, const QString& email, QDateTime dateTime)
 {
-    qGitThrow(git_signature_new(&d, qPrintable(name), qPrintable(email), dateTime.toTime_t(), dateTime.utcOffset() / 60));
+    git_signature *sig = 0;
+    qGitThrow(git_signature_new(&sig, name.toUtf8(), email.toUtf8(), dateTime.toTime_t(), dateTime.utcOffset() / 60));
+    d_ptr = QSharedPointer<Private>(new Private(sig, true));
 }
 
-SignatureBuilder::SignatureBuilder(const QString& name, const QString& email)
+Signature::Signature(const QString& name, const QString& email)
 {
-    qGitThrow(git_signature_now(&d, qPrintable(name), qPrintable(email)));
+    git_signature *sig = 0;
+    qGitThrow(git_signature_now(&sig, name.toUtf8(), email.toUtf8()));
+    d_ptr = QSharedPointer<Private>(new Private(sig, true));
 }
 
-SignatureBuilder::SignatureBuilder(const SignatureBuilder& other)
-{
-    qGitThrow(git_signature_dup(&d, other.d));
-}
-
-SignatureBuilder::~SignatureBuilder()
-{
-    git_signature_free(d);
-}
-
-QString SignatureBuilder::name() const
-{
-    return QString::fromUtf8(d->name);
-}
-
-QString SignatureBuilder::email() const
-{
-    return QString::fromUtf8(d->email);
-}
-
-QDateTime SignatureBuilder::when() const
-{
-    QDateTime dt;
-    dt.setTime_t(d->when.time);
-    dt.setUtcOffset(d->when.offset * 60);
-    return dt;
-}
-
-const git_signature* SignatureBuilder::data() const
-{
-    return d;
-}
-
-Signature::Signature(const git_signature *signature)
-    : d(signature)
-{
-}
-
-Signature::Signature(const Signature& other)
-    : d(other.data())
-{
-}
-
-Signature::Signature(const SignatureBuilder& other)
-    : d(other.data())
-{
-}
-
-Signature::~Signature()
+Signature::Signature(const git_signature *signature) :
+    d_ptr(new Private(signature, false))
 {
 }
 
 QString Signature::name() const
 {
-    return QString::fromUtf8(d->name);
+    QString ret;
+    if (d_ptr->signature) {
+        ret = QString::fromUtf8(d_ptr->signature->name);
+    }
+    return ret;
 }
 
 QString Signature::email() const
 {
-    return QString::fromUtf8(d->email);
+    QString ret;
+    if (d_ptr->signature) {
+        ret = QString::fromUtf8(d_ptr->signature->email);
+    }
+    return ret;
 }
 
 QDateTime Signature::when() const
 {
     QDateTime dt;
-    dt.setTime_t(d->when.time);
-    dt.setUtcOffset(d->when.offset * 60);
+    if (d_ptr->signature) {
+        dt.setTime_t(d_ptr->signature->when.time);
+        dt.setUtcOffset(d_ptr->signature->when.offset * 60);
+    }
     return dt;
 }
 
 const git_signature *Signature::data() const
 {
-    return d;
+    return d_ptr->signature.data();
 }
 
 } // namespace LibQGit2
