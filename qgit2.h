@@ -25,6 +25,8 @@
 #define LIBQGIT2_VER_MINOR 21
 #define LIBQGIT2_VER_REVISION 0
 
+#define LIBQGIT2_SOVERSION 0
+
 #include "qgit2/qgitblob.h"
 #include "qgit2/qgitcheckoutoptions.h"
 #include "qgit2/qgitcherrypickoptions.h"
