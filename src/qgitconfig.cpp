@@ -25,7 +25,7 @@
 
 #include "qgitexception.h"
 #include "qgitrepository.h"
-#include "buffer.h"
+#include "private/buffer.h"
 
 namespace LibQGit2
 {

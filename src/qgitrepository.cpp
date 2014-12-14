@@ -36,7 +36,7 @@
 #include "qgitcredentials.h"
 #include "qgitpush.h"
 #include "qgitdiff.h"
-#include "buffer.h"
+#include "private/buffer.h"
 
 namespace {
     void do_not_free(git_repository*) {}
