@@ -16,7 +16,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-# CMake build script for the libgit2 project
+# CMake build script for the libqgit2 project
 #
 # Building (out of source build):
 # > mkdir build && cd build
@@ -71,17 +71,6 @@ SET(INSTALL_INC include CACHE PATH "Where to install headers to.")
 OPTION (BUILD_SHARED_LIBS "Build Shared Library (OFF for Static)" ON)
 OPTION (BUILD_TESTS "Build Tests" ON)
 
-#Project options, to provide a selective build process
-#Note that some of these are mutually exclusive or just
-#do not make a whole lot of sense combined.
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
-
-if(CMAKE_INSTALL_PREFIX STREQUAL "/usr")
-    option(INSTALL_CMAKE_FILES "Install the *.cmake files into the CMake root" ON)
-else()
-    option(INSTALL_CMAKE_FILES "Install the *.cmake files into the CMake root" OFF)
-endif()
-
 set(LIBQGIT2_BUILD_ALL TRUE
     CACHE INTERNAL "Build all of LIBQGIT2"
 )
@@ -130,7 +119,7 @@ if(NOT GIT2_FOUND)
     message(FATAL_ERROR "Exiting now")
 endif()
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src ${GIT2_INCLUDEDIR} ${Qt5Core_INCLUDES})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src ${GIT2_INCLUDEDIR})
 
 if(Qt5Core_FOUND)
     include_directories(${Qt5Core_INCLUDES})
@@ -150,9 +139,8 @@ endif()
 
 message(STATUS)
 message(STATUS "========== LIBQGIT2 Build Information ==========")
-message(STATUS "Build Version: ${LIBQGIT2_VERSION_STRING} (${LIBQGIT2_VERSION_NAME})")
+message(STATUS "Build Version: ${LIBQGIT2_VERSION_STRING}")
 message(STATUS "Install Prefix: ${CMAKE_INSTALL_PREFIX}")
-message(STATUS "Install the *.cmake files into CMake root (INSTALL_CMAKE_FILES): ${INSTALL_CMAKE_FILES}")
 message(STATUS)
 message(STATUS "To change any of these options, override them using -D{OPTION_NAME} on the commandline.")
 message(STATUS "To build and install LIBQGIT2, run \"make\" and \"make install\"")
@@ -179,22 +167,6 @@ INSTALL(TARGETS qgit2
 INSTALL(FILES ${QGIT2_HEADERS} DESTINATION ${INSTALL_INC}/qgit2 COMPONENT Devel)
 INSTALL(FILES qgit2.h DESTINATION ${INSTALL_INC} COMPONENT Devel)
 
-
-if(INSTALL_CMAKE_FILES)
-    install(
-        FILES
-        DESTINATION
-        ${CMAKE_ROOT}/Modules
-        OPTIONAL
-    )
-else()
-    install(
-        FILES
-        DESTINATION
-        ${SHARE_INSTALL_DIR}/mula/cmake
-        OPTIONAL
-    )
-endif()
 
 #Packaging options
 set(CPACK_GENERATOR "RPM;TGZ")
