@@ -130,8 +130,9 @@ else()
 endif()
 
 # Collect files
-FILE(GLOB SRC src/*.cpp)
+FILE(GLOB SRC src/*.cpp src/private/*.cpp)
 FILE(GLOB QGIT2_HEADERS src/*.h)
+FILE(GLOB QGIT2_PRIVATE_HEADERS src/private/*.h)
 
 # MOC
 if(Qt5Core_FOUND)
@@ -150,7 +151,7 @@ message(STATUS)
 
 # Compile and link libqgit2
 add_definitions(-DMAKE_LIBQGIT2_LIB)
-add_library(qgit2 ${SRC} ${MOC_SRC} ${QGIT2_HEADERS})
+add_library(qgit2 ${SRC} ${MOC_SRC} ${QGIT2_HEADERS} ${QGIT2_PRIVATE_HEADERS})
 TARGET_LINK_LIBRARIES(qgit2 ${GIT2_LIBRARIES} ${QT_QTCORE_LIBRARY})
 SET_TARGET_PROPERTIES(qgit2 PROPERTIES VERSION ${LIBQGIT2_VERSION_STRING})
 SET_TARGET_PROPERTIES(qgit2 PROPERTIES SOVERSION ${LIBQGIT2_SOVERSION})
