@@ -17,6 +17,7 @@
  */
 
 #include "qgitremote.h"
+#include "credentials_p.h"
 #include "qgitexception.h"
 
 #include "git2.h"
@@ -62,15 +63,15 @@ private:
     {
         int result = -1;
         if (data) {
-            const Credentials &credentials = static_cast<Private*>(data)->m_credentials;
-            result = credentials.create(cred, url, username_from_url, allowed_types);
+            Credentials &credentials = static_cast<Private*>(data)->m_credentials;
+            result = CredentialsPrivate::create(credentials, cred, url, username_from_url, allowed_types);
         }
 
         return result;
     }
 
     Remote &m_parent;
-    const Credentials m_credentials;
+    Credentials m_credentials;
     int m_transfer_progress;
 };
 

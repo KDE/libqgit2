@@ -28,6 +28,8 @@ struct git_cred;
 namespace LibQGit2
 {
 
+class CredentialsPrivate;
+
 /**
  * @brief Credentials are used to authenticate communication
  *
@@ -60,16 +62,11 @@ public:
      */
     static Credentials ssh(const QString &privateKeyPath, const QString &publicKeyPath = QString(), const QByteArray &userName = QByteArray(), const QByteArray &passphrase = QByteArray());
 
-    struct CredCreator;
 private:
-    friend class Remote;
+    QSharedPointer<CredentialsPrivate> d_ptr;
+    Q_DECLARE_PRIVATE(Credentials)
 
-    int create(git_cred **cred, const char *url, const char *username_from_url, unsigned int allowed_types) const;
-
-    unsigned int m_allowed_types;
-    QSharedPointer<CredCreator> m_cred_creator;
-
-    Credentials(unsigned int allowed_types, CredCreator *creator);
+    Credentials(CredentialsPrivate &p);
 };
 
 /** @} */

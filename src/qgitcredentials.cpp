@@ -17,6 +17,7 @@
  */
 
 #include "qgitcredentials.h"
+#include "credentials_p.h"
 
 #include <QtCore/QFile>
 
@@ -25,14 +26,34 @@
 namespace LibQGit2
 {
 
-struct Credentials::CredCreator {
-    virtual ~CredCreator() {}
+CredentialsPrivate::CredentialsPrivate(unsigned int allowedTypes) :
+    m_allowed_types(allowedTypes)
+{
+}
 
-    virtual int create(git_cred **cred, const char *url, const char *username_from_url) = 0;
-};
+CredentialsPrivate::~CredentialsPrivate() {}
 
-struct SSHKeyCreator : public Credentials::CredCreator {
-    SSHKeyCreator(const QString &privateKeyPath, const QString &publicKeyPath, const QByteArray &userName, const QByteArray &passphrase) :
+int CredentialsPrivate::create(git_cred**, const char*, const char*)
+{
+    return -1;
+}
+
+int CredentialsPrivate::create(Credentials &credentials, git_cred **cred, const char *url, const char *usernameFromUrl, unsigned int allowedTypes)
+{
+    CredentialsPrivate *d = credentials.d_func();
+
+    int result = -1;
+    if ((allowedTypes & d->m_allowed_types)) {
+        result = d->create(cred, url, usernameFromUrl);
+    }
+
+    return result;
+}
+
+
+struct SSHCredentialsPrivate : public CredentialsPrivate {
+    SSHCredentialsPrivate(const QString &privateKeyPath, const QString &publicKeyPath, const QByteArray &userName, const QByteArray &passphrase) :
+        CredentialsPrivate(GIT_CREDTYPE_SSH_KEY),
         m_private_key_path(QFile::encodeName(privateKeyPath)),
         m_public_key_path(QFile::encodeName(publicKeyPath)),
         m_user_name(userName),
@@ -40,7 +61,9 @@ struct SSHKeyCreator : public Credentials::CredCreator {
     {
     }
 
-    int create(git_cred **cred, const char *url, const char *username_from_url) {
+protected:
+    int create(git_cred **cred, const char*, const char*)
+    {
         return git_cred_ssh_key_new(cred, m_user_name.data(), m_public_key_path.data(), m_private_key_path.data(), m_passphrase.data());
     }
 
@@ -52,40 +75,24 @@ private:
 };
 
 
-
 Credentials::Credentials() :
-    m_allowed_types(0)
+    d_ptr(new CredentialsPrivate(0))
 {
 }
 
+Credentials::Credentials(CredentialsPrivate &p) :
+    d_ptr(&p)
+{
+}
 
 bool Credentials::isEmpty() const
 {
-    return m_cred_creator.isNull();
+    return d_ptr.isNull();
 }
-
-
-Credentials::Credentials(unsigned int allowed_types, CredCreator *creator) :
-    m_allowed_types(allowed_types),
-    m_cred_creator(creator)
-{
-}
-
 
 Credentials Credentials::ssh(const QString &privateKeyPath, const QString &publicKeyPath, const QByteArray &userName, const QByteArray &passphrase)
 {
-    return Credentials(GIT_CREDTYPE_SSH_KEY, new SSHKeyCreator(privateKeyPath, publicKeyPath, userName, passphrase));
-}
-
-
-int Credentials::create(git_cred **cred, const char *url, const char *username_from_url, unsigned int allowed_types) const
-{
-    int result = -1;
-    if ((allowed_types & m_allowed_types) && m_cred_creator) {
-        result = m_cred_creator->create(cred, url, username_from_url);
-    }
-
-    return result;
+    return Credentials(*new SSHCredentialsPrivate(privateKeyPath, publicKeyPath, userName, passphrase));
 }
 
 }
