@@ -130,9 +130,10 @@ else()
 endif()
 
 # Collect files
-FILE(GLOB SRC src/*.cpp src/private/*.cpp)
-FILE(GLOB QGIT2_HEADERS src/*.h)
-FILE(GLOB QGIT2_PRIVATE_HEADERS src/private/*.h)
+FILE(GLOB_RECURSE SRC src/*.cpp)
+FILE(GLOB QGIT2_HEADERS src/qgit*.h src/libqgit2_config.h)
+FILE(GLOB_RECURSE QGIT2_PRIVATE_HEADERS src/*.h)
+LIST(REMOVE_ITEM QGIT2_PRIVATE_HEADERS ${QGIT2_HEADERS})
 
 # MOC
 if(Qt5Core_FOUND)
