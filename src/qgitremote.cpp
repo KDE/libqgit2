@@ -17,61 +17,38 @@
  */
 
 #include "qgitremote.h"
-#include "credentials_p.h"
 #include "qgitexception.h"
+#include "private/remotecallbacks.h"
 
 #include "git2.h"
 
 namespace LibQGit2 {
 
-struct Remote::Private
+struct Remote::Private : public internal::RemoteListener
 {
     Private(Remote &parent, git_remote *remote, const Credentials &credentials) :
         m_data(remote, git_remote_free),
         m_parent(parent),
-        m_credentials(credentials),
+        m_callbacks(remote, this, credentials),
         m_transfer_progress(0)
     {
-        git_remote_callbacks remoteCallbacks = GIT_REMOTE_CALLBACKS_INIT;
-        remoteCallbacks.payload = (void*)this;
-        remoteCallbacks.transfer_progress = &transferProgressCallback;
-        if (!m_credentials.isEmpty()) {
-            remoteCallbacks.credentials = &acquireCredentialsCallback;
+    }
+
+    int progress(const git_transfer_progress &stats)
+    {
+        int percent = (int)(0.5 + 100.0 * ((double)stats.received_objects) / ((double)stats.total_objects));
+        if (percent != m_transfer_progress) {
+            emit m_parent.transferProgress(percent);
+            m_transfer_progress = percent;
         }
-        qGitThrow(git_remote_set_callbacks(m_data.data(), &remoteCallbacks));
+        return 0;
     }
 
     QSharedPointer<git_remote> m_data;
 
 private:
-    static int transferProgressCallback(const git_transfer_progress* stats, void* data)
-    {
-        if (!data) {
-            return 1;
-        }
-
-        Private &payload = *static_cast<Private*>(data);
-        int percent = (int)(0.5 + 100.0 * ((double)stats->received_objects) / ((double)stats->total_objects));
-        if (percent != payload.m_transfer_progress) {
-            emit payload.m_parent.transferProgress(percent);
-            payload.m_transfer_progress = percent;
-        }
-        return 0;
-    }
-
-    static int acquireCredentialsCallback(git_cred **cred, const char *url, const char *username_from_url, unsigned int allowed_types, void *data)
-    {
-        int result = -1;
-        if (data) {
-            Credentials &credentials = static_cast<Private*>(data)->m_credentials;
-            result = CredentialsPrivate::create(credentials, cred, url, username_from_url, allowed_types);
-        }
-
-        return result;
-    }
-
     Remote &m_parent;
-    Credentials m_credentials;
+    internal::RemoteCallbacks m_callbacks;
     int m_transfer_progress;
 };
 
@@ -82,12 +59,10 @@ Remote::Remote(git_remote *remote, const Credentials &credentials, QObject *pare
 {
 }
 
-
 QString Remote::url() const
 {
     return QString::fromLatin1(git_remote_url(data()));
 }
-
 
 git_remote* Remote::data() const
 {
