@@ -23,6 +23,7 @@
 
 #include <QtCore/QString>
 #include <QtCore/QDateTime>
+#include <QtCore/QSharedPointer>
 
 #include "git2.h"
 
