@@ -18,13 +18,14 @@
  */
 
 #include "qgitstatusoptions.h"
+#include <cstring>
 
 namespace LibQGit2
 {
 
 StatusOptions::StatusOptions(ShowType aShowType, StatusFlags aStatusFlags)
 {
-    memset((void*)&d, 0, sizeof(git_status_options));
+    std::memset((void*)&d, 0, sizeof(git_status_options));
     d.version = GIT_STATUS_OPTIONS_VERSION;
     setShowType(aShowType);
     setStatusFlags(aStatusFlags);

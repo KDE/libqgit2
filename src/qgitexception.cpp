@@ -21,6 +21,7 @@
 #include "git2.h"
 
 #include "qgitexception.h"
+#include <QtCore/QString>
 
 namespace LibQGit2
 {

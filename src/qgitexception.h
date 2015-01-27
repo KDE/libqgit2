@@ -23,6 +23,7 @@
 
 #include <exception>
 #include "libqgit2_config.h"
+#include <QtCore/QByteArray>
 
 namespace LibQGit2
 {

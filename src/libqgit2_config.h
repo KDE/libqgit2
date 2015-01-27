@@ -20,7 +20,7 @@
 #ifndef LIBQGIT2_LIB_CONFIG_H
 #define LIBQGIT2_LIB_CONFIG_H
 
-#include <QtCore/QObject>
+#include <QtCore/QtGlobal>
 
 /** @defgroup LibQGit2 The Qt Library for Git revision control featuring libgit2
  * Qt wrapper classes for the LibGit2 library.
