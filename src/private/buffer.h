@@ -16,8 +16,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef BUFFER_H
-#define BUFFER_H
+#ifndef LIBQGIT2_BUFFER_H
+#define LIBQGIT2_BUFFER_H
 
 #include "git2.h"
 
@@ -43,4 +43,4 @@ private:
 }
 }
 
-#endif // BUFFER_H
+#endif // LIBQGIT2_BUFFER_H

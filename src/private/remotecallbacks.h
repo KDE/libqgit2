@@ -16,8 +16,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef REMOTECALLBACKS_H
-#define REMOTECALLBACKS_H
+#ifndef LIBQGIT2_REMOTECALLBACKS_H
+#define LIBQGIT2_REMOTECALLBACKS_H
 
 #include "qgitcredentials.h"
 #include "git2.h"
@@ -58,4 +58,4 @@ private:
 }
 }
 
-#endif // REMOTECALLBACKS_H
+#endif // LIBQGIT2_REMOTECALLBACKS_H
