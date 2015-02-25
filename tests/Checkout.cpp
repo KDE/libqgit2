@@ -39,6 +39,7 @@ private slots:
     void checkoutRemoteKde();
     void checkoutCommitAsTree();
     void checkoutHead();
+    void checkoutPaths();
 
 private:
     void fetch(const QString& branch, const QString& repoPath, const QString& remote);
@@ -125,6 +126,30 @@ void TestCheckout::checkoutHead()
     }
 
     QVERIFY(QFile::exists(fileName));
+}
+
+void TestCheckout::checkoutPaths()
+{
+    const QStringList paths("CMakeLists.txt");
+    Repository repo;
+    try {
+        repo.clone(FileRepositoryUrl, testdir);
+        OId id = OId::stringToOid("7752cf5867");  // 7752cf5867 is a commit where many files were modified
+        CheckoutOptions opts(CheckoutOptions::SafeCreate);
+        opts.setPaths(paths);
+        repo.checkoutTree(repo.lookupCommit(id), opts);
+    } catch (const Exception& ex) {
+        QFAIL(ex.what());
+    }
+
+    StatusList status = repo.status(StatusOptions(StatusOptions::ShowOnlyIndex, StatusOptions::ExcludeSubmodules));
+    QStringList checkedoutPaths;
+    for (size_t i = 0; i < status.entryCount(); ++i) {
+        const StatusEntry entry = status.entryByIndex(i);
+        checkedoutPaths << entry.headToIndex().newFile().path();
+    }
+
+    QCOMPARE(checkedoutPaths, paths);
 }
 
 

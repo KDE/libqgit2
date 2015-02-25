@@ -17,6 +17,7 @@
  */
 
 #include "qgitcheckoutoptions.h"
+#include "private/strarray.h"
 
 #include <QFile>
 
@@ -74,10 +75,6 @@ public:
         }
     }
 
-    ~Private() {
-        free(native.paths.strings);
-    }
-
     void setTargetDirectory(const QString &dir)
     {
         m_target_directory = QFile::encodeName(dir);
@@ -86,28 +83,19 @@ public:
 
     void setPaths(const QList<QString> &paths)
     {
-        const size_t newCount = paths.size();
-        if (newCount == 0) {
-            free(native.paths.strings);
-            native.paths.strings = NULL;
-        } else if (newCount > native.paths.count) {
-            native.paths.strings = (char**)realloc(native.paths.strings, newCount * sizeof(char*));
-        }
-        native.paths.count = newCount;
-
-        m_paths.clear();
+        QList<QByteArray> pathByteArrays;
+        pathByteArrays.reserve(paths.size());
         foreach (const QString &path, paths) {
-            m_paths.append(QFile::encodeName(path));
+            pathByteArrays.append(QFile::encodeName(path));
         }
+        m_paths.set(pathByteArrays);
 
-        for (size_t i = 0; i < newCount; ++i) {
-            native.paths.strings[i] = m_paths[i].data();
-        }
+        native.paths = m_paths.data();
     }
 
     git_checkout_options native;
     QByteArray m_target_directory;
-    QList<QByteArray> m_paths;
+    internal::StrArray m_paths;
 };
 
 
