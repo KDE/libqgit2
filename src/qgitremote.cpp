@@ -19,6 +19,7 @@
 #include "qgitremote.h"
 #include "qgitexception.h"
 #include "private/remotecallbacks.h"
+#include "private/strarray.h"
 
 #include "git2.h"
 
@@ -29,18 +30,13 @@ struct Remote::Private : public internal::RemoteListener
     Private(Remote &parent, git_remote *remote, const Credentials &credentials) :
         m_data(remote, git_remote_free),
         m_parent(parent),
-        m_callbacks(remote, this, credentials),
-        m_transfer_progress(0)
+        m_callbacks(remote, this, credentials)
     {
     }
 
-    int progress(const git_transfer_progress &stats)
+    int progress(int transferProgress)
     {
-        int percent = (int)(0.5 + 100.0 * ((double)stats.received_objects) / ((double)stats.total_objects));
-        if (percent != m_transfer_progress) {
-            emit m_parent.transferProgress(percent);
-            m_transfer_progress = percent;
-        }
+        emit m_parent.transferProgress(transferProgress);
         return 0;
     }
 
@@ -49,7 +45,6 @@ struct Remote::Private : public internal::RemoteListener
 private:
     Remote &m_parent;
     internal::RemoteCallbacks m_callbacks;
-    int m_transfer_progress;
 };
 
 
@@ -62,6 +57,18 @@ Remote::Remote(git_remote *remote, const Credentials &credentials, QObject *pare
 QString Remote::url() const
 {
     return QString::fromLatin1(git_remote_url(data()));
+}
+
+void Remote::push(const QList<QString> &refSpecs, const Signature &signature, const QString &message)
+{
+    QList<QByteArray> baRefSpecs;
+    foreach (const QString &ref, refSpecs) {
+        baRefSpecs.append(ref.toLatin1());
+    }
+    internal::StrArray refspecs(baRefSpecs);
+
+    git_push_options opts = GIT_PUSH_OPTIONS_INIT;
+    qGitThrow(git_remote_push(data(), &refspecs.data(), &opts, signature.data(), message.isNull() ? NULL : message.toUtf8().constData()));
 }
 
 git_remote* Remote::data() const

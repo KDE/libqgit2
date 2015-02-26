@@ -52,7 +52,7 @@ namespace LibQGit2
          */
         void setMainline(unsigned int mainline);
 
-        const git_cherry_pick_options* data() const;
+        const git_cherrypick_options* data() const;
 
     private:
         class Private;

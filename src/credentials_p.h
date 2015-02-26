@@ -34,7 +34,7 @@ public:
     static int create(Credentials &credentials, git_cred **cred, const char *url, const char *usernameFromUrl, unsigned int allowedTypes);
 
 protected:
-    virtual int create(git_cred **cred, const char *url, const char *usernameFromUrl);
+    virtual int create(git_cred **cred, const char *url, const char *usernameFromUrl, unsigned int allowedTypes);
 
 private:
     unsigned int m_allowed_types;

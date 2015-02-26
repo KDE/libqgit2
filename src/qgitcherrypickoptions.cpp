@@ -26,14 +26,14 @@ class CherryPickOptions::Private
 public:
     Private(const MergeOptions &mergeOpts, const CheckoutOptions &checkoutOpts)
     {
-        git_cherry_pick_options temp = GIT_CHERRY_PICK_OPTIONS_INIT;
+        git_cherrypick_options temp = GIT_CHERRYPICK_OPTIONS_INIT;
         native = temp;
 
         native.merge_opts = *mergeOpts.data();
         native.checkout_opts = *checkoutOpts.data();
     }
 
-    git_cherry_pick_options native;
+    git_cherrypick_options native;
 };
 
 
@@ -48,7 +48,7 @@ void CherryPickOptions::setMainline(unsigned int mainline)
     d_ptr->native.mainline = mainline;
 }
 
-const git_cherry_pick_options* CherryPickOptions::data() const
+const git_cherrypick_options *CherryPickOptions::data() const
 {
     return &d_ptr->native;
 }

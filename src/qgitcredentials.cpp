@@ -33,7 +33,7 @@ CredentialsPrivate::CredentialsPrivate(unsigned int allowedTypes) :
 
 CredentialsPrivate::~CredentialsPrivate() {}
 
-int CredentialsPrivate::create(git_cred**, const char*, const char*)
+int CredentialsPrivate::create(git_cred**, const char*, const char*, unsigned int)
 {
     return -1;
 }
@@ -44,7 +44,7 @@ int CredentialsPrivate::create(Credentials &credentials, git_cred **cred, const 
 
     int result = -1;
     if ((allowedTypes & d->m_allowed_types)) {
-        result = d->create(cred, url, usernameFromUrl);
+        result = d->create(cred, url, usernameFromUrl, allowedTypes);
     }
 
     return result;
@@ -53,7 +53,7 @@ int CredentialsPrivate::create(Credentials &credentials, git_cred **cred, const 
 
 struct SSHCredentialsPrivate : public CredentialsPrivate {
     SSHCredentialsPrivate(const QString &privateKeyPath, const QString &publicKeyPath, const QByteArray &userName, const QByteArray &passphrase) :
-        CredentialsPrivate(GIT_CREDTYPE_SSH_KEY),
+        CredentialsPrivate(GIT_CREDTYPE_SSH_KEY | GIT_CREDTYPE_USERNAME),
         m_private_key_path(QFile::encodeName(privateKeyPath)),
         m_public_key_path(QFile::encodeName(publicKeyPath)),
         m_user_name(userName),
@@ -62,9 +62,17 @@ struct SSHCredentialsPrivate : public CredentialsPrivate {
     }
 
 protected:
-    int create(git_cred **cred, const char*, const char*)
+    int create(git_cred **cred, const char*, const char*, unsigned int allowedTypes)
     {
-        return git_cred_ssh_key_new(cred, m_user_name.data(), m_public_key_path.data(), m_private_key_path.data(), m_passphrase.data());
+        if (allowedTypes & GIT_CREDTYPE_USERNAME) {
+            return git_cred_username_new(cred, m_user_name.data());
+        }
+
+        if (allowedTypes & GIT_CREDTYPE_SSH_KEY) {
+            return git_cred_ssh_key_new(cred, m_user_name.data(), m_public_key_path.data(), m_private_key_path.data(), m_passphrase.data());
+        }
+
+        return -1;
     }
 
 private:

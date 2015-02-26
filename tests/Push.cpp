@@ -22,7 +22,7 @@
 
 #include "qgitrepository.h"
 #include "qgitconfig.h"
-#include "qgitpush.h"
+#include "qgitremote.h"
 
 using namespace LibQGit2;
 
@@ -78,9 +78,8 @@ void TestPush::pushToNewTargetBranch()
     Repository repo;
     try {
         repo.clone(existingBareRepo, repoPath);
-        Push push = repo.push("origin");
-        push.addRefSpec("refs/heads/master:refs/heads/" + targetBranch);
-        push.execute();
+        QScopedPointer<Remote> remote(repo.remote("origin"));
+        remote->push(QStringList("refs/heads/master:refs/heads/" + targetBranch));
     }
     catch (const LibQGit2::Exception& ex) {
         QFAIL(ex.what());

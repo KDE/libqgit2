@@ -35,7 +35,7 @@ public:
     /**
      * Return a value less than 0 for stopping the transfer.
      */
-    virtual int progress(const git_transfer_progress &stats) = 0;
+    virtual int progress(int transferProgress) = 0;
 };
 
 
@@ -47,12 +47,17 @@ public:
      */
 	RemoteCallbacks(git_remote *remote, RemoteListener *listener, const Credentials &credentials);
 
+    RemoteCallbacks(RemoteListener *listener, const Credentials &credentials);
+
+    git_remote_callbacks rawCallbacks() const;
+
 private:
     static int transferProgressCallback(const git_transfer_progress* stats, void* data);
     static int acquireCredentialsCallback(git_cred **cred, const char *url, const char *usernameFromUrl, unsigned int allowedTypes, void *data);
 
     RemoteListener *m_listener;
     Credentials m_credentials;
+    int m_transferProgress;
 };
 
 }

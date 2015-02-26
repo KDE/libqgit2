@@ -37,7 +37,7 @@ using namespace internal;
 bool initLibQGit2() {
     bool ret = false;
     if (LibInitialized.fetchAndAddRelaxed(Initialized) == Uninitialized) {
-        git_threads_init();
+        git_libgit2_init();
         ret = true;
     }
     return ret;
@@ -51,7 +51,7 @@ bool shutdownLibQGit2() {
     if (LibInitialized.load() > Uninitialized) {
 #endif
         if (LibInitialized.fetchAndAddRelaxed(-Initialized) == Initialized) {
-            git_threads_shutdown();
+            git_libgit2_shutdown();
             ret = true;
         }
     }

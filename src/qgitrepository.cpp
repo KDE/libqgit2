@@ -34,9 +34,10 @@
 #include "qgitstatus.h"
 #include "qgitremote.h"
 #include "qgitcredentials.h"
-#include "qgitpush.h"
 #include "qgitdiff.h"
 #include "private/buffer.h"
+#include "private/remotecallbacks.h"
+#include "private/strarray.h"
 
 namespace {
     void do_not_free(git_repository*) {}
@@ -62,7 +63,7 @@ public:
         d.clear();
         git_repository *repo = 0;
         qGitThrow(git_repository_init(&repo, QFile::encodeName(path), isBare));
-        d = ptr_type(repo, git_repository_free);
+        setData(repo);
     }
 
     void open(const QString& path)
@@ -70,6 +71,11 @@ public:
         d.clear();
         git_repository *repo = 0;
         qGitThrow(git_repository_open(&repo, QFile::encodeName(path)));
+        setData(repo);
+    }
+
+    void setData(git_repository *repo)
+    {
         d = ptr_type(repo, git_repository_free);
     }
 
@@ -337,7 +343,7 @@ void Repository::cherryPick(const Commit &commit, const CherryPickOptions &opts)
 {
     AVOID(commit.isNull(), "can not cherry-pick a null commit.")
 
-    qGitThrow(git_cherry_pick(SAFE_DATA, commit.data(), opts.data()));
+    qGitThrow(git_cherrypick(SAFE_DATA, commit.data(), opts.data()));
 }
 
 QStringList Repository::listTags(const QString& pattern) const
@@ -391,11 +397,7 @@ StatusList Repository::status(const StatusOptions &options) const
 Repository::GraphRelationship Repository::commitRelationship(const Commit &local, const Commit &upstream) const
 {
     GraphRelationship result;
-    // git_graph_ahead_behind() seems to have the ahead and behind arguments switched. This is the case at least on libgit2 0.21.0.
-#if LIBGIT2_VER_MAJOR > 0 || LIBGIT2_VER_MINOR > 21
-#error "Updating to a newer libgit2? Check if git_graph_ahead_behind() 'ahead' and 'behind' arguments should be swapped. https://github.com/libgit2/libgit2/issues/2501"
-#endif
-    qGitThrow(git_graph_ahead_behind(&result.behind, &result.ahead, SAFE_DATA, local.oid().constData(), upstream.oid().constData()));
+    qGitThrow(git_graph_ahead_behind(&result.ahead, &result.behind, SAFE_DATA, local.oid().constData(), upstream.oid().constData()));
     return result;
 }
 
@@ -439,28 +441,43 @@ void Repository::setRemoteCredentials(const QString& remoteName, Credentials cre
 }
 
 
+class RepositoryCloneRemoteListener : public internal::RemoteListener {
+    Repository &repo;
+public:
+    RepositoryCloneRemoteListener(Repository &repo) :
+        repo(repo)
+    {
+    }
+
+    int progress(int transferProgress)
+    {
+        emit repo.cloneProgress(transferProgress);
+        return 0;
+    }
+};
+
 void Repository::clone(const QString& url, const QString& path, const Signature &signature)
 {
-    init(path);
-
     const QString remoteName("origin");
-    remoteAdd(remoteName, url);
 
-    git_remote *_remote = NULL;
-    qGitThrow(git_remote_load(&_remote, SAFE_DATA, remoteName.toLatin1()));
-    Remote remote(_remote, d_ptr->m_remote_credentials.value(remoteName));
-    connect(&remote, SIGNAL(transferProgress(int)), SIGNAL(cloneProgress(int)));
+    RepositoryCloneRemoteListener remoteListener(*this);
+    internal::RemoteCallbacks remoteCallbacks(&remoteListener, d_ptr->m_remote_credentials.value(remoteName));
 
-    git_checkout_options checkoutOpts = GIT_CHECKOUT_OPTIONS_INIT;
-    checkoutOpts.checkout_strategy = GIT_CHECKOUT_SAFE_CREATE;
-    qGitEnsureValue(0, git_clone_into(SAFE_DATA, remote.data(), &checkoutOpts, NULL, signature.data()));
+    git_repository *repo = 0;
+    git_clone_options opts = GIT_CLONE_OPTIONS_INIT;
+    opts.remote_callbacks = remoteCallbacks.rawCallbacks();
+    opts.checkout_opts.checkout_strategy = GIT_CHECKOUT_SAFE_CREATE;
+    opts.signature = const_cast<git_signature*>(signature.data());
+    qGitEnsureValue(0, git_clone(&repo, url.toLatin1(), QFile::encodeName(path), &opts));
+
+    d_ptr->setData(repo);
 }
 
 
 void Repository::remoteAdd(const QString& name, const QString& url, bool changeUrlIfExists)
 {
     git_remote *r = NULL;
-    switch (git_remote_load(&r, SAFE_DATA, name.toLatin1())) {
+    switch (git_remote_lookup(&r, SAFE_DATA, name.toLatin1())) {
     case GIT_ENOTFOUND:
         r = NULL;
         qGitThrow(git_remote_create(&r, SAFE_DATA, name.toLatin1(), url.toLatin1()));
@@ -487,7 +504,7 @@ void Repository::remoteAdd(const QString& name, const QString& url, bool changeU
 Remote* Repository::remote(const QString &remoteName, QObject *parent) const
 {
     git_remote *r = NULL;
-    qGitThrow(git_remote_load(&r, SAFE_DATA, remoteName.toLatin1()));
+    qGitThrow(git_remote_lookup(&r, SAFE_DATA, remoteName.toLatin1()));
     return new Remote(r, d_ptr->m_remote_credentials.value(remoteName), parent);
 }
 
@@ -495,31 +512,23 @@ Remote* Repository::remote(const QString &remoteName, QObject *parent) const
 void Repository::fetch(const QString& name, const QString& head, const Signature &signature, const QString &message)
 {
     git_remote *_remote = NULL;
-    qGitThrow(git_remote_load(&_remote, SAFE_DATA, name.toLatin1()));
+    qGitThrow(git_remote_lookup(&_remote, SAFE_DATA, name.toLatin1()));
     Remote remote(_remote, d_ptr->m_remote_credentials.value(name));
 
-    const QString usedhead = head.isEmpty() ? "*" : head;
-    const QString refspec = QString("refs/heads/%2:refs/remotes/%1/%2").arg(name).arg(usedhead);
+    internal::StrArray refs;
+    if (!head.isEmpty()) {
+        const QString refspec = QString("refs/heads/%2:refs/remotes/%1/%2").arg(name).arg(head);
+        refs.set(QList<QByteArray>() << refspec.toLatin1());
+    }
 
-    git_strarray refs;
-    const QByteArray hbytes = refspec.toLatin1();
-    const char* strings[1];
-    strings[0] = hbytes.constData();
-    refs.count = 1;
-    refs.strings = const_cast<char**>(strings);
-    qGitThrow(git_remote_set_fetch_refspecs(remote.data(), &refs));
-
-    qGitThrow(git_remote_connect(remote.data(), GIT_DIRECTION_FETCH));
-    qGitEnsureValue(1, git_remote_connected(remote.data()));
-    qGitThrow(git_remote_download(remote.data()));
-    qGitThrow(git_remote_update_tips(remote.data(), signature.data(), message.isNull() ? NULL : message.toUtf8().constData()));
+    qGitThrow(git_remote_fetch(remote.data(), refs.count() > 0 ? &refs.data() : NULL, signature.data(), message.isNull() ? NULL : message.toUtf8().constData()));
 }
 
 
 QStringList Repository::remoteBranches(const QString& remoteName)
 {
     git_remote *_remote = NULL;
-    qGitThrow(git_remote_load(&_remote, SAFE_DATA, remoteName.toLatin1()));
+    qGitThrow(git_remote_lookup(&_remote, SAFE_DATA, remoteName.toLatin1()));
     Remote remote(_remote, d_ptr->m_remote_credentials.value(remoteName));
 
     qGitThrow(git_remote_connect(remote.data(), GIT_DIRECTION_FETCH));
@@ -565,11 +574,6 @@ void Repository::checkoutRemote(const QString& branch, const CheckoutOptions &op
 }
 
 
-Push Repository::push(const QString &remoteName)
-{
-    return Push(*remote(remoteName));
-}
-
 void Repository::reset(const Object &target, ResetType type, const Signature &signature, const QString &message)
 {
     AVOID(target.isNull(), "can not reset to null target");
@@ -589,7 +593,7 @@ void Repository::reset(const Object &target, ResetType type, const Signature &si
         THROW("invalid reset type argument");
     }
 
-    qGitThrow(git_reset(SAFE_DATA, target.data(), resetType, const_cast<git_signature*>(signature.data()), message.isNull() ? NULL : message.toUtf8().constData()));
+    qGitThrow(git_reset(SAFE_DATA, target.data(), resetType, NULL, const_cast<git_signature*>(signature.data()), message.isNull() ? NULL : message.toUtf8().constData()));
 }
 
 

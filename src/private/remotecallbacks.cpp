@@ -32,7 +32,21 @@ RemoteListener::~RemoteListener() {}
 
 RemoteCallbacks::RemoteCallbacks(git_remote *remote, RemoteListener *listener, const Credentials &credentials) :
     m_listener(listener),
-    m_credentials(credentials)
+    m_credentials(credentials),
+    m_transferProgress(-1)
+{
+    git_remote_callbacks remoteCallbacks = rawCallbacks();
+    qGitThrow(git_remote_set_callbacks(remote, &remoteCallbacks));
+}
+
+RemoteCallbacks::RemoteCallbacks(RemoteListener *listener, const Credentials &credentials) :
+    m_listener(listener),
+    m_credentials(credentials),
+    m_transferProgress(-1)
+{
+}
+
+git_remote_callbacks RemoteCallbacks::rawCallbacks() const
 {
     git_remote_callbacks remoteCallbacks = GIT_REMOTE_CALLBACKS_INIT;
     remoteCallbacks.payload = (void*)this;
@@ -41,11 +55,11 @@ RemoteCallbacks::RemoteCallbacks(git_remote *remote, RemoteListener *listener, c
         remoteCallbacks.transfer_progress = &transferProgressCallback;
     }
 
-    if (!credentials.isEmpty()) {
+    if (!m_credentials.isEmpty()) {
         remoteCallbacks.credentials = &acquireCredentialsCallback;
     }
 
-    qGitThrow(git_remote_set_callbacks(remote, &remoteCallbacks));
+    return remoteCallbacks;
 }
 
 int RemoteCallbacks::transferProgressCallback(const git_transfer_progress* stats, void* data)
@@ -53,7 +67,13 @@ int RemoteCallbacks::transferProgressCallback(const git_transfer_progress* stats
     int ret = 0;
 
     if (data && stats) {
-        ret = static_cast<RemoteCallbacks*>(data)->m_listener->progress(*stats);
+        RemoteCallbacks* cb = static_cast<RemoteCallbacks*>(data);
+
+        int percent = (int)(0.5 + 100.0 * ((double)stats->received_objects) / ((double)stats->total_objects));
+        if (percent != cb->m_transferProgress) {
+            cb->m_transferProgress = percent;
+            ret = cb->m_listener->progress(percent);
+        }
     }
 
     return ret;

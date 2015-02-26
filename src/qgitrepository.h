@@ -587,15 +587,16 @@ namespace LibQGit2
             /**
             * Fetch from known remote repository.
             *
-            * @param remote name of the remote repository (e.g. "origin")
-            * @param head name of head to fetch (e.g. "master"), default: "*" (all branches)
+            * @param remote Name of the remote repository (e.g. "origin")
+            * @param head Name of head to fetch (e.g. "master"). If left as the default
+            *        the fetch heads configured for the remote are used.
             * @param signature The identity to use when updating reflogs
             * @param message The message to insert into the reflogs. If left as the
             *        default (a null string), a message "fetch <name>" is used , where <name>
             *        is the name of the remote (or its url, for in-memory remotes).
             * @throws LibQGit2::Exception
             */
-            void fetch(const QString& remote, const QString& head = "", const Signature &signature = Signature(), const QString &message = QString());
+            void fetch(const QString& remote, const QString& head = QString(), const Signature &signature = Signature(), const QString &message = QString());
 
             QStringList remoteBranches(const QString& remoteName);
 
@@ -627,15 +628,6 @@ namespace LibQGit2
             * @throws LibQGit2::Exception
             */
             void checkoutRemote(const QString& branch, const CheckoutOptions &opts = CheckoutOptions(), const QString& remote = "origin", const Signature &signature = Signature(), const QString &message = QString());
-
-            /**
-			 * Gets a \c Push object for the named remote.
-			 *
-			 * @param remoteName the name of the remote to push to.
-			 * @return An object to be used for pushing to the named remote.
-			 * @throws LibQGit2::Exception
-             */
-            Push push(const QString &remoteName);
 
             /**
              * Types of reset operation.
