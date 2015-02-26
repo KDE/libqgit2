@@ -47,6 +47,11 @@ void StrArray::set(const QList<QByteArray> &list)
     updateNative();
 }
 
+size_t StrArray::count() const
+{
+    return m_data.count;
+}
+
 const git_strarray& StrArray::data() const
 {
     return m_data;

@@ -34,6 +34,8 @@ public:
 
     void set(const QList<QByteArray> &list);
 
+    size_t count() const;
+
     const git_strarray& data() const;
 
 private:
