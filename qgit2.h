@@ -20,12 +20,12 @@
 #ifndef INCLUDE_QGIT2_H
 #define INCLUDE_QGIT2_H
 
-#define LIBQGIT2_VERSION "0.21.0"
+#define LIBQGIT2_VERSION "0.22.0"
 #define LIBQGIT2_VER_MAJOR 0
-#define LIBQGIT2_VER_MINOR 21
+#define LIBQGIT2_VER_MINOR 22
 #define LIBQGIT2_VER_REVISION 0
 
-#define LIBQGIT2_SOVERSION 0
+#define LIBQGIT2_SOVERSION 1
 
 #include "qgit2/qgitblob.h"
 #include "qgit2/qgitcheckoutoptions.h"
