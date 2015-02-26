@@ -46,15 +46,25 @@ namespace {
 namespace LibQGit2
 {
 
-class Repository::Private
+
+class Repository::Private : public internal::RemoteListener
 {
 public:
     typedef QSharedPointer<git_repository> ptr_type;
     ptr_type d;
     QMap<QString, Credentials> m_remote_credentials;
+    Repository &m_owner;
 
-    Private(git_repository *repository, bool own) :
-        d(repository, own ? git_repository_free : do_not_free)
+    Private(git_repository *repository, bool own, Repository &owner) :
+        d(repository, own ? git_repository_free : do_not_free),
+        m_owner(owner)
+    {
+    }
+
+    Private(const Private &other, Repository &owner) :
+        d(other.d),
+        m_remote_credentials(other.m_remote_credentials),
+        m_owner(owner)
     {
     }
 
@@ -85,6 +95,12 @@ public:
         }
         return d.data();
     }
+
+    int progress(int transferProgress)
+    {
+        emit m_owner.cloneProgress(transferProgress);
+        return 0;
+    }
 };
 
 
@@ -98,12 +114,12 @@ public:
 
 
 Repository::Repository(git_repository *repository, bool own)
-    : d_ptr(new Private(repository, own))
+    : d_ptr(new Private(repository, own, *this))
 {
 }
 
 Repository::Repository(const Repository& other)
-    : d_ptr(other.d_ptr)
+    : d_ptr(new Private(*other.d_ptr, *this))
 {
 }
 
@@ -441,27 +457,10 @@ void Repository::setRemoteCredentials(const QString& remoteName, Credentials cre
 }
 
 
-class RepositoryCloneRemoteListener : public internal::RemoteListener {
-    Repository &repo;
-public:
-    RepositoryCloneRemoteListener(Repository &repo) :
-        repo(repo)
-    {
-    }
-
-    int progress(int transferProgress)
-    {
-        emit repo.cloneProgress(transferProgress);
-        return 0;
-    }
-};
-
 void Repository::clone(const QString& url, const QString& path, const Signature &signature)
 {
     const QString remoteName("origin");
-
-    RepositoryCloneRemoteListener remoteListener(*this);
-    internal::RemoteCallbacks remoteCallbacks(&remoteListener, d_ptr->m_remote_credentials.value(remoteName));
+    internal::RemoteCallbacks remoteCallbacks(d_ptr.data(), d_ptr->m_remote_credentials.value(remoteName));
 
     git_repository *repo = 0;
     git_clone_options opts = GIT_CLONE_OPTIONS_INIT;

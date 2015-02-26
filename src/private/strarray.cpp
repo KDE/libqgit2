@@ -17,6 +17,7 @@
  */
 
 #include "strarray.h"
+#include <QtCore/QByteArray>
 
 namespace LibQGit2 {
 namespace internal {
