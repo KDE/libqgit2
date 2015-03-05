@@ -32,6 +32,8 @@
 cmake_minimum_required(VERSION 2.8)
 project(libqgit2)
 
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}")
+
 set(EXECUTABLE_OUTPUT_PATH  ${CMAKE_BINARY_DIR}/bin)
 set(RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 if(WIN32) # Dll's into bin
@@ -104,15 +106,14 @@ if(USE_LOCAL_LIBGIT2)
         set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /wd4150")
     endif()
     add_subdirectory(libgit2)
-    set(GIT2_INCLUDEDIR ${CMAKE_CURRENT_SOURCE_DIR}/libgit2/include)
-    set(GIT2_LIBRARIES git2)
-    set(GIT2_FOUND 1)
+    set(LIBGIT2_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libgit2/include)
+    set(LIBGIT2_LIBRARIES git2)
+    set(LIBGIT2_FOUND 1)
 else()
-    find_package(PkgConfig REQUIRED)
-    pkg_check_modules(GIT2 REQUIRED libgit2)
+    find_package(Libgit2 REQUIRED)
 endif()
 
-if(NOT GIT2_FOUND)
+if(NOT LIBGIT2_FOUND)
     message(STATUS)
     message(STATUS "Error: No libgit2 found on your system.")
     message(STATUS "       Define -DUSE_LOCAL_LIBGIT2=1 to embed libgit2 into qgit2")
@@ -121,7 +122,7 @@ if(NOT GIT2_FOUND)
     message(FATAL_ERROR "Exiting now")
 endif()
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src ${GIT2_INCLUDEDIR})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src ${LIBGIT2_INCLUDE_DIR})
 
 if(Qt5Core_FOUND)
     include_directories(${Qt5Core_INCLUDES})
@@ -153,7 +154,7 @@ message(STATUS)
 # Compile and link libqgit2
 add_definitions(-DMAKE_LIBQGIT2_LIB)
 add_library(qgit2 ${SRC} ${MOC_SRC} ${QGIT2_HEADERS} ${QGIT2_PRIVATE_HEADERS})
-TARGET_LINK_LIBRARIES(qgit2 ${GIT2_LIBRARIES} ${QT_QTCORE_LIBRARY})
+TARGET_LINK_LIBRARIES(qgit2 ${LIBGIT2_LIBRARIES} ${QT_QTCORE_LIBRARY})
 SET_TARGET_PROPERTIES(qgit2 PROPERTIES VERSION ${LIBQGIT2_VERSION_STRING})
 SET_TARGET_PROPERTIES(qgit2 PROPERTIES SOVERSION ${LIBQGIT2_SOVERSION})
 
