@@ -17,6 +17,7 @@
  */
 
 #include "qgitcheckoutoptions.h"
+#include "private/pathcodec.h"
 #include "private/strarray.h"
 
 #include <QFile>
@@ -77,7 +78,7 @@ public:
 
     void setTargetDirectory(const QString &dir)
     {
-        m_target_directory = QFile::encodeName(dir);
+        m_target_directory = PathCodec::toLibGit2(dir);
         native.target_directory = m_target_directory.constData();
     }
 
@@ -86,7 +87,7 @@ public:
         QList<QByteArray> pathByteArrays;
         pathByteArrays.reserve(paths.size());
         foreach (const QString &path, paths) {
-            pathByteArrays.append(QFile::encodeName(path));
+            pathByteArrays.append(PathCodec::toLibGit2(path));
         }
         m_paths.set(pathByteArrays);
 

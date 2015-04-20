@@ -16,21 +16,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "qgitdifffile.h"
+#ifndef LIBQGIT2_PATHCODEC_H
+#define LIBQGIT2_PATHCODEC_H
 
-#include "private/pathcodec.h"
+#include <QByteArray>
+#include <QString>
 
-#include <QtCore/QFile>
-
-namespace LibQGit2 {
-
-DiffFile::DiffFile(const git_diff_file *diff) : m_diff_file(diff)
+class PathCodec
 {
-}
+public:
+    static QByteArray toLibGit2(const QString &path);
+    static QString fromLibGit2(const QByteArray &path);
+    static QString fromLibGit2(const char *path);
+};
 
-QString DiffFile::path() const
-{
-    return PathCodec::fromLibGit2(m_diff_file != NULL ? m_diff_file->path : "");
-}
-
-}
+#endif // LIBQGIT2_PATHCODEC_H

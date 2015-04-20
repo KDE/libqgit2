@@ -18,6 +18,8 @@
 
 #include "buffer.h"
 
+#include "private/pathcodec.h"
+
 #include <QFile>
 
 namespace LibQGit2 {
@@ -36,7 +38,7 @@ Buffer::~Buffer()
 
 QString Buffer::asPath() const
 {
-    return QFile::decodeName(d.ptr);
+    return PathCodec::fromLibGit2(d.ptr);
 }
 
 git_buf* Buffer::data()

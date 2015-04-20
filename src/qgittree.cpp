@@ -24,6 +24,8 @@
 #include "qgitrepository.h"
 #include "qgitoid.h"
 
+#include "private/pathcodec.h"
+
 #include <QtCore/QFile>
 
 namespace LibQGit2
@@ -55,7 +57,7 @@ size_t Tree::entryCount()
 
 TreeEntry Tree::entryByName(const QString& fileName) const
 {
-    return TreeEntry(git_tree_entry_byname(constData(), QFile::encodeName(fileName)));
+    return TreeEntry(git_tree_entry_byname(constData(), PathCodec::toLibGit2(fileName)));
 }
 
 TreeEntry Tree::entryByIndex(int idx) const

@@ -25,6 +25,7 @@
 #include "qgitoid.h"
 #include "qgitrepository.h"
 #include "qgitexception.h"
+#include "private/pathcodec.h"
 
 namespace LibQGit2
 {
@@ -83,7 +84,7 @@ Repository Reference::owner() const
 void Reference::setSymbolicTarget(const QString& target, const Signature &signature, const QString &message)
 {
     git_reference* rp;
-    qGitThrow(git_reference_symbolic_set_target(&rp, data(), QFile::encodeName(target), signature.data(), message.toUtf8()));
+    qGitThrow(git_reference_symbolic_set_target(&rp, data(), PathCodec::toLibGit2(target), signature.data(), message.toUtf8()));
     d = ptr_type(rp, git_reference_free);
 }
 

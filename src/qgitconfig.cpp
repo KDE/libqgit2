@@ -26,6 +26,7 @@
 #include "qgitexception.h"
 #include "qgitrepository.h"
 #include "private/buffer.h"
+#include "private/pathcodec.h"
 
 namespace LibQGit2
 {
@@ -76,7 +77,7 @@ QString Config::findSystem()
 
 bool Config::append(const QString &path, git_config_level_t level, int force)
 {
-    return GIT_OK == git_config_add_file_ondisk(d, QFile::encodeName(path).constData(), level, force);
+    return GIT_OK == git_config_add_file_ondisk(d, PathCodec::toLibGit2(path).constData(), level, force);
 }
 
 QVariant Config::value(const QString &key, const QVariant &defaultValue) const
