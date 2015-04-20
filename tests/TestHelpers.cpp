@@ -2,6 +2,7 @@
 
 #include <QDir>
 
+#include "qgitglobal.h"
 #include "qgitrepository.h"
 
 using namespace LibQGit2;
@@ -82,6 +83,18 @@ bool libgit2HasSSH() {
 void TestBase::init() {
     testdir = VALUE_TO_QSTR(TEST_DIR) + "/" + QFileInfo(QTest::currentAppName()).fileName() + "/" + QTest::currentTestFunction();
     QVERIFY(removeDir(testdir));
+}
+
+void TestBase::cleanup() {
+
+}
+
+void TestBase::initTestCase() {
+    initLibQGit2();
+}
+
+void TestBase::cleanupTestCase() {
+    shutdownLibQGit2();
 }
 
 void TestBase::initTestRepo()
