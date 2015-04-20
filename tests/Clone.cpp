@@ -27,15 +27,16 @@
 #include <iostream>
 #include <bitset>
 
-#include "qgitglobal.h"
 #include "qgitcommit.h"
 #include "qgitrepository.h"
 #include "qgitcredentials.h"
 
+#include "TestHelpers.h"
+
 using namespace LibQGit2;
 
 
-class TestClone : public QObject
+class TestClone : public TestBase
 {
     Q_OBJECT
 
@@ -52,9 +53,6 @@ public slots:
     }
 
 private slots:
-    void initTestCase();
-    void cleanupTestCase();
-
     void fileProtocol();
     void gitProtocol();
     void httpProtocol();
@@ -72,16 +70,6 @@ private:
 
 TestClone::TestClone() : testdir(VALUE_TO_STR(TEST_DIR))
 {
-}
-
-void TestClone::initTestCase()
-{
-    initLibQGit2();
-}
-
-void TestClone::cleanupTestCase()
-{
-    shutdownLibQGit2();
 }
 
 void TestClone::clone(const QString& url, const Credentials &credentials)

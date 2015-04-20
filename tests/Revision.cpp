@@ -4,6 +4,7 @@
 #include "TestHelpers.h"
 
 #include <QCoreApplication>
+#include <QPointer>
 #include <QTimer>
 #include <iostream>
 
@@ -17,54 +18,47 @@
 using namespace LibQGit2;
 
 
-class TestRevision : public QObject
+class TestRevision : public TestBase
 {
     Q_OBJECT
 
-public:
-    TestRevision();
-    ~TestRevision();
-
 private slots:
+    void init();
+    void cleanup();
 
-    void initTestCase() {}
-
-    void create();
-    void open();
     void revwalk();
 
 private:
-    LibQGit2::Repository *repo;
+    QPointer<Repository> repo;
 };
 
-
-
-TestRevision::TestRevision() : repo(0)
+void TestRevision::init()
 {
-}
+    TestBase::init();
 
-
-void TestRevision::create()
-{
     QVERIFY(!repo);
 
     // Create a new repository object
-    repo = new LibQGit2::Repository();
+    repo = new Repository();
 
     QVERIFY(repo);
-}
 
-
-void TestRevision::open()
-{
     try {
         // Open a local fixed path
         repo->open(ExistingRepository);
-    } catch (const LibQGit2::Exception& ex) {
+    } catch (const Exception& ex) {
         QFAIL(ex.what());
     }
 }
 
+void TestRevision::cleanup()
+{
+    QVERIFY(repo);
+    delete repo;
+    QVERIFY(!repo);
+
+    TestBase::cleanup();
+}
 
 void TestRevision::revwalk()
 {
@@ -82,17 +76,10 @@ void TestRevision::revwalk()
             std::cout << qb.data() << std::endl;
         }
 
-    } catch (const LibQGit2::Exception& ex) {
+    } catch (const Exception& ex) {
         QFAIL(ex.what());
     }
 }
-
-
-TestRevision::~TestRevision()
-{
-    delete repo;
-}
-
 
 QTEST_MAIN(TestRevision);
 
