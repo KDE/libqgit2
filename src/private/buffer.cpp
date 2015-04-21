@@ -20,8 +20,6 @@
 
 #include "private/pathcodec.h"
 
-#include <QFile>
-
 namespace LibQGit2 {
 namespace internal {
 

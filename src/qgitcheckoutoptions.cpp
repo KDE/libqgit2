@@ -20,8 +20,6 @@
 #include "private/pathcodec.h"
 #include "private/strarray.h"
 
-#include <QFile>
-
 namespace LibQGit2
 {
 

@@ -19,11 +19,8 @@
  */
 
 #include <QtCore/QDir>
-#include <QtCore/QFile>
 #include <QtCore/QFileInfo>
 #include <QtCore/QVector>
-#include <QtCore/QStringList>
-#include <QtCore/QDebug>
 
 #include "qgitrepository.h"
 #include "qgitconfig.h"

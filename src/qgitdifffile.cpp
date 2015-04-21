@@ -20,8 +20,6 @@
 
 #include "private/pathcodec.h"
 
-#include <QtCore/QFile>
-
 namespace LibQGit2 {
 
 DiffFile::DiffFile(const git_diff_file *diff) : m_diff_file(diff)

@@ -20,9 +20,6 @@
 
 #include "qgitconfig.h"
 
-#include <QtCore/QDir>
-#include <QtCore/QFile>
-
 #include "qgitexception.h"
 #include "qgitrepository.h"
 #include "private/buffer.h"

@@ -21,8 +21,6 @@
 
 #include "private/pathcodec.h"
 
-#include <QtCore/QFile>
-
 #include "git2.h"
 
 namespace LibQGit2

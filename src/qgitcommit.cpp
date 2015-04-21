@@ -27,8 +27,6 @@
 
 #include "private/pathcodec.h"
 
-#include <QFile>
-
 namespace LibQGit2
 {
 
