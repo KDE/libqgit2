@@ -1,5 +1,4 @@
-v0.22.0
------
+## v0.22.0
 
 * libgit2 types revealed through the libqgit2 API renamed as needed.
 * Removed the Push object and Repository::push() method. They got
@@ -8,9 +7,10 @@ v0.22.0
   refspecs are given: previously all branches were fetched. Now the
   fetch refspecs configured for the remote are used.
 
-v0.22.1
+## v0.22.1
 
 * Added CMake code to find libgit2 as required by KDE CI system
 
+## v0.22.2
 
-
+* Handle paths with non-ASCII characters correctly on Windows

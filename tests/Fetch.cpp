@@ -34,7 +34,7 @@
 using namespace LibQGit2;
 
 
-class TestFetch : public QObject
+class TestFetch : public TestBase
 {
     Q_OBJECT
 

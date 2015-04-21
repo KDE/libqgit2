@@ -22,7 +22,7 @@
 #include "qgitrepository.h"
 #include "qgitexception.h"
 
-#include <QtCore/QFile>
+#include "private/pathcodec.h"
 
 namespace LibQGit2
 {
@@ -53,7 +53,7 @@ unsigned int TreeEntry::attributes() const
 
 const QString TreeEntry::name() const
 {
-    return QFile::decodeName(git_tree_entry_name(d));
+    return PathCodec::fromLibGit2(git_tree_entry_name(d));
 }
 
 OId TreeEntry::oid() const

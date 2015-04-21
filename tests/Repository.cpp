@@ -23,6 +23,8 @@
 #include "qgitrepository.h"
 #include "qgitremote.h"
 
+#include <QPointer>
+
 using namespace LibQGit2;
 
 class TestRepository : public TestBase
@@ -34,55 +36,75 @@ public:
     {}
 
 private slots:
+    virtual void init();
+    virtual void cleanup();
+
     void testRemoteUrlChanging();
     void testLookingUpRevision();
     void testCreateBranch();
     void testDeleteBranch();
 
 private:
-    Repository repo;
     const QString branchName;
+    QPointer<Repository> repo;
 };
 
+void TestRepository::init()
+{
+    TestBase::init();
+
+    QVERIFY(!repo);
+    repo = new Repository;
+    QVERIFY(repo);
+}
+
+void TestRepository::cleanup()
+{
+    QVERIFY(repo);
+    delete repo;
+    QVERIFY(!repo);
+
+    TestBase::cleanup();
+}
 
 void TestRepository::testRemoteUrlChanging()
 {
-    repo.init(testdir);
+    repo->init(testdir);
 
     const QString remoteName("origin");
-    repo.remoteAdd(remoteName, HttpRemoteUrl);
-    repo.remoteAdd(remoteName, GitRemoteUrl, true);
+    repo->remoteAdd(remoteName, HttpRemoteUrl);
+    repo->remoteAdd(remoteName, GitRemoteUrl, true);
 
-    QScopedPointer<Remote> remote(repo.remote(remoteName));
+    QScopedPointer<Remote> remote(repo->remote(remoteName));
     QCOMPARE(remote->url(), GitRemoteUrl);
 }
 
 void TestRepository::testLookingUpRevision()
 {
-    repo.open(ExistingRepository);
+    repo->open(ExistingRepository);
 
-    Object object = repo.lookupRevision("HEAD^{tree}");
+    Object object = repo->lookupRevision("HEAD^{tree}");
     QCOMPARE(Object::TreeType, object.type());
 }
 
 void TestRepository::testCreateBranch()
 {
     initTestRepo();
-    repo.open(testdir);
+    repo->open(testdir);
 
-    OId head = repo.head().target();
-    QCOMPARE(repo.createBranch(branchName).target(), head);
-    QCOMPARE(repo.lookupShorthandRef(branchName).target(), head);
+    OId head = repo->head().target();
+    QCOMPARE(repo->createBranch(branchName).target(), head);
+    QCOMPARE(repo->lookupShorthandRef(branchName).target(), head);
 }
 
 void TestRepository::testDeleteBranch()
 {
     initTestRepo();
-    repo.open(testdir);
-    repo.createBranch(branchName);
+    repo->open(testdir);
+    repo->createBranch(branchName);
 
-    repo.deleteBranch(branchName);
-    EXPECT_THROW(repo.lookupShorthandRef(branchName), Exception);
+    repo->deleteBranch(branchName);
+    EXPECT_THROW(repo->lookupShorthandRef(branchName), Exception);
 }
 
 QTEST_MAIN(TestRepository)

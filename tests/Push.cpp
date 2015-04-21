@@ -27,7 +27,7 @@
 using namespace LibQGit2;
 
 
-class TestPush : public QObject
+class TestPush : public TestBase
 {
     Q_OBJECT
 
@@ -53,6 +53,8 @@ private:
 
 void TestPush::initTestCase()
 {
+    TestBase::initTestCase();
+
     initBareLocalRepo();
 }
 

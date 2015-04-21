@@ -3,12 +3,13 @@
 
 #include "qgitrepository.h"
 #include <QDir>
+#include <QPointer>
 
 
 using namespace LibQGit2;
 
 
-class TestInit : public QObject
+class TestInit : public TestBase
 {
     Q_OBJECT
 
@@ -19,11 +20,13 @@ public:
 private slots:
 
     void initTestCase();
+    void cleanupTestCase();
+
     void init();
     void initBare();
 
 private:
-    LibQGit2::Repository *repo;
+    QPointer<Repository> repo;
 
     const QString repoPath;
 };
@@ -39,6 +42,7 @@ TestInit::TestInit() :
 
 void TestInit::initTestCase()
 {
+    TestBase::initTestCase();
 
     QVERIFY(!repo);
 
@@ -48,6 +52,14 @@ void TestInit::initTestCase()
     QVERIFY(repo);
 }
 
+void TestInit::cleanupTestCase()
+{
+    QVERIFY(repo);
+    delete repo;
+    QVERIFY(!repo);
+
+    TestBase::cleanupTestCase();
+}
 
 void TestInit::init()
 {

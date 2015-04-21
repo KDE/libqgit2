@@ -36,8 +36,11 @@ bool libgit2HasSSH();
 class TestBase : public QObject
 {
     Q_OBJECT
-private slots:
+protected slots:
     virtual void init();
+    virtual void cleanup();
+    virtual void initTestCase();
+    virtual void cleanupTestCase();
 
 protected:
     void initTestRepo();

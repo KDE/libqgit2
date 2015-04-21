@@ -21,7 +21,7 @@
 #include "qgitindexentry.h"
 #include "qgitoid.h"
 
-#include <QtCore/QFile>
+#include "private/pathcodec.h"
 
 namespace LibQGit2
 {
@@ -47,7 +47,7 @@ OId IndexEntry::id() const
 
 QString IndexEntry::path() const
 {
-    return QFile::decodeName(d->path);
+    return PathCodec::fromLibGit2(d->path);
 }
 
 qint64 IndexEntry::fileSize() const

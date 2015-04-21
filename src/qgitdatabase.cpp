@@ -20,7 +20,7 @@
 
 #include "qgitdatabase.h"
 
-#include <QtCore/QFile>
+#include "private/pathcodec.h"
 
 namespace LibQGit2
 {
@@ -41,7 +41,7 @@ Database::~Database()
 
 int Database::open(const QString& objectsDir)
 {
-    return git_odb_open(&m_database, QFile::encodeName(objectsDir));
+    return git_odb_open(&m_database, PathCodec::toLibGit2(objectsDir));
 }
 
 void Database::close()

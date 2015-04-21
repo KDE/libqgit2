@@ -25,7 +25,7 @@
 
 #include "qgitrepository.h"
 
-#include <QtCore/QFile>
+#include "private/pathcodec.h"
 
 namespace LibQGit2
 {
@@ -48,7 +48,7 @@ void Index::open(const QString& indexPath)
 {
     d.clear();
     git_index *index = 0;
-    qGitThrow(git_index_open(&index, QFile::encodeName(indexPath)));
+    qGitThrow(git_index_open(&index, PathCodec::toLibGit2(indexPath)));
     d = ptr_type(index, git_index_free);
 }
 
@@ -76,17 +76,17 @@ void Index::write()
 
 int Index::find(const QString& path)
 {
-    return git_index_find(NULL, data(), QFile::encodeName(path));
+    return git_index_find(NULL, data(), PathCodec::toLibGit2(path));
 }
 
 void Index::addByPath(const QString& path)
 {
-    qGitThrow(git_index_add_bypath(data(), QFile::encodeName(path)));
+    qGitThrow(git_index_add_bypath(data(), PathCodec::toLibGit2(path)));
 }
 
 void Index::remove(const QString& path, int stage)
 {
-    qGitThrow(git_index_remove(data(), QFile::encodeName(path), stage));
+    qGitThrow(git_index_remove(data(), PathCodec::toLibGit2(path), stage));
 }
 
 void Index::add(const IndexEntry &source_entry)

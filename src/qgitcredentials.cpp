@@ -19,7 +19,7 @@
 #include "qgitcredentials.h"
 #include "credentials_p.h"
 
-#include <QtCore/QFile>
+#include "private/pathcodec.h"
 
 #include "git2.h"
 
@@ -54,8 +54,8 @@ int CredentialsPrivate::create(Credentials &credentials, git_cred **cred, const 
 struct SSHCredentialsPrivate : public CredentialsPrivate {
     SSHCredentialsPrivate(const QString &privateKeyPath, const QString &publicKeyPath, const QByteArray &userName, const QByteArray &passphrase) :
         CredentialsPrivate(GIT_CREDTYPE_SSH_KEY | GIT_CREDTYPE_USERNAME),
-        m_private_key_path(QFile::encodeName(privateKeyPath)),
-        m_public_key_path(QFile::encodeName(publicKeyPath)),
+        m_private_key_path(PathCodec::toLibGit2(privateKeyPath)),
+        m_public_key_path(PathCodec::toLibGit2(publicKeyPath)),
         m_user_name(userName),
         m_passphrase(passphrase)
     {
