@@ -164,11 +164,11 @@ namespace LibQGit2
     /**
      * Compare two OIds.
      */
-    bool operator ==(const OId &oid1, const OId &oid2);
+    LIBQGIT2_EXPORT bool operator ==(const OId &oid1, const OId &oid2);
     /**
      * Compare two OIds.
      */
-    bool operator !=(const OId &oid1, const OId &oid2);
+    LIBQGIT2_EXPORT bool operator !=(const OId &oid1, const OId &oid2);
 
     /**@}*/
 }
