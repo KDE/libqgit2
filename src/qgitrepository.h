@@ -39,6 +39,8 @@
 #include "qgitcheckoutoptions.h"
 #include "qgitmergeoptions.h"
 #include "qgitcherrypickoptions.h"
+#include "qgitrebase.h"
+#include "qgitrebaseoptions.h"
 
 namespace LibQGit2
 {
@@ -651,6 +653,22 @@ namespace LibQGit2
              * @throws LibQGit2::Exception
              */
             void reset(const Object &target, ResetType type = Mixed, const Signature &signature = Signature(), const QString &message = QString());
+
+            /**
+             * Initializes a rebase object for rebasing the changes in \a branch
+             * relative to \a upstream onto another branch.
+             *
+             * @param branch The terminal commit to rebase
+             * @param upstream The commit to begin rebasing from, or \a null to rebase all
+             *                 reachable commits
+             * @param onto The branch to rebase onto, or \a null to rebase onto the given
+             *             upstream
+             * @param signature The signature of the rebaser (optional)
+             * @param opts Options to specify how rebase is performed
+             * @return The initialized rebase object
+             * @throws LibQGit2::Exception
+             */
+            Rebase rebase(const Reference &branch, const Reference &upstream, const Reference &onto, const Signature &signature, const RebaseOptions &opts);
 
             git_repository* data() const;
             const git_repository* constData() const;

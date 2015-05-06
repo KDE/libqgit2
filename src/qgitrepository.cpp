@@ -32,6 +32,7 @@
 #include "qgitremote.h"
 #include "qgitcredentials.h"
 #include "qgitdiff.h"
+#include "private/annotatedcommit.h"
 #include "private/buffer.h"
 #include "private/pathcodec.h"
 #include "private/remotecallbacks.h"
@@ -593,5 +594,14 @@ void Repository::reset(const Object &target, ResetType type, const Signature &si
     qGitThrow(git_reset(SAFE_DATA, target.data(), resetType, NULL, const_cast<git_signature*>(signature.data()), message.isNull() ? NULL : message.toUtf8().constData()));
 }
 
+Rebase Repository::rebase(const Reference &branch, const Reference &upstream, const Reference &onto, const Signature &signature, const RebaseOptions &opts)
+{
+    git_rebase *rebase;
+    internal::AnnotatedCommit commitBranch(*this, branch);
+    internal::AnnotatedCommit commitUpstream(*this, upstream);
+    internal::AnnotatedCommit commitOnto(*this, onto);
+    qGitThrow(git_rebase_init(&rebase, data(), commitBranch.constData(), commitUpstream.constData(), commitOnto.constData(), signature.data(), opts.constData()));
+    return Rebase(rebase, opts);
+}
 
 } // namespace LibQGit2
