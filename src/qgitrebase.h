@@ -58,10 +58,10 @@ public:
      * Finishes a rebase that is currently in progress once all patches have
      * been applied.
      *
-     * @param signature The identity that is finishing the rebase (optional)
+     * @param signature The identity that is finishing the rebase
      * @throws LibQGit2::Exception
      */
-    void finish(const Signature &signature);
+    void finish(const Signature &signature = Signature());
 
     /**
      * Performs the next rebase operation by applying the patch and updating the index
