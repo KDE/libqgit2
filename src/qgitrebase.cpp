@@ -17,13 +17,10 @@
  */
 
 #include "qgitrebase.h"
-#include "qgitcheckoutoptions.h"
-#include "qgitexception.h"
-#include "qgitoid.h"
 #include "qgitrebaseoptions.h"
-#include "qgitsignature.h"
-
-#include "git2.h"
+#include "qgitcheckoutoptions.h"
+#include "qgitoid.h"
+#include "qgitexception.h"
 
 namespace LibQGit2
 {
@@ -40,7 +37,7 @@ struct Rebase::Private {
         qGitThrow(git_rebase_abort(data(), signature.data()));
     }
 
-    OId commit(const Signature &author, const Signature &committer, const QString &message)
+    OId commit(const Signature &committer, const Signature &author, const QString &message)
     {
         git_oid oid;
         qGitThrow(git_rebase_commit(&oid, data(), author.data(), committer.data(), NULL, message.isNull() ? NULL : message.toUtf8().constData()));
@@ -90,9 +87,9 @@ void Rebase::abort(const Signature &signature)
     return d_ptr->abort(signature);
 }
 
-OId Rebase::commit(const Signature &author, const Signature &committer, const QString &message)
+OId Rebase::commit(const Signature &committer, const Signature &author, const QString &message)
 {
-    return d_ptr->commit(author, committer, message);
+    return d_ptr->commit(committer, author, message);
 }
 
 void Rebase::finish(const Signature &signature)

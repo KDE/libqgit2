@@ -19,17 +19,13 @@
 #ifndef LIBQGIT2_REBASE_H
 #define LIBQGIT2_REBASE_H
 
-#include "libqgit2_config.h"
-#include "git2.h"
-#include <QSharedPointer>
-
+#include "qgitsignature.h"
 
 namespace LibQGit2
 {
-class CheckoutOptions;
+
 class OId;
 class RebaseOptions;
-class Signature;
 
 /**
  * @brief Wrapper class for git_rebase.
@@ -81,15 +77,15 @@ public:
      * were introduced during the patch application from the `LibQGit2::Rebase::next`
      * invocation.
      *
+     * @param committer The committer of the rebase
      * @param author The author of the updated commit, or \a null to keep the
      *        author from the original commit
-     * @param committer The committer of the rebase
      * @param message The message for this commit, or \a null to use the message
      *        from the original commit.
      * @return OID of the newly created commit
      * @throws LibQGit2::Exception
      */
-    OId commit(const Signature &author, const Signature &committer, const QString &message = QString());
+    OId commit(const Signature &committer, const Signature &author = Signature(), const QString &message = QString());
 
     git_rebase *data() const;
     git_rebase *constData() const;
