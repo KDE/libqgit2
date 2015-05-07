@@ -19,6 +19,7 @@
 #ifndef REBASEOPTIONS_H
 #define REBASEOPTIONS_H
 
+#include "libqgit2_config.h"
 #include "git2.h"
 #include <QSharedPointer>
 
@@ -32,7 +33,7 @@ class CheckoutOptions;
  * @ingroup LibQGit2
  * @{
  */
-class RebaseOptions
+class LIBQGIT2_EXPORT RebaseOptions
 {
 public:
     /**
