@@ -1,3 +1,5 @@
+# 0.22
+
 ## v0.22.0
 
 * libgit2 types revealed through the libqgit2 API renamed as needed.
@@ -9,8 +11,14 @@
 
 ## v0.22.1
 
-* Added CMake code to find libgit2 as required by KDE CI system
+* Added CMake code to find libgit2 as required by KDE CI system.
 
 ## v0.22.2
 
-* Handle paths with non-ASCII characters correctly on Windows
+* Handle paths with non-ASCII characters correctly on Windows.
+
+# 0.next
+
+## v0.next.0
+
+* Added basic rebase support.
