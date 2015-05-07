@@ -65,7 +65,7 @@ void TestRebase::init()
 {
     TestBase::init();
     initTestRepo();
-    repo.reset(new Repository);
+    repo = QSharedPointer<Repository>(new Repository);
     repo->open(testdir + "/.git");
 }
 
