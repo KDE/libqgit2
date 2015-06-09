@@ -670,6 +670,12 @@ namespace LibQGit2
              */
             Rebase rebase(const Reference &branch, const Reference &upstream, const Reference &onto, const Signature &signature, const RebaseOptions &opts);
 
+            /**
+             * Checks if the repository's ignore rules would ignore the given \a path.
+             * @throws LibQGit2::Exception
+             */
+            bool shouldIgnore(const QString &path) const;
+
             git_repository* data() const;
             const git_repository* constData() const;
 

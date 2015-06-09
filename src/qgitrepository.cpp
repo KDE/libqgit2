@@ -605,4 +605,11 @@ Rebase Repository::rebase(const Reference &branch, const Reference &upstream, co
     return Rebase(rebase, opts);
 }
 
+bool Repository::shouldIgnore(const QString &path) const
+{
+    int result;
+    qGitThrow(git_status_should_ignore(&result, SAFE_DATA, PathCodec::toLibGit2(path)));
+    return result;
+}
+
 } // namespace LibQGit2

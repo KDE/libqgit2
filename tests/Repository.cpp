@@ -43,6 +43,7 @@ private slots:
     void testLookingUpRevision();
     void testCreateBranch();
     void testDeleteBranch();
+    void testShouldIgnore();
 
 private:
     const QString branchName;
@@ -105,6 +106,15 @@ void TestRepository::testDeleteBranch()
 
     repo->deleteBranch(branchName);
     EXPECT_THROW(repo->lookupShorthandRef(branchName), Exception);
+}
+
+void TestRepository::testShouldIgnore()
+{
+    initTestRepo();
+    repo->open(testdir);
+
+    QVERIFY(repo->shouldIgnore("Makefile"));
+    QVERIFY(!repo->shouldIgnore("CMakeLists.txt"));
 }
 
 QTEST_MAIN(TestRepository)
