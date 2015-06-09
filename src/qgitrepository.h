@@ -675,6 +675,7 @@ namespace LibQGit2
 
         signals:
             void cloneProgress(int);
+            void fetchProgress(int);
 
         private:
             class Private;

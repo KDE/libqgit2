@@ -512,6 +512,7 @@ void Repository::fetch(const QString& name, const QString& head, const Signature
     git_remote *_remote = NULL;
     qGitThrow(git_remote_lookup(&_remote, SAFE_DATA, name.toLatin1()));
     Remote remote(_remote, d_ptr->m_remote_credentials.value(name));
+    connect(&remote, SIGNAL(transferProgress(int)), this, SIGNAL(fetchProgress(int)));
 
     internal::StrArray refs;
     if (!head.isEmpty()) {
