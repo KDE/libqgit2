@@ -22,3 +22,5 @@
 ## v0.next.0
 
 * Added basic rebase support.
+* Repository::fetch() reports progress via fetchProgress signal.
+* Added Repository::shouldIgnore() method.
