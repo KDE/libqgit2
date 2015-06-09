@@ -595,7 +595,7 @@ void Repository::reset(const Object &target, ResetType type, const Signature &si
     qGitThrow(git_reset(SAFE_DATA, target.data(), resetType, NULL, const_cast<git_signature*>(signature.data()), message.isNull() ? NULL : message.toUtf8().constData()));
 }
 
-Rebase Repository::rebase(const Reference &branch, const Reference &upstream, const Reference &onto, const Signature &signature, const RebaseOptions &opts)
+Rebase Repository::rebase(const Reference &branch, const Reference &upstream, const Reference &onto, const RebaseOptions &opts, const Signature &signature)
 {
     git_rebase *rebase;
     internal::AnnotatedCommit commitBranch(*this, branch);

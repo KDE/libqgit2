@@ -659,16 +659,16 @@ namespace LibQGit2
              * relative to \a upstream onto another branch.
              *
              * @param branch The terminal commit to rebase
-             * @param upstream The commit to begin rebasing from, or \a null to rebase all
+             * @param upstream The commit to begin rebasing from, or \c null to rebase all
              *                 reachable commits
-             * @param onto The branch to rebase onto, or \a null to rebase onto the given
+             * @param onto The branch to rebase onto, or \c null to rebase onto the given
              *             upstream
-             * @param signature The signature of the rebaser (optional)
              * @param opts Options to specify how rebase is performed
+             * @param signature The signature of the rebaser
              * @return The initialized rebase object
              * @throws LibQGit2::Exception
              */
-            Rebase rebase(const Reference &branch, const Reference &upstream, const Reference &onto, const Signature &signature, const RebaseOptions &opts);
+            Rebase rebase(const Reference &branch, const Reference &upstream, const Reference &onto, const RebaseOptions &opts, const Signature &signature = Signature());
 
             /**
              * Checks if the repository's ignore rules would ignore the given \a path.
