@@ -73,12 +73,7 @@ set(INSTALL_LIB lib CACHE PATH "Where to install libraries to.")
 set(INSTALL_INC include CACHE PATH "Where to install headers to.")
 
 # Build options
-option(BUILD_SHARED_LIBS "Build Shared Library (OFF for Static)" ON)
 option(BUILD_TESTS "Build Tests" ON)
-
-set(LIBQGIT2_BUILD_ALL TRUE
-    CACHE INTERNAL "Build all of LIBQGIT2"
-)
 
 if(NOT MSVC)
     set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-Wall -O2 -g")
