@@ -607,8 +607,20 @@ Rebase Repository::rebase(const Reference &branch, const Reference &upstream, co
 
 bool Repository::shouldIgnore(const QString &path) const
 {
+    QString usedPath(QDir::cleanPath(path));
+
+    QFileInfo pathInfo(usedPath);
+    if (pathInfo.isAbsolute()) {
+        QString wd(workDirPath());
+        if (usedPath.startsWith(wd)) {
+            usedPath = usedPath.mid(wd.size());
+        } else {
+            THROW("Given path (" + path + ") is not within this repository's directory (" + wd + ").");
+        }
+    }
+
     int result;
-    qGitThrow(git_status_should_ignore(&result, SAFE_DATA, PathCodec::toLibGit2(path)));
+    qGitThrow(git_status_should_ignore(&result, SAFE_DATA, PathCodec::toLibGit2(usedPath)));
     return result;
 }
 

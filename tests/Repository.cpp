@@ -24,6 +24,7 @@
 #include "qgitremote.h"
 
 #include <QPointer>
+#include <QDir>
 
 using namespace LibQGit2;
 
@@ -113,8 +114,27 @@ void TestRepository::testShouldIgnore()
     initTestRepo();
     repo->open(testdir);
 
-    QVERIFY(repo->shouldIgnore("Makefile"));
-    QVERIFY(!repo->shouldIgnore("CMakeLists.txt"));
+    const QString ignoredFileName("Makefile");
+    const QString includedFileName("notignored.txt");
+
+    // Relative paths
+    QVERIFY(repo->shouldIgnore(ignoredFileName));
+    QVERIFY(!repo->shouldIgnore(includedFileName));
+
+    QDir dir(testdir);
+    QString testDirName(dir.dirName());
+
+    // Absolute paths
+    QVERIFY(repo->shouldIgnore(dir.absoluteFilePath(ignoredFileName)));
+    QVERIFY(!repo->shouldIgnore(dir.absoluteFilePath(includedFileName)));
+
+    dir.cdUp();
+
+    // Path containing .. but still leading up to the repository
+    QVERIFY(!repo->shouldIgnore(dir.absoluteFilePath(dir.absolutePath() + "/../" + dir.dirName() + "/" + testDirName + "/" + includedFileName)));
+
+    // Absolute path outside the repository
+    EXPECT_THROW(repo->shouldIgnore(dir.absoluteFilePath(ignoredFileName)), Exception);
 }
 
 QTEST_MAIN(TestRepository)

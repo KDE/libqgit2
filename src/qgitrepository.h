@@ -672,6 +672,11 @@ namespace LibQGit2
 
             /**
              * Checks if the repository's ignore rules would ignore the given \a path.
+             *
+             * If \a path is relative it is considered to be relative to the Repository's
+             * working directory. If \a path is absolute it must point to a location
+             * within this Repository's working directory or an exception is thrown.
+             *
              * @throws LibQGit2::Exception
              */
             bool shouldIgnore(const QString &path) const;
