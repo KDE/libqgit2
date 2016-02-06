@@ -49,10 +49,9 @@ public:
      * Aborts a rebase that is currently in progress, resetting the repository
      * and working directory to their state before rebase began.
      *
-     * @param signature The identity that is aborting the rebase
      * @throws LibQGit2::Exception
      */
-    void abort(const Signature &signature);
+    void abort();
 
     /**
      * Finishes a rebase that is currently in progress once all patches have

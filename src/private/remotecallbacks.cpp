@@ -29,16 +29,6 @@ namespace internal
 
 RemoteListener::~RemoteListener() {}
 
-
-RemoteCallbacks::RemoteCallbacks(git_remote *remote, RemoteListener *listener, const Credentials &credentials) :
-    m_listener(listener),
-    m_credentials(credentials),
-    m_transferProgress(-1)
-{
-    git_remote_callbacks remoteCallbacks = rawCallbacks();
-    qGitThrow(git_remote_set_callbacks(remote, &remoteCallbacks));
-}
-
 RemoteCallbacks::RemoteCallbacks(RemoteListener *listener, const Credentials &credentials) :
     m_listener(listener),
     m_credentials(credentials),

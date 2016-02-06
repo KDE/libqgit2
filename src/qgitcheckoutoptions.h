@@ -40,7 +40,6 @@ namespace LibQGit2
         enum Strategy {
             None,         ///< No actual updates
             Safe,         ///< Allow safe updates that cannot overwrite uncommitted data
-            SafeCreate,   ///< Allow safe updates plus creation of missing files
             Force         ///< Allow all updates to force working directory to look like index
         };
 
