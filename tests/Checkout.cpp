@@ -96,7 +96,7 @@ void TestCheckout::checkoutCommitAsTree()
     try {
         repo.clone(FileRepositoryUrl, testdir);
         OId id = OId::stringToOid("127c9e7d17");  // 127c9e7d17 is a commit where CMakeLists.txt was modified
-        repo.checkoutTree(repo.lookupCommit(id), CheckoutOptions(CheckoutOptions::SafeCreate));
+        repo.checkoutTree(repo.lookupCommit(id), CheckoutOptions(CheckoutOptions::Safe));
     } catch (const Exception& ex) {
         QFAIL(ex.what());
     }
@@ -135,7 +135,7 @@ void TestCheckout::checkoutPaths()
     try {
         repo.clone(FileRepositoryUrl, testdir);
         OId id = OId::stringToOid("7752cf5867");  // 7752cf5867 is a commit where many files were modified
-        CheckoutOptions opts(CheckoutOptions::SafeCreate);
+        CheckoutOptions opts(CheckoutOptions::Safe);
         opts.setPaths(paths);
         repo.checkoutTree(repo.lookupCommit(id), opts);
     } catch (const Exception& ex) {

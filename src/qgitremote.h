@@ -56,12 +56,9 @@ public:
     /**
      * Perform a push on this Remote.
      * @param refSpecs The refspecs to use for pushing. If left empty the configured refspecs will be used.
-     * @param signature The identity to use when updating reflogs.
-     * @param message The message to insert into the reflogs. If left as the
-     *        default (a null string), a message "update by push" is used.
      * @throws LibQGit2::Exception
      */
-    void push(const QList<QString> &refSpecs = QList<QString>(), const Signature &signature = Signature(), const QString &message = QString());
+    void push(const QList<QString> &refSpecs = QList<QString>());
 
     git_remote* data() const;
 

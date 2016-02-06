@@ -41,7 +41,7 @@ MergeOptions::MergeOptions(FavorType favor, Flags flags)
     }
 
     if (flags.testFlag(FindRenames)) {
-        d.flags = GIT_MERGE_TREE_FIND_RENAMES;
+        d.tree_flags = GIT_MERGE_TREE_FIND_RENAMES;
     }
 }
 

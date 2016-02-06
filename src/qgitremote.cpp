@@ -30,7 +30,7 @@ struct Remote::Private : public internal::RemoteListener
     Private(Remote &parent, git_remote *remote, const Credentials &credentials) :
         m_data(remote, git_remote_free),
         m_parent(parent),
-        m_callbacks(remote, this, credentials)
+        m_callbacks(this, credentials)
     {
     }
 
@@ -59,7 +59,7 @@ QString Remote::url() const
     return QString::fromLatin1(git_remote_url(data()));
 }
 
-void Remote::push(const QList<QString> &refSpecs, const Signature &signature, const QString &message)
+void Remote::push(const QList<QString> &refSpecs)
 {
     QList<QByteArray> baRefSpecs;
     foreach (const QString &ref, refSpecs) {
@@ -68,7 +68,7 @@ void Remote::push(const QList<QString> &refSpecs, const Signature &signature, co
     internal::StrArray refspecs(baRefSpecs);
 
     git_push_options opts = GIT_PUSH_OPTIONS_INIT;
-    qGitThrow(git_remote_push(data(), &refspecs.data(), &opts, signature.data(), message.isNull() ? NULL : message.toUtf8().constData()));
+    qGitThrow(git_remote_push(data(), &refspecs.data(), &opts));
 }
 
 git_remote* Remote::data() const

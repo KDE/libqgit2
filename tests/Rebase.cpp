@@ -112,7 +112,7 @@ void TestRebase::TestRebasingMasterOntoAnotherBranchProducesCorrectTopology()
     Reference refOnto = repo->lookupRef(refSpecOntoBranch);
     Reference refMaster = repo->lookupRef("refs/heads/master");
     Reference refUpstream = repo->lookupRef("refs/remotes/origin/master");
-    Rebase rebase = repo->rebase(refMaster, refUpstream, refOnto, RebaseOptions(CheckoutOptions(CheckoutOptions::SafeCreate)), sig);
+    Rebase rebase = repo->rebase(refMaster, refUpstream, refOnto, RebaseOptions(CheckoutOptions(CheckoutOptions::Safe)));
     rebase.next();
     OId oidRebasedMaster = rebase.commit(sig, sig, QString());
     rebase.finish(sig);
