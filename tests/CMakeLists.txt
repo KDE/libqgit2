@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-if (Qt5Core_FOUND)
-    find_package(Qt5Test)
-endif()
+find_package(Qt5Test REQUIRED)
 
 set(testdir ${CMAKE_BINARY_DIR}/TestDir)
 file(MAKE_DIRECTORY ${testdir})
@@ -30,10 +28,6 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/libqgit2_id_rsa ${EXECUTABLE_OUTPUT_P
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/libqgit2_id_rsa.pub ${EXECUTABLE_OUTPUT_PATH}/libqgit2_id_rsa.pub COPYONLY)
 
 set(helper ${CMAKE_CURRENT_SOURCE_DIR}/TestHelpers)
-if(NOT Qt5Core_FOUND)
-    set(helper_moced ${CMAKE_CURRENT_BINARY_DIR}/moc_TestHelpers.cpp)
-    qt4_generate_moc(${helper}.h ${helper_moced})
-endif()
 
 macro(addTest name)
     set(_source ${CMAKE_CURRENT_SOURCE_DIR}/${name}.cpp)
@@ -43,11 +37,7 @@ macro(addTest name)
     add_executable(${testname} ${_source} ${helper}.h ${helper}.cpp ${helper_moced})
     target_link_libraries(${testname} qgit2 git2 ${QT_QTCORE_LIBRARY} ${QT_QTTEST_LIBRARY})
     add_test(NAME ${testname} COMMAND ${testname})
-    if(Qt5Core_FOUND)
-        qt5_use_modules(${testname} Test)
-    else()
-        qt4_generate_moc(${_source} ${_moced})
-    endif()
+    qt5_use_modules(${testname} Test)
 endmacro()
 
 
