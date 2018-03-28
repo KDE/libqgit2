@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-find_package(Qt5Test REQUIRED)
+find_package(Qt5 REQUIRED Test)
 
 set(testdir ${CMAKE_BINARY_DIR}/TestDir)
 file(MAKE_DIRECTORY ${testdir})
@@ -32,11 +32,10 @@ set(helper ${CMAKE_CURRENT_SOURCE_DIR}/TestHelpers)
 macro(addTest name)
     set(_source ${CMAKE_CURRENT_SOURCE_DIR}/${name}.cpp)
     set(testname test${name})
-    add_executable(${testname} ${_source} ${helper}.h ${helper}.cpp ${helper_moced})
-    target_link_libraries(${testname} qgit2 git2 ${QT_QTCORE_LIBRARY} ${QT_QTTEST_LIBRARY})
+    add_executable(${testname} ${_source} ${helper}.h ${helper}.cpp)
+    target_link_libraries(${testname} qgit2 git2 Qt5::Core Qt5::Test)
     set_target_properties(${testname} PROPERTIES AUTOMOC ON)
     add_test(NAME ${testname} COMMAND ${testname})
-    qt5_use_modules(${testname} Test)
 endmacro()
 
 

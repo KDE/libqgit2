@@ -40,8 +40,7 @@ if(WIN32) # Dll's into bin
     set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
 endif()
 
-find_package(Qt5Core REQUIRED Core Network)
-add_definitions(${Qt5Core_DEFINITIONS})
+find_package(Qt5 REQUIRED Core Network)
 
 file(STRINGS "qgit2.h" QGIT2_HEADER REGEX "^#define LIBQGIT2_VERSION \"[^\"]*\"$")
 string(REGEX REPLACE "^.*LIBQGIT2_VERSION \"([0-9]+).*$" "\\1" LIBQGIT2_VERSION_MAJOR "${QGIT2_HEADER}")
@@ -96,8 +95,6 @@ endif()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src ${LIBGIT2_INCLUDE_DIR})
 
-include_directories(${Qt5Core_INCLUDES})
-
 # Collect files
 file(GLOB_RECURSE SRC src/*.cpp)
 file(GLOB QGIT2_HEADERS src/qgit*.h src/libqgit2_config.h)
@@ -115,13 +112,11 @@ message(STATUS)
 
 # Compile and link libqgit2
 add_definitions(-DMAKE_LIBQGIT2_LIB)
-add_library(qgit2 ${SRC} ${MOC_SRC} ${QGIT2_HEADERS} ${QGIT2_PRIVATE_HEADERS})
-target_link_libraries(qgit2 ${LIBGIT2_LIBRARIES} ${QT_QTCORE_LIBRARY})
+add_library(qgit2 ${SRC} ${QGIT2_HEADERS} ${QGIT2_PRIVATE_HEADERS})
+target_link_libraries(qgit2 ${LIBGIT2_LIBRARIES} Qt5::Core Qt5::Network)
 set_target_properties(qgit2 PROPERTIES VERSION ${LIBQGIT2_VERSION_STRING})
 set_target_properties(qgit2 PROPERTIES SOVERSION ${LIBQGIT2_SOVERSION})
 set_target_properties(qgit2 PROPERTIES AUTOMOC ON)
-
-qt5_use_modules(qgit2 Core)
 
 # Install
 install(TARGETS qgit2
