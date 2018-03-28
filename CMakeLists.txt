@@ -73,12 +73,6 @@ set(INSTALL_INC include CACHE PATH "Where to install headers to.")
 # Build options
 option(BUILD_TESTS "Build Tests" ON)
 
-if(NOT MSVC)
-    set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-Wall -O2 -g")
-    set(CMAKE_CXX_FLAGS_RELEASE "-Wall -O2")
-    set(CMAKE_CXX_FLAGS_DEBUG  "-Wall -g3 -ggdb -O0" CACHE STRING "Debug options." FORCE)
-endif()
-
 # Build Release by default
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel." FORCE)
