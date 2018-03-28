@@ -1,3 +1,4 @@
+cmake_minimum_required(VERSION 3.1)
 
 if (Qt5Core_FOUND)
     find_package(Qt5Test)
