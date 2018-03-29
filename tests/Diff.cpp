@@ -27,7 +27,7 @@
 
 using namespace LibQGit2;
 
-class TestDiff : public QObject
+class TestDiff : public TestBase
 {
     Q_OBJECT
 
