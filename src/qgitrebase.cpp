@@ -32,9 +32,9 @@ struct Rebase::Private {
     {
     }
 
-    void abort(const Signature &signature)
+    void abort()
     {
-        qGitThrow(git_rebase_abort(data(), signature.data()));
+        qGitThrow(git_rebase_abort(data()));
     }
 
     OId commit(const Signature &committer, const Signature &author, const QString &message)
@@ -82,9 +82,9 @@ Rebase::Rebase(git_rebase *rebase, const RebaseOptions &opts)
 {
 }
 
-void Rebase::abort(const Signature &signature)
+void Rebase::abort()
 {
-    return d_ptr->abort(signature);
+    return d_ptr->abort();
 }
 
 OId Rebase::commit(const Signature &committer, const Signature &author, const QString &message)

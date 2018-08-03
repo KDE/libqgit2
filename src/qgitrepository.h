@@ -312,11 +312,10 @@ namespace LibQGit2
              * @param name The name of the reference
              * @param oid The target of the reference
              * @param overwrite If there already exists a reference with the same name, whether to overwrite it
-             * @param signature The identity that will used to populate the reflog entry
              * @param message The one line long message to be appended to the reflog
              * @throws LibQGit2::Exception
              */
-            Reference createRef(const QString& name, const OId& oid, bool overwrite = true, const Signature &signature = Signature(), const QString &message = QString());
+            Reference createRef(const QString& name, const OId& oid, bool overwrite = true, const QString &message = QString());
 
             /**
              * Create a new symbolic reference.
@@ -327,11 +326,10 @@ namespace LibQGit2
              * @param name The name of the reference
              * @param target The target of the reference
              * @param overwrite If there already exists a reference with the same name, whether to overwrite it
-             * @param signature The identity that will used to populate the reflog entry
              * @param message The one line long message to be appended to the reflog
              * @throws LibQGit2::Exception
              */
-            Reference createSymbolicRef(const QString& name, const QString& target, bool overwrite = true, const Signature &signature = Signature(), const QString &message = QString());
+            Reference createSymbolicRef(const QString& name, const QString& target, bool overwrite = true, const QString &message = QString());
 
             /**
              * Create a new commit in the repository.
@@ -407,13 +405,10 @@ namespace LibQGit2
              * @param branchName The name of the new branch.
              * @param target The starting point of the branch, i.e. where the new branch will point to. Defaults to HEAD.
              * @param force Controls whether to overwrite an already existing branch.
-             * @param signature The identity to use when updating reflogs.
-             * @param message The message to insert into the reflogs. If left as the
-             *        default (a null string), a message "Branch: created" is used.
              * @return A reference to the newly created branch
              * @throws LibQGit2::Exception
              */
-            Reference createBranch(const QString &branchName, const Commit &target = Commit(), bool force = false, const Signature &signature = Signature(), const QString &message = QString());
+            Reference createBranch(const QString &branchName, const Commit &target = Commit(), bool force = false);
 
             /**
              * Deletes a local branch.
@@ -561,10 +556,9 @@ namespace LibQGit2
             *
             * @param url URL of the git repository
             * @param path non-existing directory for the new clone
-            * @param signature The identity used when updating the reflog
             * @throws LibQGit2::Exception
             */
-            void clone(const QString& url, const QString& path, const Signature &signature = Signature());
+            void clone(const QString& url, const QString& path);
 
             /**
             * Add remote repository.
@@ -592,13 +586,12 @@ namespace LibQGit2
             * @param remote Name of the remote repository (e.g. "origin")
             * @param head Name of head to fetch (e.g. "master"). If left as the default
             *        the fetch heads configured for the remote are used.
-            * @param signature The identity to use when updating reflogs
             * @param message The message to insert into the reflogs. If left as the
             *        default (a null string), a message "fetch <name>" is used , where <name>
             *        is the name of the remote (or its url, for in-memory remotes).
             * @throws LibQGit2::Exception
             */
-            void fetch(const QString& remote, const QString& head = QString(), const Signature &signature = Signature(), const QString &message = QString());
+            void fetch(const QString& remote, const QString& head = QString(), const QString &message = QString());
 
             QStringList remoteBranches(const QString& remoteName);
 
@@ -625,11 +618,9 @@ namespace LibQGit2
             * @param branch  branch name
             * @param opts the options used in the checkout
             * @param remote  remote which should be used, default is 'origin'
-            * @param signature The identity that will used to populate the reflog entry
-            * @param message The one line long message to be appended to the reflog
             * @throws LibQGit2::Exception
             */
-            void checkoutRemote(const QString& branch, const CheckoutOptions &opts = CheckoutOptions(), const QString& remote = "origin", const Signature &signature = Signature(), const QString &message = QString());
+            void checkoutRemote(const QString& branch, const CheckoutOptions &opts = CheckoutOptions(), const QString& remote = "origin");
 
             /**
              * Types of reset operation.
@@ -646,13 +637,9 @@ namespace LibQGit2
              *
              * @param target the committish to which the HEAD should be moved to
              * @param type what kind of reset should be performed
-             * @param signature the identity that will used to populate the reflog entry
-             * @param message the one line long message to be appended to the reflog.
-             *        The reflog is only updated if the affected direct reference is actually
-             *        changing. If left as the default (a null string), a message "reset: moving".
              * @throws LibQGit2::Exception
              */
-            void reset(const Object &target, ResetType type = Mixed, const Signature &signature = Signature(), const QString &message = QString());
+            void reset(const Object &target, ResetType type = Mixed);
 
             /**
              * Initializes a rebase object for rebasing the changes in \a branch
@@ -664,11 +651,10 @@ namespace LibQGit2
              * @param onto The branch to rebase onto, or \c null to rebase onto the given
              *             upstream
              * @param opts Options to specify how rebase is performed
-             * @param signature The signature of the rebaser
              * @return The initialized rebase object
              * @throws LibQGit2::Exception
              */
-            Rebase rebase(const Reference &branch, const Reference &upstream, const Reference &onto, const RebaseOptions &opts, const Signature &signature = Signature());
+            Rebase rebase(const Reference &branch, const Reference &upstream, const Reference &onto, const RebaseOptions &opts);
 
             /**
              * Checks if the repository's ignore rules would ignore the given \a path.
