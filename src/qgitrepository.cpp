@@ -464,7 +464,7 @@ void Repository::clone(const QString& url, const QString& path)
     git_repository *repo = 0;
     git_clone_options opts = GIT_CLONE_OPTIONS_INIT;
     opts.remote_callbacks = remoteCallbacks.rawCallbacks();
-    opts.checkout_opts.checkout_strategy = GIT_CHECKOUT_SAFE_CREATE;
+    opts.checkout_opts.checkout_strategy = GIT_CHECKOUT_SAFE;
     qGitEnsureValue(0, git_clone(&repo, url.toLatin1(), PathCodec::toLibGit2(path), &opts));
 
     d_ptr->setData(repo);
