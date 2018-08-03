@@ -625,4 +625,19 @@ bool Repository::shouldIgnore(const QString &path) const
     return result;
 }
 
+void Repository::setIdentity(const Identity &id)
+{
+    const auto name = !id.name.isEmpty() ? id.name.toUtf8() : QByteArray();
+    const auto email = !id.email.isEmpty() ? id.email.toUtf8() : QByteArray();
+    qGitThrow(git_repository_set_ident(data(), name, email));
+}
+
+Repository::Identity Repository::identity() const
+{
+    const char *name;
+    const char *email;
+    qGitThrow(git_repository_ident(&name, &email, data()));
+    return Identity{ QString::fromUtf8(name), QString::fromUtf8(email) };
+}
+
 } // namespace LibQGit2

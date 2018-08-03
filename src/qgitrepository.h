@@ -681,6 +681,32 @@ namespace LibQGit2
              */
             bool shouldIgnore(const QString &path) const;
 
+            struct Identity {
+                QString name;
+                QString email;
+            };
+
+            /**
+             * Set the identity to be used for writing reflogs.
+             *
+             * @param id The name and email to use for the reflog entries
+             *
+             * If both \c name and \c email are set in the given \a id, then \a id will be
+             * used to write to the reflog. Set either \c name or \c email to empty string
+             * to unset. When unset, the identity will be taken from the repository's
+             * configuration.
+             *
+             * @throws LibQGit2::Exception
+             */
+            void setIdentity(const Identity &id);
+
+            /**
+             * Retrieve the configured identity to use for reflogs.
+             *
+             * @throws LibQGit2::Exception
+             */
+            Identity identity() const;
+
             git_repository* data() const;
             const git_repository* constData() const;
 

@@ -45,6 +45,7 @@ private slots:
     void testCreateBranch();
     void testDeleteBranch();
     void testShouldIgnore();
+    void testIdentitySetting();
 
 private:
     const QString branchName;
@@ -135,6 +136,23 @@ void TestRepository::testShouldIgnore()
 
     // Absolute path outside the repository
     EXPECT_THROW(repo->shouldIgnore(dir.absoluteFilePath(ignoredFileName)), Exception);
+}
+
+namespace LibQGit2 {
+
+bool operator==(const Repository::Identity &lhs, const Repository::Identity &rhs)
+{
+    return lhs.name == rhs.name && lhs.email == rhs.email;
+}
+
+}
+
+void TestRepository::testIdentitySetting()
+{
+    const Repository::Identity id{"name", "email"};
+    repo->init(testdir);
+    repo->setIdentity(id);
+    QCOMPARE(repo->identity(), id);
 }
 
 QTEST_MAIN(TestRepository)
