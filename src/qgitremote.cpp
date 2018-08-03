@@ -30,7 +30,7 @@ struct Remote::Private : public internal::RemoteListener
     Private(Remote &parent, git_remote *remote, const Credentials &credentials) :
         m_data(remote, git_remote_free),
         m_parent(parent),
-        m_callbacks(remote, this, credentials)
+        m_callbacks(this, credentials)
     {
     }
 
