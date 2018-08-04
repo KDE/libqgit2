@@ -25,7 +25,6 @@ namespace LibQGit2
 {
 
 class OId;
-class RebaseOptions;
 
 /**
  * @brief Wrapper class for git_rebase.
@@ -41,9 +40,8 @@ public:
      * Create a wrapper for a libgit2 rebase object. Constructed object
      * takes ownership of \a rebase and frees it in the destructor.
      * @param rebase Raw pointer to the libgit2 rebase object
-     * @param opts Specifies how the rebase is to be conducted
      */
-    explicit Rebase(git_rebase *rebase, const RebaseOptions &opts);
+    explicit Rebase(git_rebase *rebase);
 
     /**
      * Aborts a rebase that is currently in progress, resetting the repository

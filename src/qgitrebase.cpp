@@ -17,8 +17,6 @@
  */
 
 #include "qgitrebase.h"
-#include "qgitrebaseoptions.h"
-#include "qgitcheckoutoptions.h"
 #include "qgitoid.h"
 #include "qgitexception.h"
 
@@ -26,9 +24,8 @@ namespace LibQGit2
 {
 
 struct Rebase::Private {
-    Private(git_rebase *rebase, const RebaseOptions &opts)
-        : mRebase(rebase, git_rebase_free),
-          mOpts(opts)
+    Private(git_rebase *rebase)
+        : mRebase(rebase, git_rebase_free)
     {
     }
 
@@ -46,14 +43,13 @@ struct Rebase::Private {
 
     void finish(const Signature &signature)
     {
-        qGitThrow(git_rebase_finish(data(), signature.data(), mOpts.constData()));
+        qGitThrow(git_rebase_finish(data(), signature.data()));
     }
 
     bool next()
     {
         git_rebase_operation *op;
-        git_checkout_options *opts = const_cast<git_checkout_options*>(mOpts.checkoutOptions().data());
-        int error = git_rebase_next(&op, data(), opts);
+        int error = git_rebase_next(&op, data());
         if (error == GIT_ITEROVER) {
             return false;
         } else {
@@ -74,11 +70,10 @@ struct Rebase::Private {
 
 private:
     QSharedPointer<git_rebase> mRebase;
-    const RebaseOptions mOpts;
 };
 
-Rebase::Rebase(git_rebase *rebase, const RebaseOptions &opts)
-    : d_ptr(new Private(rebase, opts))
+Rebase::Rebase(git_rebase *rebase)
+    : d_ptr(new Private(rebase))
 {
 }
 

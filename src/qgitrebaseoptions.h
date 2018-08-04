@@ -42,8 +42,6 @@ public:
      */
     RebaseOptions(const CheckoutOptions &checkoutOpts);
 
-    const CheckoutOptions &checkoutOptions() const;
-
     const git_rebase_options *constData() const;
 private:
     struct Private;

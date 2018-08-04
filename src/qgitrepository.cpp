@@ -606,7 +606,7 @@ Rebase Repository::rebase(const Reference &branch, const Reference &upstream, co
     internal::AnnotatedCommit commitUpstream(*this, upstream);
     internal::AnnotatedCommit commitOnto(*this, onto);
     qGitThrow(git_rebase_init(&rebase, data(), commitBranch.constData(), commitUpstream.constData(), commitOnto.constData(), opts.constData()));
-    return Rebase(rebase, opts);
+    return Rebase(rebase);
 }
 
 bool Repository::shouldIgnore(const QString &path) const
