@@ -40,7 +40,6 @@ namespace LibQGit2
         enum Strategy {
             None,         ///< No actual updates
             Safe,         ///< Allow safe updates that cannot overwrite uncommitted data
-            SafeCreate,   ///< Allow safe updates plus creation of missing files
             Force         ///< Allow all updates to force working directory to look like index
         };
 
@@ -56,7 +55,8 @@ namespace LibQGit2
             NoRefresh = 1u << 5,         ///< Don't refresh index/config/etc before doing checkout
             SkipUnmerged = 1u << 6,      ///< Allow checkout to skip unmerged files
             UnmergedUseOurs = 1u << 7,   ///< For unmerged files, checkout stage 2 from index
-            UnmergedUseTheirs = 1u << 8  ///< For unmerged files, checkout stage 3 from index
+            UnmergedUseTheirs = 1u << 8, ///< For unmerged files, checkout stage 3 from index
+            RecreateMissing = 1u << 9    ///< Allow checkout to recreate missing files
         };
         Q_DECLARE_FLAGS(Flags, Flag)
 

@@ -35,9 +35,6 @@ public:
         case Safe:
             native.checkout_strategy |= GIT_CHECKOUT_SAFE;
             break;
-        case SafeCreate:
-            native.checkout_strategy |= GIT_CHECKOUT_SAFE_CREATE;
-            break;
         case Force:
             native.checkout_strategy |= GIT_CHECKOUT_FORCE;
             break;
@@ -71,6 +68,9 @@ public:
         }
         if (flags.testFlag(UnmergedUseTheirs)) {
             native.checkout_strategy |= GIT_CHECKOUT_USE_THEIRS;
+        }
+        if (flags.testFlag(RecreateMissing)) {
+            native.checkout_strategy |= GIT_CHECKOUT_RECREATE_MISSING;
         }
     }
 
