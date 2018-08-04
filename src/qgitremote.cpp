@@ -49,6 +49,7 @@ struct Remote::Private : public internal::RemoteListener
         internal::StrArray refspecs(baRefSpecs);
 
         git_push_options opts = GIT_PUSH_OPTIONS_INIT;
+        opts.callbacks = m_callbacks.rawCallbacks();
         qGitThrow(git_remote_push(m_data.data(), &refspecs.data(), &opts));
     }
 

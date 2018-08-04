@@ -463,7 +463,7 @@ void Repository::clone(const QString& url, const QString& path)
 
     git_repository *repo = 0;
     git_clone_options opts = GIT_CLONE_OPTIONS_INIT;
-    opts.remote_callbacks = remoteCallbacks.rawCallbacks();
+    opts.fetch_opts.callbacks = remoteCallbacks.rawCallbacks();
     opts.checkout_opts.checkout_strategy = GIT_CHECKOUT_SAFE;
     qGitEnsureValue(0, git_clone(&repo, url.toLatin1(), PathCodec::toLibGit2(path), &opts));
 
@@ -520,7 +520,9 @@ void Repository::fetch(const QString& name, const QString& head, const QString &
         refs = StrArray(QList<QByteArray>() << refspec.toLatin1());
     }
 
+    internal::RemoteCallbacks remoteCallbacks(d_ptr.data(), d_ptr->m_remote_credentials.value(name));
     git_fetch_options opts = GIT_FETCH_OPTIONS_INIT;
+    opts.callbacks = remoteCallbacks.rawCallbacks();
     qGitThrow(git_remote_fetch(remote.data(), refs.count() > 0 ? &refs.data() : NULL, &opts, message.isNull() ? NULL : message.toUtf8().constData()));
 }
 
@@ -531,7 +533,9 @@ QStringList Repository::remoteBranches(const QString& remoteName)
     qGitThrow(git_remote_lookup(&_remote, SAFE_DATA, remoteName.toLatin1()));
     Remote remote(_remote, d_ptr->m_remote_credentials.value(remoteName));
 
-    qGitThrow(git_remote_connect(remote.data(), GIT_DIRECTION_FETCH));
+    internal::RemoteCallbacks remoteCallbacks(d_ptr.data(), d_ptr->m_remote_credentials.value(remoteName));
+    const auto callbacks = remoteCallbacks.rawCallbacks();
+    qGitThrow(git_remote_connect(remote.data(), GIT_DIRECTION_FETCH, &callbacks, nullptr, nullptr));
     qGitEnsureValue(1, git_remote_connected(remote.data()));
 
     /* List the heads on the remote */
