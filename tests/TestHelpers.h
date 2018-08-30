@@ -13,7 +13,7 @@
 #define VALUE_TO_QSTR(s) QLatin1String(TO_STR(s))
 
 const QString HttpRemoteUrl("http://anongit.kde.org/libqgit2");
-const QString HttpsRemoteUrl("https://github.com/lgiordani/libqgit2.git");
+const QString HttpsRemoteUrl("https://github.com/libqgit2/libqgit2.git");
 const QString GitRemoteUrl("git://anongit.kde.org/libqgit2");
 const QString ExistingRepository(VALUE_TO_QSTR(TEST_EXISTING_REPOSITORY));
 const QString FileRepositoryUrl("file://" + ExistingRepository + "/.git");
