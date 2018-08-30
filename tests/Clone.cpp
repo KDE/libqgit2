@@ -57,7 +57,6 @@ private slots:
     void gitProtocol();
     void httpProtocol();
     void httpsProtocol();
-    void sshProtocol();
 
 private:
     int m_clone_progress;
@@ -123,16 +122,6 @@ void TestClone::httpProtocol()
 void TestClone::httpsProtocol()
 {
     clone(HttpsRemoteUrl);
-}
-
-
-void TestClone::sshProtocol()
-{
-    if (!libgit2HasSSH()) {
-        SKIPTEST("libgit2 is not compiled with SSH support. Skipping SSH clone test.");
-    }
-
-    clone(SshRemoteUrl, Credentials::ssh("libqgit2_id_rsa", "libqgit2_id_rsa.pub", "git"));
 }
 
 
