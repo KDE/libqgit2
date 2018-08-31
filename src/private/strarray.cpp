@@ -22,30 +22,46 @@
 namespace LibQGit2 {
 namespace internal {
 
-StrArray::StrArray()
-{
-    m_data.count = 0;
-    m_data.strings = NULL;
-}
+static_assert(!std::is_copy_constructible<StrArray>::value, "StrArray must NOT be copy constructible");
+static_assert(std::is_move_constructible<StrArray>::value, "StrArray must be move constructible");
+static_assert(!std::is_copy_assignable<StrArray>::value, "StrArray must NOT be copy assignable");
+static_assert(std::is_move_assignable<StrArray>::value, "StrArray must be move assignable");
 
 StrArray::StrArray(const QList<QByteArray> &list) :
     m_strings(list)
 {
-    m_data.count = 0;
-    m_data.strings = NULL;
+    m_data.count = size_t(m_strings.size());
 
-    updateNative();
+    if (m_data.count == 0) {
+        return;
+    }
+
+    m_data.strings = new char*[m_data.count];
+    for (size_t i = 0; i < m_data.count; ++i) {
+        m_data.strings[i] = const_cast<char*>(m_strings.at(int(i)).data());
+    }
+}
+
+StrArray::StrArray(StrArray &&other) :
+    m_strings(std::move(other.m_strings)),
+    m_data(other.m_data)
+{
+    other.m_data = {nullptr, 0};
 }
 
 StrArray::~StrArray()
 {
-    free(m_data.strings);
+    delete[] m_data.strings;
 }
 
-void StrArray::set(const QList<QByteArray> &list)
+StrArray &StrArray::operator=(StrArray &&rhs)
 {
-    m_strings = list;
-    updateNative();
+    m_strings = std::move(rhs.m_strings);
+    m_data = rhs.m_data;
+
+    rhs.m_data = {nullptr, 0};
+
+    return *this;
 }
 
 size_t StrArray::count() const
@@ -56,22 +72,6 @@ size_t StrArray::count() const
 const git_strarray& StrArray::data() const
 {
     return m_data;
-}
-
-void StrArray::updateNative()
-{
-    const size_t newCount = m_strings.size();
-    if (newCount == 0) {
-        free(m_data.strings);
-        m_data.strings = NULL;
-    } else if (newCount > m_data.count) {
-        m_data.strings = (char**)realloc(m_data.strings, newCount * sizeof(char*));
-    }
-    m_data.count = newCount;
-
-    for (size_t i = 0; i < newCount; ++i) {
-        m_data.strings[i] = m_strings[i].data();
-    }
 }
 
 }

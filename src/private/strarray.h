@@ -28,11 +28,13 @@ namespace internal {
 class StrArray
 {
 public:
-    explicit StrArray();
-    explicit StrArray(const QList<QByteArray> &list);
+    explicit StrArray(const QList<QByteArray> &list = QList<QByteArray>());
+    StrArray(const StrArray &other) = delete;
+    StrArray(StrArray &&other);
     ~StrArray();
 
-    void set(const QList<QByteArray> &list);
+    StrArray &operator=(const StrArray &rhs) = delete;
+    StrArray &operator=(StrArray &&rhs);
 
     size_t count() const;
 
@@ -40,9 +42,7 @@ public:
 
 private:
     QList<QByteArray> m_strings;
-    git_strarray m_data;
-
-    void updateNative();
+    git_strarray m_data{nullptr, 0};
 };
 
 }

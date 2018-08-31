@@ -87,7 +87,7 @@ public:
         foreach (const QString &path, paths) {
             pathByteArrays.append(PathCodec::toLibGit2(path));
         }
-        m_paths.set(pathByteArrays);
+        m_paths = internal::StrArray(pathByteArrays);
 
         native.paths = m_paths.data();
     }

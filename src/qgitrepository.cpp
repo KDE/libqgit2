@@ -514,10 +514,11 @@ void Repository::fetch(const QString& name, const QString& head, const Signature
     Remote remote(_remote, d_ptr->m_remote_credentials.value(name));
     connect(&remote, SIGNAL(transferProgress(int)), this, SIGNAL(fetchProgress(int)));
 
-    internal::StrArray refs;
+    using internal::StrArray;
+    StrArray refs;
     if (!head.isEmpty()) {
         const QString refspec = QString("refs/heads/%2:refs/remotes/%1/%2").arg(name).arg(head);
-        refs.set(QList<QByteArray>() << refspec.toLatin1());
+        refs = StrArray(QList<QByteArray>() << refspec.toLatin1());
     }
 
     qGitThrow(git_remote_fetch(remote.data(), refs.count() > 0 ? &refs.data() : NULL, signature.data(), message.isNull() ? NULL : message.toUtf8().constData()));
