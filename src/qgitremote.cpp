@@ -40,6 +40,18 @@ struct Remote::Private : public internal::RemoteListener
         return 0;
     }
 
+    void push(const QList<QString> &refSpecs)
+    {
+        QList<QByteArray> baRefSpecs;
+        foreach (const QString &ref, refSpecs) {
+            baRefSpecs.append(ref.toLatin1());
+        }
+        internal::StrArray refspecs(baRefSpecs);
+
+        git_push_options opts = GIT_PUSH_OPTIONS_INIT;
+        qGitThrow(git_remote_push(m_data.data(), &refspecs.data(), &opts));
+    }
+
     QSharedPointer<git_remote> m_data;
 
 private:
@@ -61,14 +73,7 @@ QString Remote::url() const
 
 void Remote::push(const QList<QString> &refSpecs)
 {
-    QList<QByteArray> baRefSpecs;
-    foreach (const QString &ref, refSpecs) {
-        baRefSpecs.append(ref.toLatin1());
-    }
-    internal::StrArray refspecs(baRefSpecs);
-
-    git_push_options opts = GIT_PUSH_OPTIONS_INIT;
-    qGitThrow(git_remote_push(data(), &refspecs.data(), &opts));
+    d_ptr->push(refSpecs);
 }
 
 git_remote* Remote::data() const
