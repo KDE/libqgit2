@@ -62,6 +62,7 @@ namespace LibQGit2
           *
           * @param path the absolute path to the config file
           * @param priority the access priority; values with higher priority are accessed first
+          * @param force replace config file at the given priority level
           *
           * @return true on success
           */
