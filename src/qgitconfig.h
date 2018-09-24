@@ -66,7 +66,7 @@ namespace LibQGit2
           *
           * @return true on success
           */
-        bool append(const QString& path, git_config_level_t level, bool force);
+        bool append(const QString& path, git_config_level_t level, bool force = false);
 
         /**
           * Reads a single value from the configuration.
