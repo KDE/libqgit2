@@ -72,9 +72,9 @@ QString Config::findSystem()
     return buffer.asPath();
 }
 
-bool Config::append(const QString &path, git_config_level_t level, bool force)
+bool Config::append(const QString &path, git_config_level_t level, const Repository &repo, bool force)
 {
-    return GIT_OK == git_config_add_file_ondisk(d, PathCodec::toLibGit2(path).constData(), level, nullptr, force);
+    return GIT_OK == git_config_add_file_ondisk(d, PathCodec::toLibGit2(path).constData(), level, repo.constData(), force);
 }
 
 QVariant Config::value(const QString &key, const QVariant &defaultValue) const

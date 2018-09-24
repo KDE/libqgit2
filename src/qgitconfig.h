@@ -27,10 +27,10 @@
 
 #include "libqgit2_config.h"
 
+#include "qgitrepository.h"
+
 namespace LibQGit2
 {
-    class Repository;
-
     /**
       * @brief Represents the git configuration file.
       *
@@ -62,11 +62,12 @@ namespace LibQGit2
           *
           * @param path the absolute path to the config file
           * @param priority the access priority; values with higher priority are accessed first
+          * @param repo optional repository to allow parsing of conditional includes
           * @param force replace config file at the given priority level
           *
           * @return true on success
           */
-        bool append(const QString& path, git_config_level_t level, bool force = false);
+        bool append(const QString& path, git_config_level_t level, const Repository &repo = Repository(), bool force = false);
 
         /**
           * Reads a single value from the configuration.
