@@ -54,6 +54,7 @@ namespace LibQGit2
     class Push;
     class Remote;
     class Diff;
+	class RepositoryPrivate;
 
     /**
      * @brief Wrapper class for git_repository.
@@ -76,7 +77,7 @@ namespace LibQGit2
              * sharing the ownership. If `own` is true, the pointer must not be freed manually,
              * and must not be passed to another Repository instance also with `own` true.
              */
-            explicit Repository(git_repository *repository = 0, bool own = false);
+            explicit Repository(git_repository *repository = 0, bool own = false, QObject * parent = nullptr);
 
             /**
              * Copy constructor; creates a copy of the object, sharing the same underlaying data
@@ -182,6 +183,7 @@ namespace LibQGit2
              *
              * @throws LibQGit2::Exception
              */
+			Reference tracked() const;
             bool isHeadDetached() const;
 
             /**
@@ -701,9 +703,8 @@ namespace LibQGit2
             void fetchProgress(int);
 
         private:
-            class Private;
-            QSharedPointer<Private> d_ptr;
-            Q_DECLARE_PRIVATE()
+            QSharedPointer<RepositoryPrivate> d_ptr;
+            Q_DECLARE_PRIVATE(Repository)
     };
 
     /**@}*/

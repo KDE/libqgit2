@@ -46,7 +46,7 @@ namespace LibQGit2
 {
 
 
-class Repository::Private : public internal::RemoteListener
+class RepositoryPrivate : public internal::RemoteListener
 {
 public:
     typedef QSharedPointer<git_repository> ptr_type;
@@ -54,13 +54,13 @@ public:
     QMap<QString, Credentials> m_remote_credentials;
     Repository &m_owner;
 
-    Private(git_repository *repository, bool own, Repository &owner) :
+	RepositoryPrivate(git_repository *repository, bool own, Repository &owner) :
         d(repository, own ? git_repository_free : do_not_free),
         m_owner(owner)
     {
     }
 
-    Private(const Private &other, Repository &owner) :
+	RepositoryPrivate(const RepositoryPrivate&other, Repository &owner) :
         d(other.d),
         m_remote_credentials(other.m_remote_credentials),
         m_owner(owner)
@@ -112,13 +112,15 @@ public:
 }
 
 
-Repository::Repository(git_repository *repository, bool own)
-    : d_ptr(new Private(repository, own, *this))
+Repository::Repository(git_repository *repository, bool own, QObject* parent /*= nullptr*/)
+    : QObject(parent)
+	, d_ptr(new RepositoryPrivate(repository, own, *this))
 {
 }
 
 Repository::Repository(const Repository& other)
-    : d_ptr(new Private(*other.d_ptr, *this))
+    : QObject(other.parent())
+	, d_ptr(new RepositoryPrivate(*other.d_ptr, *this))
 {
 }
 
@@ -157,6 +159,18 @@ Reference Repository::head() const
     git_reference *ref = 0;
     qGitThrow(git_repository_head(&ref, SAFE_DATA));
     return Reference(ref);
+}
+char git_buf__initbuf[1];
+Reference Repository::tracked() const
+{
+	git_buf upstreamName = { git_buf__initbuf, 0, 0 };
+	git_reference* ref = 0;
+	qGitThrow(git_repository_head(&ref, SAFE_DATA));
+	git_branch_upstream_name(&upstreamName, data(), git_reference_name(ref));
+	const char* trackedReferenceName = upstreamName.ptr;
+	const Reference& refRet = lookupRef(QString::fromUtf8(trackedReferenceName));
+	git_buf_free(&upstreamName);
+	return refRet;
 }
 
 bool Repository::isHeadDetached() const
