@@ -38,7 +38,7 @@ public:
 Signature::Signature(const QString& name, const QString& email, QDateTime dateTime)
 {
     git_signature *sig = 0;
-    qGitThrow(git_signature_new(&sig, name.toUtf8(), email.toUtf8(), dateTime.toTime_t(), dateTime.utcOffset() / 60));
+    qGitThrow(git_signature_new(&sig, name.toUtf8(), email.toUtf8(), dateTime.toTime_t(), dateTime.offsetFromUtc() / 60));
     d_ptr = QSharedPointer<Private>(new Private(sig, true));
 }
 
@@ -77,7 +77,7 @@ QDateTime Signature::when() const
     QDateTime dt;
     if (d_ptr->signature) {
         dt.setTime_t(d_ptr->signature->when.time);
-        dt.setUtcOffset(d_ptr->signature->when.offset * 60);
+        dt.setOffsetFromUtc(d_ptr->signature->when.offset * 60);
     }
     return dt;
 }
