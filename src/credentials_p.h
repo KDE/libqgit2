@@ -19,7 +19,7 @@
 #ifndef LIBQGIT2_CREDENTIALS_P_H
 #define LIBQGIT2_CREDENTIALS_P_H
 
-struct git_cred;
+struct git_credential;
 
 namespace LibQGit2
 {
@@ -31,10 +31,10 @@ public:
     CredentialsPrivate(unsigned int allowedTypes);
     virtual ~CredentialsPrivate();
 
-    static int create(Credentials &credentials, git_cred **cred, const char *url, const char *usernameFromUrl, unsigned int allowedTypes);
+    static int create(Credentials &credentials, git_credential **cred, const char *url, const char *usernameFromUrl, unsigned int allowedTypes);
 
 protected:
-    virtual int create(git_cred **cred, const char *url, const char *usernameFromUrl, unsigned int allowedTypes);
+    virtual int create(git_credential **cred, const char *url, const char *usernameFromUrl, unsigned int allowedTypes);
 
 private:
     unsigned int m_allowed_types;

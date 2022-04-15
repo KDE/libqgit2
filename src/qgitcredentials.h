@@ -23,8 +23,6 @@
 
 #include "libqgit2_config.h"
 
-struct git_cred;
-
 namespace LibQGit2
 {
 

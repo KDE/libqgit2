@@ -70,7 +70,7 @@ int RemoteCallbacks::transferProgressCallback(const git_transfer_progress* stats
     return ret;
 }
 
-int RemoteCallbacks::acquireCredentialsCallback(git_cred **cred, const char *url, const char *usernameFromUrl, unsigned int allowedTypes, void *data)
+int RemoteCallbacks::acquireCredentialsCallback(git_credential **cred, const char *url, const char *usernameFromUrl, unsigned int allowedTypes, void *data)
 {
     int result = -1;
     if (data) {

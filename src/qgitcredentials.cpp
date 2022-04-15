@@ -33,12 +33,12 @@ CredentialsPrivate::CredentialsPrivate(unsigned int allowedTypes) :
 
 CredentialsPrivate::~CredentialsPrivate() {}
 
-int CredentialsPrivate::create(git_cred**, const char*, const char*, unsigned int)
+int CredentialsPrivate::create(git_credential**, const char*, const char*, unsigned int)
 {
     return -1;
 }
 
-int CredentialsPrivate::create(Credentials &credentials, git_cred **cred, const char *url, const char *usernameFromUrl, unsigned int allowedTypes)
+int CredentialsPrivate::create(Credentials &credentials, git_credential **cred, const char *url, const char *usernameFromUrl, unsigned int allowedTypes)
 {
     CredentialsPrivate *d = credentials.d_func();
 
@@ -62,7 +62,7 @@ struct SSHCredentialsPrivate : public CredentialsPrivate {
     }
 
 protected:
-    int create(git_cred **cred, const char*, const char*, unsigned int allowedTypes)
+    int create(git_credential **cred, const char*, const char*, unsigned int allowedTypes)
     {
         if (allowedTypes & GIT_CREDTYPE_USERNAME) {
             return git_cred_username_new(cred, m_user_name.data());
