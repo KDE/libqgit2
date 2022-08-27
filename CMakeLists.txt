@@ -29,7 +29,7 @@
 # Install:
 # > cmake --build . --target install
 
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.16)
 project(libqgit2)
 
 set(CMAKE_CXX_STANDARD 11)
@@ -44,6 +44,9 @@ if(WIN32) # Dll's into bin
 endif()
 
 find_package(Qt5 5.14 REQUIRED Core Network)
+
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(LIBGIT2 "libgit2>=1.0" REQUIRED IMPORTED_TARGET)
 
 file(STRINGS "qgit2.h" QGIT2_HEADER REGEX "^#define LIBQGIT2_VERSION \"[^\"]*\"$")
 string(REGEX REPLACE "^.*LIBQGIT2_VERSION \"([0-9]+).*$" "\\1" LIBQGIT2_VERSION_MAJOR "${QGIT2_HEADER}")
@@ -67,37 +70,9 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel." FORCE)
 endif()
 
-set(LIBGIT2_SRC_DIR "" CACHE PATH "Build libgit2 source from this directory.")
 option(LIBGIT2_TESTS "Build libgit2 tests" OFF)
 
-if(NOT LIBGIT2_SRC_DIR STREQUAL "")
-    message(STATUS "Using libgit2 source from ${LIBGIT2_SRC_DIR}")
-    if(NOT LIBGIT2_TESTS)
-        set(BUILD_CLAR OFF CACHE STRING "libgit2 tests" FORCE)
-    endif()
-    if(MSVC)
-        set(STDCALL    OFF CACHE STRING "no stdcall" FORCE)
-        set(STATIC_CRT OFF CACHE STRING "shared runtime" FORCE)
-        # QSharedPointer on opaque libgit structures
-        set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_DEBUG}   /wd4150")
-        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /wd4150")
-    endif()
-    add_subdirectory(${LIBGIT2_SRC_DIR} libgit2)
-    set(LIBGIT2_INCLUDE_DIR ${LIBGIT2_SRC_DIR}/include)
-    set(LIBGIT2_LIBRARIES git2)
-    set(LIBGIT2_FOUND 1)
-else()
-    find_package(PkgConfig REQUIRED)
-    pkg_check_modules(LIBGIT2 "libgit2>=1.0")
-endif()
-
-if(NOT LIBGIT2_FOUND)
-    message(FATAL_ERROR "No libgit2 found!
-Install the libgit2 development files to your system.
-Alternatively define LIBGIT2_SRC_DIR to point to a libgit2 source directory.")
-endif()
-
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src ${LIBGIT2_INCLUDE_DIR})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 # Collect files
 file(GLOB_RECURSE SRC src/*.cpp)
@@ -117,7 +92,7 @@ message(STATUS)
 # Compile and link libqgit2
 add_definitions(-DMAKE_LIBQGIT2_LIB)
 add_library(qgit2 ${SRC} ${QGIT2_HEADERS} ${QGIT2_PRIVATE_HEADERS})
-target_link_libraries(qgit2 ${LIBGIT2_LIBRARIES} Qt5::Core Qt5::Network)
+target_link_libraries(qgit2 PkgConfig::LIBGIT2 Qt5::Core Qt5::Network)
 set_target_properties(qgit2 PROPERTIES VERSION ${LIBQGIT2_VERSION_STRING})
 set_target_properties(qgit2 PROPERTIES SOVERSION ${LIBQGIT2_SOVERSION})
 set_target_properties(qgit2 PROPERTIES AUTOMOC ON)
