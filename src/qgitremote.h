@@ -19,7 +19,7 @@
 #ifndef LIBQGIT2_REMOTE_H
 #define LIBQGIT2_REMOTE_H
 
-#include "libqgit2_config.h"
+#include "libqgit2_export.h"
 #include "qgitcredentials.h"
 
 #include <QtCore/QSharedPointer>

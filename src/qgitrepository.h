@@ -26,7 +26,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QMap>
 
-#include "libqgit2_config.h"
+// #include "libqgit2_export.h"
 
 #include "qgitcommit.h"
 #include "qgitdatabase.h"

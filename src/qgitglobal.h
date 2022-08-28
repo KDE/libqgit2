@@ -19,7 +19,7 @@
 #ifndef LIBQGIT2_GLOBAL_H
 #define LIBQGIT2_GLOBAL_H
 
-#include "libqgit2_config.h"
+#include "libqgit2_export.h"
 
 namespace LibQGit2
 {

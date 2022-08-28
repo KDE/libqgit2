@@ -103,9 +103,9 @@ public:
 };
 
 
-#define SAFE_DATA d_ptr->safeData(LIBQGIT2_FUNC_NAME)
+#define SAFE_DATA d_ptr->safeData(__func__)
 
-#define THROW(msg) throw Exception(QString("Repository::") + LIBQGIT2_FUNC_NAME + "(): " + msg)
+#define THROW(msg) throw Exception(QString("Repository::") + __func__ + "(): " + msg)
 
 #define AVOID(statement, msg) if (statement) {\
     THROW(msg);\

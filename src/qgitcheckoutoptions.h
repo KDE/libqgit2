@@ -21,7 +21,7 @@
 
 #include "git2.h"
 #include <QSharedPointer>
-#include "libqgit2_config.h"
+#include "libqgit2_export.h"
 
 namespace LibQGit2
 {

@@ -19,7 +19,7 @@
 #ifndef REBASEOPTIONS_H
 #define REBASEOPTIONS_H
 
-#include "libqgit2_config.h"
+#include "libqgit2_export.h"
 #include "git2.h"
 #include <QSharedPointer>
 

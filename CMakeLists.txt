@@ -73,6 +73,7 @@ endif()
 option(LIBGIT2_TESTS "Build libgit2 tests" OFF)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
+include_directories(${CMAKE_BINARY_DIR})
 
 # Collect files
 file(GLOB_RECURSE SRC src/*.cpp)
@@ -105,6 +106,7 @@ install(TARGETS qgit2
 )
 
 install(FILES ${QGIT2_HEADERS} DESTINATION ${INSTALL_INC}/qgit2 COMPONENT Devel)
+install(FILES ${CMAKE_BINARY_DIR}/libqgit2_export.h DESTINATION ${INSTALL_INC}/qgit2 COMPONENT Devel)
 install(FILES qgit2.h DESTINATION ${INSTALL_INC} COMPONENT Devel)
 
 #Packaging options
@@ -116,6 +118,9 @@ set(CPACK_PACKAGE_CONTACT "Laszlo Papp <djszapi@archlinux.us>")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "libgit2 bindings for Qt")
 include(InstallRequiredSystemLibraries)
 include(CPack)
+include(GenerateExportHeader)
+
+generate_export_header(qgit2 BASE_NAME LIBQGIT2)
 
 if(BUILD_TESTS)
     enable_testing()

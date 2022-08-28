@@ -19,7 +19,7 @@
 #ifndef LIBQGIT2_DIFFDELTA_H
 #define LIBQGIT2_DIFFDELTA_H
 
-#include "libqgit2_config.h"
+#include "libqgit2_export.h"
 
 #include "git2.h"
 

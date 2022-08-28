@@ -22,7 +22,7 @@
 #define LIBQGIT2_EXCEPTION_H
 
 #include <exception>
-#include "libqgit2_config.h"
+#include "libqgit2_export.h"
 #include <QtCore/QByteArray>
 
 namespace LibQGit2
