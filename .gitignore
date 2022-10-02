@@ -18,8 +18,11 @@ moc_*.cpp
 qrc_*.cpp
 Makefile
 *-build-*
+CMakeLists.txt.user
 
 # KDevelop
 build*/
 .kdev4/
 *.kdev4
+
+
