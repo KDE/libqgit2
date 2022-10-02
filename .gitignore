@@ -20,6 +20,6 @@ Makefile
 *-build-*
 
 # KDevelop
-build/
+build*/
 .kdev4/
 *.kdev4
