@@ -19,8 +19,6 @@
  */
 
 #include "qgitblob.h"
-#include "qgitoid.h"
-#include "qgitrepository.h"
 
 #include <QtCore/QFile>
 

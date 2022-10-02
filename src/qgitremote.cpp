@@ -21,7 +21,6 @@
 #include "private/remotecallbacks.h"
 #include "private/strarray.h"
 
-#include "git2.h"
 
 namespace LibQGit2 {
 

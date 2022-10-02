@@ -21,7 +21,6 @@
 #include "qgittree.h"
 
 #include "qgittreeentry.h"
-#include "qgitrepository.h"
 #include "qgitoid.h"
 
 #include "private/pathcodec.h"

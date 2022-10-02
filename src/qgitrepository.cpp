@@ -28,7 +28,6 @@
 #include "qgitblob.h"
 #include "qgitsignature.h"
 #include "qgitexception.h"
-#include "qgitstatus.h"
 #include "qgitremote.h"
 #include "qgitcredentials.h"
 #include "qgitdiff.h"
