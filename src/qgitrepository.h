@@ -51,7 +51,6 @@ namespace LibQGit2
     class Blob;
     class Signature;
     class Credentials;
-    class Push;
     class Remote;
     class Diff;
 
